@@ -4,6 +4,7 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -14,4 +15,116 @@
         android:text="Tài khoản"
         android:textColor="@color/color_25"
         android:textSize="24dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title">
+
+        <ImageView
+            android:id="@+id/imgAvatar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:layout_margin="10dp" />
+
+        <TextView
+            android:id="@+id/tvUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imgAvatar"
+            android:layout_centerInParent="true"
+            android:fontFamily="sans-serif-medium"
+            android:text="User name"
+            android:textColor="@color/color_25"
+            android:textSize="24dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@id/tvUserName"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/bg_search_view"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:text="Các bài đã đăng"
+            android:textColor="@color/color_25"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/tvUpload"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@id/tvUserName"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/bg_search_view"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:text="Các bài đã đăng"
+            android:textColor="@color/color_25"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/tvBookmark"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@id/tvUpload"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/bg_search_view"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:text="Các bài đã đánh dấu"
+            android:textColor="@color/color_25"
+            android:textSize="20dp" />
+        <TextView
+            android:id="@+id/tvSetting"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@id/tvBookmark"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/bg_search_view"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:text="Cài đặt"
+            android:textColor="@color/color_25"
+            android:textSize="20dp" />
+        <TextView
+            android:id="@+id/tvGuide"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@id/tvSetting"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/bg_search_view"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:text="Hướng dẫn sử dụng"
+            android:textColor="@color/color_25"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/tvLogout"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@id/tvGuide"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/bg_search_view"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:text="Đăng xuất"
+            android:textColor="@color/color_25"
+            android:textSize="20dp" />
+    </RelativeLayout>
 </RelativeLayout>
