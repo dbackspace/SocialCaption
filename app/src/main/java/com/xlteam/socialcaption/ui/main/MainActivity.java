@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
                         replaceFragment(R.id.frame, new AccountFragment());
                         break;
                 }
-                return false;
+                return true;
             }
         });
     }
