@@ -7,15 +7,16 @@
         android:title=""
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/nav_upload"
-        android:icon="@drawable/ic_upload"
-        android:title=""
-        app:showAsAction="ifRoom" />
-    <item
         android:id="@+id/nav_category"
         android:icon="@drawable/ic_category"
         android:title=""
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/nav_upload"
+        android:icon="@drawable/ic_upload"
+        android:title=""
+        app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/nav_account"
         android:icon="@drawable/ic_account"

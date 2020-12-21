@@ -1,18 +1,19 @@
 package com.xlteam.socialcaption.ui.main;
 
+import android.os.Bundle;
+import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
-import android.os.Bundle;
-import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.ui.account.AccountFragment;
 import com.xlteam.socialcaption.ui.category.CategoryFragment;
 import com.xlteam.socialcaption.ui.home.HomePageFragment;
+import com.xlteam.socialcaption.ui.upload.DialogUploadBuilder;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,12 +30,12 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_home:
                         replaceFragment(R.id.frame, new HomePageFragment());
                         break;
-                    case R.id.nav_upload:
-                        showDialogUpload();
-                        break;
                     case R.id.nav_category:
                         replaceFragment(R.id.frame, new CategoryFragment());
                         break;
+                    case R.id.nav_upload:
+                        showDialogUpload();
+                        return false;
                     case R.id.nav_account:
                         replaceFragment(R.id.frame, new AccountFragment());
                         break;
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showDialogUpload() {
-
+        DialogUploadBuilder dialogUploadBuilder = new DialogUploadBuilder(this);
+        dialogUploadBuilder.build().show();
     }
 }
