@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "348959873751",
+    "project_id": "socialcaption-xlteam",
+    "storage_bucket": "socialcaption-xlteam.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:348959873751:android:051214e3bc727270e76e92",
+        "android_client_info": {
+          "package_name": "com.xlteam.socialcaption"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "348959873751-hjvddphi4dhlogu0p40u3fgruh3vakfi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRrv4sDJwn2dV7wJGcpU9Ut09wGrAHy14"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "348959873751-hjvddphi4dhlogu0p40u3fgruh3vakfi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
