@@ -4,14 +4,11 @@ import android.os.Bundle;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.techyourchance.fragmenthelper.FragmentContainerWrapper;
 import com.xlteam.socialcaption.ui.common.bottomnavigation.BottomNavViewMvc;
 import com.xlteam.socialcaption.ui.common.controllers.BaseActivity;
 import com.xlteam.socialcaption.ui.common.screensnavigator.ScreensNavigator;
-import com.xlteam.socialcaption.ui.upload.DialogUploadBuilder;
 
 public class MainActivity extends BaseActivity implements
         FragmentContainerWrapper,
@@ -43,17 +40,6 @@ public class MainActivity extends BaseActivity implements
     protected void onStop() {
         super.onStop();
         mViewMvc.unregisterListener(this);
-    }
-
-    private void replaceFragment(int id, Fragment fragment) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(id, fragment);
-        transaction.commit();
-    }
-
-    private void showDialogUpload() {
-        DialogUploadBuilder dialogUploadBuilder = new DialogUploadBuilder(this);
-        dialogUploadBuilder.build().show();
     }
 
     @NonNull

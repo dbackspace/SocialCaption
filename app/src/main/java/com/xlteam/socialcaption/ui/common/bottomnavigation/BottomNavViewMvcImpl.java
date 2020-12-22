@@ -16,7 +16,7 @@ public class BottomNavViewMvcImpl extends BaseObservableViewMvc<BottomNavViewMvc
     private final BottomNavigationView mBottomNavigationView;
 
     public BottomNavViewMvcImpl(LayoutInflater layoutInflater, @Nullable ViewGroup parent) {
-        setRootView(layoutInflater.inflate(R.layout.layout_bottom_navigation_view, parent, false));
+        setRootView(layoutInflater.inflate(R.layout.activity_main, parent, false));
         mFrameLayout = findViewById(R.id.frame_content);
         mBottomNavigationView = findViewById(R.id.bottom_nav_view);
 
