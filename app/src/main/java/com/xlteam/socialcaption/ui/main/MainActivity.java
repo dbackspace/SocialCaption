@@ -11,7 +11,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.ui.account.AccountFragment;
-import com.xlteam.socialcaption.ui.toplist.TopListFragment;
+import com.xlteam.socialcaption.ui.category.CategoryFragment;
 import com.xlteam.socialcaption.ui.home.HomePageFragment;
 import com.xlteam.socialcaption.ui.upload.DialogUploadBuilder;
 
@@ -30,8 +30,8 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_home:
                         replaceFragment(R.id.frame, new HomePageFragment());
                         break;
-                    case R.id.nav_top_list:
-                        replaceFragment(R.id.frame, new TopListFragment());
+                    case R.id.nav_category:
+                        replaceFragment(R.id.frame, new CategoryFragment());
                         break;
                     case R.id.nav_upload:
                         showDialogUpload();
