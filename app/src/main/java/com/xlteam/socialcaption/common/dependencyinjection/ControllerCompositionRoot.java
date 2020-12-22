@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import androidx.fragment.app.FragmentActivity;
 
 import com.xlteam.socialcaption.ui.ViewMvcFactory;
+import com.xlteam.socialcaption.ui.common.screensnavigator.ScreensNavigator;
 
 public class ControllerCompositionRoot {
     private final ActivityCompositionRoot mActivityCompositionRoot;
@@ -37,6 +38,10 @@ public class ControllerCompositionRoot {
 
     private LayoutInflater getLayoutInflater() {
         return LayoutInflater.from(getContext());
+    }
+
+    public ScreensNavigator getScreensNavigator() {
+        return mActivityCompositionRoot.getScreensNavigator();
     }
 
 //    private DBController getDbController() {

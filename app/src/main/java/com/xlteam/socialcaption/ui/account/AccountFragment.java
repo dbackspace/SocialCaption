@@ -12,6 +12,10 @@ import androidx.fragment.app.Fragment;
 import com.xlteam.socialcaption.R;
 
 public class AccountFragment extends Fragment {
+    public static AccountFragment newInstance() {
+        return new AccountFragment();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

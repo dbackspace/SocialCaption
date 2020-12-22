@@ -13,6 +13,10 @@ import com.xlteam.socialcaption.R;
 
 public class HomePageFragment extends Fragment {
 
+    public static HomePageFragment newInstance() {
+        return new HomePageFragment();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

@@ -1,48 +1,48 @@
 package com.xlteam.socialcaption.ui.main;
 
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.xlteam.socialcaption.R;
-import com.xlteam.socialcaption.ui.account.AccountFragment;
-import com.xlteam.socialcaption.ui.category.CategoryFragment;
-import com.xlteam.socialcaption.ui.home.HomePageFragment;
+import com.techyourchance.fragmenthelper.FragmentContainerWrapper;
+import com.xlteam.socialcaption.ui.common.bottomnavigation.BottomNavViewMvc;
+import com.xlteam.socialcaption.ui.common.controllers.BaseActivity;
+import com.xlteam.socialcaption.ui.common.screensnavigator.ScreensNavigator;
 import com.xlteam.socialcaption.ui.upload.DialogUploadBuilder;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity implements
+        FragmentContainerWrapper,
+        BottomNavViewMvc.Listener {
+
+    private ScreensNavigator mScreensNavigator;
+    private BottomNavViewMvc mViewMvc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        BottomNavigationView bottomNavigationView = findViewById(R.id.mainBottomNavigation);
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.nav_home:
-                        replaceFragment(R.id.frame, new HomePageFragment());
-                        break;
-                    case R.id.nav_category:
-                        replaceFragment(R.id.frame, new CategoryFragment());
-                        break;
-                    case R.id.nav_upload:
-                        showDialogUpload();
-                        return false;
-                    case R.id.nav_account:
-                        replaceFragment(R.id.frame, new AccountFragment());
-                        break;
-                }
-                return true;
-            }
-        });
+        mScreensNavigator = getControllerCompositionRoot().getScreensNavigator();
+        mViewMvc = getControllerCompositionRoot().getViewMvcFactory().getBottomNavViewMvc(null);
+        setContentView(mViewMvc.getRootView());
+
+        if (savedInstanceState == null) {
+            mScreensNavigator.toHomePageScreen();
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mViewMvc.registerListener(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mViewMvc.unregisterListener(this);
     }
 
     private void replaceFragment(int id, Fragment fragment) {
@@ -54,5 +54,36 @@ public class MainActivity extends AppCompatActivity {
     private void showDialogUpload() {
         DialogUploadBuilder dialogUploadBuilder = new DialogUploadBuilder(this);
         dialogUploadBuilder.build().show();
+    }
+
+    @NonNull
+    @Override
+    public ViewGroup getFragmentContainer() {
+        return mViewMvc.getFragmentFrame();
+    }
+
+    @Override
+    public void onHomePageClicked() {
+        mScreensNavigator.toHomePageScreen();
+    }
+
+    @Override
+    public void onTopsListClicked() {
+
+    }
+
+    @Override
+    public void onCategoryClicked() {
+        mScreensNavigator.toCategoryFragment();
+    }
+
+    @Override
+    public void onUploadClicked() {
+        mScreensNavigator.toUploadDialogFragment();
+    }
+
+    @Override
+    public void onAccountClicked() {
+        mScreensNavigator.toAccountFragment();
     }
 }
