@@ -4,30 +4,22 @@
     android:layout_height="match_parent"
     android:background="@color/color_FA">
 
-    <ImageView
-        android:id="@+id/imgBack"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_alignParentTop="true"
-        android:padding="10dp"
-        android:src="@drawable/ic_back" />
-
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="10dp"
-        android:layout_toEndOf="@id/imgBack"
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="16dp"
         android:fontFamily="sans-serif-medium"
-        android:gravity="center"
         android:text="Bảng xếp hạng"
-        android:textColor="@color/black"
+        android:textColor="@color/color_25"
         android:textSize="24dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvTopList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/imgBack"
-        android:layout_marginTop="15dp" />
+        android:layout_below="@id/title" />
 </RelativeLayout>
