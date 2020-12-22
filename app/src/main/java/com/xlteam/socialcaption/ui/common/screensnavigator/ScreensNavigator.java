@@ -2,7 +2,7 @@ package com.xlteam.socialcaption.ui.common.screensnavigator;
 
 import com.techyourchance.fragmenthelper.FragmentHelper;
 import com.xlteam.socialcaption.ui.account.AccountFragment;
-import com.xlteam.socialcaption.ui.category.CategoryFragment;
+import com.xlteam.socialcaption.ui.toplist.TopListFragment;
 import com.xlteam.socialcaption.ui.home.HomePageFragment;
 
 public class ScreensNavigator {
@@ -16,8 +16,8 @@ public class ScreensNavigator {
         mFragmentHelper.replaceFragmentAndClearHistory(HomePageFragment.newInstance());
     }
 
-    public void toCategoryFragment() {
-        mFragmentHelper.replaceFragment(CategoryFragment.newInstance());
+    public void toTopListFragment() {
+        mFragmentHelper.replaceFragment(TopListFragment.newInstance());
     }
 
     public void toUploadDialogFragment() {

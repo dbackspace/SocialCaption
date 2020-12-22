@@ -27,9 +27,9 @@ public class BottomNavViewMvcImpl extends BaseObservableViewMvc<BottomNavViewMvc
                         listener.onHomePageClicked();
                     }
                     break;
-                case R.id.bottom_nav_category:
+                case R.id.bottom_nav_top_list:
                     for(Listener listener: getListeners()){
-                        listener.onCategoryClicked();
+                        listener.onTopsListClicked();
                     }
                     break;
                 case R.id.bottom_nav_upload:

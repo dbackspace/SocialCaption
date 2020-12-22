@@ -55,12 +55,7 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void onTopsListClicked() {
-
-    }
-
-    @Override
-    public void onCategoryClicked() {
-        mScreensNavigator.toCategoryFragment();
+        mScreensNavigator.toTopListFragment();
     }
 
     @Override
