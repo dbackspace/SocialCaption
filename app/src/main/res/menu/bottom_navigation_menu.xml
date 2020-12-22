@@ -7,8 +7,8 @@
         android:title=""
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/nav_category"
-        android:icon="@drawable/ic_category"
+        android:id="@+id/nav_top_list"
+        android:icon="@drawable/ic_top_list"
         android:title=""
         app:showAsAction="ifRoom" />
     <item
