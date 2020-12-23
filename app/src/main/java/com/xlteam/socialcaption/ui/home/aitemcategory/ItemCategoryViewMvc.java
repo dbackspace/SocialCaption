@@ -5,11 +5,11 @@ import com.xlteam.socialcaption.ui.common.views.ObservableViewMvc;
 
 import java.util.List;
 
-interface ItemCategoryViewMvc extends ObservableViewMvc<ItemCategoryViewMvc.Listener> {
+public interface ItemCategoryViewMvc extends ObservableViewMvc<ItemCategoryViewMvc.Listener> {
 
     public interface Listener {
-        void onTvShowMoreClicked();
+        void onTvShowMoreClicked(String categoryId);
     }
 
-    void bindItemCategory(List<ItemCategory> listItemCategory);
+    void bindItemCategory(ItemCategory itemCategory);
 }
