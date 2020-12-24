@@ -11,6 +11,8 @@ import com.xlteam.socialcaption.ui.home.HomePageViewMvc;
 import com.xlteam.socialcaption.ui.home.HomePageViewMvcImpl;
 import com.xlteam.socialcaption.ui.home.aitemcategory.ItemCategoryViewMvc;
 import com.xlteam.socialcaption.ui.home.aitemcategory.ItemCategoryViewMvcImpl;
+import com.xlteam.socialcaption.ui.home.aitemcategory.itemcaptionofcategory.ItemCaptionViewMvc;
+import com.xlteam.socialcaption.ui.home.aitemcategory.itemcaptionofcategory.ItemCaptionViewMvcImpl;
 
 
 public class ViewMvcFactory {
@@ -25,11 +27,15 @@ public class ViewMvcFactory {
     }
 
     public ItemCategoryViewMvc getItemCategoryViewMvc(@Nullable ViewGroup parent) {
-        return new ItemCategoryViewMvcImpl(mLayoutInflater, parent);
+        return new ItemCategoryViewMvcImpl(mLayoutInflater, parent, this);
     }
 
     public HomePageViewMvc getHomePageViewMvc(@Nullable ViewGroup parent) {
         return new HomePageViewMvcImpl(mLayoutInflater, parent, this);
+    }
+
+    public ItemCaptionViewMvc getItemCaptionViewMvc(@Nullable ViewGroup parent) {
+        return new ItemCaptionViewMvcImpl(mLayoutInflater, parent);
     }
 
 //    public PlayViewMvc getPlayViewMvc(@Nullable ViewGroup parent) {

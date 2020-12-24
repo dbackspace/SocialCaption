@@ -1,4 +1,4 @@
-package com.xlteam.socialcaption.ui.home.aitemcategory.acaptionofcategory;
+package com.xlteam.socialcaption.ui.home.aitemcategory.itemcaptionofcategory;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +17,7 @@ public class ItemCaptionViewMvcImpl extends BaseObservableViewMvc<ItemCaptionVie
     private Caption mCaption;
 
     public ItemCaptionViewMvcImpl(LayoutInflater layoutInflater, @Nullable ViewGroup parent) {
+        setRootView(layoutInflater.inflate(R.layout.layout_a_caption_item, parent, false));
         tvCaptionContent = findViewById(R.id.tv_content_of_caption);
         tvPathImg = findViewById(R.id.tv_path_img);
 
@@ -34,5 +35,7 @@ public class ItemCaptionViewMvcImpl extends BaseObservableViewMvc<ItemCaptionVie
     @Override
     public void bindCaption(Caption caption) {
         mCaption = caption;
+        tvCaptionContent.setText(caption.getContent());
+        tvPathImg.setText(caption.getPathImage());
     }
 }

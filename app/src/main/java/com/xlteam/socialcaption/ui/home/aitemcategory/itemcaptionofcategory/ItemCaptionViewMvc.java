@@ -1,4 +1,4 @@
-package com.xlteam.socialcaption.ui.home.aitemcategory.acaptionofcategory;
+package com.xlteam.socialcaption.ui.home.aitemcategory.itemcaptionofcategory;
 
 import com.xlteam.socialcaption.model.Caption;
 import com.xlteam.socialcaption.ui.common.views.ObservableViewMvc;
