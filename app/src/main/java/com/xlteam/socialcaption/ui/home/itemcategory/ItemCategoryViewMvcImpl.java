@@ -1,4 +1,4 @@
-package com.xlteam.socialcaption.ui.home.aitemcategory;
+package com.xlteam.socialcaption.ui.home.itemcategory;
 
 import android.view.LayoutInflater;
 import android.view.View;

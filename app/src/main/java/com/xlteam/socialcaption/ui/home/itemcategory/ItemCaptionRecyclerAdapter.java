@@ -1,4 +1,4 @@
-package com.xlteam.socialcaption.ui.home.aitemcategory;
+package com.xlteam.socialcaption.ui.home.itemcategory;
 
 import android.view.ViewGroup;
 
@@ -6,9 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.xlteam.socialcaption.model.Caption;
-import com.xlteam.socialcaption.model.ItemCategory;
 import com.xlteam.socialcaption.ui.ViewMvcFactory;
-import com.xlteam.socialcaption.ui.home.aitemcategory.itemcaptionofcategory.ItemCaptionViewMvc;
+import com.xlteam.socialcaption.ui.home.itemcategory.itemcaptionofcategory.ItemCaptionViewMvc;
 
 import java.util.ArrayList;
 import java.util.List;

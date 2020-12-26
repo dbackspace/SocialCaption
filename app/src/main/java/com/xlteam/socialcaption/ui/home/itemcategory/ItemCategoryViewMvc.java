@@ -1,9 +1,7 @@
-package com.xlteam.socialcaption.ui.home.aitemcategory;
+package com.xlteam.socialcaption.ui.home.itemcategory;
 
 import com.xlteam.socialcaption.model.ItemCategory;
 import com.xlteam.socialcaption.ui.common.views.ObservableViewMvc;
-
-import java.util.List;
 
 public interface ItemCategoryViewMvc extends ObservableViewMvc<ItemCategoryViewMvc.Listener> {
 

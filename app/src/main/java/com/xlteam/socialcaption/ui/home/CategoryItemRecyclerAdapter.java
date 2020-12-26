@@ -1,16 +1,13 @@
 package com.xlteam.socialcaption.ui.home;
 
-import android.util.Log;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.xlteam.socialcaption.model.Caption;
 import com.xlteam.socialcaption.model.ItemCategory;
 import com.xlteam.socialcaption.ui.ViewMvcFactory;
-import com.xlteam.socialcaption.ui.home.aitemcategory.ItemCategoryViewMvc;
+import com.xlteam.socialcaption.ui.home.itemcategory.ItemCategoryViewMvc;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -9,10 +9,10 @@ import com.xlteam.socialcaption.ui.common.bottomnavigation.BottomNavViewMvc;
 import com.xlteam.socialcaption.ui.common.bottomnavigation.BottomNavViewMvcImpl;
 import com.xlteam.socialcaption.ui.home.HomePageViewMvc;
 import com.xlteam.socialcaption.ui.home.HomePageViewMvcImpl;
-import com.xlteam.socialcaption.ui.home.aitemcategory.ItemCategoryViewMvc;
-import com.xlteam.socialcaption.ui.home.aitemcategory.ItemCategoryViewMvcImpl;
-import com.xlteam.socialcaption.ui.home.aitemcategory.itemcaptionofcategory.ItemCaptionViewMvc;
-import com.xlteam.socialcaption.ui.home.aitemcategory.itemcaptionofcategory.ItemCaptionViewMvcImpl;
+import com.xlteam.socialcaption.ui.home.itemcategory.ItemCategoryViewMvc;
+import com.xlteam.socialcaption.ui.home.itemcategory.ItemCategoryViewMvcImpl;
+import com.xlteam.socialcaption.ui.home.itemcategory.itemcaptionofcategory.ItemCaptionViewMvc;
+import com.xlteam.socialcaption.ui.home.itemcategory.itemcaptionofcategory.ItemCaptionViewMvcImpl;
 
 
 public class ViewMvcFactory {
