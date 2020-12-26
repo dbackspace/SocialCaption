@@ -1,6 +1,8 @@
 package com.xlteam.socialcaption.ui.home;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +10,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.xlteam.socialcaption.common.utility.SharedPreferencesController;
+import com.xlteam.socialcaption.firebase.FirebaseController;
+import com.xlteam.socialcaption.firebase.FirebaseListener;
 import com.xlteam.socialcaption.model.Caption;
 import com.xlteam.socialcaption.model.ItemCategory;
 import com.xlteam.socialcaption.ui.common.controllers.BaseFragment;
@@ -21,38 +26,26 @@ public class HomePageFragment extends BaseFragment implements HomePageViewMvc.Li
         // uncomment if need to putParchelable
         // Bundle args = new Bundle();
         // args.putParcelable(ARG_HOME_PAGE_ID, "id");
-        HomePageFragment fragment = new HomePageFragment();
         // fragment.setArguments(args);
-        return fragment;
+        return new HomePageFragment();
     }
 
+    private Context mContext;
     private HomePageViewMvc mViewMvc;
     private List<ItemCategory> mCategories;
+    private FirebaseController mController;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mContext = context;
+        mController = new FirebaseController();
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // init use case, networking, screen navigator,...
-
-        // fake data
-        mCategories = new ArrayList<>();
-        List<Caption> mCaptions1 = new ArrayList<>();
-        mCaptions1.add(new Caption("HelloEveryone", "/sdcard/Download/"));
-        mCaptions1.add(new Caption("Hello", "/sdcard/Download/"));
-        mCaptions1.add(new Caption("HelloEvery", "/sdcard/Download/"));
-        mCategories.add(new ItemCategory("Funny", mCaptions1));
-
-        List<Caption> mCaptions2 = new ArrayList<>();
-        mCaptions2.add(new Caption("HelloEveryone", "/sdcard/Download/"));
-        mCaptions2.add(new Caption("Hello", "/sdcard/Download/"));
-        mCaptions2.add(new Caption("HelloEvery", "/sdcard/Download/"));
-        mCategories.add(new ItemCategory("Love", mCaptions2));
-
-        List<Caption> mCaptions3 = new ArrayList<>();
-        mCaptions3.add(new Caption("HelloEveryone", "/sdcard/Download/"));
-        mCaptions3.add(new Caption("Hello", "/sdcard/Download/"));
-        mCaptions3.add(new Caption("HelloEvery", "/sdcard/Download/"));
-        mCategories.add(new ItemCategory("Friends", mCaptions3));
     }
 
     @Nullable
@@ -60,7 +53,24 @@ public class HomePageFragment extends BaseFragment implements HomePageViewMvc.Li
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mViewMvc = getControllerCompositionRoot().getViewMvcFactory().getHomePageViewMvc(null);
 
-        // This is bind after get response data from Firebase
+        mCategories = new ArrayList<>();
+        ArrayList<String> categoryList = SharedPreferencesController.getCategoryList(mContext);
+        Log.d("binh.ngk", "" + categoryList.size());
+        for (int i = 0; i < categoryList.size(); i++) {
+            int finalI = i;
+            mController.getCaptionByCategoryNumber(i, new FirebaseListener<ArrayList<Caption>>() {
+                @Override
+                public void onResponse(ArrayList<Caption> captions) {
+                    mCategories.add(new ItemCategory(categoryList.get(finalI), captions));
+                    mViewMvc.bindCategories(mCategories);
+                }
+
+                @Override
+                public void onError() {
+
+                }
+            });
+        }
         mViewMvc.bindCategories(mCategories);
         return mViewMvc.getRootView();
     }
