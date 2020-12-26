@@ -51,8 +51,7 @@ public class ItemCategoryViewMvcImpl extends BaseObservableViewMvc<ItemCategoryV
     @Override
     public void bindItemCategory(ItemCategory itemCategory) {
         mCaptions = itemCategory.getCaptions();
-        tvCategoryName.setText(itemCategory.getHeaderName());
-        tvShowMore.setText("Show all captions");
+        tvCategoryName.setText(itemCategory.getCategory().getCategoryName());
         adapter.bindCaptions(mCaptions);
     }
 

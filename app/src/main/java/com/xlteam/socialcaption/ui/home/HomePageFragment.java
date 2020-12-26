@@ -2,7 +2,6 @@ package com.xlteam.socialcaption.ui.home;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,14 +9,15 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.xlteam.socialcaption.common.utility.SharedPreferencesController;
 import com.xlteam.socialcaption.firebase.FirebaseController;
 import com.xlteam.socialcaption.firebase.FirebaseListener;
 import com.xlteam.socialcaption.model.Caption;
+import com.xlteam.socialcaption.model.Category;
 import com.xlteam.socialcaption.model.ItemCategory;
 import com.xlteam.socialcaption.ui.common.controllers.BaseFragment;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class HomePageFragment extends BaseFragment implements HomePageViewMvc.Listener {
@@ -54,23 +54,35 @@ public class HomePageFragment extends BaseFragment implements HomePageViewMvc.Li
         mViewMvc = getControllerCompositionRoot().getViewMvcFactory().getHomePageViewMvc(null);
 
         mCategories = new ArrayList<>();
-        ArrayList<String> categoryList = SharedPreferencesController.getCategoryList(mContext);
-        Log.d("binh.ngk", "" + categoryList.size());
-        for (int i = 0; i < categoryList.size(); i++) {
-            int finalI = i;
-            mController.getCaptionByCategoryNumber(i, new FirebaseListener<ArrayList<Caption>>() {
-                @Override
-                public void onResponse(ArrayList<Caption> captions) {
-                    mCategories.add(new ItemCategory(categoryList.get(finalI), captions));
-                    mViewMvc.bindCategories(mCategories);
-                }
 
-                @Override
-                public void onError() {
+        mController.updateTopicList(new FirebaseListener<ArrayList<Category>>() {
+            @Override
+            public void onResponse(ArrayList<Category> categories) {
+                for (Category category : categories) {
+                    mController.getCaptionByCategoryNumber(category.getCategoryNumber(), new FirebaseListener<ArrayList<Caption>>() {
+                        @Override
+                        public void onResponse(ArrayList<Caption> captions) {
+                            if (!captions.isEmpty()) {
+                                mCategories.add(new ItemCategory(category, captions));
+                                Collections.sort(mCategories, (itemCategory1, itemCategory2) -> itemCategory1.getCategory().getCategoryNumber() - itemCategory2.getCategory().getCategoryNumber());
+                                mViewMvc.bindCategories(mCategories);
+                            }
+                        }
 
+                        @Override
+                        public void onError() {
+
+                        }
+                    });
                 }
-            });
-        }
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
+
         mViewMvc.bindCategories(mCategories);
         return mViewMvc.getRootView();
     }

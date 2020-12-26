@@ -13,13 +13,13 @@ import com.xlteam.socialcaption.ui.common.views.BaseObservableViewMvc;
 
 public class ItemCaptionViewMvcImpl extends BaseObservableViewMvc<ItemCaptionViewMvc.Listener> implements ItemCaptionViewMvc {
     private final TextView tvCaptionContent;
-    private final TextView tvPathImg;
+    private final TextView tvAuthor;
     private Caption mCaption;
 
     public ItemCaptionViewMvcImpl(LayoutInflater layoutInflater, @Nullable ViewGroup parent) {
         setRootView(layoutInflater.inflate(R.layout.layout_a_caption_item, parent, false));
         tvCaptionContent = findViewById(R.id.tv_content_of_caption);
-        tvPathImg = findViewById(R.id.tv_path_img);
+        tvAuthor = findViewById(R.id.tv_author);
 
         getRootView().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,6 +36,6 @@ public class ItemCaptionViewMvcImpl extends BaseObservableViewMvc<ItemCaptionVie
     public void bindCaption(Caption caption) {
         mCaption = caption;
         tvCaptionContent.setText(caption.getContent());
-        tvPathImg.setText(caption.getPathImage());
+        tvAuthor.setText(caption.getUserName());
     }
 }
