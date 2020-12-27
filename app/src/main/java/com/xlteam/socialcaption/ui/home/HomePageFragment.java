@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.xlteam.socialcaption.common.utility.SharedPreferencesController;
 import com.xlteam.socialcaption.firebase.FirebaseController;
 import com.xlteam.socialcaption.firebase.FirebaseListener;
 import com.xlteam.socialcaption.model.Caption;
@@ -54,35 +55,24 @@ public class HomePageFragment extends BaseFragment implements HomePageViewMvc.Li
         mViewMvc = getControllerCompositionRoot().getViewMvcFactory().getHomePageViewMvc(null);
 
         mCategories = new ArrayList<>();
-
-        mController.updateTopicList(new FirebaseListener<ArrayList<Category>>() {
-            @Override
-            public void onResponse(ArrayList<Category> categories) {
-                for (Category category : categories) {
-                    mController.getCaptionByCategoryNumber(category.getCategoryNumber(), new FirebaseListener<ArrayList<Caption>>() {
-                        @Override
-                        public void onResponse(ArrayList<Caption> captions) {
-                            if (!captions.isEmpty()) {
-                                mCategories.add(new ItemCategory(category, captions));
-                                Collections.sort(mCategories, (itemCategory1, itemCategory2) -> itemCategory1.getCategory().getCategoryNumber() - itemCategory2.getCategory().getCategoryNumber());
-                                mViewMvc.bindCategories(mCategories);
-                            }
-                        }
-
-                        @Override
-                        public void onError() {
-
-                        }
-                    });
+        ArrayList<Category> categories = SharedPreferencesController.getCategoryList(mContext);
+        for (Category category : categories) {
+            mController.getCaptionByCategoryNumber(category.getCategoryNumber(), new FirebaseListener<ArrayList<Caption>>() {
+                @Override
+                public void onResponse(ArrayList<Caption> captions) {
+                    if (!captions.isEmpty()) {
+                        mCategories.add(new ItemCategory(category, captions));
+                        Collections.sort(mCategories, (itemCategory1, itemCategory2) -> itemCategory1.getCategory().getCategoryNumber() - itemCategory2.getCategory().getCategoryNumber());
+                        mViewMvc.bindCategories(mCategories);
+                    }
                 }
-            }
 
-            @Override
-            public void onError() {
+                @Override
+                public void onError() {
 
-            }
-        });
-
+                }
+            });
+        }
         mViewMvc.bindCategories(mCategories);
         return mViewMvc.getRootView();
     }

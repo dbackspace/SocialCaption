@@ -5,7 +5,7 @@ import com.xlteam.socialcaption.ui.common.views.ObservableViewMvc;
 
 public interface ItemCategoryViewMvc extends ObservableViewMvc<ItemCategoryViewMvc.Listener> {
 
-    public interface Listener {
+    interface Listener {
         void onTvShowMoreClicked(String categoryId);
     }
 
