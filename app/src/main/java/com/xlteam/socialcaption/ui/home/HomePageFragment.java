@@ -9,17 +9,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.xlteam.socialcaption.common.utility.SharedPreferencesController;
+import com.xlteam.socialcaption.common.utility.Constant;
 import com.xlteam.socialcaption.firebase.FirebaseController;
 import com.xlteam.socialcaption.firebase.FirebaseListener;
 import com.xlteam.socialcaption.model.Caption;
-import com.xlteam.socialcaption.model.Category;
-import com.xlteam.socialcaption.model.ItemCategory;
 import com.xlteam.socialcaption.ui.common.controllers.BaseFragment;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class HomePageFragment extends BaseFragment implements HomePageViewMvc.Listener {
 
@@ -33,7 +29,6 @@ public class HomePageFragment extends BaseFragment implements HomePageViewMvc.Li
 
     private Context mContext;
     private HomePageViewMvc mViewMvc;
-    private List<ItemCategory> mCategories;
     private FirebaseController mController;
 
     @Override
@@ -54,17 +49,12 @@ public class HomePageFragment extends BaseFragment implements HomePageViewMvc.Li
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mViewMvc = getControllerCompositionRoot().getViewMvcFactory().getHomePageViewMvc(null);
 
-        mCategories = new ArrayList<>();
-        ArrayList<Category> categories = SharedPreferencesController.getCategoryList(mContext);
-        for (Category category : categories) {
-            mController.getCaptionByCategoryNumber(category.getCategoryNumber(), new FirebaseListener<ArrayList<Caption>>() {
+        for (int index = 0; index < Constant.CATEGORY_ARRAY.length; index++) {
+            int finalIndex = index;
+            mController.getCaptionByCategoryNumber(index + 1, new FirebaseListener<ArrayList<Caption>>() {
                 @Override
                 public void onResponse(ArrayList<Caption> captions) {
-                    if (!captions.isEmpty()) {
-                        mCategories.add(new ItemCategory(category, captions));
-                        Collections.sort(mCategories, (itemCategory1, itemCategory2) -> itemCategory1.getCategory().getCategoryNumber() - itemCategory2.getCategory().getCategoryNumber());
-                        mViewMvc.bindCategories(mContext, mCategories);
-                    }
+                    mViewMvc.bindCategory(mContext, finalIndex, captions);
                 }
 
                 @Override
@@ -73,7 +63,6 @@ public class HomePageFragment extends BaseFragment implements HomePageViewMvc.Li
                 }
             });
         }
-        mViewMvc.bindCategories(mContext, mCategories);
         return mViewMvc.getRootView();
     }
 
