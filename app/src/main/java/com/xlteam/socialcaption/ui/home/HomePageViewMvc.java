@@ -1,5 +1,7 @@
 package com.xlteam.socialcaption.ui.home;
 
+import android.content.Context;
+
 import com.xlteam.socialcaption.model.ItemCategory;
 import com.xlteam.socialcaption.ui.common.views.ObservableViewMvc;
 
@@ -12,5 +14,5 @@ public interface HomePageViewMvc extends ObservableViewMvc<HomePageViewMvc.Liste
         void onViewPagerItemClicked();
     }
 
-    void bindCategories(List<ItemCategory> listCategory);
+    void bindCategories(Context context, List<ItemCategory> listCategory);
 }

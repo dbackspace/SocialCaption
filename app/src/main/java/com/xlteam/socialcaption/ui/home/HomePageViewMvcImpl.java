@@ -1,11 +1,12 @@
 package com.xlteam.socialcaption.ui.home;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,11 +18,10 @@ import com.xlteam.socialcaption.ui.common.views.BaseObservableViewMvc;
 import java.util.List;
 
 public class HomePageViewMvcImpl extends BaseObservableViewMvc<HomePageViewMvc.Listener> implements
-        HomePageViewMvc,
-        CategoryItemRecyclerAdapter.Listener {
+        HomePageViewMvc {
     private final RecyclerView rvCategoryItem;
     private final SearchView searchViewButton;
-    private final CategoryItemRecyclerAdapter adapter;
+    private CategoryItemAdapter adapter;
 
     public HomePageViewMvcImpl(LayoutInflater layoutInflater, @Nullable ViewGroup parent, ViewMvcFactory viewMvcFactory) {
         View view = layoutInflater.inflate(R.layout.fragment_home_page, parent, false);
@@ -33,18 +33,11 @@ public class HomePageViewMvcImpl extends BaseObservableViewMvc<HomePageViewMvc.L
 
         // set layout for recyclerview
         rvCategoryItem.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new CategoryItemRecyclerAdapter(this, viewMvcFactory);
+    }
+
+    @Override
+    public void bindCategories(Context context, List<ItemCategory> listCategory) {
+        adapter = new CategoryItemAdapter(context, listCategory);
         rvCategoryItem.setAdapter(adapter);
-
-    }
-
-    @Override
-    public void bindCategories(List<ItemCategory> listCategory) {
-        adapter.bindCategories(listCategory);
-    }
-
-    @Override
-    public void onTvShowMoreClicked() {
-
     }
 }

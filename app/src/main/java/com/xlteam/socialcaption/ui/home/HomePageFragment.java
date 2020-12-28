@@ -63,7 +63,7 @@ public class HomePageFragment extends BaseFragment implements HomePageViewMvc.Li
                     if (!captions.isEmpty()) {
                         mCategories.add(new ItemCategory(category, captions));
                         Collections.sort(mCategories, (itemCategory1, itemCategory2) -> itemCategory1.getCategory().getCategoryNumber() - itemCategory2.getCategory().getCategoryNumber());
-                        mViewMvc.bindCategories(mCategories);
+                        mViewMvc.bindCategories(mContext, mCategories);
                     }
                 }
 
@@ -73,7 +73,7 @@ public class HomePageFragment extends BaseFragment implements HomePageViewMvc.Li
                 }
             });
         }
-        mViewMvc.bindCategories(mCategories);
+        mViewMvc.bindCategories(mContext, mCategories);
         return mViewMvc.getRootView();
     }
 
