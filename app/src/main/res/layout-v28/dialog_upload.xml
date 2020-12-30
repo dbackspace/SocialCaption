@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="5dp"
+    android:theme="@style/Theme.SocialCaption">
+
+    <ImageButton
+        android:id="@+id/btn_back"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/change_color"
+        android:padding="10dp"
+        android:src="@drawable/ic_back" />
+
+    <TextView
+        android:id="@+id/btn_search"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:alpha="0.7"
+        android:background="@drawable/change_color"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:padding="17.5dp"
+        android:clickable="true"
+        android:text="Đăng"
+        android:textColor="@color/design_default_color_primary_dark"
+        android:textSize="20dp" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@id/btn_back"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:text="Tạo caption"
+        android:textColor="@color/black"
+        android:textSize="24dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/btn_back"
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/btn_back"
+        android:layout_margin="7dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/img_avatar_user"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_centerVertical="true" />
+
+            <TextView
+                android:id="@+id/tv_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/img_avatar_user"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spinner_category_post"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_user_name"
+                android:layout_toEndOf="@+id/img_avatar_user" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_background_post_caption"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="7dp">
+
+            <EditText
+                android:id="@+id/edtInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@null"
+                android:backgroundTint="@color/non_color"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:hint="Viết caption để chia sẻ nào bạn ơi?"
+                android:maxLines="10"
+                android:scrollbars="vertical"
+                android:textColor="@color/black"
+                android:textSize="22dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_background_post_caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentBottom="true" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

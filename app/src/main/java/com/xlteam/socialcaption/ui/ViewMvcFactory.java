@@ -9,7 +9,8 @@ import com.xlteam.socialcaption.ui.common.bottomnavigation.BottomNavViewMvc;
 import com.xlteam.socialcaption.ui.common.bottomnavigation.BottomNavViewMvcImpl;
 import com.xlteam.socialcaption.ui.home.HomePageViewMvc;
 import com.xlteam.socialcaption.ui.home.HomePageViewMvcImpl;
-
+import com.xlteam.socialcaption.ui.upload.DialogUploadCaptionsViewMvc;
+import com.xlteam.socialcaption.ui.upload.DialogUploadCaptionsViewMvcImpl;
 
 public class ViewMvcFactory {
     private final LayoutInflater mLayoutInflater;
@@ -24,5 +25,9 @@ public class ViewMvcFactory {
 
     public HomePageViewMvc getHomePageViewMvc(@Nullable ViewGroup parent) {
         return new HomePageViewMvcImpl(mLayoutInflater, parent, this);
+    }
+
+    public DialogUploadCaptionsViewMvc getDialogUploadCaptionsViewMvc(@Nullable ViewGroup parent) {
+        return new DialogUploadCaptionsViewMvcImpl(mLayoutInflater, parent);
     }
 }
