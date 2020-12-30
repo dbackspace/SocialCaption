@@ -14,7 +14,4 @@ public interface DialogUploadCaptionsViewMvc extends ObservableViewMvc<DialogUpl
     }
 
     void bindUser(User user);
-
-    void bindCategory(List<Category> categories);
-    void bindBackgroundForCaption(List<String> stringPaths);
 }

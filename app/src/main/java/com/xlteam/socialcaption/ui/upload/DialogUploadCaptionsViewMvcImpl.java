@@ -2,7 +2,8 @@ package com.xlteam.socialcaption.ui.upload;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -10,14 +11,17 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.xlteam.socialcaption.R;
-import com.xlteam.socialcaption.model.Category;
 import com.xlteam.socialcaption.model.User;
 import com.xlteam.socialcaption.ui.common.views.BaseObservableViewMvc;
 
 import java.util.List;
+
+import static com.xlteam.socialcaption.common.utility.Constant.CATEGORY_ARRAY;
+import static com.xlteam.socialcaption.common.utility.Constant.GRADIENT_BACKGROUND_ARRAY;
 
 public class DialogUploadCaptionsViewMvcImpl extends BaseObservableViewMvc<DialogUploadCaptionsViewMvc.Listener>
         implements DialogUploadCaptionsViewMvc {
@@ -27,8 +31,9 @@ public class DialogUploadCaptionsViewMvcImpl extends BaseObservableViewMvc<Dialo
     private final ImageView mImgUser;
     private final TextView mTvUserName;
     private final Spinner mSpinnerCategory;
+    private final ImageView imgBackgroundForCaption;
     private final EditText mEdtCaption;
-    private final RecyclerView mRvImgBackgroud;
+    private final RecyclerView mRvImgBackground;
 
     public DialogUploadCaptionsViewMvcImpl(LayoutInflater inflater, @Nullable ViewGroup parent) {
         setRootView(inflater.inflate(R.layout.dialog_upload, parent, false));
@@ -40,7 +45,22 @@ public class DialogUploadCaptionsViewMvcImpl extends BaseObservableViewMvc<Dialo
         mTvUserName = findViewById(R.id.tv_user_name);
         mSpinnerCategory = findViewById(R.id.spinner_category_post);
         mEdtCaption = findViewById(R.id.edtInput);
-        mRvImgBackgroud = findViewById(R.id.rv_background_post_caption);
+        mRvImgBackground = findViewById(R.id.rv_background_post_caption);
+        imgBackgroundForCaption = findViewById(R.id.img_background_post_caption);
+
+        // set spinner category
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, CATEGORY_ARRAY);
+        mSpinnerCategory.setAdapter(adapter);
+
+        // focus editCaption and show keyboard
+        mEdtCaption.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(getContext().INPUT_METHOD_SERVICE);
+        imm.showSoftInput(mEdtCaption, InputMethodManager.SHOW_IMPLICIT);
+
+        // Set recycler view for background captions
+        BackgroundForCaptionAdapter adapterBgr = new BackgroundForCaptionAdapter(GRADIENT_BACKGROUND_ARRAY, position -> imgBackgroundForCaption.setImageResource(GRADIENT_BACKGROUND_ARRAY[position]));
+        mRvImgBackground.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        mRvImgBackground.setAdapter(adapterBgr);
 
         mBtnBack.setOnClickListener((v) -> {
             for (Listener listener : getListeners()) {
@@ -51,16 +71,7 @@ public class DialogUploadCaptionsViewMvcImpl extends BaseObservableViewMvc<Dialo
 
     @Override
     public void bindUser(User user) {
-        mTvUserName.setText(user.getUserName());
-    }
-
-    @Override
-    public void bindCategory(List<Category> categories) {
-
-    }
-
-    @Override
-    public void bindBackgroundForCaption(List<String> stringPaths) {
-
+        mImgUser.setImageResource(R.drawable.ic_user_default);
+        mTvUserName.setText(user.getUserId());
     }
 }

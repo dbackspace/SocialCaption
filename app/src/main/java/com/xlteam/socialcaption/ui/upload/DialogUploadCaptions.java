@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.xlteam.socialcaption.R;
+import com.xlteam.socialcaption.model.User;
 import com.xlteam.socialcaption.ui.common.controllers.BaseDialog;
 
 import java.util.Objects;
@@ -32,6 +33,7 @@ public class DialogUploadCaptions extends BaseDialog implements DialogUploadCapt
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         Dialog dialog = new Dialog(requireContext(), R.style.Theme_SocialCaption);
         dialog.setContentView(mViewMvc.getRootView());
+        mViewMvc.bindUser(new User("tientuyen07", "Tien Tuyen"));
         return dialog;
     }
 
