@@ -3,10 +3,10 @@ package com.xlteam.socialcaption.model;
 import java.util.List;
 
 public class ItemCategory {
-    private final Category category;
+    private final String category;
     private final List<Caption> mCaptions;
 
-    public ItemCategory(Category category, List<Caption> captions) {
+    public ItemCategory(String category, List<Caption> captions) {
         this.category = category;
         mCaptions = captions;
     }
@@ -15,7 +15,7 @@ public class ItemCategory {
         return mCaptions;
     }
 
-    public Category getCategory() {
+    public String getCategory() {
         return category;
     }
 }
