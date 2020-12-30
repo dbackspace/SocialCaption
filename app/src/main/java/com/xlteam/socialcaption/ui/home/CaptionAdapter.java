@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,6 +36,15 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
         Caption caption = mCaptions.get(position);
         holder.tvCaptionContent.setText(caption.getContent());
         holder.tvAuthor.setText(caption.getUserName());
+        holder.imgHeart.setOnClickListener(v -> {
+            holder.imgHeart.setActivated(!holder.imgHeart.isActivated());
+            //put to firebase
+        });
+
+        holder.imgBookmark.setOnClickListener(v -> {
+            holder.imgBookmark.setActivated(!holder.imgBookmark.isActivated());
+            //put to firebase
+        });
     }
 
     @Override
@@ -45,11 +55,14 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
     static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView tvCaptionContent;
         private final TextView tvAuthor;
+        private final ImageView imgHeart, imgBookmark;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvCaptionContent = itemView.findViewById(R.id.tv_content_of_caption);
             tvAuthor = itemView.findViewById(R.id.tv_author);
+            imgHeart = itemView.findViewById(R.id.image_heart);
+            imgBookmark = itemView.findViewById(R.id.image_bookmark);
         }
     }
 }
