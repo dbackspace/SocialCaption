@@ -13,6 +13,8 @@ import com.xlteam.socialcaption.ui.home.itemcategory.ItemCategoryViewMvc;
 import com.xlteam.socialcaption.ui.home.itemcategory.ItemCategoryViewMvcImpl;
 import com.xlteam.socialcaption.ui.home.itemcategory.itemcaptionofcategory.ItemCaptionViewMvc;
 import com.xlteam.socialcaption.ui.home.itemcategory.itemcaptionofcategory.ItemCaptionViewMvcImpl;
+import com.xlteam.socialcaption.ui.upload.DialogUploadCaptionsViewMvc;
+import com.xlteam.socialcaption.ui.upload.DialogUploadCaptionsViewMvcImpl;
 
 
 public class ViewMvcFactory {
@@ -36,6 +38,10 @@ public class ViewMvcFactory {
 
     public ItemCaptionViewMvc getItemCaptionViewMvc(@Nullable ViewGroup parent) {
         return new ItemCaptionViewMvcImpl(mLayoutInflater, parent);
+    }
+
+    public DialogUploadCaptionsViewMvc getDialogUploadCaptionsViewMvc(@Nullable ViewGroup parent) {
+        return new DialogUploadCaptionsViewMvcImpl(mLayoutInflater, parent);
     }
 
 //    public PlayViewMvc getPlayViewMvc(@Nullable ViewGroup parent) {

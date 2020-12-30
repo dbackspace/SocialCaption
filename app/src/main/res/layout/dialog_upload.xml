@@ -3,33 +3,47 @@
     android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/white"
-    android:paddingBottom="5dp">
+    android:orientation="vertical"
+    android:paddingBottom="5dp"
+    android:theme="@style/Theme.SocialCaption">
 
-    <ImageView
+    <ImageButton
         android:id="@+id/imgBack"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_alignParentTop="true"
+        android:background="@color/non_color"
         android:padding="10dp"
         android:src="@drawable/ic_back" />
 
-    <TextView
-        android:id="@+id/tvSave"
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="60dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:alpha="0.4"
-        android:enabled="false"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="center"
-        android:paddingStart="17.5dp"
-        android:paddingEnd="17.5dp"
+        android:backgroundTint="@color/non_color"
+        android:shadowColor="@color/non_color"
+        android:outlineSpotShadowColor="@color/non_color"
+        android:outlineAmbientShadowColor="@color/non_color"
         android:text="Đăng"
-        android:textColor="@color/black"
-        android:textSize="20dp" />
+        android:textColor="@color/design_default_color_primary_dark" />
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/tvSave"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="60dp"-->
+    <!--        android:layout_alignParentTop="true"-->
+    <!--        android:layout_alignParentEnd="true"-->
+    <!--        android:alpha="0.4"-->
+    <!--        android:enabled="false"-->
+    <!--        android:fontFamily="sans-serif-medium"-->
+    <!--        android:gravity="center"-->
+    <!--        android:paddingStart="17.5dp"-->
+    <!--        android:paddingEnd="17.5dp"-->
+    <!--        android:text="Đăng"-->
+    <!--        android:textColor="@color/black"-->
+    <!--        android:textSize="20dp" />-->
 
     <TextView
         android:layout_width="wrap_content"
@@ -39,7 +53,7 @@
         android:layout_toEndOf="@id/imgBack"
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
-        android:text="Đăng caption"
+        android:text="Tạo caption"
         android:textColor="@color/black"
         android:textSize="24dp" />
 

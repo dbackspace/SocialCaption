@@ -60,7 +60,7 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void onUploadClicked() {
-        mScreensNavigator.toUploadDialogFragment(this);
+        mScreensNavigator.toUploadDialogFragment();
     }
 
     @Override
