@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SocialCaption</string>
+    <string name="number_captions">%d captions</string>
 </resources>

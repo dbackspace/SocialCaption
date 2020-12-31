@@ -17,7 +17,7 @@ public class FirebaseController {
     public void getCaptionByCategoryNumber(int category, FirebaseListener<ArrayList<Caption>> listener) {
         ArrayList<Caption> result = new ArrayList<>();
         db.collection("captions")
-                .whereArrayContains("category", category).get()
+                .whereArrayContains("category", category).limit(10).get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
@@ -31,4 +31,6 @@ public class FirebaseController {
                     }
                 });
     }
+
+
 }

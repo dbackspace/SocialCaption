@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -12,14 +13,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.common.utility.Constant;
+import com.xlteam.socialcaption.model.Caption;
 import com.xlteam.socialcaption.ui.common.views.BaseObservableViewMvc;
+
+import java.util.List;
 
 public class CategoryViewMvcImpl extends BaseObservableViewMvc<CategoryViewMvc.Listener> implements
         CategoryViewMvc {
     private final TextView tvTypeCategory;
     private int mTypeCategory, mCategoryNumber;
     private CategoryNameListAdapter adapter;
-    private RecyclerView rvCategoryName;
+    private RecyclerView rvCategoryName, rvCaption;
+    private ProgressBar progressBarLoading;
+    private TextView tvNumberCaption;
 
     public CategoryViewMvcImpl(LayoutInflater layoutInflater, @Nullable ViewGroup parent) {
         View view = layoutInflater.inflate(R.layout.activity_category, parent, false);
@@ -35,6 +41,8 @@ public class CategoryViewMvcImpl extends BaseObservableViewMvc<CategoryViewMvc.L
                 listener.onBackClicked();
             }
         });
+        progressBarLoading = findViewById(R.id.progress_loading);
+        tvNumberCaption = findViewById(R.id.tv_number_caption);
         tvTypeCategory = findViewById(R.id.tv_type_view_list);
         tvTypeCategory.setOnClickListener(view1 -> {
             PopupMenu popupMenu = new PopupMenu(getContext(), tvTypeCategory);
@@ -63,6 +71,8 @@ public class CategoryViewMvcImpl extends BaseObservableViewMvc<CategoryViewMvc.L
                     for (Listener listener : getListeners()) {
                         listener.getDataOnFirebase(mCategoryNumber, mTypeCategory);
                     }
+                    progressBarLoading.setVisibility(View.VISIBLE);
+                    rvCaption.setVisibility(View.GONE);
                 }
                 return true;
             });
@@ -76,13 +86,22 @@ public class CategoryViewMvcImpl extends BaseObservableViewMvc<CategoryViewMvc.L
             for (Listener listener : getListeners()) {
                 listener.getDataOnFirebase(mCategoryNumber, mTypeCategory);
             }
+            progressBarLoading.setVisibility(View.VISIBLE);
+            rvCaption.setVisibility(View.GONE);
         });
         rvCategoryName.setAdapter(adapter);
+
+        rvCaption = findViewById(R.id.rv_caption);
+        rvCaption.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     @Override
-    public void binCaptions() {
-
+    public void binCaptions(List<Caption> captions) {
+        tvNumberCaption.setText(getContext().getString(R.string.number_captions, captions.size()));
+        CaptionCategoryAdapter adapter = new CaptionCategoryAdapter(getContext(), captions);
+        rvCaption.setAdapter(adapter);
+        rvCaption.setVisibility(View.VISIBLE);
+        progressBarLoading.setVisibility(View.GONE);
     }
 
     @Override

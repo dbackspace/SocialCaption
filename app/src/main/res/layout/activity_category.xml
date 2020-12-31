@@ -53,7 +53,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="7dp"
         android:fontFamily="sans-serif-medium"
-        android:text="7 captions"
+        android:text="@string/number_captions"
         android:textColor="@color/color_25"
         android:textSize="14dp" />
 
@@ -76,10 +76,21 @@
         android:textColor="@color/white"
         android:textSize="14dp" />
 
+
+    <ProgressBar
+        android:id="@+id/progress_loading"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_below="@+id/tv_number_caption"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="30dp"
+        android:visibility="gone" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_caption"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/tv_number_caption"
+        android:layout_centerInParent="true"
         android:layout_marginTop="15dp" />
 </RelativeLayout>
