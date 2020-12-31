@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/type_all"
+        android:title="Tất cả"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/type_post"
+        android:title="Đã đăng"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/type_bookmark"
+        android:title="Đã lưu"
+        app:showAsAction="ifRoom" />
+</menu>

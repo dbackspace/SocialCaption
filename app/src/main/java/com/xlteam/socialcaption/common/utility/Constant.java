@@ -12,4 +12,8 @@ public class Constant {
 
     public static final String EXTRA_CATEGORY_NUMBER = "EXTRA_CATEGORY_NUMBER";
     //
+
+    public static final int TYPE_ALL = 0;
+    public static final int TYPE_POST = 1;
+    public static final int TYPE_BOOKMARK = 2;
 }

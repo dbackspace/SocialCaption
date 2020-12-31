@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_category_name"
+    android:layout_width="wrap_content"
+    android:layout_height="35dp"
+    android:background="@drawable/bg_ripple_click_view_rectangle"
+    android:fontFamily="sans-serif-medium"
+    android:gravity="center"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp"
+    android:text="Danh mục"
+    android:textColor="@color/color_6E"
+    android:textSize="16dp" />
