@@ -51,7 +51,7 @@ public class HomePageFragment extends BaseFragment implements HomePageViewMvc.Li
 
         for (int index = 0; index < Constant.CATEGORY_ARRAY.length; index++) {
             int finalIndex = index;
-            mController.getCaptionByCategoryNumber(index + 1, new FirebaseListener<ArrayList<Caption>>() {
+            mController.getCaptionByCategoryNumber(index, new FirebaseListener<ArrayList<Caption>>() {
                 @Override
                 public void onResponse(ArrayList<Caption> captions) {
                     mViewMvc.bindCategory(mContext, finalIndex, captions);

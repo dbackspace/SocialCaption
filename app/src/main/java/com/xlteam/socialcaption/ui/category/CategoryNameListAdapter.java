@@ -1,7 +1,6 @@
 package com.xlteam.socialcaption.ui.category;
 
 import android.content.Context;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,15 +19,20 @@ import java.util.Arrays;
 public class CategoryNameListAdapter extends RecyclerView.Adapter<CategoryNameListAdapter.ViewHolder> {
 
     private ArrayList<String> mCategoryNames;
-    private int numberSelect;
+    private int mCategoryNumber;
     private Context mContext;
+    private Callback mCallback;
 
-    public CategoryNameListAdapter(Context context) {
+    public interface Callback {
+        void selectCategory(int categoryNumber);
+    }
+
+    public CategoryNameListAdapter(Context context, Callback callback) {
         mContext = context;
+        mCallback = callback;
         mCategoryNames = new ArrayList<>(Arrays.asList(Constant.CATEGORY_ARRAY));
         mCategoryNames.add(0, "Tất cả");
         mCategoryNames.add("Khác");
-        Log.d("binh.ngk ", "size = " + mCategoryNames.size());
     }
 
     @NonNull
@@ -41,7 +45,7 @@ public class CategoryNameListAdapter extends RecyclerView.Adapter<CategoryNameLi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.tvCategoryName.setText(mCategoryNames.get(position));
-        if (position == numberSelect) {
+        if (position == mCategoryNumber) {
             holder.tvCategoryName.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 19);
             holder.tvCategoryName.setTextColor(mContext.getColor(R.color.color_3cc2f5_legend));
         } else {
@@ -49,9 +53,17 @@ public class CategoryNameListAdapter extends RecyclerView.Adapter<CategoryNameLi
             holder.tvCategoryName.setTextColor(mContext.getColor(R.color.color_6E));
         }
         holder.tvCategoryName.setOnClickListener(view -> {
-            numberSelect = position;
-            notifyDataSetChanged();
+            if (mCategoryNumber != position) {
+                mCategoryNumber = position;
+                notifyDataSetChanged();
+                mCallback.selectCategory(position);
+            }
         });
+    }
+
+    public void setCategoryNumber(int categoryNumber) {
+        mCategoryNumber = categoryNumber;
+        notifyDataSetChanged();
     }
 
     @Override

@@ -1,13 +1,10 @@
 package com.xlteam.socialcaption.ui.category;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.PopupMenu;
+import android.util.Log;
 
-import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.common.utility.Constant;
 import com.xlteam.socialcaption.firebase.FirebaseController;
 import com.xlteam.socialcaption.ui.common.controllers.BaseActivity;
@@ -24,7 +21,11 @@ public class CategoryActivity extends BaseActivity implements CategoryViewMvc.Li
         setContentView(mViewMvc.getRootView());
 
         Intent intent = getIntent();
-
+        int categoryNumber = intent.getIntExtra(Constant.EXTRA_CATEGORY_NUMBER, -1);
+        int typeCategory = intent.getIntExtra(Constant.EXTRA_TYPE_CATEGORY, 0);
+        mViewMvc.binNumberCategory(categoryNumber);
+        mViewMvc.binTypeCategory(typeCategory);
+        getDataOnFirebase(categoryNumber, typeCategory);
     }
 
     @Override
@@ -44,30 +45,6 @@ public class CategoryActivity extends BaseActivity implements CategoryViewMvc.Li
         //open search screen
     }
 
-    @SuppressLint("NonConstantResourceId")
-    @Override
-    public void onTypeCategoryClicked(View view) {
-        PopupMenu popupMenu = new PopupMenu(this, view);
-        popupMenu.getMenuInflater().inflate(R.menu.type_category_menu, popupMenu.getMenu());
-        popupMenu.setOnMenuItemClickListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.type_all:
-                    mViewMvc.updateTypeCategory(Constant.TYPE_ALL);
-                    break;
-                case R.id.type_post:
-                    mViewMvc.updateTypeCategory(Constant.TYPE_POST);
-                    break;
-                case R.id.type_bookmark:
-                    mViewMvc.updateTypeCategory(Constant.TYPE_BOOKMARK);
-                    break;
-                default:
-                    break;
-            }
-            return true;
-        });
-        popupMenu.show();
-    }
-
     @Override
     public void onBackClicked() {
         finish();
@@ -75,6 +52,6 @@ public class CategoryActivity extends BaseActivity implements CategoryViewMvc.Li
 
     @Override
     public void getDataOnFirebase(int categoryNumber, int typeCategory) {
-
+        Log.d("binh.ngk ", "categoryNumber = " + categoryNumber + " ,typeCategory = " + typeCategory);
     }
 }
