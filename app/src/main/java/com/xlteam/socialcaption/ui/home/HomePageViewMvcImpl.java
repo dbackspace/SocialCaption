@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.model.Caption;
-import com.xlteam.socialcaption.ui.ViewMvcFactory;
 import com.xlteam.socialcaption.ui.common.views.BaseObservableViewMvc;
 
 import java.util.List;
@@ -23,7 +22,7 @@ public class HomePageViewMvcImpl extends BaseObservableViewMvc<HomePageViewMvc.L
     private final ImageView imgSearch;
     private CategoryItemAdapter adapter;
 
-    public HomePageViewMvcImpl(LayoutInflater layoutInflater, @Nullable ViewGroup parent, ViewMvcFactory viewMvcFactory) {
+    public HomePageViewMvcImpl(LayoutInflater layoutInflater, @Nullable ViewGroup parent) {
         View view = layoutInflater.inflate(R.layout.fragment_home_page, parent, false);
         setRootView(view);
 
