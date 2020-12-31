@@ -5,5 +5,78 @@
     android:layout_height="match_parent"
     tools:context=".ui.category.CategoryActivity">
 
+    <ImageView
+        android:id="@+id/btn_back"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/change_color"
+        android:padding="10dp"
+        android:src="@drawable/ic_back" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@id/btn_back"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:text="Danh sách"
+        android:textColor="@color/black"
+        android:textSize="24dp" />
+
+    <ImageView
+        android:id="@+id/image_search"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:padding="10dp"
+        android:src="@drawable/ic_search" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_category_list"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@id/btn_back"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:id="@+id/tv_number_caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rv_category_list"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="7dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="7 captions"
+        android:textColor="@color/color_25"
+        android:textSize="14dp" />
+
+    <TextView
+        android:id="@+id/tv_type_view_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rv_category_list"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/bg_type_of_category"
+        android:fontFamily="sans-serif-medium"
+        android:paddingStart="10dp"
+        android:paddingTop="2dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="2dp"
+        android:text="Tất cả"
+        android:textColor="@color/white"
+        android:textSize="14dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_caption"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tv_number_caption"
+        android:layout_marginTop="15dp" />
 </RelativeLayout>
