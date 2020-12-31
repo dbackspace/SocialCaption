@@ -18,6 +18,8 @@ import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.model.User;
 import com.xlteam.socialcaption.ui.common.views.BaseObservableViewMvc;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.xlteam.socialcaption.common.utility.Constant.CATEGORY_ARRAY;
@@ -49,7 +51,10 @@ public class DialogUploadCaptionsViewMvcImpl extends BaseObservableViewMvc<Dialo
         imgBackgroundForCaption = findViewById(R.id.img_background_post_caption);
 
         // set spinner category
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, CATEGORY_ARRAY);
+        List<String> listCategory = new ArrayList<>();
+        listCategory.add("Chọn chủ đề");
+        listCategory.addAll(Arrays.asList(CATEGORY_ARRAY));
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, listCategory);
         mSpinnerCategory.setAdapter(adapter);
 
         // focus editCaption and show keyboard
