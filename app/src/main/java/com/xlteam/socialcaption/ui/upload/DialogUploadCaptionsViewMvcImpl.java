@@ -79,6 +79,7 @@ public class DialogUploadCaptionsViewMvcImpl extends BaseObservableViewMvc<Dialo
         // font
         mFonts = FontDataSource.getInstance().getAllFonts();
         DetailForFontAdapter adapterFont = new DetailForFontAdapter(getContext(), mFonts, this);
+        // color text
 
         // set recycler view for tool (align, font, color, ...)
         ToolColorAlignFontAdapter toolAdapter = new ToolColorAlignFontAdapter(TOOL_FOR_COLOR_FONT_ALIGN_POST, position -> {
