@@ -1,5 +1,7 @@
 package com.xlteam.socialcaption.ui.upload.adapter;
 
+import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +18,14 @@ import java.util.List;
 public class DetailForFontAdapter extends RecyclerView.Adapter<DetailForFontAdapter.ViewHolder> {
     private final List<Font> mFonts;
     DetailForFontCallback mDetailForFontCallback;
+    private Context mContext;
 
     public interface DetailForFontCallback {
         void onFontClicked(int position);
     }
 
-    public DetailForFontAdapter(List<Font> fonts, DetailForFontCallback DetailForFontCallback) {
+    public DetailForFontAdapter(Context context, List<Font> fonts, DetailForFontCallback DetailForFontCallback) {
+        mContext = context;
         mFonts = fonts;
         mDetailForFontCallback = DetailForFontCallback;
     }
@@ -29,13 +33,15 @@ public class DetailForFontAdapter extends RecyclerView.Adapter<DetailForFontAdap
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_font_for_caption, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_font_circle, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.mTvFont.setText(mFonts.get(position).getFontName());
+        Font font = mFonts.get(position);
+        Typeface type = Typeface.createFromAsset(mContext.getAssets(), "font/" + font.getFont());
+        holder.mTvFont.setTypeface(type);
 
         holder.mTvFont.setOnClickListener((v) -> {
             mDetailForFontCallback.onFontClicked(position);
@@ -48,11 +54,11 @@ public class DetailForFontAdapter extends RecyclerView.Adapter<DetailForFontAdap
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView mTvFont;
+        private TextView mTvFont;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            mTvFont = itemView.findViewById(R.id.tv_font_for_post_caption);
+            mTvFont = itemView.findViewById(R.id.tvFont);
         }
     }
 }

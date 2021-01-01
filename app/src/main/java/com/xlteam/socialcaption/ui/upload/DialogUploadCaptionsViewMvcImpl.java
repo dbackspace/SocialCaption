@@ -76,14 +76,14 @@ public class DialogUploadCaptionsViewMvcImpl extends BaseObservableViewMvc<Dialo
         DetailForToolsAdapter adapterBgr = new DetailForToolsAdapter(GRADIENT_BACKGROUND_ARRAY, position -> imgBackgroundForCaption.setImageResource(GRADIENT_BACKGROUND_ARRAY[position]));
         // font
         List<Font> fonts = FontDataSource.getInstance().getAllFonts();
-        DetailForFontAdapter adapterFont = new DetailForFontAdapter(fonts, position -> mEdtCaption.setFontFeatureSettings(fonts.get(position).getFont()));
+        DetailForFontAdapter adapterFont = new DetailForFontAdapter(getContext(), fonts, position -> mEdtCaption.setFontFeatureSettings(fonts.get(position).getFont()));
 
         // set recycler view for tool (align, font, color, ...)
         ToolColorAlignFontAdapter toolAdapter = new ToolColorAlignFontAdapter(TOOL_FOR_COLOR_FONT_ALIGN_POST, position -> {
             switch (position) {
                 case 1:
                     // Font caption
-                    mRvDetailForTools.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+                    mRvDetailForTools.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
                     mRvDetailForTools.setAdapter(adapterFont);
                     mRvDetailForTools.scrollToPosition(position);
                     break;
