@@ -5,6 +5,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 
+import com.xlteam.socialcaption.ui.account.AccountViewMvc;
+import com.xlteam.socialcaption.ui.account.AccountViewMvcImpl;
 import com.xlteam.socialcaption.ui.category.CategoryViewMvc;
 import com.xlteam.socialcaption.ui.category.CategoryViewMvcImpl;
 import com.xlteam.socialcaption.ui.common.bottomnavigation.BottomNavViewMvc;
@@ -23,6 +25,10 @@ public class ViewMvcFactory {
 
     public BottomNavViewMvc getBottomNavViewMvc(@Nullable ViewGroup parent) {
         return new BottomNavViewMvcImpl(mLayoutInflater, parent);
+    }
+
+    public AccountViewMvc getAccountViewMvc(@Nullable ViewGroup parent) {
+        return new AccountViewMvcImpl(mLayoutInflater, parent);
     }
 
     public HomePageViewMvc getHomePageViewMvc(@Nullable ViewGroup parent) {
