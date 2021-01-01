@@ -47,4 +47,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore'
 
     implementation 'com.google.code.gson:gson:2.8.6'
+
+    // Circle image
+    implementation 'de.hdodenhof:circleimageview:2.1.0'
 }
