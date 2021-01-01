@@ -16,10 +16,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.xlteam.socialcaption.R;
+import com.xlteam.socialcaption.common.datasource.ColorDataSource;
 import com.xlteam.socialcaption.common.datasource.FontDataSource;
+import com.xlteam.socialcaption.common.utility.UiUtils;
 import com.xlteam.socialcaption.model.Font;
 import com.xlteam.socialcaption.model.User;
 import com.xlteam.socialcaption.ui.common.views.BaseObservableViewMvc;
+import com.xlteam.socialcaption.ui.upload.adapter.DetailForColorAdapter;
 import com.xlteam.socialcaption.ui.upload.adapter.DetailForFontAdapter;
 import com.xlteam.socialcaption.ui.upload.adapter.DetailForToolsAdapter;
 import com.xlteam.socialcaption.ui.upload.adapter.ToolColorAlignFontAdapter;
@@ -34,7 +37,7 @@ import static com.xlteam.socialcaption.common.utility.Constant.GRADIENT_BACKGROU
 import static com.xlteam.socialcaption.common.utility.Constant.TOOL_FOR_COLOR_FONT_ALIGN_POST;
 
 public class DialogUploadCaptionsViewMvcImpl extends BaseObservableViewMvc<DialogUploadCaptionsViewMvc.Listener>
-        implements DialogUploadCaptionsViewMvc, DetailForFontAdapter.DetailForFontCallback {
+        implements DialogUploadCaptionsViewMvc, DetailForFontAdapter.DetailForFontCallback, DetailForColorAdapter.ColorSelectCallback {
 
     private final ImageButton mBtnBack;
     private final TextView mBtnPostCaption;
@@ -46,6 +49,7 @@ public class DialogUploadCaptionsViewMvcImpl extends BaseObservableViewMvc<Dialo
     private final RecyclerView mRvDetailForTools;
     private final RecyclerView mRvTool;
     private List<Font> mFonts;
+    private ArrayList<String> mColors;
 
     public DialogUploadCaptionsViewMvcImpl(LayoutInflater inflater, @Nullable ViewGroup parent) {
         setRootView(inflater.inflate(R.layout.dialog_upload, parent, false));
@@ -80,7 +84,8 @@ public class DialogUploadCaptionsViewMvcImpl extends BaseObservableViewMvc<Dialo
         mFonts = FontDataSource.getInstance().getAllFonts();
         DetailForFontAdapter adapterFont = new DetailForFontAdapter(getContext(), mFonts, this);
         // color text
-
+        mColors = ColorDataSource.getInstance().getAllDataMini();
+        DetailForColorAdapter adapterColor = new DetailForColorAdapter(this);
         // set recycler view for tool (align, font, color, ...)
         ToolColorAlignFontAdapter toolAdapter = new ToolColorAlignFontAdapter(TOOL_FOR_COLOR_FONT_ALIGN_POST, position -> {
             switch (position) {
@@ -92,6 +97,8 @@ public class DialogUploadCaptionsViewMvcImpl extends BaseObservableViewMvc<Dialo
                     break;
                 case 2:
                     // Color for font caption
+                    mRvDetailForTools.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+                    mRvDetailForTools.setAdapter(adapterColor);
                     break;
                 case 3:
                     // Align for caption
@@ -126,5 +133,10 @@ public class DialogUploadCaptionsViewMvcImpl extends BaseObservableViewMvc<Dialo
     public void onFontClicked(int position) {
         Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), "font/" + mFonts.get(position).getFont());
         mEdtCaption.setTypeface(typeface);
+    }
+
+    @Override
+    public void selectColor(int color) {
+        UiUtils.setColorForTextView(mEdtCaption, mColors.get(color));
     }
 }
