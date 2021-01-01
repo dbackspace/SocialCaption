@@ -1,5 +1,6 @@
 package com.xlteam.socialcaption.ui.upload;
 
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -33,7 +34,7 @@ import static com.xlteam.socialcaption.common.utility.Constant.GRADIENT_BACKGROU
 import static com.xlteam.socialcaption.common.utility.Constant.TOOL_FOR_COLOR_FONT_ALIGN_POST;
 
 public class DialogUploadCaptionsViewMvcImpl extends BaseObservableViewMvc<DialogUploadCaptionsViewMvc.Listener>
-        implements DialogUploadCaptionsViewMvc {
+        implements DialogUploadCaptionsViewMvc, DetailForFontAdapter.DetailForFontCallback {
 
     private final ImageButton mBtnBack;
     private final TextView mBtnPostCaption;
@@ -44,6 +45,7 @@ public class DialogUploadCaptionsViewMvcImpl extends BaseObservableViewMvc<Dialo
     private final EditText mEdtCaption;
     private final RecyclerView mRvDetailForTools;
     private final RecyclerView mRvTool;
+    private List<Font> mFonts;
 
     public DialogUploadCaptionsViewMvcImpl(LayoutInflater inflater, @Nullable ViewGroup parent) {
         setRootView(inflater.inflate(R.layout.dialog_upload, parent, false));
@@ -75,8 +77,8 @@ public class DialogUploadCaptionsViewMvcImpl extends BaseObservableViewMvc<Dialo
         // color background
         DetailForToolsAdapter adapterBgr = new DetailForToolsAdapter(GRADIENT_BACKGROUND_ARRAY, position -> imgBackgroundForCaption.setImageResource(GRADIENT_BACKGROUND_ARRAY[position]));
         // font
-        List<Font> fonts = FontDataSource.getInstance().getAllFonts();
-        DetailForFontAdapter adapterFont = new DetailForFontAdapter(getContext(), fonts, position -> mEdtCaption.setFontFeatureSettings(fonts.get(position).getFont()));
+        mFonts = FontDataSource.getInstance().getAllFonts();
+        DetailForFontAdapter adapterFont = new DetailForFontAdapter(getContext(), mFonts, this);
 
         // set recycler view for tool (align, font, color, ...)
         ToolColorAlignFontAdapter toolAdapter = new ToolColorAlignFontAdapter(TOOL_FOR_COLOR_FONT_ALIGN_POST, position -> {
@@ -117,5 +119,11 @@ public class DialogUploadCaptionsViewMvcImpl extends BaseObservableViewMvc<Dialo
     public void bindUser(User user) {
         mImgUser.setImageResource(R.drawable.ic_user_default);
         mTvUserName.setText(user.getUserId());
+    }
+
+    @Override
+    public void onFontClicked(int position) {
+        Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), "font/" + mFonts.get(position).getFont());
+        mEdtCaption.setTypeface(typeface);
     }
 }

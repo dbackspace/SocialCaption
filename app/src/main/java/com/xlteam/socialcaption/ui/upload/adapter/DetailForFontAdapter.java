@@ -1,6 +1,7 @@
 package com.xlteam.socialcaption.ui.upload.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,8 +18,9 @@ import java.util.List;
 
 public class DetailForFontAdapter extends RecyclerView.Adapter<DetailForFontAdapter.ViewHolder> {
     private final List<Font> mFonts;
-    DetailForFontCallback mDetailForFontCallback;
+    private DetailForFontCallback mDetailForFontCallback;
     private Context mContext;
+    private int fontDefault;
 
     public interface DetailForFontCallback {
         void onFontClicked(int position);
@@ -28,6 +30,7 @@ public class DetailForFontAdapter extends RecyclerView.Adapter<DetailForFontAdap
         mContext = context;
         mFonts = fonts;
         mDetailForFontCallback = DetailForFontCallback;
+        fontDefault = 5; // tạm thời đặt font mặc định
     }
 
     @NonNull
@@ -42,8 +45,17 @@ public class DetailForFontAdapter extends RecyclerView.Adapter<DetailForFontAdap
         Font font = mFonts.get(position);
         Typeface type = Typeface.createFromAsset(mContext.getAssets(), "font/" + font.getFont());
         holder.mTvFont.setTypeface(type);
+        if (fontDefault == position) {
+            holder.mTvFont.setBackground(mContext.getDrawable(R.drawable.bg_font_selected));
+            holder.mTvFont.setTextColor(Color.parseColor("#000000"));
+        } else {
+            holder.mTvFont.setBackground(mContext.getDrawable(R.drawable.bg_font_unselected));
+            holder.mTvFont.setTextColor(Color.parseColor("#FFFFFF"));
+        }
 
         holder.mTvFont.setOnClickListener((v) -> {
+            fontDefault = position;
+            notifyDataSetChanged();
             mDetailForFontCallback.onFontClicked(position);
         });
     }
