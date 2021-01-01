@@ -30,8 +30,25 @@ public class AccountFragment extends BaseFragment implements AccountViewMvc.List
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mViewMvc = getControllerCompositionRoot().getViewMvcFactory().getAccountViewMvc(null);
-        //code ui
         return mViewMvc.getRootView();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mViewMvc.registerListener(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mViewMvc.unregisterListener(this);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // save state after rotate screen, dark mode, ....
     }
 
     @Override

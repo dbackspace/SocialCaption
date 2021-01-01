@@ -39,6 +39,5 @@ public class HomePageViewMvcImpl extends BaseObservableViewMvc<HomePageViewMvc.L
     @Override
     public void bindCategory(Context context, int numberCategory, List<Caption> captions) {
         adapter.binCaptionList(numberCategory, captions);
-
     }
 }
