@@ -1,4 +1,4 @@
-package com.xlteam.socialcaption.ui.upload;
+package com.xlteam.socialcaption.ui.upload.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,38 +10,43 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.xlteam.socialcaption.R;
 
-public class BackgroundForCaptionAdapter extends RecyclerView.Adapter<BackgroundForCaptionAdapter.ViewHolder> {
+public class ToolColorAlignFontAdapter extends RecyclerView.Adapter<ToolColorAlignFontAdapter.ViewHolder> {
+    int[] listTools;
+    private ToolColorAlignFontCallback callback;
 
-    int[] mItemBackgrounds;
-    BackgroundClickCallback mBackgroundClickCallback;
+    public interface ToolColorAlignFontCallback {
+        void setDetailForTools(int position);
+    }
 
-    public BackgroundForCaptionAdapter(int[] itemBackgrounds, BackgroundClickCallback backgroundClickCallback) {
-        mItemBackgrounds = itemBackgrounds;
-        mBackgroundClickCallback = backgroundClickCallback;
+    public ToolColorAlignFontAdapter(int[] tools, ToolColorAlignFontCallback callback) {
+        listTools = tools;
+        this.callback = callback;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_background_for_caption, parent, false);
-        return new BackgroundForCaptionAdapter.ViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.mImgView.setImageResource(mItemBackgrounds[position]);
-
-        holder.mImgView.setOnClickListener((v) -> {
-            mBackgroundClickCallback.onBackgroundGradientClicked(position);
+        holder.mImgView.setImageResource(listTools[position]);
+        holder.mImgView.setOnClickListener(v -> {
+            callback.setDetailForTools(position);
         });
+        if (position == 0) {
+            holder.mImgView.performClick();
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mItemBackgrounds.length;
+        return listTools.length;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         private final ImageView mImgView;
 
         public ViewHolder(@NonNull View itemView) {
