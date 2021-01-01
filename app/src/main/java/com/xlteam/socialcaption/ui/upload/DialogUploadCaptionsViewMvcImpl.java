@@ -15,15 +15,22 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.xlteam.socialcaption.R;
+import com.xlteam.socialcaption.common.datasource.FontDataSource;
+import com.xlteam.socialcaption.model.Font;
 import com.xlteam.socialcaption.model.User;
 import com.xlteam.socialcaption.ui.common.views.BaseObservableViewMvc;
+import com.xlteam.socialcaption.ui.upload.adapter.DetailForFontAdapter;
+import com.xlteam.socialcaption.ui.upload.adapter.DetailForToolsAdapter;
+import com.xlteam.socialcaption.ui.upload.adapter.ToolColorAlignFontAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static com.xlteam.socialcaption.common.utility.Constant.CATEGORY_ARRAY;
 import static com.xlteam.socialcaption.common.utility.Constant.GRADIENT_BACKGROUND_ARRAY;
+import static com.xlteam.socialcaption.common.utility.Constant.TOOL_FOR_COLOR_FONT_ALIGN_POST;
 
 public class DialogUploadCaptionsViewMvcImpl extends BaseObservableViewMvc<DialogUploadCaptionsViewMvc.Listener>
         implements DialogUploadCaptionsViewMvc {
@@ -35,7 +42,8 @@ public class DialogUploadCaptionsViewMvcImpl extends BaseObservableViewMvc<Dialo
     private final Spinner mSpinnerCategory;
     private final ImageView imgBackgroundForCaption;
     private final EditText mEdtCaption;
-    private final RecyclerView mRvImgBackground;
+    private final RecyclerView mRvDetailForTools;
+    private final RecyclerView mRvTool;
 
     public DialogUploadCaptionsViewMvcImpl(LayoutInflater inflater, @Nullable ViewGroup parent) {
         setRootView(inflater.inflate(R.layout.dialog_upload, parent, false));
@@ -47,8 +55,9 @@ public class DialogUploadCaptionsViewMvcImpl extends BaseObservableViewMvc<Dialo
         mTvUserName = findViewById(R.id.tv_user_name);
         mSpinnerCategory = findViewById(R.id.spinner_category_post);
         mEdtCaption = findViewById(R.id.edtInput);
-        mRvImgBackground = findViewById(R.id.rv_background_post_caption);
+        mRvDetailForTools = findViewById(R.id.rv_background_post_caption);
         imgBackgroundForCaption = findViewById(R.id.img_background_post_caption);
+        mRvTool = findViewById(R.id.rv_tool_color_font_align);
 
         // set spinner category
         List<String> listCategory = new ArrayList<>();
@@ -62,10 +71,40 @@ public class DialogUploadCaptionsViewMvcImpl extends BaseObservableViewMvc<Dialo
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(getContext().INPUT_METHOD_SERVICE);
         imm.showSoftInput(mEdtCaption, InputMethodManager.SHOW_IMPLICIT);
 
-        // Set recycler view for background captions
-        BackgroundForCaptionAdapter adapterBgr = new BackgroundForCaptionAdapter(GRADIENT_BACKGROUND_ARRAY, position -> imgBackgroundForCaption.setImageResource(GRADIENT_BACKGROUND_ARRAY[position]));
-        mRvImgBackground.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        mRvImgBackground.setAdapter(adapterBgr);
+        // init adapter
+        // color background
+        DetailForToolsAdapter adapterBgr = new DetailForToolsAdapter(GRADIENT_BACKGROUND_ARRAY, position -> imgBackgroundForCaption.setImageResource(GRADIENT_BACKGROUND_ARRAY[position]));
+        // font
+        List<Font> fonts = FontDataSource.getInstance().getAllFonts();
+        DetailForFontAdapter adapterFont = new DetailForFontAdapter(fonts, position -> mEdtCaption.setFontFeatureSettings(fonts.get(position).getFont()));
+
+        // set recycler view for tool (align, font, color, ...)
+        ToolColorAlignFontAdapter toolAdapter = new ToolColorAlignFontAdapter(TOOL_FOR_COLOR_FONT_ALIGN_POST, position -> {
+            switch (position) {
+                case 1:
+                    // Font caption
+                    mRvDetailForTools.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+                    mRvDetailForTools.setAdapter(adapterFont);
+                    mRvDetailForTools.scrollToPosition(position);
+                    break;
+                case 2:
+                    // Color for font caption
+                    break;
+                case 3:
+                    // Align for caption
+                    break;
+                // Set recycler view for detail of tools
+                case 0:
+                    // color background
+                default:
+                    // color background
+                    mRvDetailForTools.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+                    mRvDetailForTools.setAdapter(adapterBgr);
+            }
+        });
+
+        mRvTool.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        mRvTool.setAdapter(toolAdapter);
 
         mBtnBack.setOnClickListener((v) -> {
             for (Listener listener : getListeners()) {
