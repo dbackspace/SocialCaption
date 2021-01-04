@@ -5,12 +5,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 
-import com.xlteam.socialcaption.ui.account.AccountViewMvc;
-import com.xlteam.socialcaption.ui.account.AccountViewMvcImpl;
-import com.xlteam.socialcaption.ui.category.CategoryViewMvc;
-import com.xlteam.socialcaption.ui.category.CategoryViewMvcImpl;
-import com.xlteam.socialcaption.ui.common.bottomnavigation.BottomNavViewMvc;
-import com.xlteam.socialcaption.ui.common.bottomnavigation.BottomNavViewMvcImpl;
 import com.xlteam.socialcaption.ui.home.HomePageViewMvc;
 import com.xlteam.socialcaption.ui.home.HomePageViewMvcImpl;
 import com.xlteam.socialcaption.ui.upload.DialogUploadCaptionsViewMvc;
@@ -23,14 +17,6 @@ public class ViewMvcFactory {
         mLayoutInflater = layoutInflater;
     }
 
-    public BottomNavViewMvc getBottomNavViewMvc(@Nullable ViewGroup parent) {
-        return new BottomNavViewMvcImpl(mLayoutInflater, parent);
-    }
-
-    public AccountViewMvc getAccountViewMvc(@Nullable ViewGroup parent) {
-        return new AccountViewMvcImpl(mLayoutInflater, parent);
-    }
-
     public HomePageViewMvc getHomePageViewMvc(@Nullable ViewGroup parent) {
         return new HomePageViewMvcImpl(mLayoutInflater, parent);
     }
@@ -39,7 +25,7 @@ public class ViewMvcFactory {
         return new DialogUploadCaptionsViewMvcImpl(mLayoutInflater, parent);
     }
 
-    public CategoryViewMvc getCategoryViewMvc(@Nullable ViewGroup parent) {
-        return new CategoryViewMvcImpl(mLayoutInflater, parent);
+    public HomePageViewMvc getCategoryViewMvc(@Nullable ViewGroup parent) {
+        return new HomePageViewMvcImpl(mLayoutInflater, parent);
     }
 }

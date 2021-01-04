@@ -1,4 +1,4 @@
-package com.xlteam.socialcaption.ui.category;
+package com.xlteam.socialcaption.ui.home;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,9 +12,9 @@ import com.xlteam.socialcaption.ui.common.controllers.BaseActivity;
 
 import java.util.ArrayList;
 
-public class CategoryActivity extends BaseActivity implements CategoryViewMvc.Listener {
+public class HomePageActivity extends BaseActivity implements HomePageViewMvc.Listener {
     private Context mContext;
-    private CategoryViewMvc mViewMvc;
+    private HomePageViewMvc mViewMvc;
     private FirebaseController mController;
 
     @Override

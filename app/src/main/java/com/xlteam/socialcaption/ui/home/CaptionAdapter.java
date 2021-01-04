@@ -27,7 +27,7 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_caption, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_caption_in_category, parent, false);
         return new CaptionAdapter.ViewHolder(v);
     }
 

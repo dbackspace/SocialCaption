@@ -35,15 +35,7 @@
     </RelativeLayout>
 
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/bannerAutoSlide"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_below="@id/layout_top"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:background="@color/white" />
+
 
     <LinearLayout
         android:id="@+id/lnDot"

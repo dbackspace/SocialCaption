@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.category.CategoryActivity">
+    tools:context=".ui.home.HomePageActivity">
 
     <ImageView
         android:id="@+id/btn_back"
@@ -38,11 +38,21 @@
         android:padding="10dp"
         android:src="@drawable/ic_search" />
 
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/bannerAutoSlide"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_below="@id/image_search"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@color/white" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_category_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btn_back"
+        android:layout_below="@id/bannerAutoSlide"
         android:layout_marginStart="10dp" />
 
     <TextView

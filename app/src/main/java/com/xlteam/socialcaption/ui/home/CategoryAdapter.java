@@ -1,4 +1,4 @@
-package com.xlteam.socialcaption.ui.category;
+package com.xlteam.socialcaption.ui.home;
 
 import android.content.Context;
 import android.util.TypedValue;
@@ -16,7 +16,7 @@ import com.xlteam.socialcaption.common.utility.Constant;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class CategoryNameListAdapter extends RecyclerView.Adapter<CategoryNameListAdapter.ViewHolder> {
+public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
 
     private ArrayList<String> mCategoryNames;
     private int mCategoryNumber;
@@ -27,7 +27,7 @@ public class CategoryNameListAdapter extends RecyclerView.Adapter<CategoryNameLi
         void selectCategory(int categoryNumber);
     }
 
-    public CategoryNameListAdapter(Context context, Callback callback) {
+    public CategoryAdapter(Context context, Callback callback) {
         mContext = context;
         mCallback = callback;
         mCategoryNames = new ArrayList<>(Arrays.asList(Constant.CATEGORY_ARRAY));
@@ -39,7 +39,7 @@ public class CategoryNameListAdapter extends RecyclerView.Adapter<CategoryNameLi
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category_name, parent, false);
-        return new CategoryNameListAdapter.ViewHolder(v);
+        return new CategoryAdapter.ViewHolder(v);
     }
 
     @Override
