@@ -130,7 +130,7 @@ public class HomePageViewMvcImpl extends BaseObservableViewMvc<HomePageViewMvc.L
 
     @Override
     public void openCaptionPreview(Caption caption) {
-        PreviewCaptionDialogBuilder previewCaptionDialogBuilder = new PreviewCaptionDialogBuilder(getContext());
+        PreviewCaptionDialogBuilder previewCaptionDialogBuilder = new PreviewCaptionDialogBuilder(getContext(), caption);
         previewCaptionDialogBuilder.build().show();
     }
 }
