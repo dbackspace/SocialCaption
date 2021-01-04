@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="20dp"
-    android:layout_marginBottom="10dp"
     android:layout_marginTop="10dp"
     android:layout_marginEnd="20dp"
+    android:layout_marginBottom="10dp"
     app:cardCornerRadius="15dp"
     app:cardElevation="3dp">
 
@@ -22,7 +22,6 @@
             android:layout_alignParentTop="true"
             android:layout_centerInParent="true"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="5dp"
             android:layout_marginEnd="25dp"
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
@@ -32,60 +31,13 @@
             android:textSize="14dp" />
 
         <ImageView
-            android:id="@+id/image_bookmark"
+            android:id="@+id/image_heart"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="7dp"
             android:layout_marginEnd="5dp"
-            android:src="@drawable/bookmark_toggle_button" />
-
-        <RelativeLayout
-            android:id="@+id/layout_bottom"
-            android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:layout_below="@id/tv_content_of_caption"
-            android:background="@color/color_E0"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp">
-
-            <ImageView
-                android:id="@+id/image_heart"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_alignParentStart="true"
-                android:layout_centerInParent="true"
-                android:src="@drawable/heart_toggle_button" />
-
-            <TextView
-                android:id="@+id/tv_number_heart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginStart="3dp"
-                android:layout_toEndOf="@id/image_heart"
-                android:fontFamily="sans-serif"
-                android:text="1.1k"
-                android:textColor="@color/color_25" />
-
-            <TextView
-                android:id="@+id/tv_author"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerInParent="true"
-                android:layout_marginStart="20dp"
-                android:layout_toEndOf="@id/tv_number_heart"
-                android:ellipsize="marquee"
-                android:fontFamily="sans-serif"
-                android:gravity="end|center"
-                android:singleLine="true"
-                android:text="Author"
-                android:textAllCaps="true"
-                android:textColor="@color/color_25"
-                android:textSize="16dp"
-                android:textStyle="italic|bold" />
-        </RelativeLayout>
+            android:src="@drawable/heart_toggle_button" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

@@ -18,10 +18,16 @@ import java.util.List;
 public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHolder> {
     private List<Caption> mCaptions;
     private Context mContext;
+    private Callback mCallback;
 
-    public CaptionAdapter(Context context, List<Caption> captions) {
+    public interface Callback {
+        void openCaptionPreview(Caption caption);
+    }
+
+    public CaptionAdapter(Context context, List<Caption> captions, Callback callback) {
         mContext = context;
         mCaptions = captions;
+        mCallback = callback;
     }
 
     @NonNull
@@ -35,15 +41,13 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Caption caption = mCaptions.get(position);
         holder.tvCaptionContent.setText(caption.getContent());
-        holder.tvAuthor.setText(caption.getUserName());
         holder.imgHeart.setOnClickListener(v -> {
             holder.imgHeart.setActivated(!holder.imgHeart.isActivated());
             //put to firebase
         });
-
-        holder.imgBookmark.setOnClickListener(v -> {
-            holder.imgBookmark.setActivated(!holder.imgBookmark.isActivated());
-            //put to firebase
+        holder.view.setOnClickListener(view -> {
+            //open preview dialog
+            mCallback.openCaptionPreview(mCaptions.get(position));
         });
     }
 
@@ -54,15 +58,14 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView tvCaptionContent;
-        private final TextView tvAuthor;
-        private final ImageView imgHeart, imgBookmark;
+        private final ImageView imgHeart;
+        private View view;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
+            view = itemView;
             tvCaptionContent = itemView.findViewById(R.id.tv_content_of_caption);
-            tvAuthor = itemView.findViewById(R.id.tv_author);
             imgHeart = itemView.findViewById(R.id.image_heart);
-            imgBookmark = itemView.findViewById(R.id.image_bookmark);
         }
     }
 }

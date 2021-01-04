@@ -19,7 +19,7 @@ import com.xlteam.socialcaption.ui.common.views.BaseObservableViewMvc;
 import java.util.List;
 
 public class HomePageViewMvcImpl extends BaseObservableViewMvc<HomePageViewMvc.Listener> implements
-        HomePageViewMvc {
+        HomePageViewMvc, CaptionAdapter.Callback {
     private final TextView tvTypeCategory;
     private int mTypeCategory, mCategoryNumber;
     private CategoryAdapter adapter;
@@ -98,7 +98,7 @@ public class HomePageViewMvcImpl extends BaseObservableViewMvc<HomePageViewMvc.L
     @Override
     public void binCaptions(List<Caption> captions) {
         tvNumberCaption.setText(getContext().getString(R.string.number_captions, captions.size()));
-        CaptionAdapter adapter = new CaptionAdapter(getContext(), captions);
+        CaptionAdapter adapter = new CaptionAdapter(getContext(), captions, this);
         rvCaption.setAdapter(adapter);
         rvCaption.setVisibility(View.VISIBLE);
         progressBarLoading.setVisibility(View.GONE);
@@ -128,4 +128,9 @@ public class HomePageViewMvcImpl extends BaseObservableViewMvc<HomePageViewMvc.L
         }
     }
 
+    @Override
+    public void openCaptionPreview(Caption caption) {
+        PreviewCaptionDialogBuilder previewCaptionDialogBuilder = new PreviewCaptionDialogBuilder(getContext());
+        previewCaptionDialogBuilder.build().show();
+    }
 }
