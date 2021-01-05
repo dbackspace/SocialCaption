@@ -1,35 +1,20 @@
 package com.xlteam.socialcaption.ui.home;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.xlteam.socialcaption.common.utility.Constant;
-import com.xlteam.socialcaption.firebase.FirebaseController;
-import com.xlteam.socialcaption.firebase.FirebaseListener;
-import com.xlteam.socialcaption.model.Caption;
 import com.xlteam.socialcaption.ui.common.controllers.BaseActivity;
-
-import java.util.ArrayList;
+import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
+import com.xlteam.socialcaption.ui.search.SearchCaptionActivity;
 
 public class HomePageActivity extends BaseActivity implements HomePageViewMvc.Listener {
-    private Context mContext;
     private HomePageViewMvc mViewMvc;
-    private FirebaseController mController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewMvc = getControllerCompositionRoot().getViewMvcFactory().getCategoryViewMvc(null);
         setContentView(mViewMvc.getRootView());
-        mController = new FirebaseController();
-
-        Intent intent = getIntent();
-        int categoryNumber = intent.getIntExtra(Constant.EXTRA_CATEGORY_NUMBER, -1);
-        int typeCategory = intent.getIntExtra(Constant.EXTRA_TYPE_CATEGORY, 0);
-        mViewMvc.binNumberCategory(categoryNumber);
-        mViewMvc.binTypeCategory(typeCategory);
-        getDataOnFirebase(categoryNumber, typeCategory);
     }
 
     @Override
@@ -45,29 +30,24 @@ public class HomePageActivity extends BaseActivity implements HomePageViewMvc.Li
     }
 
     @Override
-    public void onSearchViewClicked() {
-        //open search screen
+    public void getCaptionList(int categoryNumber, boolean isBookmark) {
+        //lấy database rồi gọi mViewMvc.binCaptions(captions);
     }
 
     @Override
-    public void onBackClicked() {
-        finish();
+    public void openDrawer() {
+
     }
 
     @Override
-    public void getDataOnFirebase(int categoryNumber, int typeCategory) {
-        if (typeCategory == Constant.TYPE_ALL) {
-            mController.getCaptionByCategoryNumber(categoryNumber, new FirebaseListener<ArrayList<Caption>>() {
-                @Override
-                public void onResponse(ArrayList<Caption> captions) {
-                    mViewMvc.binCaptions(captions);
-                }
+    public void searchClicked() {
+        Intent intent = new Intent(this, SearchCaptionActivity.class);
+        startActivity(intent);
+    }
 
-                @Override
-                public void onError() {
-
-                }
-            });
-        }
+    @Override
+    public void createCaptionClicked() {
+        Intent intent = new Intent(this, EditCaptionActivity.class);
+        startActivity(intent);
     }
 }

@@ -30,7 +30,6 @@ import com.xlteam.socialcaption.ui.upload.adapter.ToolColorAlignFontAdapter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import static com.xlteam.socialcaption.common.utility.Constant.CATEGORY_ARRAY;
 import static com.xlteam.socialcaption.common.utility.Constant.GRADIENT_BACKGROUND_ARRAY;
@@ -55,7 +54,7 @@ public class DialogUploadCaptionsViewMvcImpl extends BaseObservableViewMvc<Dialo
         setRootView(inflater.inflate(R.layout.dialog_upload, parent, false));
 
         // init view
-        mBtnBack = findViewById(R.id.btn_back);
+        mBtnBack = findViewById(R.id.image_more);
         mBtnPostCaption = findViewById(R.id.btn_search);
         mImgUser = findViewById(R.id.img_avatar_user);
         mTvUserName = findViewById(R.id.tv_user_name);

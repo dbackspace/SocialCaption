@@ -8,16 +8,14 @@ import java.util.List;
 public interface HomePageViewMvc extends ObservableViewMvc<HomePageViewMvc.Listener> {
 
     interface Listener {
-        void onSearchViewClicked();
+        void getCaptionList(int categoryNumber, boolean isBookmark);
 
-        void onBackClicked();
+        void openDrawer();
 
-        void getDataOnFirebase(int categoryNumber, int typeCategory);
+        void searchClicked();
+
+        void createCaptionClicked();
     }
 
     void binCaptions(List<Caption> captions);
-
-    void binNumberCategory(int number);
-
-    void binTypeCategory(int type);
 }

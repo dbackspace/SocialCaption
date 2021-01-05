@@ -5,7 +5,6 @@
     android:background="@color/black">
 
     <ImageView
-        android:id="@+id/picture_caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/profile_image" />
@@ -17,12 +16,11 @@
         android:layout_centerInParent="true" />
 
     <RelativeLayout
-        android:id="@+id/layout_control"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/btn_back"
+            android:id="@+id/image_more"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_alignParentTop="true"

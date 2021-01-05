@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="100.000000dp"
+    android:height="100.000000dp"
+    android:viewportWidth="100.000000"
+    android:viewportHeight="100.000000">
+
+    <group
+        android:translateY="100.000000"
+        android:scaleX="0.100000"
+        android:scaleY="-0.100000">
+        <path
+            android:fillColor="#000000"
+            android:strokeWidth="1"
+            android:pathData="M85 790 l-39 -40 39 -40 39 -40 41 40 40 40 -40 40 -41 40 -39 -40z" />
+        <path
+            android:fillColor="#000000"
+            android:strokeWidth="1"
+            android:pathData="M290 750 l0 -40 315 0 315 0 0 40 0 40 -315 0 -315 0 0 -40z" />
+        <path
+            android:fillColor="#000000"
+            android:strokeWidth="1"
+            android:pathData="M85 540 l-39 -40 39 -40 39 -40 41 40 40 40 -40 40 -41 40 -39 -40z" />
+        <path
+            android:fillColor="#000000"
+            android:strokeWidth="1"
+            android:pathData="M290 500 l0 -40 315 0 315 0 0 40 0 40 -315 0 -315 0 0 -40z" />
+        <path
+            android:fillColor="#000000"
+            android:strokeWidth="1"
+            android:pathData="M85 290 l-39 -40 39 -40 39 -40 41 40 40 40 -40 40 -41 40 -39 -40z" />
+        <path
+            android:fillColor="#000000"
+            android:strokeWidth="1"
+            android:pathData="M290 250 l0 -40 315 0 315 0 0 40 0 40 -315 0 -315 0 0 -40z" />
+    </group>
+</vector>
