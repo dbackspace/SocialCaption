@@ -3,18 +3,25 @@ package com.xlteam.socialcaption.ui.home;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.xlteam.socialcaption.common.repository.CaptionRepository;
+import com.xlteam.socialcaption.model.Caption;
 import com.xlteam.socialcaption.ui.common.controllers.BaseActivity;
 import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
 import com.xlteam.socialcaption.ui.search.SearchCaptionActivity;
 
+import java.util.List;
+
 public class HomePageActivity extends BaseActivity implements HomePageViewMvc.Listener {
     private HomePageViewMvc mViewMvc;
+    private CaptionRepository mRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewMvc = getControllerCompositionRoot().getViewMvcFactory().getCategoryViewMvc(null);
         setContentView(mViewMvc.getRootView());
+        mRepository = new CaptionRepository(this);
+        getCaptionList(0, false);
     }
 
     @Override
@@ -32,6 +39,8 @@ public class HomePageActivity extends BaseActivity implements HomePageViewMvc.Li
     @Override
     public void getCaptionList(int categoryNumber, boolean isBookmark) {
         //lấy database rồi gọi mViewMvc.binCaptions(captions);
+        List<Caption> listCaption = mRepository.getAllCaption();
+        mViewMvc.binCaptions(listCaption);
     }
 
     @Override

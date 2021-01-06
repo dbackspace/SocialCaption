@@ -1,29 +1,53 @@
 package com.xlteam.socialcaption.model;
 
-import java.util.ArrayList;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+@Entity(tableName = "caption_table")
 public class Caption {
-    private String id;
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+    @ColumnInfo(name = "_content")
     private String content;
+    @ColumnInfo(name = "_path_image")
     private String pathImage;
-    private ArrayList<Integer> category;
-    private String userName;
-    private String userId;
+    @ColumnInfo(name = "_category_type")
+    private int categoryType;
+    @ColumnInfo(name = "_saved")
+    private boolean saved;
 
     public Caption() {
     }
 
-    public Caption(String content, String pathImage) {
+    public Caption(String content, String pathImage, int categoryType, boolean saved) {
         this.content = content;
         this.pathImage = pathImage;
+        this.categoryType = categoryType;
+        this.saved = saved;
     }
 
+    public int getCategoryType() {
+        return categoryType;
+    }
 
-    public String getId() {
+    public void setCategoryType(int categoryType) {
+        this.categoryType = categoryType;
+    }
+
+    public boolean isSaved() {
+        return saved;
+    }
+
+    public void setSaved(boolean saved) {
+        this.saved = saved;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -41,41 +65,5 @@ public class Caption {
 
     public void setPathImage(String pathImage) {
         this.pathImage = pathImage;
-    }
-
-    public ArrayList<Integer> getCategory() {
-        return category;
-    }
-
-    public void setCategory(ArrayList<Integer> category) {
-        this.category = category;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    @Override
-    public String toString() {
-        return "Caption{" +
-                "id='" + id + '\'' +
-                ", content='" + content + '\'' +
-                ", pathImage='" + pathImage + '\'' +
-                ", category=" + category +
-                ", userName='" + userName + '\'' +
-                ", userId='" + userId + '\'' +
-                '}';
     }
 }
