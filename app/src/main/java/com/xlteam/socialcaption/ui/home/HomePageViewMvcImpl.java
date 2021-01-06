@@ -24,7 +24,7 @@ public class HomePageViewMvcImpl extends BaseObservableViewMvc<HomePageViewMvc.L
     private TabLayout tabLayoutCategory;
 
     public HomePageViewMvcImpl(LayoutInflater layoutInflater, @Nullable ViewGroup parent) {
-        View view = layoutInflater.inflate(R.layout.activity_category, parent, false);
+        View view = layoutInflater.inflate(R.layout.activity_home_page, parent, false);
         setRootView(view);
 
         findViewById(R.id.image_more).setOnClickListener(view1 -> {

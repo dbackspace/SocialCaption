@@ -8,7 +8,7 @@ import android.graphics.drawable.ShapeDrawable;
 import android.view.View;
 import android.widget.TextView;
 
-public class UiUtils {
+public class Utility {
     public static void setColorForView(View view, String color) {
         int intColor = Color.parseColor(color);
         Drawable drawable = view.getBackground();

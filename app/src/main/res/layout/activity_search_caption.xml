@@ -17,7 +17,6 @@
         android:src="@drawable/ic_back" />
 
     <androidx.appcompat.widget.SearchView
-        android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginTop="10dp"
@@ -37,7 +36,6 @@
         app:searchIcon="@null" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_result_caption"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/image_back"
