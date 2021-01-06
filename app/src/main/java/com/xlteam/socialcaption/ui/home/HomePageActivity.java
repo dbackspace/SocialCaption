@@ -3,7 +3,7 @@ package com.xlteam.socialcaption.ui.home;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.xlteam.socialcaption.common.repository.CaptionRepository;
+import com.xlteam.socialcaption.external.repository.CaptionRepository;
 import com.xlteam.socialcaption.model.Caption;
 import com.xlteam.socialcaption.ui.common.controllers.BaseActivity;
 import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;

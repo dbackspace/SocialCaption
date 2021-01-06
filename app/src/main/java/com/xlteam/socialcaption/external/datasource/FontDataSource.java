@@ -1,4 +1,4 @@
-package com.xlteam.socialcaption.common.datasource;
+package com.xlteam.socialcaption.external.datasource;
 
 import com.xlteam.socialcaption.model.Font;
 

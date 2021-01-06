@@ -1,10 +1,10 @@
-package com.xlteam.socialcaption.firebase;
+package com.xlteam.socialcaption.external.firebase;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.xlteam.socialcaption.common.repository.CaptionRepository;
+import com.xlteam.socialcaption.external.repository.CaptionRepository;
 import com.xlteam.socialcaption.model.Caption;
 
 public class FirebaseController {

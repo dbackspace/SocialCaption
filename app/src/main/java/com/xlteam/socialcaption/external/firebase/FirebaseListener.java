@@ -1,4 +1,4 @@
-package com.xlteam.socialcaption.firebase;
+package com.xlteam.socialcaption.external.firebase;
 
 public interface FirebaseListener<T> {
 
