@@ -3,6 +3,7 @@ package com.xlteam.socialcaption.ui.home;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -47,6 +48,9 @@ public class HomePageViewMvcImpl extends BaseObservableViewMvc<HomePageViewMvc.L
         });
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
+        View headerView = navigationView.getHeaderView(0);
+        ImageView imgArrow = headerView.findViewById(R.id.image_back);
+        imgArrow.setOnClickListener(view1 -> drawerLayout.closeDrawer(GravityCompat.START, true));
         navigationView.setNavigationItemSelectedListener(item -> {
             drawerLayout.closeDrawer(GravityCompat.START, false);
             switch (item.getItemId()) {
