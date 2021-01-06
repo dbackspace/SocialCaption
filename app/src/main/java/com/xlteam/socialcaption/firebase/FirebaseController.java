@@ -14,23 +14,5 @@ public class FirebaseController {
         db = FirebaseFirestore.getInstance();
     }
 
-    public void getCaptionByCategoryNumber(int category, FirebaseListener<ArrayList<Caption>> listener) {
-        ArrayList<Caption> result = new ArrayList<>();
-        db.collection("captions")
-                .whereArrayContains("category", category).limit(10).get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                            Caption caption = document.toObject(Caption.class);
-                            caption.setId(document.getId());
-                            result.add(caption);
-                        }
-                        listener.onResponse(result);
-                    } else {
-                        listener.onError();
-                    }
-                });
-    }
-
 
 }
