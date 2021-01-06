@@ -10,8 +10,6 @@ public interface HomePageViewMvc extends ObservableViewMvc<HomePageViewMvc.Liste
     interface Listener {
         void getCaptionList(int categoryNumber, boolean isBookmark);
 
-        void openDrawer();
-
         void searchClicked();
 
         void createCaptionClicked();

@@ -44,11 +44,6 @@ public class HomePageActivity extends BaseActivity implements HomePageViewMvc.Li
     }
 
     @Override
-    public void openDrawer() {
-
-    }
-
-    @Override
     public void searchClicked() {
         Intent intent = new Intent(this, SearchCaptionActivity.class);
         startActivity(intent);

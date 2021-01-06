@@ -6,9 +6,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.model.Caption;
@@ -22,15 +25,15 @@ public class HomePageViewMvcImpl extends BaseObservableViewMvc<HomePageViewMvc.L
     private RecyclerView rvCaption;
     private TextView tvNumberCaption;
     private TabLayout tabLayoutCategory;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
 
     public HomePageViewMvcImpl(LayoutInflater layoutInflater, @Nullable ViewGroup parent) {
         View view = layoutInflater.inflate(R.layout.activity_home_page, parent, false);
         setRootView(view);
 
         findViewById(R.id.image_more).setOnClickListener(view1 -> {
-            for (Listener listener : getListeners()) {
-                listener.openDrawer();
-            }
+            drawerLayout.openDrawer(GravityCompat.START);
         });
         findViewById(R.id.image_search).setOnClickListener(view1 -> {
             for (Listener listener : getListeners()) {
@@ -41,6 +44,26 @@ public class HomePageViewMvcImpl extends BaseObservableViewMvc<HomePageViewMvc.L
             for (Listener listener : getListeners()) {
                 listener.createCaptionClicked();
             }
+        });
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.navigation_view);
+        navigationView.setNavigationItemSelectedListener(item -> {
+            drawerLayout.closeDrawer(GravityCompat.START, false);
+            switch (item.getItemId()) {
+                case R.id.nav_created_image:
+                    break;
+                case R.id.nav_rate:
+                    break;
+                case R.id.nav_feedback:
+                    break;
+                case R.id.nav_share:
+                    break;
+                case R.id.nav_term_of_use:
+                    break;
+                case R.id.nav_license:
+                    break;
+            }
+            return false;
         });
         tvNumberCaption = findViewById(R.id.tv_number_caption);
         tabLayoutCategory = findViewById(R.id.tab_layout_category);
