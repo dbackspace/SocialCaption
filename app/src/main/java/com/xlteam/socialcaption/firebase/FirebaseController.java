@@ -4,13 +4,16 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.xlteam.socialcaption.common.repository.CaptionRepository;
 import com.xlteam.socialcaption.model.Caption;
 
 public class FirebaseController {
     FirebaseFirestore db;
+    private CaptionRepository mRepository;
 
-    public FirebaseController() {
+    public FirebaseController(CaptionRepository repository) {
         db = FirebaseFirestore.getInstance();
+        mRepository = repository;
     }
 
 
@@ -21,6 +24,7 @@ public class FirebaseController {
                 for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                     Caption caption = documentSnapshot.toObject(Caption.class);
                     //insert caption to database
+                    mRepository.insertItem(caption);
                 }
             }
         });

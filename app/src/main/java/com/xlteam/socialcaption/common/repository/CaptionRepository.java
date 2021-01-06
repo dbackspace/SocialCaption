@@ -23,6 +23,10 @@ public class CaptionRepository {
         }).start();
     }
 
+    public void insertItem(Caption caption) {
+        new Thread(() -> mDatabase.captionDAO().insertCaption(caption));
+    }
+
     public List<Caption> getAllCaption() {
         return mDatabase.captionDAO().getAllCaption();
     }
