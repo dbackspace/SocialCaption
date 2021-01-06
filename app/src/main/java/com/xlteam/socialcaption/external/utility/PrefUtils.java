@@ -1,4 +1,4 @@
-package com.xlteam.socialcaption.common.utility;
+package com.xlteam.socialcaption.external.utility;
 
 import android.content.Context;
 import android.content.SharedPreferences;

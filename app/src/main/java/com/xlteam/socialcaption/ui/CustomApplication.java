@@ -2,9 +2,8 @@ package com.xlteam.socialcaption.ui;
 
 import android.app.Application;
 
-import com.xlteam.socialcaption.common.database.MyDatabase;
 import com.xlteam.socialcaption.common.dependencyinjection.CompositionRoot;
-import com.xlteam.socialcaption.common.repository.CaptionRepository;
+import com.xlteam.socialcaption.external.repository.CaptionRepository;
 
 
 public class CustomApplication extends Application {

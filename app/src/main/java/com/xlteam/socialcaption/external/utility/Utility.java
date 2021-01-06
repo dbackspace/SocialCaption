@@ -1,4 +1,4 @@
-package com.xlteam.socialcaption.common.utility;
+package com.xlteam.socialcaption.external.utility;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
