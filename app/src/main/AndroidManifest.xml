@@ -26,11 +26,6 @@
             android:theme="@style/Theme.SocialCaption.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui.home.HomePageActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
             android:name=".ui.search.SearchCaptionActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"

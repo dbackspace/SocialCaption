@@ -5,8 +5,6 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.xlteam.socialcaption.ui.home.HomePageActivity;
-
 public class SplashActivity extends AppCompatActivity {
 
     @Override

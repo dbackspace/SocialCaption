@@ -1,12 +1,9 @@
 <resources>
     <string name="app_name">SocialCaption</string>
     <string name="number_captions">%d captions</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">XL team</string>
     <string name="nav_header_subtitle">developer-xlteam@gmail.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
 
     <string name="menu_home">Trang chủ</string>
     <string name="menu_gallery">Ảnh đã tạo</string>

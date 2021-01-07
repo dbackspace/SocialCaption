@@ -2,7 +2,6 @@
 <resources>
     <color name="colorPrimary">#2F75B3</color>
     <color name="colorPrimaryVariant">#85CDE8</color>
-    <color name="non_color">#00000000</color>
     <color name="colorSecondary">#59BCD5</color>
     <color name="colorSecondaryVariant">#47C8DF</color>
     <color name="colorOnSecondary">#5ADDF4</color>
