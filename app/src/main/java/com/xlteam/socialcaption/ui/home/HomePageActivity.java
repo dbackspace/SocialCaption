@@ -1,10 +1,16 @@
 package com.xlteam.socialcaption.ui.home;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
+import com.xlteam.socialcaption.BuildConfig;
+import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.repository.CaptionRepository;
 import com.xlteam.socialcaption.external.repository.ICaptionRepository;
+import com.xlteam.socialcaption.external.utility.Constant;
+import com.xlteam.socialcaption.external.utility.Utility;
 import com.xlteam.socialcaption.model.Caption;
 import com.xlteam.socialcaption.ui.common.controllers.BaseActivity;
 import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
@@ -55,6 +61,32 @@ public class HomePageActivity extends BaseActivity implements HomePageViewMvc.Li
     public void createCaptionClicked() {
         Intent intent = new Intent(this, EditCaptionActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onNavRateClicked() {
+        Uri uri = Uri.parse(Constant.LINK_MARKET + BuildConfig.APPLICATION_ID);
+        Intent intentMarket = new Intent(Intent.ACTION_VIEW, uri);
+        intentMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NEW_DOCUMENT | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        try {
+            startActivity(intentMarket);
+        } catch (ActivityNotFoundException e) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Constant.LINK_GOOGLE_PLAY + BuildConfig.APPLICATION_ID)));
+        }
+    }
+
+    @Override
+    public void onNavShareClicked() {
+        try {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
+            String shareMessage = Constant.LINK_GOOGLE_PLAY + BuildConfig.APPLICATION_ID;
+            shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+            startActivity(Intent.createChooser(shareIntent, getString(R.string.choose_one)));
+        } catch (Exception e) {
+            //e.toString();
+        }
     }
 
     @Override

@@ -1,5 +1,8 @@
 package com.xlteam.socialcaption.ui.home;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
+import com.xlteam.socialcaption.BuildConfig;
 import com.xlteam.socialcaption.R;
+import com.xlteam.socialcaption.external.utility.Constant;
+import com.xlteam.socialcaption.external.utility.Utility;
 import com.xlteam.socialcaption.model.Caption;
 import com.xlteam.socialcaption.ui.common.views.BaseObservableViewMvc;
 
@@ -57,10 +63,17 @@ public class HomePageViewMvcImpl extends BaseObservableViewMvc<HomePageViewMvc.L
                 case R.id.nav_created_image:
                     break;
                 case R.id.nav_rate:
+                    for (Listener listener : getListeners()) {
+                        listener.onNavRateClicked();
+                    }
                     break;
                 case R.id.nav_feedback:
+                    Utility.sendEmailFeedback(getContext());
                     break;
                 case R.id.nav_share:
+                    for (Listener listener : getListeners()) {
+                        listener.onNavShareClicked();
+                    }
                     break;
                 case R.id.nav_term_of_use:
                     break;

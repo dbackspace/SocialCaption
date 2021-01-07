@@ -13,6 +13,10 @@ public interface HomePageViewMvc extends ObservableViewMvc<HomePageViewMvc.Liste
         void searchClicked();
 
         void createCaptionClicked();
+
+        void onNavRateClicked();
+
+        void onNavShareClicked();
     }
 
     void binCaptions(List<Caption> captions);
