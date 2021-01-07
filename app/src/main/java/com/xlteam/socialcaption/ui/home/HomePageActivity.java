@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.xlteam.socialcaption.external.repository.CaptionRepository;
+import com.xlteam.socialcaption.external.repository.ICaptionRepository;
 import com.xlteam.socialcaption.model.Caption;
 import com.xlteam.socialcaption.ui.common.controllers.BaseActivity;
 import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
@@ -11,7 +12,7 @@ import com.xlteam.socialcaption.ui.search.SearchCaptionActivity;
 
 import java.util.List;
 
-public class HomePageActivity extends BaseActivity implements HomePageViewMvc.Listener {
+public class HomePageActivity extends BaseActivity implements HomePageViewMvc.Listener, ICaptionRepository {
     private HomePageViewMvc mViewMvc;
     private CaptionRepository mRepository;
 
@@ -20,7 +21,7 @@ public class HomePageActivity extends BaseActivity implements HomePageViewMvc.Li
         super.onCreate(savedInstanceState);
         mViewMvc = getControllerCompositionRoot().getViewMvcFactory().getCategoryViewMvc(null);
         setContentView(mViewMvc.getRootView());
-        mRepository = new CaptionRepository(this);
+        mRepository = new CaptionRepository(this, this);
         getCaptionList(0, false);
     }
 
@@ -39,8 +40,7 @@ public class HomePageActivity extends BaseActivity implements HomePageViewMvc.Li
     @Override
     public void getCaptionList(int categoryNumber, boolean isBookmark) {
         //lấy database rồi gọi mViewMvc.binCaptions(captions);
-        List<Caption> listCaption = mRepository.getAllCaption();
-        mViewMvc.binCaptions(listCaption);
+        mRepository.getAllCaption();
     }
 
     @Override
@@ -53,5 +53,10 @@ public class HomePageActivity extends BaseActivity implements HomePageViewMvc.Li
     public void createCaptionClicked() {
         Intent intent = new Intent(this, EditCaptionActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void loadResult(List<Caption> result) {
+        mViewMvc.binCaptions(result);
     }
 }
