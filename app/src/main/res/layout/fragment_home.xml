@@ -13,6 +13,7 @@
         android:textAlignment="center"
         app:tabIndicatorGravity="bottom"
         app:tabIndicatorHeight="3dp"
+        app:tabIndicatorColor="@color/color_3cc2f5_legend"
         app:tabInlineLabel="true"
         app:tabMode="scrollable"
         app:tabRippleColor="@color/color_E0"

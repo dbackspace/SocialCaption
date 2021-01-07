@@ -33,4 +33,13 @@
 
     <style name="Theme.SocialCaption.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="Widget.SocialCaption.Toolbar.Solid" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:elevation" tools:ignore="NewApi">4dp</item>
+    </style>
+
+    <style name="ThemeOverlay.SocialCaption.ActionBar" parent="ThemeOverlay.AppCompat.ActionBar">
+        <!-- Parent theme sets colorControlNormal to textColorPrimary. -->
+        <item name="android:textColorPrimary">@color/white</item>
+    </style>
 </resources>
