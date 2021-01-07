@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="colorPrimary">#3cc2f5</color>
+    <color name="colorPrimaryVariant">#85CDE8</color>
     <color name="non_color">#00000000</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
+    <color name="colorSecondary">#59BCD5</color>
+    <color name="colorSecondaryVariant">#47C8DF</color>
+    <color name="colorOnSecondary">#5ADDF4</color>
+    <color name="colorOnPrimary">#4FA3C5</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="color_3cc2f5_legend">#3cc2f5</color>

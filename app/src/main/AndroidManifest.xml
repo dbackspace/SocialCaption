@@ -20,6 +20,12 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ui.MainActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.SocialCaption.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
             android:name=".ui.home.HomePageActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
