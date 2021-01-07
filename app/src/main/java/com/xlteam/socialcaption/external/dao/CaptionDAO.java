@@ -27,8 +27,9 @@ public interface CaptionDAO {
     @Query("select * from caption_table where _saved like :saved")
     public List<Caption> getCaptionBySaved(boolean saved);
 
-    @Query("select * from caption_table where _saved like :saved and _category_type like :categoryType")
+    @Query("select * from caption_table where (_saved like :saved and _category_type like :categoryType)")
     public List<Caption> getCaptionBySavedAndCategoryType(int categoryType, boolean saved);
 
-    // TODO: apply query for search
+    @Query("select * from caption_table where LOWER(_content) like '%' || :content || '%'")
+    public List<Caption> searchByContainingContent(String content);
 }

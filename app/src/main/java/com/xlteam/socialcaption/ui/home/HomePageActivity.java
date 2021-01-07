@@ -12,6 +12,8 @@ import com.xlteam.socialcaption.ui.search.SearchCaptionActivity;
 
 import java.util.List;
 
+import static com.xlteam.socialcaption.external.utility.Constant.LoaderTaskType.LOAD_ALL;
+
 public class HomePageActivity extends BaseActivity implements HomePageViewMvc.Listener, ICaptionRepository {
     private HomePageViewMvc mViewMvc;
     private CaptionRepository mRepository;
@@ -56,7 +58,9 @@ public class HomePageActivity extends BaseActivity implements HomePageViewMvc.Li
     }
 
     @Override
-    public void loadResult(List<Caption> result) {
-        mViewMvc.binCaptions(result);
+    public void loadResult(int loaderTaskType, List<Caption> result) {
+        if (loaderTaskType == LOAD_ALL) {
+            mViewMvc.binCaptions(result);
+        }
     }
 }

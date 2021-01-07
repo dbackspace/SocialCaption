@@ -19,7 +19,7 @@ public class CustomApplication extends Application implements ICaptionRepository
         super.onCreate();
         mCompositionRoot = new CompositionRoot();
         mRepository = new CaptionRepository(this, this);
-        mRepository.insertDatabase();
+        mRepository.insertFirstTimeToDatabase();
     }
 
     public CompositionRoot getCompositionRoot() {
@@ -27,7 +27,6 @@ public class CustomApplication extends Application implements ICaptionRepository
     }
 
     @Override
-    public void loadResult(List<Caption> result) {
-
+    public void loadResult(int loaderTaskType, List<Caption> result) {
     }
 }

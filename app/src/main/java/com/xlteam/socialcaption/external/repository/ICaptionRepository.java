@@ -5,5 +5,5 @@ import com.xlteam.socialcaption.model.Caption;
 import java.util.List;
 
 public interface ICaptionRepository {
-    void loadResult(List<Caption> result);
+    void loadResult(int loaderTaskType, List<Caption> result);
 }

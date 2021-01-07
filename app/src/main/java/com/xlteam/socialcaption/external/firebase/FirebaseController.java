@@ -24,7 +24,7 @@ public class FirebaseController {
                 for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                     Caption caption = documentSnapshot.toObject(Caption.class);
                     //insert caption to database
-                    mRepository.insertItem(caption);
+                    mRepository.insertSingleCaption(caption);
                 }
             }
         });
