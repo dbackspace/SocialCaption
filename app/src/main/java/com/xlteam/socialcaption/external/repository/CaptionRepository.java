@@ -70,7 +70,7 @@ public class CaptionRepository {
 
     public void searchCaptionByContainingContent(String content) {
         new Thread(() -> {
-            final List<Caption> result = mDatabase.captionDAO().searchByContainingContent(content.toLowerCase());
+            final List<Caption> result = mDatabase.captionDAO().searchComplexCaption(content.toLowerCase());
             execute(SEARCH_BY_CONTENT, result);
         }).start();
     }

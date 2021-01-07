@@ -32,4 +32,7 @@ public interface CaptionDAO {
 
     @Query("select * from caption_table where LOWER(_content) like '%' || :content || '%'")
     public List<Caption> searchByContainingContent(String content);
+
+    @Query("select * from caption_table join caption_fts_table on caption_table._content = caption_fts_table._content where caption_fts_table match :content")
+    public List<Caption> searchComplexCaption(String content);
 }
