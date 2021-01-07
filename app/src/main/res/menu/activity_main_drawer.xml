@@ -6,7 +6,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_home"
             android:title="@string/menu_home" />
         <item
             android:id="@+id/nav_gallery"
@@ -17,27 +17,27 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_rate"
-            android:icon="@drawable/ic_search"
+            android:icon="@drawable/ic_rate_app"
             android:title="Đánh giá" />
         <item
             android:id="@+id/nav_feedback"
-            android:icon="@drawable/ic_search"
+            android:icon="@drawable/ic_feedback"
             android:title="Phản hồi" />
         <item
             android:id="@+id/nav_share"
-            android:icon="@drawable/ic_search"
+            android:icon="@drawable/ic_share"
             android:title="Chia sẻ ứng dụng" />
         <item
             android:id="@+id/nav_other_app"
-            android:icon="@drawable/ic_search"
+            android:icon="@drawable/ic_other_app"
             android:title="Ứng dụng khác" />
         <item
             android:id="@+id/nav_term_of_use"
-            android:icon="@drawable/ic_search"
+            android:icon="@drawable/ic_term_of_use"
             android:title="Điều khoản sử dụng" />
         <item
             android:id="@+id/nav_license"
-            android:icon="@drawable/ic_search"
+            android:icon="@drawable/ic_license"
             android:title="Giấy phép" />
     </group>
 </menu>
