@@ -19,7 +19,8 @@ public class CaptionDataSource {
 
     public List<Caption> getDataFirstTime() {
         List<Caption> listData = new ArrayList<>();
-        listData.add(new Caption("content1", "pathImage1", 1, false));
+        listData.add(new Caption("huỳnh đức vũ", "pathImage1", 1, false));
+        listData.add(new Caption("mình ước được như anh ấy", "pathImage1", 1, false));
         listData.add(new Caption("content1", "pathImage1", 2, false));
         listData.add(new Caption("content1", "pathImage1", 3, false));
         listData.add(new Caption("content1", "pathImage1", 4, false));

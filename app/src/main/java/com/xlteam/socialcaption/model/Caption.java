@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "caption_table")
 public class Caption {
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private long id;
     @ColumnInfo(name = "_content")
     private String content;
     @ColumnInfo(name = "_path_image")
@@ -43,11 +43,11 @@ public class Caption {
         this.saved = saved;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

@@ -9,8 +9,9 @@ import androidx.room.RoomDatabase;
 
 import com.xlteam.socialcaption.external.dao.CaptionDAO;
 import com.xlteam.socialcaption.model.Caption;
+import com.xlteam.socialcaption.model.CaptionFts;
 
-@Database(entities = {Caption.class}, version = 1, exportSchema = false)
+@Database(entities = {Caption.class, CaptionFts.class}, version = 2, exportSchema = false)
 public abstract class MyDatabase extends RoomDatabase {
     private static final String TAG = "MyDatabase";
     private static volatile MyDatabase sInstance;
