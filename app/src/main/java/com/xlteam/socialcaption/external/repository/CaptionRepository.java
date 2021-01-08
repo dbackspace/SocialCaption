@@ -43,6 +43,10 @@ public class CaptionRepository {
         new Thread(() -> mDatabase.captionDAO().insertCaption(caption));
     }
 
+    public void updateCaption(Caption newCaption) {
+        new Thread(() -> mDatabase.captionDAO().updateCaption(newCaption));
+    }
+
     public void execute(int loaderTaskType, List<Caption> result) {
         if (result != null) {
             new Handler(Looper.getMainLooper()).post(() -> mCallback.loadResult(loaderTaskType, result));
