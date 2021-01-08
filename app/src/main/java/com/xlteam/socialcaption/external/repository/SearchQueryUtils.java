@@ -14,11 +14,11 @@ public class SearchQueryUtils {
         String[] selectionArgs = null;
         if (!TextUtils.isEmpty(keyword)) {
             String[] selectionArray = convertRegexString(keyword).split("\\s+");
-//            List<String> selectionList = new ArrayList<>();
-//            for (String selection : selectionArray) {
-//                selectionList.add("(?i).*[/][^/]*" + selection + "[^/]*");
-//            }
-//            selectionArgs = selectionList.toArray(new String[0]);
+            List<String> selectionList = new ArrayList<>();
+            for (String selection : selectionArray) {
+                selectionList.add("'%" + selection + "%'");
+            }
+            selectionArgs = selectionList.toArray(new String[0]);
         }
         return selectionArgs;
     }
