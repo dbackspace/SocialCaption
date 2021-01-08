@@ -32,6 +32,6 @@ public interface CaptionDAO {
     @Query("select * from caption_table where (_saved like :saved and _category_type like :categoryType)")
     public List<Caption> getCaptionBySavedAndCategoryType(int categoryType, boolean saved);
 
-    @Query("select * from caption_table join caption_fts_table on caption_table._content = caption_fts_table._content where caption_fts_table match '\' || :content || '\' ")
+    @Query("select distinct * from caption_table inner join caption_fts_table on caption_table._content = caption_fts_table._content where caption_fts_table match '\' || :content || '\' ")
     public List<Caption> searchByContainingContent(String content);
 }
