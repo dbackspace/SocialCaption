@@ -88,6 +88,9 @@ public class HomeFragment extends Fragment implements ICaptionRepository, Captio
     public void getCaptionList(int categoryNumber, boolean isBookmark) {
         //lấy database rồi gọi mViewMvc.binCaptions(captions);
         mRepository.getAllCaption();
+
+        // đây là hàm search go
+        mRepository.searchCaptionByContainingContent("ướ nh");
     }
 
     public void binCaptions(List<Caption> captions) {

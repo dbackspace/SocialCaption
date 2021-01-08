@@ -13,18 +13,21 @@ public class SearchQueryUtils {
 
     static final String[] SPECIAL_CHARS = {"*", "+", "^", "$", "[", "]", "{", "}", "(", ")", "."};
 
-    public static String[] getSelectionArgs(String keyword) {
-        String[] selectionArgs = null;
+    public static String getSelectionArgs(String keyword) {
+        StringBuilder params = new StringBuilder();
         if (!TextUtils.isEmpty(keyword)) {
             String[] selectionArray = convertRegexString(keyword).split("\\s+");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                selectionArgs = Arrays.stream(selectionArray)
-                        .map(args -> "'%" + args + "%'")
+                String[] selectionArgs = Arrays.stream(selectionArray)
+                        .map(args -> "*" + args + "* ")
                         .collect(Collectors.toList())
                         .toArray(new String[0]);
+                for (String args : selectionArgs) {
+                    params.append(args);
+                }
             }
         }
-        return selectionArgs;
+        return params.toString();
     }
 
     private static String convertRegexString(String keyword) {

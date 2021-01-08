@@ -76,25 +76,9 @@ public class CaptionRepository {
 
     public void searchCaptionByContainingContent(String content) {
         new Thread(() -> {
-            final List<Caption> result = searchContentComplex(content);
+            String selectionArgs = SearchQueryUtils.getSelectionArgs(content.trim());
+            final List<Caption> result = mDatabase.captionDAO().searchByContainingContent(selectionArgs);
             execute(SEARCH_BY_CONTENT, result);
         }).start();
-    }
-
-    public List<Caption> searchContentComplex(String content) {
-        content = content.trim();
-        StringBuilder query = new StringBuilder("select * from caption_table where ");
-        String[] selectionArgs = SearchQueryUtils.getSelectionArgs(content);
-        if (selectionArgs.length > 1) {
-            for (int i = 0; i < selectionArgs.length; ++i) {
-                query.append("(_content like ").append(selectionArgs[i]).append(")");
-                if (i < selectionArgs.length - 1) {
-                    query.append(" and ");
-                }
-            }
-        } else {
-            query.append("_content like ").append("'").append(selectionArgs[0]).append("' ");
-        }
-        return mDatabase.captionDAO().searchByContainingContent(new SimpleSQLiteQuery(query.toString()));
     }
 }
