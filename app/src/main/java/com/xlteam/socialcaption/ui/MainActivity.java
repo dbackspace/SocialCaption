@@ -31,7 +31,6 @@ import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-    private MenuItem searchItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,12 +60,10 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.nav_home:
                     navController.navigate(R.id.nav_home);
                     drawer.closeDrawer(GravityCompat.START, false);
-                    showSearchButton(true);
                     break;
                 case R.id.nav_gallery:
                     navController.navigate(R.id.nav_gallery);
                     drawer.closeDrawer(GravityCompat.START, false);
-                    showSearchButton(false);
                     break;
                 case R.id.nav_rate:
                     drawer.closeDrawer(GravityCompat.START, false);
@@ -92,29 +89,6 @@ public class MainActivity extends AppCompatActivity {
 
             return false;
         });
-    }
-
-    private void showSearchButton(boolean isVisible) {
-        if (searchItem != null) {
-            searchItem.setVisible(isVisible);
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu_toolbar, menu);
-
-        searchItem = menu.findItem(R.id.action_search);
-
-        SearchManager searchManager = (SearchManager) MainActivity.this.getSystemService(Context.SEARCH_SERVICE);
-
-        SearchView searchView;
-        if (searchItem != null && searchManager != null) {
-            searchView = (SearchView) searchItem.getActionView();
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(MainActivity.this.getComponentName()));
-        }
-        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
