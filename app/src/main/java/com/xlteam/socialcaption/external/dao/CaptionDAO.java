@@ -4,7 +4,9 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.RawQuery;
 import androidx.room.Update;
+import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import com.xlteam.socialcaption.model.Caption;
 
@@ -30,9 +32,6 @@ public interface CaptionDAO {
     @Query("select * from caption_table where (_saved like :saved and _category_type like :categoryType)")
     public List<Caption> getCaptionBySavedAndCategoryType(int categoryType, boolean saved);
 
-    @Query("select * from caption_table where LOWER(_content) like '%' || :content || '%'")
-    public List<Caption> searchByContainingContent(String content);
-
-    @Query("select * from caption_table join caption_fts_table on caption_table._content = caption_fts_table._content where caption_fts_table match :content")
-    public List<Caption> searchComplexCaption(String content);
+    @RawQuery
+    public List<Caption> searchByContainingContent(SimpleSQLiteQuery rawQuery);
 }
