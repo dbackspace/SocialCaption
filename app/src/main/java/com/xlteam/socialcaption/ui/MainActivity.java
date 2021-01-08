@@ -1,8 +1,10 @@
 package com.xlteam.socialcaption.ui;
 
 import android.app.SearchManager;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,7 +22,10 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.xlteam.socialcaption.BuildConfig;
 import com.xlteam.socialcaption.R;
+import com.xlteam.socialcaption.external.utility.Constant;
+import com.xlteam.socialcaption.external.utility.Utility;
 import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -64,12 +69,20 @@ public class MainActivity extends AppCompatActivity {
                     showSearchButton(false);
                     break;
                 case R.id.nav_rate:
+                    drawer.closeDrawer(GravityCompat.START, false);
+                    rateApp();
                     break;
                 case R.id.nav_feedback:
+                    drawer.closeDrawer(GravityCompat.START, false);
+                    Utility.sendEmailFeedback(this);
                     break;
                 case R.id.nav_share:
+                    drawer.closeDrawer(GravityCompat.START, false);
+                    shareApp();
                     break;
                 case R.id.nav_other_app:
+                    drawer.closeDrawer(GravityCompat.START, false);
+                    recommendApp();
                     break;
                 case R.id.nav_term_of_use:
                     break;
@@ -109,5 +122,42 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    private void rateApp() {
+        Uri uri = Uri.parse(Constant.LINK_MARKET_APP + BuildConfig.APPLICATION_ID);
+        Intent intentMarket = new Intent(Intent.ACTION_VIEW, uri);
+        intentMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NEW_DOCUMENT | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        try {
+            startActivity(intentMarket);
+        } catch (ActivityNotFoundException e) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Constant.LINK_GOOGLE_PLAY_APP + BuildConfig.APPLICATION_ID)));
+        }
+        // TODO: phát triển thêm tính năng rate in app
+    }
+
+    private void recommendApp() {
+        Uri uri = Uri.parse(Constant.LINK_MARKET_DEVELOPER);
+        Intent intentMarket = new Intent(Intent.ACTION_VIEW, uri);
+        intentMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NEW_DOCUMENT | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        try {
+            startActivity(intentMarket);
+        } catch (ActivityNotFoundException e) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Constant.LINK_GOOGLE_PLAY_DEVELOPER)));
+        }
+        // TODO: phát triển thêm tính năng hiện dialog show các app gợi ý trực tiếp
+    }
+
+    private void shareApp() {
+        try {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
+            String shareMessage = Constant.LINK_GOOGLE_PLAY_APP + BuildConfig.APPLICATION_ID;
+            shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+            startActivity(Intent.createChooser(shareIntent, getString(R.string.choose_one)));
+        } catch (Exception e) {
+            //e.toString();
+        }
     }
 }
