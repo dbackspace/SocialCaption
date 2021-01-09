@@ -14,16 +14,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.xlteam.socialcaption.R;
-import com.xlteam.socialcaption.external.repository.CaptionRepository;
-import com.xlteam.socialcaption.external.repository.ICaptionRepository;
-import com.xlteam.socialcaption.model.Caption;
+import com.xlteam.socialcaption.external.repository.AbsRepository;
+import com.xlteam.socialcaption.external.repository.CommonCaptionRepository;
+import com.xlteam.socialcaption.external.repository.IRepository;
+import com.xlteam.socialcaption.external.repository.RepositoryFactory;
+import com.xlteam.socialcaption.model.CommonCaption;
 
 import java.util.List;
 
 import static com.xlteam.socialcaption.external.utility.Constant.LoaderTaskType.LOAD_ALL;
+import static com.xlteam.socialcaption.external.utility.Constant.RepositoryType.COMMON_REPOSITORY;
 
-public class HomeFragment extends Fragment implements ICaptionRepository, CaptionAdapter.Callback {
-    private CaptionRepository mRepository;
+public class HomeFragment extends Fragment implements IRepository, CaptionAdapter.Callback {
+    private static final String TAG = "HomeFragment";
+
+    private CommonCaptionRepository mRepository;
     private Context mContext;
     private RecyclerView rvCaption;
     private TextView tvNumberCaption;
@@ -39,7 +44,7 @@ public class HomeFragment extends Fragment implements ICaptionRepository, Captio
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        mRepository = new CaptionRepository(mContext, this);
+        mRepository = (CommonCaptionRepository) RepositoryFactory.createRepository(mContext, this, COMMON_REPOSITORY);
         tvNumberCaption = root.findViewById(R.id.tv_number_caption);
         tabLayoutCategory = root.findViewById(R.id.tab_layout_category);
         tvBookmarkCategory = root.findViewById(R.id.tv_bookmark_select);
@@ -79,7 +84,7 @@ public class HomeFragment extends Fragment implements ICaptionRepository, Captio
     }
 
     @Override
-    public void loadResult(int loaderTaskType, List<Caption> result) {
+    public void loadResult(int loaderTaskType, List<CommonCaption> result) {
         if (loaderTaskType == LOAD_ALL) {
             binCaptions(result);
         }
@@ -90,17 +95,17 @@ public class HomeFragment extends Fragment implements ICaptionRepository, Captio
         mRepository.getAllCaption();
 
         // đây là hàm search go
-        mRepository.searchCaptionByContainingContent("ướ nh");
+        mRepository.searchCaptionByContainingContent("uoc");
     }
 
-    public void binCaptions(List<Caption> captions) {
+    public void binCaptions(List<CommonCaption> captions) {
         tvNumberCaption.setText(mContext.getString(R.string.number_captions, captions.size()));
         CaptionAdapter adapter = new CaptionAdapter(getContext(), captions, this);
         rvCaption.setAdapter(adapter);
     }
 
     @Override
-    public void openCaptionPreview(Caption caption) {
+    public void openCaptionPreview(CommonCaption caption) {
         PreviewCaptionDialogBuilder previewCaptionDialogBuilder = new PreviewCaptionDialogBuilder(getContext(), caption);
         previewCaptionDialogBuilder.build().show();
     }

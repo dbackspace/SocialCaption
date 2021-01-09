@@ -2,11 +2,12 @@ package com.xlteam.socialcaption.model;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.Fts4;
+import androidx.room.PrimaryKey;
 
-@Fts4(contentEntity = Caption.class)
-@Entity(tableName = "caption_fts_table")
-public class CaptionFts {
+@Entity(tableName = "common_caption_table")
+public class CommonCaption {
+    @PrimaryKey(autoGenerate = true)
+    private long id;
     @ColumnInfo(name = "_content")
     private String content;
     @ColumnInfo(name = "_path_image")
@@ -16,30 +17,14 @@ public class CaptionFts {
     @ColumnInfo(name = "_saved")
     private boolean saved;
 
-    public CaptionFts() {
+    public CommonCaption() {
     }
 
-    public CaptionFts(String content, String pathImage, int categoryType, boolean saved) {
+    public CommonCaption(String content, String pathImage, int categoryType, boolean saved) {
         this.content = content;
         this.pathImage = pathImage;
         this.categoryType = categoryType;
         this.saved = saved;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getPathImage() {
-        return pathImage;
-    }
-
-    public void setPathImage(String pathImage) {
-        this.pathImage = pathImage;
     }
 
     public int getCategoryType() {
@@ -56,5 +41,29 @@ public class CaptionFts {
 
     public void setSaved(boolean saved) {
         this.saved = saved;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public String getPathImage() {
+        return pathImage;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setPathImage(String pathImage) {
+        this.pathImage = pathImage;
     }
 }

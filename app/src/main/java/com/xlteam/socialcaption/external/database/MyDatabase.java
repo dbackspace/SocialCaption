@@ -7,16 +7,19 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.xlteam.socialcaption.external.dao.CaptionDAO;
-import com.xlteam.socialcaption.model.Caption;
-import com.xlteam.socialcaption.model.CaptionFts;
+import com.xlteam.socialcaption.external.dao.CommonCaptionDAO;
+import com.xlteam.socialcaption.external.dao.UserCaptionDAO;
+import com.xlteam.socialcaption.model.CommonCaption;
+import com.xlteam.socialcaption.model.CommonCaptionFts;
 
-@Database(entities = {Caption.class, CaptionFts.class}, version = 2, exportSchema = false)
+@Database(entities = {CommonCaption.class, CommonCaptionFts.class}, version = 3, exportSchema = false)
 public abstract class MyDatabase extends RoomDatabase {
     private static final String TAG = "MyDatabase";
     private static volatile MyDatabase sInstance;
 
-    public abstract CaptionDAO captionDAO();
+    public abstract CommonCaptionDAO commonCaptionDAO();
+
+    public abstract UserCaptionDAO userCaptionDAO();
 
     public static MyDatabase getInstance(Context context) {
         if (sInstance == null) {

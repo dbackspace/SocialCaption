@@ -11,20 +11,22 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.xlteam.socialcaption.R;
-import com.xlteam.socialcaption.model.Caption;
+import com.xlteam.socialcaption.model.CommonCaption;
 
 import java.util.List;
 
 public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHolder> {
-    private List<Caption> mCaptions;
+    private static final String TAG = "CaptionAdapter";
+
+    private List<CommonCaption> mCaptions;
     private Context mContext;
     private Callback mCallback;
 
     public interface Callback {
-        void openCaptionPreview(Caption caption);
+        void openCaptionPreview(CommonCaption caption);
     }
 
-    public CaptionAdapter(Context context, List<Caption> captions, Callback callback) {
+    public CaptionAdapter(Context context, List<CommonCaption> captions, Callback callback) {
         mContext = context;
         mCaptions = captions;
         mCallback = callback;
@@ -39,7 +41,7 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Caption caption = mCaptions.get(position);
+        CommonCaption caption = mCaptions.get(position);
         holder.tvCaptionContent.setText(caption.getContent());
         holder.imgHeart.setOnClickListener(v -> {
             holder.imgHeart.setActivated(!holder.imgHeart.isActivated());

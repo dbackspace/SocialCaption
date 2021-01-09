@@ -3,6 +3,7 @@ package com.xlteam.socialcaption.external.datasource;
 import java.util.ArrayList;
 
 public class ColorDataSource {
+    private static final String TAG = "ColorDataSource";
     private ArrayList<String> colorsMini = new ArrayList<>();
     private ArrayList<String> colors = new ArrayList<>();
 

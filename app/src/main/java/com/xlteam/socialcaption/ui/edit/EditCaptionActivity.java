@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.xlteam.socialcaption.R;
 
 public class EditCaptionActivity extends AppCompatActivity {
+    private static final String TAG = "EditCaptionActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

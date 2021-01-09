@@ -7,15 +7,17 @@ import android.view.Window;
 import android.widget.TextView;
 
 import com.xlteam.socialcaption.R;
-import com.xlteam.socialcaption.model.Caption;
+import com.xlteam.socialcaption.model.CommonCaption;
 
 import java.util.Objects;
 
 public class PreviewCaptionDialogBuilder {
+    private static final String TAG = "PreviewCaptionDialogBuilder";
+
     private Context mContext;
     private Dialog mDialog;
 
-    public PreviewCaptionDialogBuilder(Context context, Caption caption) {
+    public PreviewCaptionDialogBuilder(Context context, CommonCaption caption) {
         mDialog = new Dialog(context, R.style.Theme_SocialCaption);
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(mDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));

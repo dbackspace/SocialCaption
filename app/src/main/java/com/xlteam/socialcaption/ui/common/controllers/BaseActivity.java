@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.xlteam.socialcaption.common.dependencyinjection.ActivityCompositionRoot;
 import com.xlteam.socialcaption.common.dependencyinjection.ControllerCompositionRoot;
-import com.xlteam.socialcaption.ui.CustomApplication;
+import com.xlteam.socialcaption.ui.MyApplication;
 
 public class BaseActivity extends AppCompatActivity {
     private ActivityCompositionRoot mActivityCompositionRoot;
@@ -13,7 +13,7 @@ public class BaseActivity extends AppCompatActivity {
     public ActivityCompositionRoot getActivityCompositionRoot() {
         if (mActivityCompositionRoot == null) {
             mActivityCompositionRoot = new ActivityCompositionRoot(
-                    ((CustomApplication) getApplication()).getCompositionRoot(),
+                    ((MyApplication) getApplication()).getCompositionRoot(),
                     this
             );
         }

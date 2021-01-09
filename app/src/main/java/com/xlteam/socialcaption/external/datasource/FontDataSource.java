@@ -1,11 +1,15 @@
 package com.xlteam.socialcaption.external.datasource;
 
+
+import android.util.Log;
+
 import com.xlteam.socialcaption.model.Font;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class FontDataSource {
+    private static final String TAG = "FontDataSource";
     private ArrayList<Font> fontsDialogText = new ArrayList<>();
 
     private static class SingletonHelper {
