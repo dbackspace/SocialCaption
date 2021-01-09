@@ -13,7 +13,7 @@ import com.xlteam.socialcaption.model.CommonCaption;
 import com.xlteam.socialcaption.model.CommonCaptionFts;
 import com.xlteam.socialcaption.model.UserCaption;
 
-@Database(entities = {CommonCaption.class, CommonCaptionFts.class, UserCaption.class}, version = 3, exportSchema = false)
+@Database(entities = {CommonCaption.class, CommonCaptionFts.class, UserCaption.class}, version = 4, exportSchema = false)
 public abstract class MyDatabase extends RoomDatabase {
     private static final String TAG = "MyDatabase";
     private static volatile MyDatabase sInstance;
