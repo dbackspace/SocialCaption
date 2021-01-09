@@ -53,9 +53,11 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.nav_home:
                     navController.navigate(R.id.nav_home);
+                    drawer.closeDrawer(GravityCompat.START, true);
                     break;
                 case R.id.nav_gallery:
                     navController.navigate(R.id.nav_gallery);
+                    drawer.closeDrawer(GravityCompat.START, true);
                     break;
                 case R.id.nav_rate:
                     rateApp();
@@ -74,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.nav_license:
                     break;
             }
-            drawer.closeDrawer(GravityCompat.START, false);
             return false;
         });
     }
