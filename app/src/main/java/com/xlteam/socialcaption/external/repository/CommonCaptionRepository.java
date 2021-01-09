@@ -3,6 +3,7 @@ package com.xlteam.socialcaption.external.repository;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import com.xlteam.socialcaption.external.datasource.CaptionDataSource;
 import com.xlteam.socialcaption.external.utility.SearchQueryUtils;
@@ -47,6 +48,7 @@ public class CommonCaptionRepository extends AbsRepository{
     public void execute(int loaderTaskType, List<CommonCaption> result) {
         if (result != null) {
             new Handler(Looper.getMainLooper()).post(() -> mCallback.loadResult(loaderTaskType, result));
+            Log.d(TAG, "execute done: type = " + loaderTaskType);
         }
     }
 

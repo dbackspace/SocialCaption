@@ -8,4 +8,5 @@ public class UserCaptionRepository extends AbsRepository{
     public UserCaptionRepository(Context context, ILoader callback) {
         super(context, callback);
     }
+
 }
