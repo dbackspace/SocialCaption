@@ -52,7 +52,7 @@ public class CommonCaptionRepository extends AbsRepository{
         }
     }
 
-    public void getAllCaption() {
+    public void getAllCaption(boolean isBookmark) {
         new Thread(() -> {
             final List<CommonCaption> result = mDatabase.commonCaptionDAO().getAllCaption();
             execute(LOAD_ALL, result);
