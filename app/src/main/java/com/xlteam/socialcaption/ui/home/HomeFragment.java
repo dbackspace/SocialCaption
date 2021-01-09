@@ -14,9 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.xlteam.socialcaption.R;
-import com.xlteam.socialcaption.external.repository.AbsRepository;
 import com.xlteam.socialcaption.external.repository.CommonCaptionRepository;
-import com.xlteam.socialcaption.external.repository.IRepository;
+import com.xlteam.socialcaption.external.repository.ILoader;
 import com.xlteam.socialcaption.external.repository.RepositoryFactory;
 import com.xlteam.socialcaption.model.CommonCaption;
 
@@ -25,7 +24,7 @@ import java.util.List;
 import static com.xlteam.socialcaption.external.utility.Constant.LoaderTaskType.LOAD_ALL;
 import static com.xlteam.socialcaption.external.utility.Constant.RepositoryType.COMMON_REPOSITORY;
 
-public class HomeFragment extends Fragment implements IRepository, CaptionAdapter.Callback {
+public class HomeFragment extends Fragment implements ILoader<CommonCaption>, CaptionAdapter.Callback {
     private static final String TAG = "HomeFragment";
 
     private CommonCaptionRepository mRepository;

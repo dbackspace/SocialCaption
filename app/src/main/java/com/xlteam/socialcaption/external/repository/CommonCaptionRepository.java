@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.xlteam.socialcaption.external.database.MyDatabase;
 import com.xlteam.socialcaption.external.datasource.CaptionDataSource;
 import com.xlteam.socialcaption.external.utility.SearchQueryUtils;
 import com.xlteam.socialcaption.model.CommonCaption;
@@ -20,7 +19,7 @@ public class CommonCaptionRepository extends AbsRepository{
     private static final String TAG = "CommonCaptionRepository";
 
 
-    public CommonCaptionRepository(Context context, IRepository callback) {
+    public CommonCaptionRepository(Context context, ILoader callback) {
         super(context, callback);
     }
 

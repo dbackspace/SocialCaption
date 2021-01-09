@@ -8,7 +8,7 @@ import static com.xlteam.socialcaption.external.utility.Constant.RepositoryType.
 public class RepositoryFactory {
     private static final String TAG = "RepositoryFactory";
 
-    public static AbsRepository createRepository(Context context, IRepository callback, int repositoryType) {
+    public static AbsRepository createRepository(Context context, ILoader callback, int repositoryType) {
         if (repositoryType == COMMON_REPOSITORY)
             return new CommonCaptionRepository(context, callback);
         else if (repositoryType == USER_REPOSITORY)

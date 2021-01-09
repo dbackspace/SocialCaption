@@ -4,13 +4,13 @@ import android.app.Application;
 
 import com.xlteam.socialcaption.common.dependencyinjection.CompositionRoot;
 import com.xlteam.socialcaption.external.repository.CommonCaptionRepository;
-import com.xlteam.socialcaption.external.repository.IRepository;
+import com.xlteam.socialcaption.external.repository.ILoader;
 import com.xlteam.socialcaption.model.CommonCaption;
 
 import java.util.List;
 
 
-public class MyApplication extends Application implements IRepository {
+public class MyApplication extends Application implements ILoader<CommonCaption> {
     private static final String TAG = "MyApplication";
 
     private CompositionRoot mCompositionRoot;
