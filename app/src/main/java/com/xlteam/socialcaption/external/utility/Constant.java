@@ -10,6 +10,12 @@ public class Constant {
     public static final String EDITOR = "EDITOR";
     public static final String EDITOR_CAU_THOAI_SIZE = "EDITOR_CAU_THOAI_SIZE";
 
+    public static final int TYPE_THA_THINH = 1;
+    public static final int TYPE_TAM_TRANG = 2;
+    public static final int TYPE_CUOC_SONG = 3;
+    public static final int TYPE_BAN_BE = 4;
+    public static final int TYPE_GIA_DINH = 5;
+
     public static class LoaderTaskType {
         private LoaderTaskType() {
         }
