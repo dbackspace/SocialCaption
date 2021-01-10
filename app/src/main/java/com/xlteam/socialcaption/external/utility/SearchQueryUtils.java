@@ -19,7 +19,7 @@ public class SearchQueryUtils {
             String[] selectionArray = convertRegexString(keyword).split("\\s+");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 String[] selectionArgs = Arrays.stream(selectionArray)
-                        .map(args -> "*" + args + "* ")
+                        .map(args -> "*\"" + args + "\"* ")
                         .collect(Collectors.toList())
                         .toArray(new String[0]);
                 for (String args : selectionArgs) {
