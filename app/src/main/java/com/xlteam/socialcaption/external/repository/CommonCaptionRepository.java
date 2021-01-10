@@ -3,6 +3,7 @@ package com.xlteam.socialcaption.external.repository;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.xlteam.socialcaption.external.datasource.CaptionDataSource;
@@ -11,12 +12,14 @@ import com.xlteam.socialcaption.model.CommonCaption;
 
 import java.util.List;
 
+import androidx.sqlite.db.SimpleSQLiteQuery;
+
 import static com.xlteam.socialcaption.external.utility.Constant.LoaderTaskType.LOAD_ALL;
 import static com.xlteam.socialcaption.external.utility.Constant.LoaderTaskType.LOAD_BY_CATEGORY_TYPE;
 import static com.xlteam.socialcaption.external.utility.Constant.LoaderTaskType.LOAD_BY_CATEGORY_TYPE_AND_SAVED;
 import static com.xlteam.socialcaption.external.utility.Constant.LoaderTaskType.SEARCH_BY_CONTENT;
 
-public class CommonCaptionRepository extends AbsRepository{
+public class CommonCaptionRepository extends AbsRepository {
     private static final String TAG = "CommonCaptionRepository";
 
 
@@ -73,11 +76,32 @@ public class CommonCaptionRepository extends AbsRepository{
         }).start();
     }
 
+//    public void searchCaptionByContainingsContent(String content) {
+//        new Thread(() -> {
+//            String selectionArgs = SearchQueryUtils.getSelectionArgs(content.trim());
+//            final List<CommonCaption> result = mDatabase.commonCaptionDAO().searchByContainingContent(selectionArgs);
+//            execute(SEARCH_BY_CONTENT, result);
+//        }).start();
+//    }
+
     public void searchCaptionByContainingContent(String content) {
-        new Thread(() -> {
-            String selectionArgs = SearchQueryUtils.getSelectionArgs(content.trim());
-            final List<CommonCaption> result = mDatabase.commonCaptionDAO().searchByContainingContent(selectionArgs);
-            execute(SEARCH_BY_CONTENT, result);
-        }).start();
+        if (!TextUtils.isEmpty(content)) {
+            new Thread(() -> {
+                StringBuilder query = new StringBuilder("select * from common_caption_table where ");
+                String[] selectionArgs = SearchQueryUtils.getSelectionArgs(content);
+                if (selectionArgs.length > 1) {
+                    for (int i = 0; i < selectionArgs.length; ++i) {
+                        query.append("(_content like ").append(selectionArgs[i]).append(")");
+                        if (i < selectionArgs.length - 1) {
+                            query.append(" and ");
+                        }
+                    }
+                } else {
+                    query.append("_content like ").append("").append(selectionArgs[0]).append(" ");
+                }
+                final List<CommonCaption> result = mDatabase.commonCaptionDAO().searchByContainingContent(new SimpleSQLiteQuery(query.toString()));
+                execute(SEARCH_BY_CONTENT, result);
+            }).start();
+        }
     }
 }

@@ -4,7 +4,9 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.RawQuery;
 import androidx.room.Update;
+import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import com.xlteam.socialcaption.model.CommonCaption;
 
@@ -31,5 +33,8 @@ public interface CommonCaptionDAO {
     List<CommonCaption> getCaptionBySavedAndCategoryType(int categoryType, boolean saved);
 
     @Query("select distinct * from common_caption_table inner join common_caption_fts_table on common_caption_fts_table._content = common_caption_table._content where common_caption_fts_table match '' || :content || ''")
-    List<CommonCaption> searchByContainingContent(String content);
+    List<CommonCaption> searchByContainingsContent(String content);
+
+    @RawQuery
+    List<CommonCaption> searchByContainingContent(SimpleSQLiteQuery sqLiteQuery);
 }
