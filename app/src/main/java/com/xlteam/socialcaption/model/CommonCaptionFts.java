@@ -4,9 +4,9 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Fts4;
 
-@Fts4(contentEntity = Caption.class)
-@Entity(tableName = "caption_fts_table")
-public class CaptionFts {
+@Fts4(contentEntity = CommonCaption.class)
+@Entity(tableName = "common_caption_fts_table")
+public class CommonCaptionFts {
     @ColumnInfo(name = "_content")
     private String content;
     @ColumnInfo(name = "_path_image")
@@ -16,10 +16,10 @@ public class CaptionFts {
     @ColumnInfo(name = "_saved")
     private boolean saved;
 
-    public CaptionFts() {
+    public CommonCaptionFts() {
     }
 
-    public CaptionFts(String content, String pathImage, int categoryType, boolean saved) {
+    public CommonCaptionFts(String content, String pathImage, int categoryType, boolean saved) {
         this.content = content;
         this.pathImage = pathImage;
         this.categoryType = categoryType;

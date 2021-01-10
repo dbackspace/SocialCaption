@@ -19,4 +19,12 @@ public class Constant {
         public static final int LOAD_BY_CATEGORY_TYPE_AND_SAVED = 2;
         public static final int SEARCH_BY_CONTENT = 3;
     }
+
+    public static class RepositoryType {
+        private RepositoryType() {
+        }
+
+        public static final int COMMON_REPOSITORY = 0;
+        public static final int USER_REPOSITORY = 1;
+    }
 }

@@ -18,6 +18,8 @@ import com.xlteam.socialcaption.R;
 import de.cketti.mailto.EmailIntentBuilder;
 
 public class Utility {
+    private static final String TAG = "Utility";
+
     public static void setColorForView(View view, String color) {
         int intColor = Color.parseColor(color);
         Drawable drawable = view.getBackground();
