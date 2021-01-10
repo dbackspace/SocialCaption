@@ -10,13 +10,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.xlteam.socialcaption.R;
-import com.xlteam.socialcaption.model.CommonCaption;
+import com.xlteam.socialcaption.model.UserCaption;
 
 import java.util.List;
 
 public class GalleryFragment extends Fragment {
     private RecyclerView rvGallery;
-    private List<CommonCaption> commonCaptionList;
+    private List<UserCaption> mUserCaptions;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
