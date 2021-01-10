@@ -20,14 +20,13 @@ import com.xlteam.socialcaption.external.datasource.ColorDataSource;
 import com.xlteam.socialcaption.external.datasource.FontDataSource;
 import com.xlteam.socialcaption.external.utility.PrefUtils;
 import com.xlteam.socialcaption.external.utility.UiUtils;
-import com.xlteam.socialcaption.model.Caption;
+import com.xlteam.socialcaption.model.CommonCaption;
 import com.xlteam.socialcaption.model.Font;
 import com.xlteam.socialcaption.ui.edit.adapter.DetailForAlignAdapter;
 import com.xlteam.socialcaption.ui.edit.adapter.DetailForColorAdapter;
 import com.xlteam.socialcaption.ui.edit.adapter.DetailForFontAdapter;
 import com.xlteam.socialcaption.ui.edit.adapter.ToolColorAlignFontAdapter;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +42,7 @@ public class EditCaptionActivity extends AppCompatActivity
     private ImageView mBtnBackAndCancel;
     private TextView mBtnSaveImage;
     private EditText mEdtCaption;
-    private Caption mCaption;
+    private CommonCaption mCommonCaption;
     public static final int[] TOOL_FOR_COLOR_FONT_ALIGN_POST = {R.drawable.ic_baseline_color_lens_24, R.drawable.ic_baseline_font_download_24, R.drawable.ic_baseline_format_color_text_24, R.drawable.ic_baseline_format_align_justify_24, R.drawable.ic_baseline_format_size_24};
     private int textSize; // 0 -> 4
 
@@ -60,8 +59,8 @@ public class EditCaptionActivity extends AppCompatActivity
         rvToolSecondary = findViewById(R.id.rv_edit_tool_secondary);
 
         // get Caption
-        mCaption = getIntent().getExtras().getParcelable("CAPTION");
-        mEdtCaption.setText(mCaption.getContent());
+        mCommonCaption = getIntent().getExtras().getParcelable("CAPTION");
+        mEdtCaption.setText(mCommonCaption.getContent());
 
         // init adapter
         // color background

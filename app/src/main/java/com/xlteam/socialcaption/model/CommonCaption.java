@@ -1,11 +1,14 @@
 package com.xlteam.socialcaption.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "caption_table")
-public class Caption {
+@Entity(tableName = "common_caption_table")
+public class CommonCaption implements Parcelable {
     @PrimaryKey(autoGenerate = true)
     private long id;
     @ColumnInfo(name = "_content")
@@ -17,15 +20,35 @@ public class Caption {
     @ColumnInfo(name = "_saved")
     private boolean saved;
 
-    public Caption() {
+    public CommonCaption() {
     }
 
-    public Caption(String content, String pathImage, int categoryType, boolean saved) {
+    public CommonCaption(String content, String pathImage, int categoryType, boolean saved) {
         this.content = content;
         this.pathImage = pathImage;
         this.categoryType = categoryType;
         this.saved = saved;
     }
+
+    protected CommonCaption(Parcel in) {
+        id = in.readLong();
+        content = in.readString();
+        pathImage = in.readString();
+        categoryType = in.readInt();
+        saved = in.readByte() != 0;
+    }
+
+    public static final Creator<CommonCaption> CREATOR = new Creator<CommonCaption>() {
+        @Override
+        public CommonCaption createFromParcel(Parcel in) {
+            return new CommonCaption(in);
+        }
+
+        @Override
+        public CommonCaption[] newArray(int size) {
+            return new CommonCaption[size];
+        }
+    };
 
     public int getCategoryType() {
         return categoryType;
@@ -65,5 +88,19 @@ public class Caption {
 
     public void setPathImage(String pathImage) {
         this.pathImage = pathImage;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
+        dest.writeString(content);
+        dest.writeString(pathImage);
+        dest.writeInt(categoryType);
+        dest.writeByte((byte) (saved ? 1 : 0));
     }
 }
