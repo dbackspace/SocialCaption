@@ -32,9 +32,6 @@ public interface CommonCaptionDAO {
     @Query("select * from common_caption_table where (_saved like :saved and _category_type like :categoryType)")
     List<CommonCaption> getCaptionBySavedAndCategoryType(int categoryType, boolean saved);
 
-    @Query("select distinct * from common_caption_table inner join common_caption_fts_table on common_caption_fts_table._content = common_caption_table._content where common_caption_fts_table match '' || :content || ''")
-    List<CommonCaption> searchByContainingsContent(String content);
-
     @RawQuery
     List<CommonCaption> searchByContainingContent(SimpleSQLiteQuery sqLiteQuery);
 }

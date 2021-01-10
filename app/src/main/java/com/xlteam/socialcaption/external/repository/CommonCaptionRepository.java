@@ -76,29 +76,10 @@ public class CommonCaptionRepository extends AbsRepository {
         }).start();
     }
 
-//    public void searchCaptionByContainingsContent(String content) {
-//        new Thread(() -> {
-//            String selectionArgs = SearchQueryUtils.getSelectionArgs(content.trim());
-//            final List<CommonCaption> result = mDatabase.commonCaptionDAO().searchByContainingContent(selectionArgs);
-//            execute(SEARCH_BY_CONTENT, result);
-//        }).start();
-//    }
-
     public void searchCaptionByContainingContent(String content) {
         if (!TextUtils.isEmpty(content)) {
             new Thread(() -> {
-                StringBuilder query = new StringBuilder("select * from common_caption_table where ");
-                String[] selectionArgs = SearchQueryUtils.getSelectionArgs(content);
-                if (selectionArgs.length > 1) {
-                    for (int i = 0; i < selectionArgs.length; ++i) {
-                        query.append("(_content like ").append(selectionArgs[i]).append(")");
-                        if (i < selectionArgs.length - 1) {
-                            query.append(" and ");
-                        }
-                    }
-                } else {
-                    query.append("_content like ").append("").append(selectionArgs[0]).append(" ");
-                }
+                StringBuilder query = SearchQueryUtils.getSelectionArgs(content.trim());
                 final List<CommonCaption> result = mDatabase.commonCaptionDAO().searchByContainingContent(new SimpleSQLiteQuery(query.toString()));
                 execute(SEARCH_BY_CONTENT, result);
             }).start();
