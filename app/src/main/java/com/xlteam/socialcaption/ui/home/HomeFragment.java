@@ -29,6 +29,7 @@ import com.xlteam.socialcaption.model.CommonCaption;
 import java.util.List;
 
 import static com.xlteam.socialcaption.external.utility.Constant.LoaderTaskType.LOAD_ALL;
+import static com.xlteam.socialcaption.external.utility.Constant.LoaderTaskType.SEARCH_BY_CONTENT;
 import static com.xlteam.socialcaption.external.utility.Constant.RepositoryType.COMMON_REPOSITORY;
 
 public class HomeFragment extends Fragment implements ILoader<CommonCaption>, CaptionAdapter.Callback {
@@ -100,6 +101,8 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
     @Override
     public void loadResult(int loaderTaskType, List<CommonCaption> result) {
         if (loaderTaskType == LOAD_ALL) {
+            binCaptions(result);
+        } else if (loaderTaskType == SEARCH_BY_CONTENT) {
             binCaptions(result);
         }
     }
