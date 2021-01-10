@@ -51,6 +51,7 @@
         android:layout_marginBottom="75dp">
 
         <ImageView
+            android:id="@+id/img_edit_background"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/profile_image" />

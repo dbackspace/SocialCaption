@@ -1,6 +1,10 @@
 package com.xlteam.socialcaption.ui.edit;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
@@ -9,6 +13,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +32,8 @@ import com.xlteam.socialcaption.ui.edit.adapter.DetailForColorAdapter;
 import com.xlteam.socialcaption.ui.edit.adapter.DetailForFontAdapter;
 import com.xlteam.socialcaption.ui.edit.adapter.ToolColorAlignFontAdapter;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +42,7 @@ import static com.xlteam.socialcaption.external.utility.Constant.EDITOR_CAU_THOA
 
 public class EditCaptionActivity extends AppCompatActivity
         implements DetailForFontAdapter.DetailForFontCallback, DetailForColorAdapter.ColorSelectCallback, DetailForAlignAdapter.AlignSelectCallback {
+    private static final int RESULT_LOAD_IMG = 1;
     private List<Font> mFonts;
     private ArrayList<String> mColors;
     private RecyclerView rvToolPrimary;
@@ -43,8 +51,10 @@ public class EditCaptionActivity extends AppCompatActivity
     private TextView mBtnSaveImage;
     private EditText mEdtCaption;
     private CommonCaption mCommonCaption;
-    public static final int[] TOOL_FOR_COLOR_FONT_ALIGN_POST = {R.drawable.ic_baseline_color_lens_24, R.drawable.ic_baseline_font_download_24, R.drawable.ic_baseline_format_color_text_24, R.drawable.ic_baseline_format_align_justify_24, R.drawable.ic_baseline_format_size_24};
+    private ImageView mImgBackground;
+    public static final int[] TOOL_FOR_COLOR_FONT_ALIGN_POST = {R.drawable.ic_baseline_image_24, R.drawable.ic_baseline_font_download_24, R.drawable.ic_baseline_format_color_text_24, R.drawable.ic_baseline_format_align_justify_24, R.drawable.ic_baseline_format_size_24};
     private int textSize; // 0 -> 4
+    private boolean isChanged;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,6 +67,10 @@ public class EditCaptionActivity extends AppCompatActivity
         mBtnSaveImage = findViewById(R.id.tv_edit_save);
         rvToolPrimary = findViewById(R.id.rv_edit_tool_primary);
         rvToolSecondary = findViewById(R.id.rv_edit_tool_secondary);
+        mImgBackground = findViewById(R.id.img_edit_background);
+
+        // chua co thay doi gi
+        isChanged = false;
 
         // get Caption
         mCommonCaption = getIntent().getExtras().getParcelable("CAPTION");
@@ -100,9 +114,13 @@ public class EditCaptionActivity extends AppCompatActivity
                 case 4:
                     textSize++;
                     updateTextSizeEditTet();
-                // Set recycler view for detail of tools
+                    // Set recycler view for detail of tools
                 case 0:
-                    // color background
+                    // image background
+                    Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                    photoPickerIntent.setType("image/*");
+                    startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG);
+                    break;
                 default:
                     // color background
 //                    rvToolSecondary.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -172,6 +190,27 @@ public class EditCaptionActivity extends AppCompatActivity
             case 4:
                 mEdtCaption.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 40);
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int reqCode, int resultCode, Intent data) {
+        super.onActivityResult(reqCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            try {
+                final Uri imageUri = data.getData();
+                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                mImgBackground.setImageBitmap(selectedImage);
+                isChanged = true;
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+
+        } else {
+            Toast.makeText(this, "You haven't picked Image", Toast.LENGTH_LONG).show();
         }
     }
 }
