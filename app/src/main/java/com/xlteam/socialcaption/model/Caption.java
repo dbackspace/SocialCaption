@@ -1,11 +1,14 @@
 package com.xlteam.socialcaption.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "caption_table")
-public class Caption {
+public class Caption implements Parcelable {
     @PrimaryKey(autoGenerate = true)
     private long id;
     @ColumnInfo(name = "_content")
@@ -26,6 +29,26 @@ public class Caption {
         this.categoryType = categoryType;
         this.saved = saved;
     }
+
+    protected Caption(Parcel in) {
+        id = in.readLong();
+        content = in.readString();
+        pathImage = in.readString();
+        categoryType = in.readInt();
+        saved = in.readByte() != 0;
+    }
+
+    public static final Creator<Caption> CREATOR = new Creator<Caption>() {
+        @Override
+        public Caption createFromParcel(Parcel in) {
+            return new Caption(in);
+        }
+
+        @Override
+        public Caption[] newArray(int size) {
+            return new Caption[size];
+        }
+    };
 
     public int getCategoryType() {
         return categoryType;
@@ -65,5 +88,19 @@ public class Caption {
 
     public void setPathImage(String pathImage) {
         this.pathImage = pathImage;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
+        dest.writeString(content);
+        dest.writeString(pathImage);
+        dest.writeInt(categoryType);
+        dest.writeByte((byte) (saved ? 1 : 0));
     }
 }

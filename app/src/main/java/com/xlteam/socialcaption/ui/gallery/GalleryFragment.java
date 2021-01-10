@@ -11,25 +11,26 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.xlteam.socialcaption.R;
+import com.xlteam.socialcaption.model.Caption;
+import com.xlteam.socialcaption.ui.home.CaptionAdapter;
+
+import java.util.List;
 
 public class GalleryFragment extends Fragment {
-
-    private GalleryViewModel galleryViewModel;
+    private RecyclerView rvGallery;
+    private List<Caption> captionList;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        galleryViewModel =
-                new ViewModelProvider(this).get(GalleryViewModel.class);
         View root = inflater.inflate(R.layout.fragment_gallery, container, false);
-        final TextView textView = root.findViewById(R.id.text_gallery);
-        galleryViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+
+        // init recycler gallery by findViewById
+        rvGallery = root.findViewById(R.id.rv_gallery_caption);
+
+
         return root;
     }
 }
