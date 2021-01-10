@@ -7,13 +7,41 @@
     android:background="@color/black"
     tools:context=".ui.edit.EditCaptionActivity">
 
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/bg_ripple_click_view_circle"
-        android:padding="5dp"
-        android:src="@drawable/ic_back_white" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/btn_edit_back_and_cancel"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/bg_ripple_click_view_circle"
+            android:padding="5dp"
+            android:src="@drawable/ic_back_white" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_edit_tool_secondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btn_edit_back_and_cancel"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:id="@+id/tv_edit_save"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:alpha="0.7"
+            android:background="@drawable/bg_ripple_click_view_circle"
+            android:gravity="center"
+            android:text="Xong"
+            android:textColor="@color/white"
+            android:textSize="20dp" />
+
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -27,114 +55,32 @@
             android:layout_height="wrap_content"
             android:src="@drawable/profile_image" />
 
-        <TextView
+        <EditText
             android:id="@+id/tv_content_caption"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:maxLines="15"
             android:text="Text" />
     </RelativeLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="5dp">
+        android:layout_centerHorizontal="true"
+        android:layout_margin="7dp">
 
-        <LinearLayout
-            android:layout_width="0dp"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_edit_tool_primary"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
+            app:layout_constrainedHeight="true"
+            android:layout_marginBottom="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHeight_max="150dp"
+            app:layout_constraintStart_toStartOf="parent" />
 
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:background="@drawable/bg_ripple_click_view_circle"
-                android:padding="5dp"
-                android:src="@drawable/ic_edit" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
-                android:text="Chỉnh sửa"
-                android:textColor="@color/white"
-                android:textSize="10dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:background="@drawable/bg_ripple_click_view_circle"
-                android:padding="5dp"
-                android:src="@drawable/ic_copy" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
-                android:text="Sao chép"
-                android:textColor="@color/white"
-                android:textSize="10dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:background="@drawable/bg_ripple_click_view_circle"
-                android:padding="5dp"
-                android:src="@drawable/ic_save" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Lưu vào máy"
-                android:textColor="@color/white"
-                android:textSize="10dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="sans-serif-medium"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:background="@drawable/bg_ripple_click_view_circle"
-                android:padding="5dp"
-                android:src="@drawable/ic_share" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
-                android:text="Chia sẻ"
-                android:textColor="@color/white"
-                android:textSize="10dp" />
-        </LinearLayout>
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </RelativeLayout>
+
