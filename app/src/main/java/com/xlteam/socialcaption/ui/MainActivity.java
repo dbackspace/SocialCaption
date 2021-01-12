@@ -5,14 +5,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -21,44 +21,39 @@ import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.Constant;
 import com.xlteam.socialcaption.external.utility.Utility;
 import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
+import com.xlteam.socialcaption.ui.gallery.GalleryFragment;
+import com.xlteam.socialcaption.ui.home.HomeFragment;
 
 public class MainActivity extends AppCompatActivity {
 
-    private AppBarConfiguration mAppBarConfiguration;
+    private NavigationView navigationView;
+    private final int HOME = 0, GALLERY = 1;
+    private Toolbar toolbar;
+    private DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, EditCaptionActivity.class);
             startActivity(intent);
         });
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery)
-                .setDrawerLayout(drawer)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
-
+        drawer = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.nav_home:
-                    navController.navigate(R.id.nav_home);
+                    selectNavigation(HOME);
                     drawer.closeDrawer(GravityCompat.START, true);
-                    break;
+                    return true;
                 case R.id.nav_gallery:
-                    navController.navigate(R.id.nav_gallery);
+                    selectNavigation(GALLERY);
                     drawer.closeDrawer(GravityCompat.START, true);
-                    break;
+                    return true;
                 case R.id.nav_rate:
                     rateApp();
                     break;
@@ -78,13 +73,10 @@ public class MainActivity extends AppCompatActivity {
             }
             return false;
         });
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
-                || super.onSupportNavigateUp();
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.app_name, R.string.app_name);
+        drawer.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+        selectNavigation(HOME);
     }
 
     private void rateApp() {
@@ -121,6 +113,36 @@ public class MainActivity extends AppCompatActivity {
             startActivity(Intent.createChooser(shareIntent, getString(R.string.choose_one)));
         } catch (Exception e) {
             //e.toString();
+        }
+    }
+
+    private void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame, fragment);
+        fragmentTransaction.commit();
+    }
+
+    private void selectNavigation(int type) {
+        if (type == HOME) {
+            replaceFragment(new HomeFragment());
+            navigationView.setCheckedItem(R.id.nav_home);
+            toolbar.setTitle(R.string.title_home);
+        } else if (type == GALLERY) {
+            replaceFragment(new GalleryFragment());
+            navigationView.setCheckedItem(R.id.nav_gallery);
+            toolbar.setTitle(R.string.menu_gallery);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START, true);
+        } else if (navigationView.getMenu().findItem(R.id.nav_gallery).isChecked()) {
+            selectNavigation(HOME);
+        } else {
+            super.onBackPressed();
         }
     }
 }
