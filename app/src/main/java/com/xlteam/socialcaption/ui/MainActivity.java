@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private final int HOME = 0, GALLERY = 1;
     private Toolbar toolbar;
     private DrawerLayout drawer;
+    private Fragment currentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,15 +125,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void selectNavigation(int type) {
-        if (type == HOME) {
-            replaceFragment(new HomeFragment());
-            navigationView.setCheckedItem(R.id.nav_home);
-            toolbar.setTitle(R.string.title_home);
-        } else if (type == GALLERY) {
-            replaceFragment(new GalleryFragment());
-            navigationView.setCheckedItem(R.id.nav_gallery);
-            toolbar.setTitle(R.string.menu_gallery);
+        if (type == HOME) {//giữ trạng thái khi chọn lại item
+            if (!(currentFragment instanceof HomeFragment)) {
+                currentFragment = new HomeFragment();
+                navigationView.setCheckedItem(R.id.nav_home);
+                toolbar.setTitle(R.string.title_home);
+            }
+        } else if (type == GALLERY) { //giữ trạng thái khi chọn lại item
+            if (!(currentFragment instanceof GalleryFragment)) {
+                currentFragment = new GalleryFragment();
+
+                navigationView.setCheckedItem(R.id.nav_gallery);
+                toolbar.setTitle(R.string.menu_gallery);
+            }
         }
+        replaceFragment(currentFragment);
     }
 
     @Override
