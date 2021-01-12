@@ -11,4 +11,6 @@
     <string name="feedback_msg">Vui lòng mô tả vấn đề hoặc phản hồi của bạn khi dùng ứng dụng:\n</string>
     <string name="choose_one">Chọn một ứng dụng</string>
     <string name="title_home">Chọn một caption</string>
+    <string name="license">Giấy phép</string>
+    <string name="term_of_use">Điều khoản sử dụng</string>
 </resources>
