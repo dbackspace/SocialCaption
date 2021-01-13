@@ -12,7 +12,7 @@ import com.xlteam.socialcaption.external.dao.UserCaptionDAO;
 import com.xlteam.socialcaption.model.CommonCaption;
 import com.xlteam.socialcaption.model.UserCaption;
 
-@Database(entities = {CommonCaption.class, UserCaption.class}, version = 5, exportSchema = false)
+@Database(entities = {CommonCaption.class, UserCaption.class}, version = 6, exportSchema = false)
 public abstract class MyDatabase extends RoomDatabase {
     private static final String TAG = "MyDatabase";
     private static volatile MyDatabase sInstance;
