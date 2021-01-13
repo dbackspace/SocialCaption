@@ -31,7 +31,7 @@
             android:textSize="14dp" />
 
         <ImageView
-            android:id="@+id/image_heart"
+            android:id="@+id/image_bookmark"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_alignParentTop="true"

@@ -43,9 +43,7 @@ import java.util.List;
 
 import static com.xlteam.socialcaption.external.utility.Constant.EDITOR;
 import static com.xlteam.socialcaption.external.utility.Constant.EDITOR_CAU_THOAI_SIZE;
-import static com.xlteam.socialcaption.external.utility.Constant.LoaderTaskType.LOAD_ALL;
 import static com.xlteam.socialcaption.external.utility.Constant.LoaderTaskType.LOAD_ALL_USER_CAPTION;
-import static com.xlteam.socialcaption.external.utility.Constant.LoaderTaskType.SEARCH_BY_CONTENT;
 import static com.xlteam.socialcaption.external.utility.Constant.RepositoryType.USER_REPOSITORY;
 
 public class EditCaptionActivity extends AppCompatActivity
@@ -177,7 +175,7 @@ public class EditCaptionActivity extends AppCompatActivity
 
     @Override
     public void selectColor(int color) {
-        UiUtils.setColorForTextView(mEdtCaption, mColors.get(color));
+        Utility.setColorForTextView(mEdtCaption, mColors.get(color));
 
         mColorTextDefault = color;
         // check change

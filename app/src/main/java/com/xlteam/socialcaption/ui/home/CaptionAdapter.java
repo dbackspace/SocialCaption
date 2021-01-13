@@ -43,9 +43,9 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         CommonCaption caption = mCaptions.get(position);
         holder.tvCaptionContent.setText(caption.getContent());
-        holder.imgHeart.setOnClickListener(v -> {
-            holder.imgHeart.setActivated(!holder.imgHeart.isActivated());
-            //put to firebase
+        holder.imgBookmark.setOnClickListener(v -> {
+            holder.imgBookmark.setActivated(!holder.imgBookmark.isActivated());
+            //put to database
         });
         holder.view.setOnClickListener(view -> {
             //open preview dialog
@@ -60,14 +60,14 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView tvCaptionContent;
-        private final ImageView imgHeart;
+        private final ImageView imgBookmark;
         private View view;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             view = itemView;
             tvCaptionContent = itemView.findViewById(R.id.tv_content_of_caption);
-            imgHeart = itemView.findViewById(R.id.image_heart);
+            imgBookmark = itemView.findViewById(R.id.image_bookmark);
         }
     }
 }

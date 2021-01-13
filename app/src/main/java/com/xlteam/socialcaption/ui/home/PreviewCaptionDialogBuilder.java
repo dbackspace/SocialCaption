@@ -38,7 +38,6 @@ public class PreviewCaptionDialogBuilder {
     private final ImageView mBtnBack;
     private final ImageView mBtnEdit;
     private final ImageView mBtnCopy;
-    private final ImageView mBtnSave;
     private final ImageView mBtnShare;
     private final RelativeLayout rlBackgroundForSaving;
     private final CommonCaption mCaption;
@@ -59,7 +58,6 @@ public class PreviewCaptionDialogBuilder {
         mBtnBack = mDialog.findViewById(R.id.btn_preview_to_home);
         mBtnEdit = mDialog.findViewById(R.id.btn_preview_edit);
         mBtnCopy = mDialog.findViewById(R.id.btn_preview_copy);
-        mBtnSave = mDialog.findViewById(R.id.btn_preview_save);
         mBtnShare = mDialog.findViewById(R.id.btn_preview_share);
 
         mBtnBack.setOnClickListener(v -> mDialog.dismiss());
@@ -69,8 +67,6 @@ public class PreviewCaptionDialogBuilder {
             intent.putExtra("CAPTION", commonCaption);
             context.startActivity(intent);
         });
-
-        mBtnSave.setOnClickListener(v -> takePicture(rlBackgroundForSaving));
 
         mBtnShare.setOnClickListener(v -> {
             try {
