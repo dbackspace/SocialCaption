@@ -14,8 +14,8 @@ public class MyApplication extends Application implements ILoader<CommonCaption>
     @Override
     public void onCreate() {
         super.onCreate();
-        CommonCaptionRepository   mRepository = new CommonCaptionRepository(this, this);
-        mRepository.insertFirstTimeToDatabase();
+        CommonCaptionRepository mRepository = new CommonCaptionRepository(this, this);
+        mRepository.insertToDatabase();
     }
 
     @Override

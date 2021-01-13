@@ -6,13 +6,13 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.sqlite.db.SimpleSQLiteQuery;
+
 import com.xlteam.socialcaption.external.datasource.CaptionDataSource;
 import com.xlteam.socialcaption.external.utility.SearchQueryUtils;
 import com.xlteam.socialcaption.model.CommonCaption;
 
 import java.util.List;
-
-import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import static com.xlteam.socialcaption.external.utility.Constant.LoaderTaskType.LOAD_ALL;
 import static com.xlteam.socialcaption.external.utility.Constant.LoaderTaskType.LOAD_BY_CATEGORY_TYPE;
@@ -21,15 +21,15 @@ import static com.xlteam.socialcaption.external.utility.Constant.LoaderTaskType.
 
 public class CommonCaptionRepository extends AbsRepository {
     private static final String TAG = "CommonCaptionRepository";
-
+    private Context mContext;
 
     public CommonCaptionRepository(Context context, ILoader callback) {
         super(context, callback);
+        mContext = context;
     }
 
-    public void insertFirstTimeToDatabase() {
-        // TODO: chỉnh lại data lần đầu nạp vào app
-        insertMultipleCaption(CaptionDataSource.getInstance().getDataFirstTime());
+    public void insertToDatabase() {
+        insertMultipleCaption(CaptionDataSource.getInstance().getDataLocal(mContext));
     }
 
     public void insertMultipleCaption(List<CommonCaption> listCaption) {

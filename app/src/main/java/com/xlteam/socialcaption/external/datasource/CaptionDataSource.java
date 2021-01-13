@@ -1,5 +1,8 @@
 package com.xlteam.socialcaption.external.datasource;
 
+import android.content.Context;
+
+import com.xlteam.socialcaption.external.utility.SharePreUtils;
 import com.xlteam.socialcaption.model.CommonCaption;
 
 import java.util.ArrayList;
@@ -10,6 +13,7 @@ import static com.xlteam.socialcaption.external.utility.Constant.TYPE_BAN_BE;
 
 public class CaptionDataSource {
     private static final String TAG = "CaptionDataSource";
+
     private CaptionDataSource() {
     }
 
@@ -19,6 +23,22 @@ public class CaptionDataSource {
 
     public static CaptionDataSource getInstance() {
         return Holder.INSTANCE;
+    }
+
+    public List<CommonCaption> getDataLocal(Context context) {
+        int currentVersion = SharePreUtils.getVersionLocalDatabase(context); // default là 0
+        List<CommonCaption> listData = new ArrayList<>();
+        if (currentVersion < 1) {
+            listData.addAll(getDataFirstTime());
+            SharePreUtils.setVersionLocalDatabase(context, 1);
+        }
+//        else if (version < 2) {
+//            listData.addAll(getDataSecondTime());
+//        }
+//        else if (version < 3) {
+//
+//        }
+        return listData;
     }
 
     public List<CommonCaption> getDataFirstTime() {
@@ -84,7 +104,6 @@ public class CaptionDataSource {
         listData.add(new CommonCaption("Nếu anh là người vô gia cư, hãy chuyển vào sống trong tim em này, miễn phí đấy", null, TYPE_THA_THINH, false));
 
         //tình bạn
-
         listData.add(new CommonCaption("Mày ơi thương lấy tao cùng\nTuy rằng khác lớp nhưng chung một đề\nMày cho tao chép tí đê\nKẻo mai tao rớt mặt mày tím đen", null, TYPE_BAN_BE, false));
         listData.add(new CommonCaption("Đi khắp thế gian không đâu bằng đứa bạn thân khốn nạn", null, TYPE_BAN_BE, false));
         listData.add(new CommonCaption("Nếu là bạn xin mãi mãi là bạn, đừng như sông lúc cạn lúc đầy", null, TYPE_BAN_BE, false));
@@ -111,7 +130,6 @@ public class CaptionDataSource {
         listData.add(new CommonCaption("Bạn sẽ thấy PHÊ dù chỉ uống nước ngọt với lũ bạn thân", null, TYPE_BAN_BE, false));
         listData.add(new CommonCaption("Sống chết có nhau, ốm đâu kệ cụ mày", null, TYPE_BAN_BE, false));
         listData.add(new CommonCaption("Xin thề: Tôi với anh kết nghĩa anh em., tuy không sinh cùng năm cùng tháng cùng ngày nhưng nguyện sống cùng ngày cùng tháng cùng năm", null, TYPE_BAN_BE, false));
-
         return listData;
     }
 }

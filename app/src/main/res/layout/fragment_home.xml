@@ -11,9 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:textAlignment="center"
+        app:tabIndicatorColor="@color/color_3cc2f5_legend"
         app:tabIndicatorGravity="bottom"
         app:tabIndicatorHeight="3dp"
-        app:tabIndicatorColor="@color/color_3cc2f5_legend"
         app:tabInlineLabel="true"
         app:tabMode="scrollable"
         app:tabRippleColor="@color/color_E0"
@@ -28,12 +28,12 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Thả thính" />
+            android:text="Đang HOT" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tâm trạng" />
+            android:text="Thả thính" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
@@ -43,7 +43,7 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tình bạn" />
+            android:text="Bạn bè" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"

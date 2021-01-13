@@ -24,7 +24,7 @@ import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.datasource.ColorDataSource;
 import com.xlteam.socialcaption.external.datasource.FontDataSource;
 import com.xlteam.socialcaption.external.utility.PrefUtils;
-import com.xlteam.socialcaption.external.utility.UiUtils;
+import com.xlteam.socialcaption.external.utility.Utility;
 import com.xlteam.socialcaption.model.CommonCaption;
 import com.xlteam.socialcaption.model.Font;
 import com.xlteam.socialcaption.ui.edit.adapter.DetailForAlignAdapter;
@@ -150,7 +150,7 @@ public class EditCaptionActivity extends AppCompatActivity
 
     @Override
     public void selectColor(int color) {
-        UiUtils.setColorForTextView(mEdtCaption, mColors.get(color));
+        Utility.setColorForTextView(mEdtCaption, mColors.get(color));
     }
 
     @Override
