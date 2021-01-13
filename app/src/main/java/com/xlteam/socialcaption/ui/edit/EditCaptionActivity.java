@@ -27,7 +27,7 @@ import com.xlteam.socialcaption.external.repository.ILoader;
 import com.xlteam.socialcaption.external.repository.RepositoryFactory;
 import com.xlteam.socialcaption.external.repository.UserCaptionRepository;
 import com.xlteam.socialcaption.external.utility.PrefUtils;
-import com.xlteam.socialcaption.external.utility.UiUtils;
+import com.xlteam.socialcaption.external.utility.Utility;
 import com.xlteam.socialcaption.model.CommonCaption;
 import com.xlteam.socialcaption.model.Font;
 import com.xlteam.socialcaption.model.UserCaption;

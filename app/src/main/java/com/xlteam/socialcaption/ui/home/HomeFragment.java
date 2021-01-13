@@ -24,12 +24,11 @@ import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.repository.CommonCaptionRepository;
 import com.xlteam.socialcaption.external.repository.ILoader;
 import com.xlteam.socialcaption.external.repository.RepositoryFactory;
+import com.xlteam.socialcaption.external.utility.Constant;
 import com.xlteam.socialcaption.model.CommonCaption;
 
 import java.util.List;
 
-import static com.xlteam.socialcaption.external.utility.Constant.LoaderTaskType.LOAD_ALL;
-import static com.xlteam.socialcaption.external.utility.Constant.LoaderTaskType.SEARCH_BY_CONTENT;
 import static com.xlteam.socialcaption.external.utility.Constant.RepositoryType.COMMON_REPOSITORY;
 
 public class HomeFragment extends Fragment implements ILoader<CommonCaption>, CaptionAdapter.Callback {
@@ -94,37 +93,48 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
 
         rvCaption = root.findViewById(R.id.rv_caption);
         rvCaption.setLayoutManager(new LinearLayoutManager(getContext()));
-        getCaptionList(LOAD_ALL, false);
+        mRepository.getAllCaption(false);
         return root;
     }
 
     @Override
     public void loadResult(int loaderTaskType, List<CommonCaption> result) {
-        if (loaderTaskType == LOAD_ALL) {
-            binCaptions(result);
-        } else if (loaderTaskType == SEARCH_BY_CONTENT) {
-            binCaptions(result);
-        }
+        binCaptions(result);
     }
 
     public void getCaptionList(int categoryNumber, boolean isBookmark) {
         //lấy database rồi gọi mViewMvc.binCaptions(captions);
-        if (categoryNumber == LOAD_ALL) {
-            mRepository.getAllCaption(isBookmark);
-        } else {
-            mRepository.getCaptionBySavedAndCategoryType(categoryNumber, isBookmark);
+        switch (categoryNumber) {
+            case 0: //ALL
+                mRepository.getAllCaption(isBookmark);
+                break;
+            case 1:
+                //get firebase caption đang hot
+                break;
+            case 2:
+                mRepository.getCaptionBySavedAndCategoryType(Constant.TYPE_THA_THINH, isBookmark);
+                break;
+            case 3:
+                mRepository.getCaptionBySavedAndCategoryType(Constant.TYPE_CUOC_SONG, isBookmark);
+                break;
+            case 4:
+                mRepository.getCaptionBySavedAndCategoryType(Constant.TYPE_BAN_BE, isBookmark);
+                break;
+            case 5:
+                mRepository.getCaptionBySavedAndCategoryType(Constant.TYPE_KHAC, isBookmark);
+                break;
         }
     }
 
     public void binCaptions(List<CommonCaption> captions) {
         tvNumberCaption.setText(mContext.getString(R.string.number_captions, captions.size()));
-        CaptionAdapter adapter = new CaptionAdapter(getContext(), captions, this);
+        CaptionAdapter adapter = new CaptionAdapter(mContext, captions, this);
         rvCaption.setAdapter(adapter);
     }
 
     @Override
     public void openCaptionPreview(CommonCaption caption) {
-        PreviewCaptionDialogBuilder previewCaptionDialogBuilder = new PreviewCaptionDialogBuilder(getContext(), caption);
+        PreviewCaptionDialogBuilder previewCaptionDialogBuilder = new PreviewCaptionDialogBuilder(mContext, caption);
         previewCaptionDialogBuilder.build().show();
     }
 

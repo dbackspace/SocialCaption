@@ -5,14 +5,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.xlteam.socialcaption.R;
-import com.xlteam.socialcaption.external.datasource.ColorDataSource;
-import com.xlteam.socialcaption.external.utility.UiUtils;
-
-import java.util.ArrayList;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.xlteam.socialcaption.R;
+import com.xlteam.socialcaption.external.datasource.ColorDataSource;
+import com.xlteam.socialcaption.external.utility.Utility;
+
+import java.util.ArrayList;
 
 public class DetailForColorAdapter extends RecyclerView.Adapter<DetailForColorAdapter.ViewHolder>{
     private ArrayList<String> mColors;
@@ -39,7 +39,7 @@ public class DetailForColorAdapter extends RecyclerView.Adapter<DetailForColorAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String color = mColors.get(position);
-        UiUtils.setColorForView(holder.itemView, color);
+        Utility.setColorForView(holder.itemView, color);
         holder.itemView.setOnClickListener(v -> {
             mNumberSelect = position;
             mCallback.selectColor(position);
