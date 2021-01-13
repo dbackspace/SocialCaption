@@ -26,6 +26,7 @@ import com.xlteam.socialcaption.external.datasource.FontDataSource;
 import com.xlteam.socialcaption.external.repository.ILoader;
 import com.xlteam.socialcaption.external.repository.RepositoryFactory;
 import com.xlteam.socialcaption.external.repository.UserCaptionRepository;
+import com.xlteam.socialcaption.external.utility.Constant;
 import com.xlteam.socialcaption.external.utility.PrefUtils;
 import com.xlteam.socialcaption.external.utility.Utility;
 import com.xlteam.socialcaption.model.CommonCaption;
@@ -86,7 +87,7 @@ public class EditCaptionActivity extends AppCompatActivity
         mImgBackground = findViewById(R.id.img_edit_background);
 
         // get Caption
-        mCommonCaption = getIntent().getExtras().getParcelable("CAPTION");
+        mCommonCaption = getIntent().getExtras().getParcelable(Constant.EXTRA_CAPTION);
         mEdtCaption.setText(mCommonCaption.getContent());
 
         mBtnSaveImage.setOnClickListener(v -> {

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,7 +24,7 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
     private Callback mCallback;
 
     public interface Callback {
-        void openCaptionPreview(CommonCaption caption);
+        void openCaptionPreview(CommonCaption caption, int position);
     }
 
     public CaptionAdapter(Context context, List<CommonCaption> captions, Callback callback) {
@@ -43,13 +44,15 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         CommonCaption caption = mCaptions.get(position);
         holder.tvCaptionContent.setText(caption.getContent());
+        holder.layoutBg.setBackgroundColor(mContext.getColor(R.color.color_FA));
         holder.imgBookmark.setOnClickListener(v -> {
             holder.imgBookmark.setActivated(!holder.imgBookmark.isActivated());
             //put to database
         });
         holder.view.setOnClickListener(view -> {
             //open preview dialog
-            mCallback.openCaptionPreview(mCaptions.get(position));
+            mCallback.openCaptionPreview(mCaptions.get(position), position);
+            holder.layoutBg.setBackgroundColor(mContext.getColor(R.color.color_E0));
         });
     }
 
@@ -61,6 +64,7 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
     static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView tvCaptionContent;
         private final ImageView imgBookmark;
+        private RelativeLayout layoutBg;
         private View view;
 
         ViewHolder(@NonNull View itemView) {
@@ -68,6 +72,13 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
             view = itemView;
             tvCaptionContent = itemView.findViewById(R.id.tv_content_of_caption);
             imgBookmark = itemView.findViewById(R.id.image_bookmark);
+            layoutBg = itemView.findViewById(R.id.layout_background);
+        }
+    }
+
+    public void notifyItem(int position) {
+        if (position < mCaptions.size()) {
+            notifyItemChanged(position);
         }
     }
 }

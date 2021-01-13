@@ -11,8 +11,10 @@
     app:cardElevation="3dp">
 
     <RelativeLayout
+        android:id="@+id/layout_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/color_FA"
         android:orientation="vertical">
 
         <TextView
@@ -21,23 +23,29 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerInParent="true"
-            android:layout_marginStart="25dp"
-            android:layout_marginEnd="25dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="28dp"
+            android:layout_marginBottom="10dp"
+            android:ellipsize="end"
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
             android:minLines="4"
+            android:singleLine="false"
             android:text="Content"
             android:textColor="@color/color_25"
             android:textSize="14dp" />
 
         <ImageView
             android:id="@+id/image_bookmark"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="30dp"
+            android:layout_height="35dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="7dp"
-            android:layout_marginEnd="5dp"
+            android:paddingStart="5dp"
+            android:paddingTop="7dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="7dp"
             android:src="@drawable/bookmark_toggle_button" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

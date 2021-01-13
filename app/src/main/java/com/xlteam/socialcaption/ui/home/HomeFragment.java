@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.repository.CommonCaptionRepository;
@@ -41,6 +42,7 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
     private TextView tvNumberCaption;
     private TabLayout tabLayoutCategory;
     private TextView tvBookmarkCategory;
+    private CaptionAdapter mAdapter;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -128,14 +130,19 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
 
     public void binCaptions(List<CommonCaption> captions) {
         tvNumberCaption.setText(mContext.getString(R.string.number_captions, captions.size()));
-        CaptionAdapter adapter = new CaptionAdapter(mContext, captions, this);
-        rvCaption.setAdapter(adapter);
+        mAdapter = new CaptionAdapter(mContext, captions, this);
+        rvCaption.setAdapter(mAdapter);
     }
 
     @Override
-    public void openCaptionPreview(CommonCaption caption) {
-        PreviewCaptionDialogBuilder previewCaptionDialogBuilder = new PreviewCaptionDialogBuilder(mContext, caption);
-        previewCaptionDialogBuilder.build().show();
+    public void openCaptionPreview(CommonCaption caption, int position) {
+        BottomSheetDialog dialog = new SelectedCaptionDialogBuilder(mContext, caption).build();
+        dialog.setOnCancelListener(dialogInterface -> {
+            if (mAdapter != null) {
+                mAdapter.notifyItem(position);
+            }
+        });
+        dialog.show();
     }
 
     @Override

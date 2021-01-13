@@ -16,6 +16,8 @@ public class Constant {
     public static final int TYPE_GIA_DINH = 5;
     public static final int TYPE_KHAC = 6;
 
+    public static final String EXTRA_CAPTION = "EXTRA_CAPTION";
+
     public static class LoaderTaskType {
         private LoaderTaskType() {
         }

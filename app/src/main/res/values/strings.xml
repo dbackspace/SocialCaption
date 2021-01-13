@@ -13,4 +13,16 @@
     <string name="title_home">Chọn một caption</string>
     <string name="license">Giấy phép</string>
     <string name="term_of_use">Điều khoản sử dụng</string>
+    <string name="send_friend">Gửi cho bạn bè</string>
+    <string name="copied">Đã sao chép</string>
+    <string name="edit">Chỉnh sửa</string>
+    <string name="copy_text">Chép văn bản</string>
+    <string name="share">Chia sẻ</string>
+    <string name="all">Tất cả</string>
+    <string name="trending">Đang HOT</string>
+    <string name="give_love">Thả thính</string>
+    <string name="life">Cuộc sống</string>
+    <string name="friend">Bạn bè</string>
+    <string name="family">Gia đình</string>
+    <string name="other">Khác</string>
 </resources>
