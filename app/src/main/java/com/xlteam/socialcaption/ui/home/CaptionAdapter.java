@@ -1,5 +1,7 @@
 package com.xlteam.socialcaption.ui.home;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -53,6 +56,16 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
             //open preview dialog
             mCallback.openCaptionPreview(mCaptions.get(position), position);
             holder.layoutBg.setBackgroundColor(mContext.getColor(R.color.color_E0));
+        });
+
+        holder.view.setOnLongClickListener(view -> {
+            ClipboardManager clipboard = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText("label", caption.getContent());
+            if (clipboard != null) {
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(mContext, R.string.copied, Toast.LENGTH_SHORT).show();
+            }
+            return true;
         });
     }
 
