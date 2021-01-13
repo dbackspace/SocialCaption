@@ -1,5 +1,7 @@
 package com.xlteam.socialcaption.ui.edit;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,6 +52,7 @@ import static com.xlteam.socialcaption.external.utility.Constant.RepositoryType.
 public class EditCaptionActivity extends AppCompatActivity
         implements DetailForFontAdapter.DetailForFontCallback, DetailForColorAdapter.ColorSelectCallback, DetailForAlignAdapter.AlignSelectCallback, ILoader {
     private static final int RESULT_LOAD_IMG = 1;
+    private Context mContext;
     private List<Font> mFonts;
     private ArrayList<String> mColors;
     private RecyclerView rvToolPrimary;
@@ -63,7 +67,7 @@ public class EditCaptionActivity extends AppCompatActivity
     private boolean isPickedPicture = false;
     // set default for tool
     private int mTextSizeDefault; // default = 1    [0 -> 4]
-    private int mFontDefault = 4;
+    private int mFontDefault = 6;
     private int mColorTextDefault = 0;
     private int mAlignTextDefault = 0;
     private String mPathImg = "";
@@ -74,6 +78,7 @@ public class EditCaptionActivity extends AppCompatActivity
         // init view
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_caption);
+        mContext = this;
 
         // create databaseRepository
         mRepository = (UserCaptionRepository) RepositoryFactory.createRepository(this, this, USER_REPOSITORY);
@@ -95,6 +100,8 @@ public class EditCaptionActivity extends AppCompatActivity
             Toast.makeText(this, "Đã lưu caption. Để xem lại, bạn có thể vào Menu -> Caption đã tạo!", Toast.LENGTH_LONG).show();
             this.finish();
         });
+
+        mBtnSaveImage.setClickable(false);
 
         // init adapter
         // color background
@@ -158,8 +165,40 @@ public class EditCaptionActivity extends AppCompatActivity
         InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         imm.showSoftInput(mEdtCaption, InputMethodManager.SHOW_IMPLICIT);
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Bạn có muốn lưu bản nháp");
+        builder.setCancelable(false);
+        builder.setPositiveButton(
+                "Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        UserCaption userCaption = new UserCaption(mEdtCaption.getText().toString(), mPathImg, mColorTextDefault, mFontDefault, mAlignTextDefault, true);
+                        mRepository.insertUserCaption(userCaption);
+                        Toast.makeText(mContext, "Đã lưu bản nháp. Để xem lại, bạn có thể vào Menu -> Caption đã tạo!", Toast.LENGTH_LONG).show();
+
+                        dialog.cancel();
+                        finish();
+                    }
+                });
+
+        builder.setNegativeButton(
+                "No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        finish();
+                    }
+                });
+
+        AlertDialog alert = builder.create();
+
         mBtnBackAndCancel.setOnClickListener((v) -> {
-            finish();
+            Log.e("TEST", isPickedPicture + " " + mFontDefault + " " + mColorTextDefault + " " + mAlignTextDefault + " " + mTextSizeDefault);
+            if (isPickedPicture || mFontDefault != 6 || mColorTextDefault != 0 || mAlignTextDefault != 0 || mTextSizeDefault != 1) {
+                alert.show();
+            } else {
+                finish();
+            }
         });
     }
 
@@ -256,7 +295,7 @@ public class EditCaptionActivity extends AppCompatActivity
     }
 
     void enableBtnSave() {
-        if (isPickedPicture || mFontDefault != 5 || mColorTextDefault != 0 || mAlignTextDefault != 0 || mTextSizeDefault != 1) {
+        if (isPickedPicture || mFontDefault != 6 || mColorTextDefault != 0 || mAlignTextDefault != 0 || mTextSizeDefault != 1) {
             mBtnSaveImage.setAlpha(1);
             mBtnSaveImage.setClickable(true);
         } else {
