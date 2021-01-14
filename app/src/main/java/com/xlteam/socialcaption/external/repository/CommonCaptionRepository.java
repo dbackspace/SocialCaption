@@ -48,12 +48,6 @@ public class CommonCaptionRepository extends AbsRepository {
         new Handler(Looper.getMainLooper()).post(() -> mDatabase.commonCaptionDAO().updateCaptionBySaved(id, saved));
     }
 
-    public void execute(int loaderTaskType, List<CommonCaption> result) {
-        if (result != null) {
-            new Handler(Looper.getMainLooper()).post(() -> mCallback.loadResult(loaderTaskType, result));
-            Log.d(TAG, "execute done: type = " + loaderTaskType);
-        }
-    }
 
     public void getAllCaption() {
         new Thread(() -> {

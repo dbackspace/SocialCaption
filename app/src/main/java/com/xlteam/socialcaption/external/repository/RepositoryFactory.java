@@ -13,7 +13,6 @@ public class RepositoryFactory {
             return new CommonCaptionRepository(context, callback);
         else if (repositoryType == USER_REPOSITORY)
             return new UserCaptionRepository(context, callback);
-        else
-            return null;
+        throw new IllegalArgumentException("No repository was created - repositoryType = " + repositoryType);
     }
 }
