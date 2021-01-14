@@ -29,7 +29,7 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
 
     public interface Callback {
         void openCaptionPreview(CommonCaption caption, int position);
-        void updateSaved(long id, boolean saved);
+        void updateSaved(long id, boolean saved, List<CommonCaption> captions);
     }
 
     public CaptionAdapter(Context context, List<CommonCaption> captions, Callback callback, boolean bookmarkActivated) {
@@ -54,8 +54,9 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
         holder.imgBookmark.setActivated(mBookmarkActivated);
         holder.imgBookmark.setOnClickListener(v -> {
             holder.imgBookmark.setActivated(!holder.imgBookmark.isActivated());
-            mCallback.updateSaved(caption.getId(), holder.imgBookmark.isActivated());
-            notifyItemRemoved(position);
+            mCaptions.remove(position);
+            mCallback.updateSaved(caption.getId(), holder.imgBookmark.isActivated(), mCaptions);
+            notifyDataSetChanged();
         });
         holder.view.setOnClickListener(view -> {
             //open preview dialog

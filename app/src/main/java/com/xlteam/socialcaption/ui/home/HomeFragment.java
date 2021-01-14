@@ -146,7 +146,8 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
     }
 
     @Override
-    public void updateSaved(long id, boolean saved) {
+    public void updateSaved(long id, boolean saved, List<CommonCaption> captions) {
+        tvNumberCaption.setText(mContext.getString(R.string.number_captions, captions.size()));
         mRepository.updateCaptionBySaved(id, saved);
     }
 
