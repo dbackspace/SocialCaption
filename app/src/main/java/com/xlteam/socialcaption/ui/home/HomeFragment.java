@@ -26,6 +26,7 @@ import com.xlteam.socialcaption.external.repository.CommonCaptionRepository;
 import com.xlteam.socialcaption.external.repository.ILoader;
 import com.xlteam.socialcaption.external.repository.RepositoryFactory;
 import com.xlteam.socialcaption.external.utility.Constant;
+import com.xlteam.socialcaption.external.utility.Utility;
 import com.xlteam.socialcaption.model.CommonCaption;
 
 import java.util.ArrayList;
