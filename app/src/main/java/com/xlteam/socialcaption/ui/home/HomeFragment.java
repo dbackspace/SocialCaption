@@ -146,6 +146,11 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
     }
 
     @Override
+    public void updateSaved(long id, boolean saved) {
+        mRepository.updateCaptionBySaved(id, saved);
+    }
+
+    @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.menu_toolbar, menu);
 

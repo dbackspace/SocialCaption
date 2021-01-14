@@ -2,7 +2,6 @@ package com.xlteam.socialcaption.external.dao;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.RawQuery;
 import androidx.room.Update;
@@ -13,25 +12,34 @@ import com.xlteam.socialcaption.model.CommonCaption;
 import java.util.List;
 
 @Dao
-public interface CommonCaptionDAO {
+public abstract class CommonCaptionDAO {
     @Insert
-    void insertCaption(CommonCaption caption);
+    public abstract void insertCaption(CommonCaption caption);
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    void updateCaption(CommonCaption newCaption);
+    @Update
+    public abstract int updateCaption(CommonCaption caption);
 
-    @Query("select * from common_caption_table where _category_type like :categoryType")
-    List<CommonCaption> getCaptionByCategoryType(int categoryType);
+    public void updateCaptionBySaved(long id, boolean saved) {
+        CommonCaption caption = getCaption(id);
+        caption.setSaved(saved);
+        updateCaption(caption);
+    }
+
+    @Query("SELECT * FROM common_caption_table WHERE id == :id")
+    public abstract CommonCaption getCaption(long id);
+
+    @Query("select * from common_caption_table where _category_type = :categoryType")
+    public abstract List<CommonCaption> getCaptionByCategoryType(int categoryType);
 
     @Query("select * from common_caption_table")
-    List<CommonCaption> getAllCaption();
+    public abstract List<CommonCaption> getAllCaption();
 
-    @Query("select * from common_caption_table where _saved like :saved")
-    List<CommonCaption> getCaptionBySaved(boolean saved);
+    @Query("select * from common_caption_table where _saved = :saved")
+    public abstract List<CommonCaption> getAllCaptionBySaved(boolean saved);
 
-    @Query("select * from common_caption_table where (_saved like :saved and _category_type like :categoryType)")
-    List<CommonCaption> getCaptionBySavedAndCategoryType(int categoryType, boolean saved);
+    @Query("select * from common_caption_table where (_saved = :saved and _category_type = :categoryType)")
+    public abstract List<CommonCaption> getCaptionBySavedAndCategoryType(int categoryType, boolean saved);
 
     @RawQuery
-    List<CommonCaption> searchByContainingContent(SimpleSQLiteQuery sqLiteQuery);
+    public abstract List<CommonCaption> searchByContainingContent(SimpleSQLiteQuery sqLiteQuery);
 }

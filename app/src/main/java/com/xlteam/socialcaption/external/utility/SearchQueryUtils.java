@@ -3,9 +3,7 @@ package com.xlteam.socialcaption.external.utility;
 import android.os.Build;
 import android.text.TextUtils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class SearchQueryUtils {

@@ -44,8 +44,8 @@ public class CommonCaptionRepository extends AbsRepository {
         new Thread(() -> mDatabase.commonCaptionDAO().insertCaption(caption));
     }
 
-    public void updateCaption(CommonCaption newCaption) {
-        new Thread(() -> mDatabase.commonCaptionDAO().updateCaption(newCaption));
+    public void updateCaptionBySaved(long id, boolean saved) {
+        mDatabase.commonCaptionDAO().updateCaptionBySaved(id, saved);
     }
 
     public void execute(int loaderTaskType, List<CommonCaption> result) {
@@ -55,9 +55,16 @@ public class CommonCaptionRepository extends AbsRepository {
         }
     }
 
-    public void getAllCaption(boolean isBookmark) {
+    public void getAllCaption() {
         new Thread(() -> {
             final List<CommonCaption> result = mDatabase.commonCaptionDAO().getAllCaption();
+            execute(LOAD_ALL, result);
+        }).start();
+    }
+
+    public void getAllCaption(boolean isBookmark) {
+        new Thread(() -> {
+            final List<CommonCaption> result = mDatabase.commonCaptionDAO().getAllCaptionBySaved(isBookmark);
             execute(LOAD_ALL, result);
         }).start();
     }
