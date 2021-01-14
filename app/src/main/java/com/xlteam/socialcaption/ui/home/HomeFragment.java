@@ -28,6 +28,7 @@ import com.xlteam.socialcaption.external.repository.RepositoryFactory;
 import com.xlteam.socialcaption.external.utility.Constant;
 import com.xlteam.socialcaption.model.CommonCaption;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.xlteam.socialcaption.external.utility.Constant.RepositoryType.COMMON_REPOSITORY;
@@ -43,6 +44,7 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
     private TabLayout tabLayoutCategory;
     private TextView tvBookmarkCategory;
     private CaptionAdapter mAdapter;
+    private MenuItem searchItem;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -100,8 +102,11 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
     }
 
     @Override
-    public void loadResult(int loaderTaskType, List<CommonCaption> result) {
-        binCaptions(result);
+    public void loadResult(int loaderTaskType, List<CommonCaption> captions) {
+        tvNumberCaption.setVisibility(View.VISIBLE);
+        tvNumberCaption.setText(mContext.getString(R.string.number_captions, captions.size()));
+        mAdapter = new CaptionAdapter(mContext, captions, this);
+        rvCaption.setAdapter(mAdapter);
     }
 
     public void getCaptionList(int categoryNumber, boolean isBookmark) {
@@ -128,12 +133,6 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
         }
     }
 
-    public void binCaptions(List<CommonCaption> captions) {
-        tvNumberCaption.setText(mContext.getString(R.string.number_captions, captions.size()));
-        mAdapter = new CaptionAdapter(mContext, captions, this, tvBookmarkCategory.isActivated());
-        rvCaption.setAdapter(mAdapter);
-    }
-
     @Override
     public void openCaptionPreview(CommonCaption caption, int position) {
         BottomSheetDialog dialog = new SelectedCaptionDialogBuilder(mContext, caption).build();
@@ -146,21 +145,30 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
     }
 
     @Override
-    public void updateSaved(long id, boolean saved, List<CommonCaption> captions) {
-        tvNumberCaption.setText(mContext.getString(R.string.number_captions, captions.size()));
+    public void onBookmarkClick(long id, boolean saved, int positionRemove) {
         mRepository.updateCaptionBySaved(id, saved);
+        if (tvBookmarkCategory.isActivated() && !searchItem.isActionViewExpanded()) {
+            mAdapter.removeCaption(positionRemove);
+        }
+    }
+
+    @Override
+    public void updateTotalNumberCaption(int totalCaption) {
+        tvNumberCaption.setText(mContext.getString(R.string.number_captions, totalCaption));
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.menu_toolbar, menu);
 
-        MenuItem searchItem = menu.findItem(R.id.action_search);
+        searchItem = menu.findItem(R.id.action_search);
         searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem menuItem) {
                 tvBookmarkCategory.setVisibility(View.GONE);
+                tvNumberCaption.setVisibility(View.GONE);
                 tabLayoutCategory.setVisibility(View.GONE);
+                mAdapter.setCurrentListCaptions(new ArrayList<>());
                 return true;
             }
 
@@ -168,6 +176,7 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
             public boolean onMenuItemActionCollapse(MenuItem menuItem) {
                 tvBookmarkCategory.setVisibility(View.VISIBLE);
                 tabLayoutCategory.setVisibility(View.VISIBLE);
+                getCaptionList(tabLayoutCategory.getSelectedTabPosition(), tvBookmarkCategory.isActivated());
                 return true;
             }
         });
@@ -178,13 +187,13 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
-                    mRepository.searchCaptionByContainingContent(query);
+                    mRepository.searchCaptionByContainingContent(query.trim());
                     return false;
                 }
 
                 @Override
                 public boolean onQueryTextChange(String newText) {
-                    mRepository.searchCaptionByContainingContent(newText);
+                    mRepository.searchCaptionByContainingContent(newText.trim());
                     return false;
                 }
             });

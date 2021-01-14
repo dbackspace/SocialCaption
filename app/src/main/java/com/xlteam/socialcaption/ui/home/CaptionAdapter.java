@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.model.CommonCaption;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHolder> {
@@ -25,25 +26,27 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
     private List<CommonCaption> mCaptions;
     private Context mContext;
     private Callback mCallback;
-    private boolean mBookmarkActivated;
 
     public interface Callback {
         void openCaptionPreview(CommonCaption caption, int position);
-        void updateSaved(long id, boolean saved, List<CommonCaption> captions);
+
+        void onBookmarkClick(long id, boolean saved, int positionRemove);
+
+        void updateTotalNumberCaption(int totalCaption);
+
     }
 
-    public CaptionAdapter(Context context, List<CommonCaption> captions, Callback callback, boolean bookmarkActivated) {
+    public CaptionAdapter(Context context, List<CommonCaption> captions, Callback callback) {
         mContext = context;
         mCaptions = captions;
         mCallback = callback;
-        mBookmarkActivated = bookmarkActivated;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_caption_in_category, parent, false);
-        return new CaptionAdapter.ViewHolder(v);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_caption_in_category, parent, false);
+        return new CaptionAdapter.ViewHolder(view);
     }
 
     @Override
@@ -51,12 +54,10 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
         CommonCaption caption = mCaptions.get(position);
         holder.tvCaptionContent.setText(caption.getContent());
         holder.layoutBg.setBackgroundColor(mContext.getColor(R.color.color_FA));
-        holder.imgBookmark.setActivated(mBookmarkActivated);
+        holder.imgBookmark.setActivated(caption.isSaved());
         holder.imgBookmark.setOnClickListener(v -> {
             holder.imgBookmark.setActivated(!holder.imgBookmark.isActivated());
-            mCaptions.remove(position);
-            mCallback.updateSaved(caption.getId(), holder.imgBookmark.isActivated(), mCaptions);
-            notifyDataSetChanged();
+            mCallback.onBookmarkClick(caption.getId(), holder.imgBookmark.isActivated(), position);
         });
         holder.view.setOnClickListener(view -> {
             //open preview dialog
@@ -75,9 +76,28 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
         });
     }
 
+    public void removeCaption(int position) {
+        mCaptions.remove(position);
+        notifyDataSetChanged();
+        mCallback.updateTotalNumberCaption(mCaptions.size());
+    }
+
     @Override
     public int getItemCount() {
         return mCaptions.size();
+    }
+
+    public void notifyItem(int position) {
+        if (position < mCaptions.size()) {
+            notifyItemChanged(position);
+        }
+    }
+
+    public void setCurrentListCaptions(List<CommonCaption> mCaptions) {
+        if (mCaptions != null && !mCaptions.isEmpty())
+            this.mCaptions = mCaptions;
+        else this.mCaptions = new ArrayList<>();
+        notifyDataSetChanged();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -92,12 +112,6 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
             tvCaptionContent = itemView.findViewById(R.id.tv_content_of_caption);
             imgBookmark = itemView.findViewById(R.id.image_bookmark);
             layoutBg = itemView.findViewById(R.id.layout_background);
-        }
-    }
-
-    public void notifyItem(int position) {
-        if (position < mCaptions.size()) {
-            notifyItemChanged(position);
         }
     }
 }

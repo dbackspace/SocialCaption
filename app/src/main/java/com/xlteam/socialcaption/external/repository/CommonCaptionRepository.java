@@ -63,10 +63,12 @@ public class CommonCaptionRepository extends AbsRepository {
     }
 
     public void getAllCaption(boolean isBookmark) {
-        new Thread(() -> {
-            final List<CommonCaption> result = mDatabase.commonCaptionDAO().getAllCaptionBySaved(isBookmark);
-            execute(LOAD_ALL, result);
-        }).start();
+        if (isBookmark)
+            new Thread(() -> {
+                final List<CommonCaption> result = mDatabase.commonCaptionDAO().getAllCaptionBySaved(isBookmark);
+                execute(LOAD_ALL, result);
+            }).start();
+        else getAllCaption();
     }
 
     public void getCaptionByCategoryType(int categoryType) {
@@ -76,11 +78,13 @@ public class CommonCaptionRepository extends AbsRepository {
         }).start();
     }
 
-    public void getCaptionBySavedAndCategoryType(int categoryType, boolean saved) {
-        new Thread(() -> {
-            final List<CommonCaption> result = mDatabase.commonCaptionDAO().getCaptionBySavedAndCategoryType(categoryType, saved);
-            execute(LOAD_BY_CATEGORY_TYPE_AND_SAVED, result);
-        }).start();
+    public void getCaptionBySavedAndCategoryType(int categoryType, boolean isBookmark) {
+        if (isBookmark)
+            new Thread(() -> {
+                final List<CommonCaption> result = mDatabase.commonCaptionDAO().getCaptionBySavedAndCategoryType(categoryType, isBookmark);
+                execute(LOAD_BY_CATEGORY_TYPE_AND_SAVED, result);
+            }).start();
+        else getCaptionByCategoryType(categoryType);
     }
 
     public void searchCaptionByContainingContent(String content) {
