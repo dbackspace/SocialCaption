@@ -12,7 +12,6 @@ import com.xlteam.socialcaption.external.datasource.CaptionDataSource;
 import com.xlteam.socialcaption.external.utility.SearchQueryUtils;
 import com.xlteam.socialcaption.model.CommonCaption;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.xlteam.socialcaption.external.utility.Constant.LoaderTaskType.LOAD_ALL;
@@ -89,8 +88,6 @@ public class CommonCaptionRepository extends AbsRepository {
                 final List<CommonCaption> result = mDatabase.commonCaptionDAO().searchByContainingContent(new SimpleSQLiteQuery(query.toString()));
                 execute(SEARCH_BY_CONTENT, result);
             }).start();
-        } else {
-            execute(SEARCH_BY_CONTENT, new ArrayList());
         }
     }
 }
