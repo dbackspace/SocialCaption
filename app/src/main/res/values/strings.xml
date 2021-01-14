@@ -26,9 +26,4 @@
     <string name="family">Gia đình</string>
     <string name="other">Khác</string>
     <string name="no_caption">Không có caption</string>
-
-    <plurals name="caption_count">
-        <item quantity="zero">No captions</item>
-        <item quantity="other">%d captions</item>
-    </plurals>
 </resources>

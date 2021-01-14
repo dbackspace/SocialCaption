@@ -104,7 +104,7 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
 
     @Override
     public void loadResult(int loaderTaskType, List<CommonCaption> captions) {
-        tvNumberCaption.setText(Utility.getQuantityCountOfCaption(mContext, captions.size()));
+        tvNumberCaption.setText(mContext.getString(R.string.number_captions, captions.size()));
         if (captions.isEmpty()) {
             tvEmptyCaption.setVisibility(View.VISIBLE);
             rvCaption.setVisibility(View.GONE);
@@ -165,7 +165,7 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
             tvEmptyCaption.setVisibility(View.VISIBLE);
             rvCaption.setVisibility(View.GONE);
         }
-        tvNumberCaption.setText(Utility.getQuantityCountOfCaption(mContext, totalCaption));
+        tvNumberCaption.setText(mContext.getString(R.string.number_captions, totalCaption));
     }
 
     @Override
@@ -179,7 +179,7 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
                 tvBookmarkCategory.setVisibility(View.GONE);
                 tabLayoutCategory.setVisibility(View.GONE);
                 tvEmptyCaption.setVisibility(View.VISIBLE);
-                tvNumberCaption.setText(Utility.getQuantityCountOfCaption(mContext, 0));
+                tvNumberCaption.setText(mContext.getString(R.string.number_captions, 0));
                 mAdapter.setCurrentListCaptions(new ArrayList<>());
                 return true;
             }
