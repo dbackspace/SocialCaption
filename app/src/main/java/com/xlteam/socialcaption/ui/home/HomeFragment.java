@@ -26,6 +26,7 @@ import com.xlteam.socialcaption.external.repository.CommonCaptionRepository;
 import com.xlteam.socialcaption.external.repository.ILoader;
 import com.xlteam.socialcaption.external.repository.RepositoryFactory;
 import com.xlteam.socialcaption.external.utility.Constant;
+import com.xlteam.socialcaption.external.utility.Utility;
 import com.xlteam.socialcaption.model.CommonCaption;
 
 import java.util.ArrayList;
@@ -103,7 +104,7 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
 
     @Override
     public void loadResult(int loaderTaskType, List<CommonCaption> captions) {
-        tvNumberCaption.setText(mContext.getString(R.string.number_captions, captions.size()));
+        tvNumberCaption.setText(Utility.getQuantityCountOfCaption(mContext, captions.size()));
         if (captions.isEmpty()) {
             tvEmptyCaption.setVisibility(View.VISIBLE);
             rvCaption.setVisibility(View.GONE);
@@ -164,7 +165,7 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
             tvEmptyCaption.setVisibility(View.VISIBLE);
             rvCaption.setVisibility(View.GONE);
         }
-        tvNumberCaption.setText(mContext.getString(R.string.number_captions, totalCaption));
+        tvNumberCaption.setText(Utility.getQuantityCountOfCaption(mContext, totalCaption));
     }
 
     @Override
@@ -178,7 +179,7 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
                 tvBookmarkCategory.setVisibility(View.GONE);
                 tabLayoutCategory.setVisibility(View.GONE);
                 tvEmptyCaption.setVisibility(View.VISIBLE);
-                tvNumberCaption.setText(mContext.getString(R.string.number_captions, 0));
+                tvNumberCaption.setText(Utility.getQuantityCountOfCaption(mContext, 0));
                 mAdapter.setCurrentListCaptions(new ArrayList<>());
                 return true;
             }

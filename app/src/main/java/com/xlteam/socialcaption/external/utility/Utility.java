@@ -67,4 +67,8 @@ public class Utility {
         }
         return info;
     }
+
+    public static String getQuantityCountOfCaption(Context context, int count) {
+        return context.getResources().getQuantityString(R.plurals.caption_count, count, count);
+    }
 }
