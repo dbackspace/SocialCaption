@@ -40,9 +40,8 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
     private Context mContext;
     private Activity mActivity;
     private RecyclerView rvCaption;
-    private TextView tvNumberCaption;
+    private TextView tvNumberCaption, tvBookmarkCategory, tvEmptyCaption;
     private TabLayout tabLayoutCategory;
-    private TextView tvBookmarkCategory;
     private CaptionAdapter mAdapter;
     private MenuItem searchItem;
 
@@ -66,6 +65,7 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
         tvNumberCaption = root.findViewById(R.id.tv_number_caption);
         tabLayoutCategory = root.findViewById(R.id.tab_layout_category);
         tvBookmarkCategory = root.findViewById(R.id.tv_bookmark_select);
+        tvEmptyCaption = root.findViewById(R.id.tv_empty_caption);
         tabLayoutCategory.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -103,10 +103,16 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
 
     @Override
     public void loadResult(int loaderTaskType, List<CommonCaption> captions) {
-        tvNumberCaption.setVisibility(View.VISIBLE);
         tvNumberCaption.setText(mContext.getString(R.string.number_captions, captions.size()));
-        mAdapter = new CaptionAdapter(mContext, captions, this);
-        rvCaption.setAdapter(mAdapter);
+        if (captions.isEmpty()) {
+            tvEmptyCaption.setVisibility(View.VISIBLE);
+            rvCaption.setVisibility(View.GONE);
+        } else {
+            tvEmptyCaption.setVisibility(View.GONE);
+            rvCaption.setVisibility(View.VISIBLE);
+            mAdapter = new CaptionAdapter(mContext, captions, this);
+            rvCaption.setAdapter(mAdapter);
+        }
     }
 
     public void getCaptionList(int categoryNumber, boolean isBookmark) {
@@ -154,6 +160,10 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
 
     @Override
     public void updateTotalNumberCaption(int totalCaption) {
+        if (totalCaption == 0) {
+            tvEmptyCaption.setVisibility(View.VISIBLE);
+            rvCaption.setVisibility(View.GONE);
+        }
         tvNumberCaption.setText(mContext.getString(R.string.number_captions, totalCaption));
     }
 
@@ -166,8 +176,9 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
             @Override
             public boolean onMenuItemActionExpand(MenuItem menuItem) {
                 tvBookmarkCategory.setVisibility(View.GONE);
-                tvNumberCaption.setVisibility(View.GONE);
                 tabLayoutCategory.setVisibility(View.GONE);
+                tvEmptyCaption.setVisibility(View.VISIBLE);
+                tvNumberCaption.setText(mContext.getString(R.string.number_captions, 0));
                 mAdapter.setCurrentListCaptions(new ArrayList<>());
                 return true;
             }

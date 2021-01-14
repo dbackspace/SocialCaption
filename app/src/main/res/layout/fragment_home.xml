@@ -87,6 +87,19 @@
         android:textColor="@color/color_25"
         android:textSize="14dp" />
 
+    <TextView
+        android:id="@+id/tv_empty_caption"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tv_number_caption"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:paddingBottom="100dp"
+        android:text="@string/no_caption"
+        android:textColor="@color/color_25"
+        android:textSize="16dp"
+        android:visibility="gone" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_caption"
         android:layout_width="match_parent"
