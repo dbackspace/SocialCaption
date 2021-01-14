@@ -130,7 +130,7 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
 
     public void binCaptions(List<CommonCaption> captions) {
         tvNumberCaption.setText(mContext.getString(R.string.number_captions, captions.size()));
-        mAdapter = new CaptionAdapter(mContext, captions, this);
+        mAdapter = new CaptionAdapter(mContext, captions, this, tvBookmarkCategory.isActivated());
         rvCaption.setAdapter(mAdapter);
     }
 

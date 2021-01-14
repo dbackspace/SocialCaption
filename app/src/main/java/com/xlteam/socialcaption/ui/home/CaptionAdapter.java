@@ -25,16 +25,18 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
     private List<CommonCaption> mCaptions;
     private Context mContext;
     private Callback mCallback;
+    private boolean mBookmarkActivated;
 
     public interface Callback {
         void openCaptionPreview(CommonCaption caption, int position);
         void updateSaved(long id, boolean saved);
     }
 
-    public CaptionAdapter(Context context, List<CommonCaption> captions, Callback callback) {
+    public CaptionAdapter(Context context, List<CommonCaption> captions, Callback callback, boolean bookmarkActivated) {
         mContext = context;
         mCaptions = captions;
         mCallback = callback;
+        mBookmarkActivated = bookmarkActivated;
     }
 
     @NonNull
@@ -49,9 +51,11 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
         CommonCaption caption = mCaptions.get(position);
         holder.tvCaptionContent.setText(caption.getContent());
         holder.layoutBg.setBackgroundColor(mContext.getColor(R.color.color_FA));
+        holder.imgBookmark.setActivated(mBookmarkActivated);
         holder.imgBookmark.setOnClickListener(v -> {
             holder.imgBookmark.setActivated(!holder.imgBookmark.isActivated());
             mCallback.updateSaved(caption.getId(), holder.imgBookmark.isActivated());
+            notifyItemRemoved(position);
         });
         holder.view.setOnClickListener(view -> {
             //open preview dialog
