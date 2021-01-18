@@ -35,6 +35,7 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
@@ -53,6 +54,7 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
     private TabLayout tabLayoutCategory;
     private CaptionAdapter mAdapter;
     private MenuItem searchItem;
+    private Disposable disposable;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -176,6 +178,14 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
         tvNumberCaption.setText(mContext.getString(R.string.number_captions, totalCaption));
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (disposable != null) {
+            disposable.dispose();
+        }
+    }
+
     @SuppressLint("CheckResult")
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
@@ -205,7 +215,7 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
         if (searchManager != null) {
             SearchView searchView = (SearchView) searchItem.getActionView();
             searchView.setSearchableInfo(searchManager.getSearchableInfo(mActivity.getComponentName()));
-            fromSearchView(searchView)
+            disposable = fromSearchView(searchView)
                     .debounce(300, TimeUnit.MILLISECONDS)
                     .filter(text -> !text.trim().isEmpty())
                     .map(text -> text.toLowerCase().trim())
@@ -222,7 +232,7 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                subject.onComplete();
+                subject.onNext(query);
                 searchView.clearFocus();
                 return false;
             }
