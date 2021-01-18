@@ -1,5 +1,6 @@
 package com.xlteam.socialcaption.ui.home;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
@@ -26,11 +27,18 @@ import com.xlteam.socialcaption.external.repository.CommonCaptionRepository;
 import com.xlteam.socialcaption.external.repository.ILoader;
 import com.xlteam.socialcaption.external.repository.RepositoryFactory;
 import com.xlteam.socialcaption.external.utility.Constant;
-import com.xlteam.socialcaption.external.utility.Utility;
 import com.xlteam.socialcaption.model.CommonCaption;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.PublishSubject;
 
 import static com.xlteam.socialcaption.external.utility.Constant.RepositoryType.COMMON_REPOSITORY;
 
@@ -168,6 +176,7 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
         tvNumberCaption.setText(mContext.getString(R.string.number_captions, totalCaption));
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.menu_toolbar, menu);
@@ -196,20 +205,34 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
         if (searchManager != null) {
             SearchView searchView = (SearchView) searchItem.getActionView();
             searchView.setSearchableInfo(searchManager.getSearchableInfo(mActivity.getComponentName()));
-            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    mRepository.searchCaptionByContainingContent(query.trim());
-                    return false;
-                }
-
-                @Override
-                public boolean onQueryTextChange(String newText) {
-                    mRepository.searchCaptionByContainingContent(newText.trim());
-                    return false;
-                }
-            });
+            fromSearchView(searchView)
+                    .debounce(300, TimeUnit.MILLISECONDS)
+                    .filter(text -> !text.trim().isEmpty())
+                    .map(text -> text.toLowerCase().trim())
+                    .distinctUntilChanged()
+                    .switchMap(text -> Observable.just(text))
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(query -> mRepository.searchCaptionByContainingContent(query));
         }
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    private Observable<String> fromSearchView (SearchView searchView) {
+        final PublishSubject<String> subject = PublishSubject.create();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                subject.onComplete();
+                searchView.clearFocus();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                subject.onNext(newText);
+                return false;
+            }
+        });
+        return subject;
     }
 }
