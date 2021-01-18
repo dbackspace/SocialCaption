@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.repository.UserCaptionRepository;
+import com.xlteam.socialcaption.external.utility.Constant;
 import com.xlteam.socialcaption.model.CommonCaption;
 
 import java.io.FileNotFoundException;
@@ -24,8 +25,8 @@ import java.util.List;
 
 public class EditCaptionActivity extends AppCompatActivity {
     private static final int RESULT_LOAD_IMG = 1;
-    private ImageView mBtnBackAndCancel;
-    private TextView mBtnSaveImage;
+    private ImageView imgBack;
+    private TextView tvDone;
     private CommonCaption mCommonCaption;
     private ImageView mImgBackground;
 
@@ -43,52 +44,30 @@ public class EditCaptionActivity extends AppCompatActivity {
         // init view
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_caption);
-        // create databaseRepository
-//        mRepository = (UserCaptionRepository) RepositoryFactory.createRepository(this, this, USER_REPOSITORY);
 
-        mBtnBackAndCancel = findViewById(R.id.btn_edit_back_and_cancel);
-        mBtnSaveImage = findViewById(R.id.tv_edit_save);
-        mImgBackground = findViewById(R.id.img_edit_background);
-
-        // get Caption
-//        mCommonCaption = getIntent().getExtras().getParcelable(Constant.EXTRA_CAPTION);
-        mBtnSaveImage.setOnClickListener(v -> {
+        Intent intent = getIntent();
+        mCommonCaption = (CommonCaption) intent.getSerializableExtra(Constant.EXTRA_CAPTION);
+        if (mCommonCaption != null) {
+            //init old data
+        } else {
+            //show dialog
+        }
+        findViewById();
+        tvDone.setOnClickListener(v -> {
 //            UserCaption userCaption = new UserCaption(mEdtCaption.getText().toString(), mPathImg, mColorTextDefault, mFontDefault, mAlignTextDefault, true);
 //            mRepository.insertUserCaption(userCaption);
 //            Toast.makeText(this, "Đã lưu caption. Để xem lại, bạn có thể vào Menu -> Caption đã tạo!", Toast.LENGTH_LONG).show();
 //            this.finish();
         });
-        mBtnSaveImage.setClickable(false);
+        tvDone.setClickable(false);
 
 
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setMessage("Bạn có muốn lưu bản nháp");
-//        builder.setCancelable(false);
-//        builder.setPositiveButton(
-//                "Yes",
-//                new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        UserCaption userCaption = new UserCaption(mEdtCaption.getText().toString(), mPathImg, mColorTextDefault, mFontDefault, mAlignTextDefault, true);
-//                        mRepository.insertUserCaption(userCaption);
-//                        Toast.makeText(mContext, "Đã lưu bản nháp. Để xem lại, bạn có thể vào Menu -> Caption đã tạo!", Toast.LENGTH_LONG).show();
-//
-//                        dialog.cancel();
-//                        finish();
-//                    }
-//                });
-//
-//        builder.setNegativeButton(
-//                "No",
-//                new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        dialog.cancel();
-//                        finish();
-//                    }
-//                });
-//
-//        AlertDialog alert = builder.create();
+    }
 
-
+    private void findViewById() {
+        imgBack = findViewById(R.id.btn_edit_back_and_cancel);
+        tvDone = findViewById(R.id.tv_edit_save);
+        mImgBackground = findViewById(R.id.img_edit_background);
     }
 
     @Override
@@ -119,11 +98,11 @@ public class EditCaptionActivity extends AppCompatActivity {
 
     void enableBtnSave() {
         if (isPickedPicture || mFontDefault != 6 || mColorTextDefault != 0 || mAlignTextDefault != 0 || mTextSizeDefault != 1) {
-            mBtnSaveImage.setAlpha(1);
-            mBtnSaveImage.setClickable(true);
+            tvDone.setAlpha(1);
+            tvDone.setClickable(true);
         } else {
-            mBtnSaveImage.setAlpha(0.7f);
-            mBtnSaveImage.setClickable(false);
+            tvDone.setAlpha(0.7f);
+            tvDone.setClickable(false);
         }
     }
 

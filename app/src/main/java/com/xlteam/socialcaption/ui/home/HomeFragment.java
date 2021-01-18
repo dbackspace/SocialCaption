@@ -2,7 +2,6 @@ package com.xlteam.socialcaption.ui.home;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,8 +14,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,17 +29,7 @@ import com.xlteam.socialcaption.external.repository.RepositoryFactory;
 import com.xlteam.socialcaption.external.utility.Constant;
 import com.xlteam.socialcaption.model.CommonCaption;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subjects.PublishSubject;
 
 import static com.xlteam.socialcaption.external.utility.Constant.RepositoryType.COMMON_REPOSITORY;
 
@@ -53,8 +43,6 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
     private TextView tvNumberCaption, tvBookmarkCategory, tvEmptyCaption;
     private TabLayout tabLayoutCategory;
     private CaptionAdapter mAdapter;
-    private MenuItem searchItem;
-    private Disposable disposable;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -164,7 +152,7 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
     @Override
     public void onBookmarkClick(long id, boolean saved, int positionRemove) {
         mRepository.updateCaptionBySaved(id, saved);
-        if (tvBookmarkCategory.isActivated() && !searchItem.isActionViewExpanded()) {
+        if (tvBookmarkCategory.isActivated()) {
             mAdapter.removeCaption(positionRemove);
         }
     }
@@ -178,70 +166,21 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
         tvNumberCaption.setText(mContext.getString(R.string.number_captions, totalCaption));
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (disposable != null) {
-            disposable.dispose();
-        }
-    }
-
     @SuppressLint("CheckResult")
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.menu_toolbar, menu);
-
-        searchItem = menu.findItem(R.id.action_search);
-        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem menuItem) {
-                tvBookmarkCategory.setVisibility(View.GONE);
-                tabLayoutCategory.setVisibility(View.GONE);
-                tvEmptyCaption.setVisibility(View.VISIBLE);
-                tvNumberCaption.setText(mContext.getString(R.string.number_captions, 0));
-                mAdapter.setCurrentListCaptions(new ArrayList<>());
-                return true;
-            }
-
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
-                tvBookmarkCategory.setVisibility(View.VISIBLE);
-                tabLayoutCategory.setVisibility(View.VISIBLE);
-                getCaptionList(tabLayoutCategory.getSelectedTabPosition(), tvBookmarkCategory.isActivated());
-                return true;
-            }
-        });
-        SearchManager searchManager = (SearchManager) mActivity.getSystemService(Context.SEARCH_SERVICE);
-        if (searchManager != null) {
-            SearchView searchView = (SearchView) searchItem.getActionView();
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(mActivity.getComponentName()));
-            disposable = fromSearchView(searchView)
-                    .debounce(300, TimeUnit.MILLISECONDS)
-                    .map(text -> text.toLowerCase().trim())
-                    .distinctUntilChanged()
-                    .switchMap(text -> Observable.just(text))
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(query -> mRepository.searchCaptionByContainingContent(query));
-        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    private Observable<String> fromSearchView (SearchView searchView) {
-        final PublishSubject<String> subject = PublishSubject.create();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                subject.onNext(query);
-                searchView.clearFocus();
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                subject.onNext(newText);
-                return false;
-            }
-        });
-        return subject;
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_search) {
+            FragmentManager fragmentManager = getChildFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            SearchDialogFragment searchDialogFragment = SearchDialogFragment.newInstance();
+            searchDialogFragment.show(fragmentTransaction, "dialog");
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
