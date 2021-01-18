@@ -217,7 +217,6 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
             searchView.setSearchableInfo(searchManager.getSearchableInfo(mActivity.getComponentName()));
             disposable = fromSearchView(searchView)
                     .debounce(300, TimeUnit.MILLISECONDS)
-                    .filter(text -> !text.trim().isEmpty())
                     .map(text -> text.toLowerCase().trim())
                     .distinctUntilChanged()
                     .switchMap(text -> Observable.just(text))

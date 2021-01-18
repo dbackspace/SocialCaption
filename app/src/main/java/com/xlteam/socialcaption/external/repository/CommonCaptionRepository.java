@@ -84,7 +84,7 @@ public class CommonCaptionRepository extends AbsRepository {
     public void searchCaptionByContainingContent(String content) {
         if (!TextUtils.isEmpty(content)) {
             new Thread(() -> {
-                StringBuilder query = SearchQueryUtils.getSelectionArgs(content.trim());
+                StringBuilder query = SearchQueryUtils.getSelectionArgs(content);
                 final List<CommonCaption> result = mDatabase.commonCaptionDAO().searchByContainingContent(new SimpleSQLiteQuery(query.toString()));
                 execute(SEARCH_BY_CONTENT, result);
             }).start();
