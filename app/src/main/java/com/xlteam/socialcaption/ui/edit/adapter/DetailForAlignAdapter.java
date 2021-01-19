@@ -13,7 +13,7 @@ import com.xlteam.socialcaption.R;
 public class DetailForAlignAdapter extends RecyclerView.Adapter<DetailForAlignAdapter.ViewHolder> {
     private AlignSelectCallback mCallback;
     private int mNumberSelect;
-    public static final int[] mAligns = {R.drawable.ic_baseline_format_align_justify_24, R.drawable.ic_baseline_format_align_center_24, R.drawable.ic_baseline_format_align_left_24, R.drawable.ic_baseline_format_align_right_24};
+    public static final int[] mAligns = {R.drawable.ic_align_justify, R.drawable.ic_align_center, R.drawable.ic_align_left, R.drawable.ic_align_right};
 
     public interface AlignSelectCallback {
         void selectAlign(int Align);

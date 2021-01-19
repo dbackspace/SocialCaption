@@ -95,7 +95,7 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(query -> mRepository.searchCaptionByContainingContent(query));
         searchView.requestFocus();
-        mRepository.getAllCaption(false);
+        tvNumberCaption.setText(mContext.getString(R.string.number_captions, 0));
         return root;
     }
 

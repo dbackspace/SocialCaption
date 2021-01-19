@@ -1,5 +1,6 @@
 package com.xlteam.socialcaption.ui.edit;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +31,7 @@ public class EditCaptionActivity extends AppCompatActivity {
     private TextView tvDone;
     private CommonCaption mCommonCaption;
     private ImageView mImgBackground;
+    private LinearLayout layoutMenu;
 
     private boolean isPickedPicture = false;
     // set default for tool
@@ -61,13 +64,14 @@ public class EditCaptionActivity extends AppCompatActivity {
         });
         tvDone.setClickable(false);
 
-
+        imgBack.setOnClickListener(v -> finish());
     }
 
     private void findViewById() {
         imgBack = findViewById(R.id.btn_edit_back_and_cancel);
         tvDone = findViewById(R.id.tv_edit_save);
         mImgBackground = findViewById(R.id.img_edit_background);
+        layoutMenu = findViewById(R.id.layout_menu);
     }
 
     @Override
@@ -118,6 +122,16 @@ public class EditCaptionActivity extends AppCompatActivity {
     }
 
     public void textOnClick(View view) {
+        imgBack.setVisibility(View.INVISIBLE);
+        tvDone.setVisibility(View.INVISIBLE);
+        layoutMenu.setVisibility(View.INVISIBLE);
+        Dialog addTextDialog = new DialogAddTextBuilder(this).build();
+        addTextDialog.setOnCancelListener(dialog -> {
+            imgBack.setVisibility(View.VISIBLE);
+            tvDone.setVisibility(View.VISIBLE);
+            layoutMenu.setVisibility(View.VISIBLE);
+        });
+        addTextDialog.show();
     }
 
     public void imageOnClick(View view) {
@@ -131,14 +145,5 @@ public class EditCaptionActivity extends AppCompatActivity {
     }
 
     public void flipOnClick(View view) {
-    }
-
-    public void backOnClick(View view) {
-//            Log.e("TEST", isPickedPicture + " " + mFontDefault + " " + mColorTextDefault + " " + mAlignTextDefault + " " + mTextSizeDefault);
-//            if (isPickedPicture || mFontDefault != 6 || mColorTextDefault != 0 || mAlignTextDefault != 0 || mTextSizeDefault != 1) {
-//                alert.show();
-//            } else {
-        finish();
-//            }
     }
 }

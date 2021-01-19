@@ -48,8 +48,7 @@
         android:paddingBottom="100dp"
         android:text="@string/no_caption"
         android:textColor="@color/color_25"
-        android:textSize="16dp"
-        android:visibility="gone" />
+        android:textSize="16dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_caption"
