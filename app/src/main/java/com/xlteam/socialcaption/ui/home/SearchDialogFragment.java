@@ -2,6 +2,7 @@ package com.xlteam.socialcaption.ui.home;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,9 +43,14 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
     private Context mContext;
     private CaptionAdapter mAdapter;
     private RecyclerView rvCaption;
+    private Callback mCallback;
 
-    static SearchDialogFragment newInstance() {
-        return new SearchDialogFragment();
+    public interface Callback {
+        void onCancel();
+    }
+
+    public SearchDialogFragment(Callback listener) {
+        mCallback = listener;
     }
 
     @Override
@@ -155,5 +161,17 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
     @Override
     public void updateTotalNumberCaption(int totalCaption) {
 
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        mCallback.onCancel();
+    }
+
+    @Override
+    public void onCancel(@NonNull DialogInterface dialog) {
+        super.onCancel(dialog);
+        mCallback.onCancel();
     }
 }

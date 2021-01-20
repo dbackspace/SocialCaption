@@ -178,7 +178,8 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
         if (item.getItemId() == R.id.action_search) {
             FragmentManager fragmentManager = getChildFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            SearchDialogFragment searchDialogFragment = SearchDialogFragment.newInstance();
+            SearchDialogFragment searchDialogFragment = new SearchDialogFragment(()
+                    -> getCaptionList(tabLayoutCategory.getSelectedTabPosition(), tvBookmarkCategory.isActivated()));
             searchDialogFragment.show(fragmentTransaction, "dialog");
         }
         return super.onOptionsItemSelected(item);
