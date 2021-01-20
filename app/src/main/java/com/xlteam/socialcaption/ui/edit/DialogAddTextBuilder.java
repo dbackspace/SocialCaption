@@ -2,32 +2,38 @@ package com.xlteam.socialcaption.ui.edit;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.xlteam.socialcaption.R;
+import com.xlteam.socialcaption.external.datasource.ColorDataSource;
+import com.xlteam.socialcaption.external.datasource.FontDataSource;
 import com.xlteam.socialcaption.external.utility.Utility;
+import com.xlteam.socialcaption.model.Font;
 
 import java.util.Objects;
 
 public class DialogAddTextBuilder {
-    private Context mContext;
     private Dialog mDialog;
     private ImageView imgGravity, imgBack, imgFont;
     private EditText edtText;
     private TextView tvSave;
-    private RecyclerView rvFont;
+    private RecyclerView rvFont, rvColor;
+    private LinearLayout lnColor;
+    private View viewColor;
 
     private int mGravityText;
-    private int mNumberFont;
+    private int mNumberFont, mNumberColor;
 
     public DialogAddTextBuilder(Context context) {
         mDialog = new Dialog(context, R.style.Theme_SocialCaption);
@@ -39,11 +45,18 @@ public class DialogAddTextBuilder {
         edtText = mDialog.findViewById(R.id.edtText);
         tvSave = mDialog.findViewById(R.id.tvSave);
         rvFont = mDialog.findViewById(R.id.rvFont);
+        rvColor = mDialog.findViewById(R.id.rvColor);
         imgFont = mDialog.findViewById(R.id.imgFont);
+        lnColor = mDialog.findViewById(R.id.lnColor);
+        viewColor = mDialog.findViewById(R.id.viewColor);
 
-        imgBack.setOnClickListener(v -> mDialog.dismiss());
-
-        tvSave.setOnClickListener(v -> mDialog.dismiss());
+        //init default
+        mNumberFont = 1; // tạm
+        mNumberColor = 1; // tạm
+        //
+        Utility.setColorForView(viewColor, ColorDataSource.getInstance().getAllDataMini().get(mNumberColor));
+        imgBack.setOnClickListener(v -> mDialog.cancel());
+        tvSave.setOnClickListener(v -> mDialog.cancel());
 
         imgGravity.setOnClickListener(v -> {
             if (mGravityText == Gravity.CENTER) {
@@ -58,19 +71,31 @@ public class DialogAddTextBuilder {
             }
             edtText.setGravity(mGravityText);
         });
-        imgFont.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rvFont.setVisibility(View.VISIBLE);
-            }
+        imgFont.setOnClickListener(v -> {
+            rvFont.setVisibility(View.VISIBLE);
+            rvColor.setVisibility(View.GONE);
         });
+        lnColor.setOnClickListener(v -> {
+            rvColor.setVisibility(View.VISIBLE);
+            rvFont.setVisibility(View.GONE);
+        });
+
         rvFont.setLayoutManager(new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false));
-        rvFont.setAdapter(new FontAdapter(context, new FontAdapter.FontSelectCallback() {
-            @Override
-            public void selectFont(int numberFont) {
-                mNumberFont = numberFont;
-            }
+        rvFont.setAdapter(new FontAdapter(context, numberFont -> {
+            mNumberFont = numberFont;
+            Font font = FontDataSource.getInstance().getAllFonts().get(numberFont);
+            Typeface type = Typeface.createFromAsset(context.getAssets(), "font/" + font.getFont());
+            edtText.setTypeface(type);
         }));
+
+        rvColor.setLayoutManager(new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false));
+        rvColor.setAdapter(new ColorAdapter(color -> {
+            mNumberColor = color;
+            String colorString = ColorDataSource.getInstance().getAllDataMini().get(color);
+            Utility.setColorForView(viewColor, colorString);
+            Utility.setColorForTextView(edtText, colorString);
+        }));
+
     }
 
     public Dialog build() {
