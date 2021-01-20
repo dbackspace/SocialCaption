@@ -13,9 +13,11 @@
 
         <ImageView
             android:id="@+id/btn_edit_back_and_cancel"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentTop="true"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="5dp"
             android:background="@drawable/bg_ripple_click_view_circle"
             android:padding="5dp"
             android:src="@drawable/ic_back_white" />
@@ -23,10 +25,11 @@
         <TextView
             android:id="@+id/tv_edit_save"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_alignParentEnd="true"
+            android:layout_margin="5dp"
             android:alpha="0.7"
-            android:background="@drawable/bg_ripple_click_view_circle"
+            android:background="@drawable/bg_ripple_click_view_rectangle"
             android:clickable="false"
             android:gravity="center"
             android:paddingStart="10dp"

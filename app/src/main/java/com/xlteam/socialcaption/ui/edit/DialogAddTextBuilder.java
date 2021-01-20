@@ -25,9 +25,9 @@ import java.util.Objects;
 
 public class DialogAddTextBuilder {
     private Dialog mDialog;
-    private ImageView imgGravity, imgBack, imgFont;
+    private ImageView imgGravity, imgBack, imgDone, imgFont;
     private EditText edtText;
-    private TextView tvSave, tvBg;
+    private TextView tvBg;
     private RecyclerView rvFont, rvColor;
     private LinearLayout lnColor, lnBg;
     private View viewColor;
@@ -43,7 +43,7 @@ public class DialogAddTextBuilder {
         imgGravity = mDialog.findViewById(R.id.imgGravity);
         imgBack = mDialog.findViewById(R.id.imgBack);
         edtText = mDialog.findViewById(R.id.edtText);
-        tvSave = mDialog.findViewById(R.id.tvSave);
+        imgDone = mDialog.findViewById(R.id.imgDone);
         rvFont = mDialog.findViewById(R.id.rvFont);
         rvColor = mDialog.findViewById(R.id.rvColor);
         imgFont = mDialog.findViewById(R.id.imgFont);
@@ -58,7 +58,7 @@ public class DialogAddTextBuilder {
         //
         Utility.setColorForView(viewColor, ColorDataSource.getInstance().getAllDataMini().get(mNumberColor));
         imgBack.setOnClickListener(v -> mDialog.cancel());
-        tvSave.setOnClickListener(v -> mDialog.cancel());
+        imgDone.setOnClickListener(v -> mDialog.cancel());
 
         imgGravity.setOnClickListener(v -> {
             if (mGravityText == Gravity.CENTER) {

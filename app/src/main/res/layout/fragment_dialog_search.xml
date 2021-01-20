@@ -18,7 +18,7 @@
             android:layout_marginStart="5dp"
             android:background="@drawable/bg_ripple_click_view_circle"
             android:padding="5dp"
-            android:src="@drawable/ic_back" />
+            android:src="@drawable/ic_back_black" />
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/search_view"
