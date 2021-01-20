@@ -87,16 +87,20 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
         rvCaption = root.findViewById(R.id.rv_caption);
         rvCaption.setLayoutManager(new LinearLayoutManager(mContext));
         root.findViewById(R.id.imgBack).setOnClickListener(v -> dismiss());
-        disposable = fromSearchView(searchView)
-                .debounce(300, TimeUnit.MILLISECONDS)
+        disposable = initRxSearchView(searchView);
+        searchView.requestFocus();
+        tvNumberCaption.setText(mContext.getString(R.string.number_captions, 0));
+        return root;
+    }
+
+    private Disposable initRxSearchView(SearchView searchView) {
+        return fromSearchView(searchView)
+                .debounce(500, TimeUnit.MILLISECONDS)
                 .map(text -> text.toLowerCase().trim())
                 .distinctUntilChanged()
                 .switchMap(Observable::just)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(query -> mRepository.searchCaptionByContainingContent(query));
-        searchView.requestFocus();
-        tvNumberCaption.setText(mContext.getString(R.string.number_captions, 0));
-        return root;
     }
 
     private Observable<String> fromSearchView(SearchView searchView) {
