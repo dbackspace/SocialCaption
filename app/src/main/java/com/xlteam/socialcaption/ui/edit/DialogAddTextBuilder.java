@@ -27,13 +27,13 @@ public class DialogAddTextBuilder {
     private Dialog mDialog;
     private ImageView imgGravity, imgBack, imgFont;
     private EditText edtText;
-    private TextView tvSave;
+    private TextView tvSave, tvBg;
     private RecyclerView rvFont, rvColor;
-    private LinearLayout lnColor;
+    private LinearLayout lnColor, lnBg;
     private View viewColor;
 
     private int mGravityText;
-    private int mNumberFont, mNumberColor;
+    private int mNumberFont, mNumberColor, mNumberBg;
 
     public DialogAddTextBuilder(Context context) {
         mDialog = new Dialog(context, R.style.Theme_SocialCaption);
@@ -49,6 +49,8 @@ public class DialogAddTextBuilder {
         imgFont = mDialog.findViewById(R.id.imgFont);
         lnColor = mDialog.findViewById(R.id.lnColor);
         viewColor = mDialog.findViewById(R.id.viewColor);
+        lnBg = mDialog.findViewById(R.id.lnBg);
+        tvBg = mDialog.findViewById(R.id.tvBg);
 
         //init default
         mNumberFont = 1; // tạm
@@ -78,6 +80,24 @@ public class DialogAddTextBuilder {
         lnColor.setOnClickListener(v -> {
             rvColor.setVisibility(View.VISIBLE);
             rvFont.setVisibility(View.GONE);
+        });
+        lnBg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mNumberBg == 0) {
+                    mNumberBg = 1;
+                    Utility.setColorForView(tvBg, "#80FFFFFF");
+                    Utility.setColorForTextView(tvBg, "#FFFFFFFF");
+                } else if (mNumberBg == 1) {
+                    mNumberBg = 2;
+                    Utility.setColorForView(tvBg, "#FFFFFFFF");
+                    Utility.setColorForTextView(tvBg, "#FF000000");
+                } else {
+                    mNumberBg = 0;
+                    Utility.setColorForView(tvBg, "#00FFFFFF");
+                    Utility.setColorForTextView(tvBg, "#FFFFFFFF");
+                }
+            }
         });
 
         rvFont.setLayoutManager(new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false));
