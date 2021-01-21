@@ -19,8 +19,16 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            resValue "string", "AD_APP_KEY", admob_id_app_release
+            resValue "string", "AD_BANNER", ad_banner_release
+        }
+        debug {
+            debuggable true
+            resValue "string", "AD_APP_KEY", admob_id_app_debug
+            resValue "string", "AD_BANNER", ad_banner_debug
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -31,6 +39,10 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+
+    //ads
+    implementation 'com.google.android.gms:play-services-ads:19.6.0'
+    implementation 'com.google.firebase:firebase-ads:19.6.0'
 
     // lib for fragment and dialog more easier
     implementation 'com.techyourchance:fragmenthelper:0.8.0'
