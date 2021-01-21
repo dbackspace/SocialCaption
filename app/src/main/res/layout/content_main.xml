@@ -11,11 +11,11 @@
     <FrameLayout
         android:id="@+id/frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        ads:layout_constraintBottom_toTopOf="@id/adView"
+        ads:layout_constraintBottom_toTopOf="@+id/adView"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="0dp" />
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"
