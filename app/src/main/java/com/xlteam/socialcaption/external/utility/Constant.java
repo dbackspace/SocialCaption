@@ -18,6 +18,15 @@ public class Constant {
 
     public static final String EXTRA_CAPTION = "EXTRA_CAPTION";
 
+    public static int ALIGN_CENTER = 0;
+    public static int ALIGN_START = 1;
+    public static int ALIGN_END = 2;
+
+    public static int BACKGROUND_SPAN_TRANSPARENT = 0;
+    public static int BACKGROUND_SPAN_BLUR = 1;
+    public static int BACKGROUND_SPAN_FULL_SOLID = 2;
+
+
     public static class LoaderTaskType {
         private LoaderTaskType() {
         }
