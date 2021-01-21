@@ -3,6 +3,7 @@ package com.xlteam.socialcaption.ui.home;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,6 +29,7 @@ import com.xlteam.socialcaption.external.repository.ILoader;
 import com.xlteam.socialcaption.external.repository.RepositoryFactory;
 import com.xlteam.socialcaption.external.utility.Constant;
 import com.xlteam.socialcaption.model.CommonCaption;
+import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
 
 import java.util.List;
 
@@ -169,7 +171,7 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
     @SuppressLint("CheckResult")
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_toolbar, menu);
+        inflater.inflate(R.menu.menu_toolbar_home, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -181,6 +183,9 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
             SearchDialogFragment searchDialogFragment = new SearchDialogFragment(()
                     -> getCaptionList(tabLayoutCategory.getSelectedTabPosition(), tvBookmarkCategory.isActivated()));
             searchDialogFragment.show(fragmentTransaction, "dialog");
+        } else if (item.getItemId() == R.id.action_create_picture) {
+            Intent intent = new Intent(mContext, EditCaptionActivity.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
