@@ -17,6 +17,9 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.xlteam.socialcaption.R;
@@ -43,15 +46,18 @@ public class EditCaptionActivity extends AppCompatActivity {
     private int mAlignTextDefault = 0;
     private String mPathImg = "";
     private UserCaptionRepository mRepository;
-
     private int flipCurrent = 0;
-
+    private AdView mAdView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         // init view
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_caption);
+        MobileAds.initialize(this);
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         Intent intent = getIntent();
         mCommonCaption = (CommonCaption) intent.getSerializableExtra(Constant.EXTRA_CAPTION);
@@ -182,5 +188,29 @@ public class EditCaptionActivity extends AppCompatActivity {
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "temp", null);
         return Uri.parse(path);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mAdView != null) {
+            mAdView.resume();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mAdView != null) {
+            mAdView.pause();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mAdView != null) {
+            mAdView.destroy();
+        }
     }
 }
