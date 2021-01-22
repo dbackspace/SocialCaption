@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +30,8 @@ import com.xlteam.socialcaption.external.utility.Constant;
 import com.xlteam.socialcaption.model.CommonCaption;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.List;
 
 public class EditCaptionActivity extends AppCompatActivity {
@@ -38,7 +42,6 @@ public class EditCaptionActivity extends AppCompatActivity {
     private ImageView mImgBackground;
     private LinearLayout layoutMenu;
 
-    private boolean isPickedPicture = false;
     // set default for tool
     private int mTextSizeDefault; // default = 1    [0 -> 4]
     private int mFontDefault = 6;
@@ -48,6 +51,11 @@ public class EditCaptionActivity extends AppCompatActivity {
     private UserCaptionRepository mRepository;
     private int flipCurrent = 0;
     private AdView mAdView;
+    public static final int PICK_IMAGE = 1;
+
+    // check change
+    private boolean isPickedPicture = false;
+    private boolean isCropped = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -88,43 +96,46 @@ public class EditCaptionActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int reqCode, int resultCode, Intent data) {
         super.onActivityResult(reqCode, resultCode, data);
-        if (reqCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
-                Uri resultUri = result.getUri();
-                mImgBackground.setImageURI(resultUri);
-                mImgBackground.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Exception error = result.getError();
-            }
+        switch (reqCode) {
+            case CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE:
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                if (resultCode == RESULT_OK) {
+                    Uri resultUri = result.getUri();
+                    mImgBackground.setImageURI(resultUri);
+                    isCropped = true;
 
-       /* if (resultCode == RESULT_OK) {
-
-            } else {
-                try {
-                    final Uri imageUri = data.getData();
-                    mPathImg = imageUri.getPath();
-                    final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-                    final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                    mImgBackground.setImageBitmap(selectedImage);
-
-                    // co su thay doi
-                    isPickedPicture = true;
                     enableBtnSave();
-
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                    Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    Exception error = result.getError();
                 }
-            }
-        } else {
-//            Toast.makeText(this, "You haven't picked Image", Toast.LENGTH_LONG).show();
-        }*/
+                break;
+            case PICK_IMAGE:
+                if (resultCode == RESULT_OK) {
+                    if (data == null) {
+                        Toast.makeText(this, "Bạn chưa chọn ảnh.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        try {
+                            final Uri imageUri = data.getData();
+                            mPathImg = imageUri.getPath();
+                            final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                            final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                            mImgBackground.setImageBitmap(selectedImage);
+
+                            // co su thay doi
+                            isPickedPicture = true;
+                            enableBtnSave();
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+                break;
         }
     }
 
     void enableBtnSave() {
-        if (isPickedPicture || mFontDefault != 6 || mColorTextDefault != 0 || mAlignTextDefault != 0 || mTextSizeDefault != 1) {
+        if (checkChangeBackground(mImgBackground)) {
             tvDone.setAlpha(1);
             tvDone.setClickable(true);
         } else {
@@ -133,12 +144,10 @@ public class EditCaptionActivity extends AppCompatActivity {
         }
     }
 
-//    @Override
-//    public void loadResult(int loaderTaskType, List result) {
-//        if (loaderTaskType == LOAD_ALL_USER_CAPTION) {
-//            bindUserCaptions(result);
-//        }
-//    }
+
+    private boolean checkChangeBackground(ImageView imageView) {
+        return isPickedPicture || imageView.getRotation() % 360 != 0 || isCropped || (flipCurrent == 180);
+    }
 
     private void bindUserCaptions(List result) {
         Log.e("TEST", result.size() + "");
@@ -158,11 +167,17 @@ public class EditCaptionActivity extends AppCompatActivity {
     }
 
     public void imageOnClick(View view) {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
     }
 
 
     public void rotateOnClick(View view) {
         mImgBackground.setRotation(mImgBackground.getRotation() + -90);
+
+        enableBtnSave();
     }
 
     public void cropOnClick(View view) {
@@ -175,6 +190,8 @@ public class EditCaptionActivity extends AppCompatActivity {
     public void flipOnClick(View view) {
         flipCurrent = (flipCurrent + 180) % 360;
         mImgBackground.setRotationY(flipCurrent);
+
+        enableBtnSave();
     }
 
     public Bitmap getBitmapFromImageView(ImageView imageView) {
