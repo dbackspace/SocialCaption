@@ -1,5 +1,6 @@
 package com.xlteam.socialcaption.ui.edit;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,17 +24,30 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.repository.UserCaptionRepository;
 import com.xlteam.socialcaption.external.utility.Constant;
+import com.xlteam.socialcaption.external.utility.FileUtils;
+import com.xlteam.socialcaption.external.utility.Utility;
 import com.xlteam.socialcaption.model.CommonCaption;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+
+import static com.xlteam.socialcaption.external.utility.Constant.SAVE_DATE_TIME_FORMAT;
 
 public class EditCaptionActivity extends AppCompatActivity {
     private static final int RESULT_LOAD_IMG = 1;
@@ -56,12 +71,18 @@ public class EditCaptionActivity extends AppCompatActivity {
     // check change
     private boolean isPickedPicture = false;
     private boolean isCropped = false;
+    private Context mContext;
+
+    // relative background
+    private RelativeLayout relativeBackground;
+    private TextView tvContentEdit;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         // init view
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_caption);
+        mContext = getBaseContext();
         MobileAds.initialize(this);
         mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -80,6 +101,7 @@ public class EditCaptionActivity extends AppCompatActivity {
 //            mRepository.insertUserCaption(userCaption);
 //            Toast.makeText(this, "Đã lưu caption. Để xem lại, bạn có thể vào Menu -> Caption đã tạo!", Toast.LENGTH_LONG).show();
 //            this.finish();
+            saveImageCountdownToPhone(relativeBackground);
         });
         tvDone.setClickable(false);
 
@@ -91,6 +113,8 @@ public class EditCaptionActivity extends AppCompatActivity {
         tvDone = findViewById(R.id.tv_edit_save);
         mImgBackground = findViewById(R.id.img_edit_background);
         layoutMenu = findViewById(R.id.layout_menu);
+        relativeBackground = findViewById(R.id.relative_background_save_img);
+        tvContentEdit = findViewById(R.id.tv_content_edit);
     }
 
     @Override
@@ -230,4 +254,39 @@ public class EditCaptionActivity extends AppCompatActivity {
             mAdView.destroy();
         }
     }
+
+    // save image
+    private void saveImageCountdownToPhone(View view) {
+        Dexter.withContext(this)
+                .withPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
+                        if (multiplePermissionsReport.areAllPermissionsGranted()) {
+                            Bitmap bitmap = Utility.getBitmapFromView(view);
+                            File saveFolder = FileUtils.findExistingFolderSaveImage();
+                            if (saveFolder != null) {
+                                SimpleDateFormat sdf = new SimpleDateFormat(SAVE_DATE_TIME_FORMAT, Locale.getDefault());
+                                String savePath = saveFolder.getAbsolutePath() + File.separator + sdf.format(new Date(Utility.now())) + ".png";
+                                File saveFile = Utility.bitmapToFile(bitmap, savePath);
+                                if (saveFile != null) {
+                                    Toast.makeText(mContext, getString(R.string.save_success, savePath), Toast.LENGTH_LONG).show();
+//                                    if (mActivity != null) mActivity.checkAndShowAds(3);
+                                } else {
+                                    Toast.makeText(mContext, getString(R.string.save_fail), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        } else {
+                            Toast.makeText(mContext, getString(R.string.notify_not_enough_permission), Toast.LENGTH_SHORT).show();
+                            Utility.showDialogRequestPermission(mContext);
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
+                        permissionToken.continuePermissionRequest();
+                    }
+                }).check();
+    }
+
 }

@@ -80,4 +80,7 @@ dependencies {
 
     // cropper
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
+
+    // Dexter show permissions and save image to internal storage
+    implementation 'com.karumi:dexter:6.2.1'
 }
