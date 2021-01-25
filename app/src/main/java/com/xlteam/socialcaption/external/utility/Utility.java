@@ -1,19 +1,28 @@
 package com.xlteam.socialcaption.external.utility;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.TextView;
 
 import com.xlteam.socialcaption.R;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 
 import de.cketti.mailto.EmailIntentBuilder;
 
@@ -66,5 +75,59 @@ public class Utility {
             info.append("\n\n").append(context.getString(R.string.feedback_msg)).append("\n");
         }
         return info;
+    }
+
+    public static Bitmap getBitmapFromView(View view) {
+        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(returnedBitmap);
+        Drawable bgDrawable = view.getBackground();
+        if (bgDrawable != null)
+            bgDrawable.draw(canvas);
+        else
+            canvas.drawColor(Color.WHITE);
+        view.draw(canvas);
+        return returnedBitmap;
+    }
+
+    public static long now() {
+        return System.currentTimeMillis();
+    }
+
+
+    public static File bitmapToFile(Bitmap bitmap, String filePathToSave) { // File name like "image.png"
+        //create a file to write bitmap data
+        File file = null;
+        try {
+            file = new File(filePathToSave);
+            file.createNewFile();
+
+            //Convert bitmap to byte array
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.WEBP, 100, bos); // YOU can also save it in JPEG
+            byte[] bitmapdata = bos.toByteArray();
+
+            //write the bytes in file
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(bitmapdata);
+            fos.flush();
+            fos.close();
+            return file;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return file; // it will return null
+        }
+    }
+
+    public static void showDialogRequestPermission(Context context) {
+        Dialog dialog = new Dialog(context, R.style.CustomDialog);
+        dialog.setContentView(R.layout.dialog_request_permission);
+        dialog.setCancelable(false);
+        dialog.findViewById(R.id.tvCancel).setOnClickListener(v1 -> dialog.dismiss());
+        dialog.findViewById(R.id.tvAccept).setOnClickListener(v1 -> {
+            Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            intent.setData(Uri.parse("package:" + context.getPackageName()));
+            context.startActivity(intent);
+        });
+        dialog.show();
     }
 }

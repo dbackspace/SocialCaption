@@ -7,6 +7,13 @@ public class Constant {
     public static final String LINK_GOOGLE_PLAY_DEVELOPER = "http://play.google.com/store/apps/developer?id=XL+team";
     public static final String EMAIL_TEAM = "developer.xlteam@gmail.com";
 
+    public static final String SAVE_DATE_TIME_FORMAT = "HH_mm_ss dd_MM_yyyy";
+    public static final int PHOTOS = 1;
+    public static final int FONTS = 2;
+    public static final int COLORS = 3;
+    public static final int MUSICS = 4;
+    public static final int CATEGORIES = 5;
+
     public static final String EDITOR = "EDITOR";
     public static final String EDITOR_CAU_THOAI_SIZE = "EDITOR_CAU_THOAI_SIZE";
 
