@@ -44,6 +44,7 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
     private CaptionAdapter mAdapter;
     private RecyclerView rvCaption;
     private Callback mCallback;
+    private final static int REQUEST_DELAY_TIMEOUT = 300;
 
     public interface Callback {
         void onCancel();
@@ -90,7 +91,6 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
         tvEmptyCaption = root.findViewById(R.id.tv_empty_caption);
         SearchView searchView = root.findViewById(R.id.search_view);
         rvCaption = root.findViewById(R.id.rv_caption);
-        rvCaption = root.findViewById(R.id.rv_caption);
         rvCaption.setLayoutManager(new LinearLayoutManager(mContext));
         root.findViewById(R.id.imgBack).setOnClickListener(v -> dismiss());
         disposable = initRxSearchView(searchView);
@@ -101,7 +101,7 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
 
     private Disposable initRxSearchView(SearchView searchView) {
         return fromSearchView(searchView)
-                .debounce(500, TimeUnit.MILLISECONDS)
+                .debounce(REQUEST_DELAY_TIMEOUT, TimeUnit.MILLISECONDS)
                 .map(text -> text.toLowerCase().trim())
                 .distinctUntilChanged()
                 .switchMap(Observable::just)
