@@ -46,6 +46,12 @@ public class Utility {
         view.setTextColor(intColor);
     }
 
+    public static void setColorGradient(View view, int[] colors) {
+        GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, colors);
+        gd.setCornerRadius(0f);
+        view.setBackground(gd);
+    }
+
     public static void sendEmailFeedback(Context context) {
         PackageInfo pInfo = null;
         try {
