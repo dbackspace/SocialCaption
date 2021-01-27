@@ -33,6 +33,8 @@ public class Constant {
     public static int BACKGROUND_SPAN_BLUR = 1;
     public static int BACKGROUND_SPAN_FULL_SOLID = 2;
 
+    public static String PREF_GALLERY = "PREF_GALLERY";
+    public static final String GALLERY_PATH = "GALLERY_PATH";
 
     public static class LoaderTaskType {
         private LoaderTaskType() {

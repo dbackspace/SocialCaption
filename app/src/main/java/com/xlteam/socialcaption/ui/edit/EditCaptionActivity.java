@@ -35,6 +35,7 @@ import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.repository.UserCaptionRepository;
 import com.xlteam.socialcaption.external.utility.Constant;
 import com.xlteam.socialcaption.external.utility.FileUtils;
+import com.xlteam.socialcaption.external.utility.PrefUtils;
 import com.xlteam.socialcaption.external.utility.Utility;
 import com.xlteam.socialcaption.model.CommonCaption;
 
@@ -43,10 +44,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static com.xlteam.socialcaption.external.utility.Constant.GALLERY_PATH;
+import static com.xlteam.socialcaption.external.utility.Constant.PREF_GALLERY;
 import static com.xlteam.socialcaption.external.utility.Constant.SAVE_DATE_TIME_FORMAT;
 
 public class EditCaptionActivity extends AppCompatActivity {
@@ -272,6 +276,11 @@ public class EditCaptionActivity extends AppCompatActivity {
                                 if (saveFile != null) {
                                     Toast.makeText(mContext, getString(R.string.save_success, savePath), Toast.LENGTH_LONG).show();
 //                                    if (mActivity != null) mActivity.checkAndShowAds(3);
+                                    // save image path to sharePref
+                                    Log.e("TEST", savePath);
+                                    ArrayList<String> temp = new ArrayList<>(PrefUtils.getStringArrayList(mContext, PREF_GALLERY, GALLERY_PATH));
+                                    temp.add(savePath);
+                                    PrefUtils.putStringArrayList(mContext, PREF_GALLERY, GALLERY_PATH, temp);
                                 } else {
                                     Toast.makeText(mContext, getString(R.string.save_fail), Toast.LENGTH_SHORT).show();
                                 }
