@@ -8,13 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.xlteam.socialcaption.R;
+import com.xlteam.socialcaption.external.datasource.GradientDataSource;
+import com.xlteam.socialcaption.external.utility.Utility;
 import com.xlteam.socialcaption.external.utility.customview.SpannableTextView;
 import com.xlteam.socialcaption.model.CommonCaption;
 
@@ -58,7 +59,8 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         CommonCaption caption = mCaptions.get(position);
         setCaptionContent(holder, caption);
-        holder.layoutBg.setBackgroundColor(mContext.getColor(R.color.color_FA));
+        int[] numberGradient = GradientDataSource.getInstance().getAllData().get((int) caption.getId() % 10);
+        Utility.setColorGradient(holder.layoutBg, numberGradient);
         holder.imgBookmark.setActivated(caption.isSaved());
         holder.imgBookmark.setOnClickListener(v -> {
             holder.imgBookmark.setActivated(!holder.imgBookmark.isActivated());
