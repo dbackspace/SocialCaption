@@ -47,31 +47,17 @@ public class SpannableTextView extends AppCompatTextView {
         String[] queryArray = spanText.split("\\s+");
 
         for (String query : queryArray) {
-            int start = 0;
             int index;
             String resultLowerStr = sourceText.toLowerCase(Locale.getDefault());
-
             if (!TextUtils.isEmpty(spanText)) {
                 index = resultLowerStr.indexOf(query.toLowerCase());
             } else {
                 query = resultLowerStr.substring(resultLowerStr.lastIndexOf('.') + 1);
                 index = resultLowerStr.lastIndexOf(query.toLowerCase());
             }
-
             while (index >= 0) {
-                char[] spanChar = null;
-                if (spanChar != null) {
-                    String Query = new String(spanChar);
-                    index = resultLowerStr.indexOf(Query, start);
-                    if (index != -1) {
-                        setSpan(span, matchedColor, index, index + Query.length());
-                    }
-                    start = index + Query.length();
-                    index = resultLowerStr.indexOf(query, start);
-                } else {
-                    setSpan(span, matchedColor, index, index + query.length());
-                    index = resultLowerStr.indexOf(query, index + 1);
-                }
+                setSpan(span, matchedColor, index, index + query.length());
+                index = resultLowerStr.indexOf(query, index + 1);
             }
         }
         return span;
