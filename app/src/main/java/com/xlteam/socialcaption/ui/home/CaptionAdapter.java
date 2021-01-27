@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.xlteam.socialcaption.R;
+import com.xlteam.socialcaption.external.utility.customview.SpannableTextView;
 import com.xlteam.socialcaption.model.CommonCaption;
 
 import java.util.ArrayList;
@@ -26,6 +27,8 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
     private List<CommonCaption> mCaptions;
     private Context mContext;
     private Callback mCallback;
+    private String mQueryText;
+    private boolean mIsSearch;
 
     public interface Callback {
         void openCaptionPreview(CommonCaption caption, int position);
@@ -36,10 +39,12 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
 
     }
 
-    public CaptionAdapter(Context context, List<CommonCaption> captions, Callback callback) {
+    public CaptionAdapter(Context context, List<CommonCaption> captions, Callback callback, String queryText, boolean isSearch) {
         mContext = context;
         mCaptions = captions;
         mCallback = callback;
+        mQueryText = queryText;
+        mIsSearch = isSearch;
     }
 
     @NonNull
@@ -52,7 +57,7 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         CommonCaption caption = mCaptions.get(position);
-        holder.tvCaptionContent.setText(caption.getContent());
+        setCaptionContent(holder, caption);
         holder.layoutBg.setBackgroundColor(mContext.getColor(R.color.color_FA));
         holder.imgBookmark.setActivated(caption.isSaved());
         holder.imgBookmark.setOnClickListener(v -> {
@@ -74,6 +79,15 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
             }
             return true;
         });
+    }
+
+    private void setCaptionContent(@NonNull ViewHolder holder, @NonNull CommonCaption caption) {
+        String content = caption.getContent();
+        if (mIsSearch) {
+            holder.tvCaptionContent.setText(content, mQueryText);
+        } else {
+            holder.tvCaptionContent.setText(content);
+        }
     }
 
     public void removeCaption(int position) {
@@ -101,7 +115,7 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView tvCaptionContent;
+        private final SpannableTextView tvCaptionContent;
         private final ImageView imgBookmark;
         private RelativeLayout layoutBg;
         private View view;

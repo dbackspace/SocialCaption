@@ -31,6 +31,7 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.subjects.PublishSubject;
 
 import static com.xlteam.socialcaption.external.utility.Constant.RepositoryType.COMMON_REPOSITORY;
@@ -44,6 +45,7 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
     private CaptionAdapter mAdapter;
     private RecyclerView rvCaption;
     private Callback mCallback;
+    private String mQueryText = "";
     private final static int REQUEST_DELAY_TIMEOUT = 300;
 
     public interface Callback {
@@ -105,6 +107,7 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
                 .map(text -> text.toLowerCase().trim())
                 .distinctUntilChanged()
                 .switchMap(Observable::just)
+                .doOnNext(query -> mQueryText = query)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(query -> mRepository.searchCaptionByContainingContent(query));
     }
@@ -137,7 +140,7 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
         } else {
             tvEmptyCaption.setVisibility(View.GONE);
             rvCaption.setVisibility(View.VISIBLE);
-            mAdapter = new CaptionAdapter(mContext, captions, this);
+            mAdapter = new CaptionAdapter(mContext, captions, this, mQueryText, true);
             rvCaption.setAdapter(mAdapter);
         }
     }

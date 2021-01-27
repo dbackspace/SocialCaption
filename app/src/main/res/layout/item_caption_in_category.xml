@@ -17,7 +17,7 @@
         android:background="@color/color_FA"
         android:orientation="vertical">
 
-        <TextView
+        <com.xlteam.socialcaption.external.utility.customview.SpannableTextView
             android:id="@+id/tv_content_of_caption"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
