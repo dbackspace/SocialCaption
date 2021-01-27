@@ -2,7 +2,7 @@ package com.xlteam.socialcaption.external.datasource;
 
 import android.content.Context;
 
-import com.xlteam.socialcaption.external.utility.SharePreUtils;
+import com.xlteam.socialcaption.external.utility.PrefUtils;
 import com.xlteam.socialcaption.model.CommonCaption;
 
 import java.util.ArrayList;
@@ -27,11 +27,11 @@ public class CaptionDataSource {
     }
 
     public List<CommonCaption> getDataLocal(Context context) {
-        int currentVersion = SharePreUtils.getVersionLocalDatabase(context); // default là 0
+        int currentVersion = PrefUtils.getVersionLocalDatabase(context); // default là 0
         List<CommonCaption> listData = new ArrayList<>();
         if (currentVersion < 1) {
             listData.addAll(getDataFirstTime());
-            SharePreUtils.setVersionLocalDatabase(context, 1);
+            PrefUtils.setVersionLocalDatabase(context, 1);
         }
 //        else if (version < 2) {
 //            listData.addAll(getDataSecondTime());

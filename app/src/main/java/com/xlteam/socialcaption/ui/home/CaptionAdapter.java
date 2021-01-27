@@ -40,7 +40,8 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
 
     }
 
-    public CaptionAdapter(Context context, List<CommonCaption> captions, Callback callback, String queryText, boolean isSearch) {
+    public CaptionAdapter(Context context, List<CommonCaption> captions, Callback callback,
+                          String queryText, boolean isSearch) {
         mContext = context;
         mCaptions = captions;
         mCallback = callback;

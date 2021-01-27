@@ -6,7 +6,6 @@ import android.os.Looper;
 import android.util.Log;
 
 import com.xlteam.socialcaption.external.database.MyDatabase;
-import com.xlteam.socialcaption.model.CommonCaption;
 
 import java.util.List;
 

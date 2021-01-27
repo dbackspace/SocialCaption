@@ -23,6 +23,7 @@ import com.xlteam.socialcaption.R;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.Collection;
 
 import de.cketti.mailto.EmailIntentBuilder;
 
@@ -135,5 +136,9 @@ public class Utility {
             context.startActivity(intent);
         });
         dialog.show();
+    }
+
+    public static <T> boolean isEmpty(Collection<T> items) {
+        return items == null || items.isEmpty();
     }
 }

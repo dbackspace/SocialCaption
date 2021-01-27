@@ -44,13 +44,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static com.xlteam.socialcaption.external.utility.Constant.GALLERY_PATH;
-import static com.xlteam.socialcaption.external.utility.Constant.PREF_GALLERY;
 import static com.xlteam.socialcaption.external.utility.Constant.SAVE_DATE_TIME_FORMAT;
 
 public class EditCaptionActivity extends AppCompatActivity {
@@ -278,9 +275,7 @@ public class EditCaptionActivity extends AppCompatActivity {
 //                                    if (mActivity != null) mActivity.checkAndShowAds(3);
                                     // save image path to sharePref
                                     Log.e("TEST", savePath);
-                                    ArrayList<String> temp = new ArrayList<>(PrefUtils.getStringArrayList(mContext, PREF_GALLERY, GALLERY_PATH));
-                                    temp.add(savePath);
-                                    PrefUtils.putStringArrayList(mContext, PREF_GALLERY, GALLERY_PATH, temp);
+                                    PrefUtils.setListItemGallery(mContext, savePath);
                                 } else {
                                     Toast.makeText(mContext, getString(R.string.save_fail), Toast.LENGTH_SHORT).show();
                                 }

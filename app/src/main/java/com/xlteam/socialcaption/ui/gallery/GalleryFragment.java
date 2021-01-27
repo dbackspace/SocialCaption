@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -25,7 +24,6 @@ import com.xlteam.socialcaption.external.utility.PrefUtils;
 import com.xlteam.socialcaption.model.UserCaption;
 import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GalleryFragment extends Fragment implements GalleryAdapter.GallerySelectCallback {
@@ -55,9 +53,7 @@ public class GalleryFragment extends Fragment implements GalleryAdapter.GalleryS
         // init recycler gallery by findViewById
         rvGallery = root.findViewById(R.id.rv_gallery_caption);
         rvGallery.setLayoutManager(_staGridLayoutManager);
-
-        ArrayList<String> temp = PrefUtils.getStringArrayList(mContext, Constant.PREF_GALLERY, Constant.GALLERY_PATH);
-        rvGallery.setAdapter(new GalleryAdapter(temp, getImageLoader(), this));
+        rvGallery.setAdapter(new GalleryAdapter(PrefUtils.getListItemGallery(mContext), getImageLoader(), this));
 
         return root;
     }
