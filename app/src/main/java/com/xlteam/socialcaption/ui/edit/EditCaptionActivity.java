@@ -272,6 +272,7 @@ public class EditCaptionActivity extends AppCompatActivity {
                                 File saveFile = Utility.bitmapToFile(bitmap, savePath);
                                 if (saveFile != null) {
                                     Toast.makeText(mContext, getString(R.string.save_success, savePath), Toast.LENGTH_LONG).show();
+
 //                                    if (mActivity != null) mActivity.checkAndShowAds(3);
                                     // save image path to sharePref
                                     Log.e("TEST", savePath);

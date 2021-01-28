@@ -13,13 +13,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.xlteam.socialcaption.R;
-import com.xlteam.socialcaption.external.utility.Constant;
 import com.xlteam.socialcaption.external.utility.PrefUtils;
 import com.xlteam.socialcaption.model.UserCaption;
 import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
@@ -43,7 +43,8 @@ public class GalleryFragment extends Fragment implements GalleryAdapter.GalleryS
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        _staGridLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+        _staGridLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
+
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -54,6 +55,7 @@ public class GalleryFragment extends Fragment implements GalleryAdapter.GalleryS
         rvGallery = root.findViewById(R.id.rv_gallery_caption);
         rvGallery.setLayoutManager(_staGridLayoutManager);
         rvGallery.setAdapter(new GalleryAdapter(PrefUtils.getListItemGallery(mContext), getImageLoader(), this));
+        rvGallery.setHasFixedSize(true);
 
         return root;
     }
