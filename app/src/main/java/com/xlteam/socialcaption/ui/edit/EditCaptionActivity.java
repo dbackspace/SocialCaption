@@ -35,6 +35,7 @@ import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.repository.UserCaptionRepository;
 import com.xlteam.socialcaption.external.utility.Constant;
 import com.xlteam.socialcaption.external.utility.FileUtils;
+import com.xlteam.socialcaption.external.utility.PrefUtils;
 import com.xlteam.socialcaption.external.utility.Utility;
 import com.xlteam.socialcaption.model.CommonCaption;
 
@@ -273,6 +274,9 @@ public class EditCaptionActivity extends AppCompatActivity {
                                     Toast.makeText(mContext, getString(R.string.save_success, savePath), Toast.LENGTH_LONG).show();
 
 //                                    if (mActivity != null) mActivity.checkAndShowAds(3);
+                                    // save image path to sharePref
+                                    Log.e("TEST", savePath);
+                                    PrefUtils.setListItemGallery(mContext, savePath);
                                 } else {
                                     Toast.makeText(mContext, getString(R.string.save_fail), Toast.LENGTH_SHORT).show();
                                 }

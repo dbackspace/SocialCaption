@@ -23,10 +23,10 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         void onGallerySelected(int positionSelected);
     }
 
-    public GalleryAdapter(List<String> galleryPaths, GalleryAdapter.GallerySelectCallback callBack) {
+    public GalleryAdapter(List<String> galleryPaths, ImageLoader imageLoader, GalleryAdapter.GallerySelectCallback callBack) {
         mGallerys = new ArrayList<>(galleryPaths);
         mCallback = callBack;
-        imageLoader = ImageLoader.getInstance();
+        this.imageLoader = imageLoader;
     }
 
     @NonNull
@@ -38,7 +38,8 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull GalleryAdapter.ViewHolder holder, int position) {
-        imageLoader.displayImage(mGallerys.get(position), holder.imgGallery);
+        imageLoader.displayImage("file://" + mGallerys.get(position), holder.imgGallery);
+
         holder.imgGallery.setOnClickListener(v -> {
             mCallback.onGallerySelected(position);
             notifyDataSetChanged();

@@ -44,6 +44,10 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
     private CaptionAdapter mAdapter;
     private RecyclerView rvCaption;
     private Callback mCallback;
+    private SearchView mSearchView;
+
+    private String mQueryText = "";
+    private final static int REQUEST_DELAY_TIMEOUT = 300;
 
     public interface Callback {
         void onCancel();
@@ -88,23 +92,23 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
         mRepository = (CommonCaptionRepository) RepositoryFactory.createRepository(mContext, this, COMMON_REPOSITORY);
         tvNumberCaption = root.findViewById(R.id.tv_number_caption);
         tvEmptyCaption = root.findViewById(R.id.tv_empty_caption);
-        SearchView searchView = root.findViewById(R.id.search_view);
-        rvCaption = root.findViewById(R.id.rv_caption);
+        mSearchView = root.findViewById(R.id.search_view);
         rvCaption = root.findViewById(R.id.rv_caption);
         rvCaption.setLayoutManager(new LinearLayoutManager(mContext));
         root.findViewById(R.id.imgBack).setOnClickListener(v -> dismiss());
-        disposable = initRxSearchView(searchView);
-        searchView.requestFocus();
+        disposable = initRxSearchView(mSearchView);
+        mSearchView.requestFocus();
         tvNumberCaption.setText(mContext.getString(R.string.number_captions, 0));
         return root;
     }
 
     private Disposable initRxSearchView(SearchView searchView) {
         return fromSearchView(searchView)
-                .debounce(500, TimeUnit.MILLISECONDS)
+                .debounce(REQUEST_DELAY_TIMEOUT, TimeUnit.MILLISECONDS)
                 .map(text -> text.toLowerCase().trim())
                 .distinctUntilChanged()
                 .switchMap(Observable::just)
+                .doOnNext(query -> mQueryText = query)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(query -> mRepository.searchCaptionByContainingContent(query));
     }
@@ -137,7 +141,7 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
         } else {
             tvEmptyCaption.setVisibility(View.GONE);
             rvCaption.setVisibility(View.VISIBLE);
-            mAdapter = new CaptionAdapter(mContext, captions, this);
+            mAdapter = new CaptionAdapter(mContext, captions, this, mQueryText, true);
             rvCaption.setAdapter(mAdapter);
         }
     }

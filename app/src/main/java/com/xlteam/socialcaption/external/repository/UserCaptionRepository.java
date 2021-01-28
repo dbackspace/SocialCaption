@@ -1,9 +1,6 @@
 package com.xlteam.socialcaption.external.repository;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
 
 import com.xlteam.socialcaption.model.UserCaption;
 

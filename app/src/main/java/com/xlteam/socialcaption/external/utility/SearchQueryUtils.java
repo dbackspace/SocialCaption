@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 public class SearchQueryUtils {
     private static final String TAG = "SearchQueryUtils";
 
-    static final String[] SPECIAL_CHARS = {"*", "+", "^", "$", "[", "]", "{", "}", "(", ")", "."};
+    static final String[] SPECIAL_CHARS = {"*", "+", "^", "$", "[", "]", "{", "}", "(", ")", ".", "?", "\"", "'"};
 
     public static StringBuilder getSelectionArgs(String keyword) {
         StringBuilder query = new StringBuilder();

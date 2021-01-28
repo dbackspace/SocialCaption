@@ -13,19 +13,25 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.xlteam.socialcaption.R;
+import com.xlteam.socialcaption.external.utility.Constant;
+import com.xlteam.socialcaption.external.utility.PrefUtils;
 import com.xlteam.socialcaption.model.UserCaption;
 import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
 
 import java.util.List;
 
-public class GalleryFragment extends Fragment {
+public class GalleryFragment extends Fragment implements GalleryAdapter.GallerySelectCallback {
     private RecyclerView rvGallery;
     private List<UserCaption> mUserCaptions;
     private Context mContext;
+    private ImageLoader mImageLoader;
+    private StaggeredGridLayoutManager _staGridLayoutManager;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -37,6 +43,7 @@ public class GalleryFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        _staGridLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -45,7 +52,9 @@ public class GalleryFragment extends Fragment {
 
         // init recycler gallery by findViewById
         rvGallery = root.findViewById(R.id.rv_gallery_caption);
-        rvGallery.setLayoutManager(new GridLayoutManager(mContext, 3));
+        rvGallery.setLayoutManager(_staGridLayoutManager);
+        rvGallery.setAdapter(new GalleryAdapter(PrefUtils.getListItemGallery(mContext), getImageLoader(), this));
+
         return root;
     }
 
@@ -62,5 +71,18 @@ public class GalleryFragment extends Fragment {
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onGallerySelected(int positionSelected) {
+
+    }
+
+    public ImageLoader getImageLoader() {
+        if (mImageLoader == null) {
+            mImageLoader = ImageLoader.getInstance();
+            mImageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
+        }
+        return mImageLoader;
     }
 }

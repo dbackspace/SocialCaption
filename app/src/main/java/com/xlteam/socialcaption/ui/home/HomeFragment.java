@@ -111,7 +111,7 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
         } else {
             tvEmptyCaption.setVisibility(View.GONE);
             rvCaption.setVisibility(View.VISIBLE);
-            mAdapter = new CaptionAdapter(mContext, captions, this);
+            mAdapter = new CaptionAdapter(mContext, captions, this, null, false);
             rvCaption.setAdapter(mAdapter);
         }
     }
