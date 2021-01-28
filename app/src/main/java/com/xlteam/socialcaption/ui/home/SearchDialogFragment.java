@@ -44,6 +44,8 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
     private CaptionAdapter mAdapter;
     private RecyclerView rvCaption;
     private Callback mCallback;
+    private SearchView mSearchView;
+
     private String mQueryText = "";
     private final static int REQUEST_DELAY_TIMEOUT = 300;
 
@@ -90,12 +92,12 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
         mRepository = (CommonCaptionRepository) RepositoryFactory.createRepository(mContext, this, COMMON_REPOSITORY);
         tvNumberCaption = root.findViewById(R.id.tv_number_caption);
         tvEmptyCaption = root.findViewById(R.id.tv_empty_caption);
-        SearchView searchView = root.findViewById(R.id.search_view);
+        mSearchView = root.findViewById(R.id.search_view);
         rvCaption = root.findViewById(R.id.rv_caption);
         rvCaption.setLayoutManager(new LinearLayoutManager(mContext));
         root.findViewById(R.id.imgBack).setOnClickListener(v -> dismiss());
-        disposable = initRxSearchView(searchView);
-        searchView.requestFocus();
+        disposable = initRxSearchView(mSearchView);
+        mSearchView.requestFocus();
         tvNumberCaption.setText(mContext.getString(R.string.number_captions, 0));
         return root;
     }

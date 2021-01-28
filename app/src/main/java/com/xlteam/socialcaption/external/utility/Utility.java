@@ -15,8 +15,12 @@ import android.graphics.drawable.ShapeDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
+
+import androidx.fragment.app.FragmentActivity;
 
 import com.xlteam.socialcaption.R;
 
@@ -29,6 +33,11 @@ import de.cketti.mailto.EmailIntentBuilder;
 
 public class Utility {
     private static final String TAG = "Utility";
+    private static final long DOUBLE_CLICK_TIME_DELTA = 700; // VI time of Chooser is been longer than before.    200 -> 400 ms
+
+    private static long sLastClickTime = 0;
+    private static int sPrevId;
+    private static int sPrevPosition;
 
     public static void setColorForView(View view, String color) {
         int intColor = Color.parseColor(color);
@@ -51,6 +60,33 @@ public class Utility {
         GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, colors);
         gd.setCornerRadius(0f);
         view.setBackground(gd);
+    }
+
+    public static boolean isValidClick(int id) { // view.getId()
+        return isValidClick(id, -1, DOUBLE_CLICK_TIME_DELTA);
+    }
+
+    public static boolean isValidClick(int id, int position) { // view.hashCode()
+        return position >= 0 && isValidClick(id, position, DOUBLE_CLICK_TIME_DELTA);
+    }
+
+    public static boolean isValidClick(int id, int position, long delay) {
+        boolean bRet = true;
+        long clickTime = now();
+
+        if (sPrevId == id && (sPrevPosition == position)) {
+            if (clickTime - sLastClickTime < delay) {
+                bRet = false;
+            }
+        } else {
+            Log.d("duc.nh3", "isValidClick View is different");
+        }
+
+        sLastClickTime = clickTime;
+        sPrevId = id;
+        sPrevPosition = position;
+
+        return bRet;
     }
 
     public static void sendEmailFeedback(Context context) {
