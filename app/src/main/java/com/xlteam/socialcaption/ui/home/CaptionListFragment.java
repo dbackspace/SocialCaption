@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -33,6 +34,7 @@ public class CaptionListFragment extends Fragment implements ILoader<CommonCapti
     private int mCategoryNumber;
     private CaptionAdapter mAdapter;
     private CommonCaptionRepository mRepository;
+    private ProgressBar progressLoading;
 
     public CaptionListFragment(int categoryNumber) {
         mCategoryNumber = categoryNumber;
@@ -51,6 +53,7 @@ public class CaptionListFragment extends Fragment implements ILoader<CommonCapti
         mRepository = (CommonCaptionRepository) RepositoryFactory.createRepository(mContext, this, COMMON_REPOSITORY);
         tvEmptyCaption = root.findViewById(R.id.tv_empty_caption);
         tvNumberCaption = root.findViewById(R.id.tv_number_caption);
+        progressLoading = root.findViewById(R.id.progress_loading);
         rvCaption = root.findViewById(R.id.rv_caption);
         rvCaption.setLayoutManager(new LinearLayoutManager(getContext()));
         getCaptionList(mCategoryNumber);
@@ -99,6 +102,8 @@ public class CaptionListFragment extends Fragment implements ILoader<CommonCapti
 
     @Override
     public void loadResult(int loaderTaskType, List<CommonCaption> captions) {
+        progressLoading.setVisibility(View.GONE);
+        tvNumberCaption.setVisibility(View.VISIBLE);
         tvNumberCaption.setText(mContext.getString(R.string.number_captions, captions.size()));
         if (captions.isEmpty()) {
             tvEmptyCaption.setVisibility(View.VISIBLE);

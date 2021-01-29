@@ -19,6 +19,6 @@
 
     <!-- ProgressBar circle -->
     <color name="progress_fill_color">#00000000</color>
-    <color name="progress_color1">#73F3A425</color>
-    <color name="progress_color2">#D9F3A425</color>
+    <color name="progress_color1">#663CC2F5</color>
+    <color name="progress_color2">#FF3CC2F5</color>
 </resources>
