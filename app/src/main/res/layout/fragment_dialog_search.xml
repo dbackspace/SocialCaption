@@ -71,4 +71,11 @@
         android:layout_marginTop="15dp"
         android:visibility="gone" />
 
+    <include
+        android:id="@+id/loading_view"
+        layout="@layout/loading_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tv_number_caption"
+        android:visibility="gone" />
 </RelativeLayout>

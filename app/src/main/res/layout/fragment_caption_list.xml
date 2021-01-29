@@ -23,8 +23,6 @@
         android:layout_below="@id/tv_number_caption"
         android:background="@drawable/bg_bottom_divider_shadow" />
 
-    <include layout="@layout/loading_container" />
-
     <TextView
         android:id="@+id/tv_empty_caption"
         android:layout_width="match_parent"
@@ -43,5 +41,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/divider"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/loading_view"
+        layout="@layout/loading_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tv_number_caption"
         android:visibility="gone" />
 </RelativeLayout>
