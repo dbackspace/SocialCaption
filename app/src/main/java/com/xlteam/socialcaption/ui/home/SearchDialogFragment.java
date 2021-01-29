@@ -103,6 +103,22 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
         return root;
     }
 
+    /**
+     * Quá trình tìm kiếm sẽ ở đây (disposable = observable + operator + observer)
+     * - debounce(): chờ cho đến khi hết khoảng thời gian được cung cấp, nếu có ký tự nào gõ
+     * thêm trong thời điểm đó thì sẽ bỏ qua những chữ đằng trước và lại reset khoảng thời gian chờ. Chỉ
+     * khi hết REQUEST_DELAY_TIMEOUT mà không có ký tự nào được gõ thêm thì nó sẽ dùng đoạn text cuối để search.
+     * - map(): ở đây loại bỏ hết dấu cách thừa và lower case chuỗi text nhận được.
+     * - distinctUntilChanged(): tránh tạo ra các request trùng nhau. Ví dụ khi người dùng thêm ký tự xong xóa ký tự
+     * đó xong lại thêm, thì nó sẽ lấy chuỗi cuối cùng độc nhất thay vì request hết tất cả.
+     * - switchMap(): hiện kết quả query gần nhất được gõ vào, bỏ qua tất cả các kết quả query khác, bổ trợ cho debounce().
+     * - doOnNext(): ở đây thực hiện tác động với phần tử được phát ra, đó là set mQueryText để highlight kết quả (tham khảo
+     * hàm setCaptionContent() trong CaptionAdapter.
+     * - observerOn(): Thực hiện việc nhận dữ liệu qua mainThread. Ở đây do subcribe đã xử lý thread và post lên mainThread
+     * trong mRepository.searchCaptionByContainingContent() nên không cần cho nó chạy ngầm ở background thread nữa.
+     * @param searchView
+     * @return
+     */
     private Disposable initRxSearchView(SearchView searchView) {
         return fromSearchView(searchView)
                 .debounce(REQUEST_DELAY_TIMEOUT, TimeUnit.MILLISECONDS)
@@ -114,6 +130,13 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
                 .subscribe(query -> mRepository.searchCaptionByContainingContent(query));
     }
 
+    /**
+     * Publish Subject là 1 loại đặc biệt, có cả tính chất của Observable và Observer,
+     * tức là vừa phát vừa nhận. Ở đây dùng để tạo ra 1 RxSearchViewObservable nhằm phát
+     * các text nhận được sau khi onQueryTextChange và onQueryTextSubmit.
+     * @param searchView
+     * @return
+     */
     private Observable<String> fromSearchView(SearchView searchView) {
         final PublishSubject<String> subject = PublishSubject.create();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
