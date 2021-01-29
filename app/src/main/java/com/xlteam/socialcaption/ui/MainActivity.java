@@ -28,6 +28,7 @@ import com.xlteam.socialcaption.BuildConfig;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.Constant;
 import com.xlteam.socialcaption.external.utility.Utility;
+import com.xlteam.socialcaption.external.utility.animation.ViManager;
 import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
 import com.xlteam.socialcaption.ui.gallery.GalleryFragment;
 import com.xlteam.socialcaption.ui.home.HomeFragment;
@@ -145,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        ViManager.getInstance().setFragmentDefaultAnimation(this, fragmentTransaction);
         fragmentTransaction.replace(R.id.frame, fragment);
         fragmentTransaction.commit();
     }

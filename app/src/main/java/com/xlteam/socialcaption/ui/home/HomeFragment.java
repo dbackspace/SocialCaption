@@ -21,6 +21,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.xlteam.socialcaption.R;
+import com.xlteam.socialcaption.external.utility.animation.ViManager;
 import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
 import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
 
@@ -67,6 +68,7 @@ public class HomeFragment extends Fragment {
         if (item.getItemId() == R.id.action_search) {
             FragmentManager fragmentManager = getChildFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            ViManager.getInstance().setFragmentDefaultAnimation(mContext, fragmentTransaction);
             SearchDialogFragment searchDialogFragment = new SearchDialogFragment(() -> mAdapter.notifyDataSetChanged());
             searchDialogFragment.show(fragmentTransaction, "dialog");
         } else if (item.getItemId() == R.id.action_create_picture) {

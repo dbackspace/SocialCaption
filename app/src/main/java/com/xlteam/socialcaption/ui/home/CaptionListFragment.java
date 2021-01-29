@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -34,7 +34,7 @@ public class CaptionListFragment extends Fragment implements ILoader<CommonCapti
     private int mCategoryNumber;
     private CaptionAdapter mAdapter;
     private CommonCaptionRepository mRepository;
-    private ProgressBar progressLoading;
+    private LinearLayout mLoading;
 
     public CaptionListFragment(int categoryNumber) {
         mCategoryNumber = categoryNumber;
@@ -50,10 +50,10 @@ public class CaptionListFragment extends Fragment implements ILoader<CommonCapti
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = AsyncLayoutInflateManager.getInstance(mContext).inflateView(inflater, container, R.layout.fragment_caption_list);
+        mLoading = root.findViewById(R.id.loading_view);
         mRepository = (CommonCaptionRepository) RepositoryFactory.createRepository(mContext, this, COMMON_REPOSITORY);
         tvEmptyCaption = root.findViewById(R.id.tv_empty_caption);
         tvNumberCaption = root.findViewById(R.id.tv_number_caption);
-        progressLoading = root.findViewById(R.id.progress_loading);
         rvCaption = root.findViewById(R.id.rv_caption);
         rvCaption.setLayoutManager(new LinearLayoutManager(getContext()));
         getCaptionList(mCategoryNumber);
@@ -62,6 +62,7 @@ public class CaptionListFragment extends Fragment implements ILoader<CommonCapti
 
     private void getCaptionList(int categoryNumber) {
         //lấy database rồi gọi mViewMvc.binCaptions(captions);
+        mLoading.setVisibility(View.VISIBLE);
         switch (categoryNumber) {
             case 0: //ALL
                 mRepository.getAllCaption();
@@ -102,7 +103,7 @@ public class CaptionListFragment extends Fragment implements ILoader<CommonCapti
 
     @Override
     public void loadResult(int loaderTaskType, List<CommonCaption> captions) {
-        progressLoading.setVisibility(View.GONE);
+        mLoading.setVisibility(View.GONE);
         tvNumberCaption.setVisibility(View.VISIBLE);
         tvNumberCaption.setText(mContext.getString(R.string.number_captions, captions.size()));
         if (captions.isEmpty()) {

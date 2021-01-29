@@ -8,11 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
+import androidx.databinding.ObservableBoolean;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -46,9 +48,9 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
     private RecyclerView rvCaption;
     private Callback mCallback;
     private SearchView mSearchView;
-
+    private LinearLayout mLoading;
     private String mQueryText = "";
-    private final static int REQUEST_DELAY_TIMEOUT = 300;
+    private final static int REQUEST_DELAY_TIMEOUT = 1000;
 
     public interface Callback {
         void onCancel();
@@ -90,6 +92,7 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View root = AsyncLayoutInflateManager.getInstance(mContext).inflateView(inflater, container, R.layout.fragment_dialog_search);
+        mLoading = root.findViewById(R.id.loading_view);
         mRepository = (CommonCaptionRepository) RepositoryFactory.createRepository(mContext, this, COMMON_REPOSITORY);
         tvNumberCaption = root.findViewById(R.id.tv_number_caption);
         tvEmptyCaption = root.findViewById(R.id.tv_empty_caption);
@@ -126,7 +129,10 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
                 .map(text -> text.toLowerCase().trim())
                 .distinctUntilChanged()
                 .switchMap(Observable::just)
-                .doOnNext(query -> mQueryText = query)
+                .doOnNext(query -> {
+                    mLoading.setVisibility(View.VISIBLE);
+                    mQueryText = query;
+                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(query -> mRepository.searchCaptionByContainingContent(query));
     }
@@ -160,6 +166,7 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
 
     @Override
     public void loadResult(int loaderTaskType, List<CommonCaption> captions) {
+        mLoading.setVisibility(View.GONE);
         tvNumberCaption.setText(mContext.getString(R.string.number_captions, captions.size()));
         if (captions.isEmpty()) {
             tvEmptyCaption.setVisibility(View.VISIBLE);
