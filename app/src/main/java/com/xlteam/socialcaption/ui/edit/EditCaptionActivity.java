@@ -102,7 +102,7 @@ public class EditCaptionActivity extends AppCompatActivity {
 //            mRepository.insertUserCaption(userCaption);
 //            Toast.makeText(this, "Đã lưu caption. Để xem lại, bạn có thể vào Menu -> Caption đã tạo!", Toast.LENGTH_LONG).show();
 //            this.finish();
-            saveImageCountdownToPhone(relativeBackground);
+            saveImageCreatedToSdcard(relativeBackground);
         });
         tvDone.setClickable(false);
 
@@ -257,7 +257,7 @@ public class EditCaptionActivity extends AppCompatActivity {
     }
 
     // save image
-    private void saveImageCountdownToPhone(View view) {
+    private void saveImageCreatedToSdcard(View view) {
         Dexter.withContext(this)
                 .withPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .withListener(new MultiplePermissionsListener() {
@@ -277,6 +277,7 @@ public class EditCaptionActivity extends AppCompatActivity {
                                     // save image path to sharePref
                                     Log.e(this, savePath);
                                     PrefUtils.setListItemGallery(mContext, savePath);
+                                    finish();
                                 } else {
                                     Toast.makeText(mContext, getString(R.string.save_fail), Toast.LENGTH_SHORT).show();
                                 }

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
-    private ArrayList<String> mGallerys;
+    private List<String> mGalleries;
     private GallerySelectCallback mCallback;
     private ImageLoader imageLoader;
 
@@ -24,7 +24,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     }
 
     public GalleryAdapter(List<String> galleryPaths, ImageLoader imageLoader, GalleryAdapter.GallerySelectCallback callBack) {
-        mGallerys = new ArrayList<>(galleryPaths);
+        mGalleries = galleryPaths;
         mCallback = callBack;
         this.imageLoader = imageLoader;
     }
@@ -38,7 +38,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull GalleryAdapter.ViewHolder holder, int position) {
-        imageLoader.displayImage("file://" + mGallerys.get(position), holder.imgGallery);
+        imageLoader.displayImage("file://" + mGalleries.get(position), holder.imgGallery);
 
         holder.imgGallery.setOnClickListener(v -> {
             mCallback.onGallerySelected(position);
@@ -48,7 +48,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return mGallerys.size();
+        return mGalleries.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -60,5 +60,9 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
             mItemView = itemView;
             imgGallery = itemView.findViewById(R.id.img_item_gallery);
         }
+    }
+
+    public void updateList(List<String> galleryPaths) {
+        mGalleries = new ArrayList<>(galleryPaths);
     }
 }

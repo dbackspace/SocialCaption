@@ -13,26 +13,27 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.PrefUtils;
 import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
-import com.xlteam.socialcaption.model.UserCaption;
 import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
 
+import java.util.Collections;
 import java.util.List;
 
 public class GalleryFragment extends Fragment implements GalleryAdapter.GallerySelectCallback {
     private RecyclerView rvGallery;
-    private List<UserCaption> mUserCaptions;
     private Context mContext;
     private ImageLoader mImageLoader;
-    private StaggeredGridLayoutManager _staGridLayoutManager;
+    //    private StaggeredGridLayoutManager _staGridLayoutManager;
+    private GridLayoutManager gridLayoutManager;
+    private GalleryAdapter galleryAdapter;
+    private List<String> mGalleries;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -44,8 +45,20 @@ public class GalleryFragment extends Fragment implements GalleryAdapter.GalleryS
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        _staGridLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
 
+        mGalleries = PrefUtils.getListItemGallery(mContext);
+//        _staGridLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
+        galleryAdapter = new GalleryAdapter(mGalleries, getImageLoader(), this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        mGalleries = PrefUtils.getListItemGallery(mContext);
+        Collections.sort(mGalleries);
+        galleryAdapter.updateList(mGalleries);
+        galleryAdapter.notifyDataSetChanged();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -54,8 +67,9 @@ public class GalleryFragment extends Fragment implements GalleryAdapter.GalleryS
 
         // init recycler gallery by findViewById
         rvGallery = root.findViewById(R.id.rv_gallery_caption);
-        rvGallery.setLayoutManager(_staGridLayoutManager);
-        rvGallery.setAdapter(new GalleryAdapter(PrefUtils.getListItemGallery(mContext), getImageLoader(), this));
+        gridLayoutManager = new GridLayoutManager(mContext, 3);
+        rvGallery.setLayoutManager(gridLayoutManager);
+        rvGallery.setAdapter(galleryAdapter);
         rvGallery.setHasFixedSize(true);
 
         return root;
