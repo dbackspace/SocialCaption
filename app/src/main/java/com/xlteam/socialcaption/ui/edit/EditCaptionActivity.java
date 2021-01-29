@@ -10,7 +10,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -37,6 +36,7 @@ import com.xlteam.socialcaption.external.utility.Constant;
 import com.xlteam.socialcaption.external.utility.FileUtils;
 import com.xlteam.socialcaption.external.utility.PrefUtils;
 import com.xlteam.socialcaption.external.utility.Utility;
+import com.xlteam.socialcaption.external.utility.logger.Log;
 import com.xlteam.socialcaption.model.CommonCaption;
 
 import java.io.ByteArrayOutputStream;
@@ -175,7 +175,7 @@ public class EditCaptionActivity extends AppCompatActivity {
     }
 
     private void bindUserCaptions(List result) {
-        Log.e("TEST", result.size() + "");
+        Log.e(this, result.size() + "");
     }
 
     public void textOnClick(View view) {
@@ -275,7 +275,7 @@ public class EditCaptionActivity extends AppCompatActivity {
 
 //                                    if (mActivity != null) mActivity.checkAndShowAds(3);
                                     // save image path to sharePref
-                                    Log.e("TEST", savePath);
+                                    Log.e(this, savePath);
                                     PrefUtils.setListItemGallery(mContext, savePath);
                                 } else {
                                     Toast.makeText(mContext, getString(R.string.save_fail), Toast.LENGTH_SHORT).show();

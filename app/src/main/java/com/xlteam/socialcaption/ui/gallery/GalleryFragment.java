@@ -21,6 +21,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.PrefUtils;
+import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
 import com.xlteam.socialcaption.model.UserCaption;
 import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
 
@@ -49,7 +50,7 @@ public class GalleryFragment extends Fragment implements GalleryAdapter.GalleryS
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_gallery, container, false);
+        final View root = AsyncLayoutInflateManager.getInstance(mContext).inflateView(inflater, container, R.layout.fragment_gallery);
 
         // init recycler gallery by findViewById
         rvGallery = root.findViewById(R.id.rv_gallery_caption);

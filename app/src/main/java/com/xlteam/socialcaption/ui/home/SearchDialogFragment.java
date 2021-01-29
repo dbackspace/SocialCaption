@@ -22,6 +22,7 @@ import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.repository.CommonCaptionRepository;
 import com.xlteam.socialcaption.external.repository.ILoader;
 import com.xlteam.socialcaption.external.repository.RepositoryFactory;
+import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
 import com.xlteam.socialcaption.model.CommonCaption;
 
 import java.util.List;
@@ -88,7 +89,7 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_dialog_search, container, false);
+        final View root = AsyncLayoutInflateManager.getInstance(mContext).inflateView(inflater, container, R.layout.fragment_dialog_search);
         mRepository = (CommonCaptionRepository) RepositoryFactory.createRepository(mContext, this, COMMON_REPOSITORY);
         tvNumberCaption = root.findViewById(R.id.tv_number_caption);
         tvEmptyCaption = root.findViewById(R.id.tv_empty_caption);

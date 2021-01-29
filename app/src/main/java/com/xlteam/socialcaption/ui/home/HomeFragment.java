@@ -28,6 +28,7 @@ import com.xlteam.socialcaption.external.repository.CommonCaptionRepository;
 import com.xlteam.socialcaption.external.repository.ILoader;
 import com.xlteam.socialcaption.external.repository.RepositoryFactory;
 import com.xlteam.socialcaption.external.utility.Constant;
+import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
 import com.xlteam.socialcaption.model.CommonCaption;
 import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
 
@@ -61,7 +62,7 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
+        final View root = AsyncLayoutInflateManager.getInstance(mContext).inflateView(inflater, container, R.layout.fragment_home);
         mRepository = (CommonCaptionRepository) RepositoryFactory.createRepository(mContext, this, COMMON_REPOSITORY);
         tvNumberCaption = root.findViewById(R.id.tv_number_caption);
         tabLayoutCategory = root.findViewById(R.id.tab_layout_category);

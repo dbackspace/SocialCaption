@@ -28,6 +28,7 @@ import com.xlteam.socialcaption.BuildConfig;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.Constant;
 import com.xlteam.socialcaption.external.utility.Utility;
+import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
 import com.xlteam.socialcaption.ui.gallery.GalleryFragment;
 import com.xlteam.socialcaption.ui.home.HomeFragment;
 
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        asyncLayoutInflate();
         MobileAds.initialize(this);
         mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -65,21 +67,27 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 case R.id.nav_rate:
                     rateApp();
+                    drawer.closeDrawer(GravityCompat.START, true);
                     break;
                 case R.id.nav_feedback:
                     Utility.sendEmailFeedback(this);
+                    drawer.closeDrawer(GravityCompat.START, true);
                     break;
                 case R.id.nav_share:
                     shareApp();
+                    drawer.closeDrawer(GravityCompat.START, true);
                     break;
                 case R.id.nav_other_app:
                     recommendApp();
+                    drawer.closeDrawer(GravityCompat.START, true);
                     break;
                 case R.id.nav_term_of_use:
                     showDialogFullScreen("term_of_use.html", R.string.term_of_use);
+                    drawer.closeDrawer(GravityCompat.START, true);
                     break;
                 case R.id.nav_license:
                     showDialogFullScreen("license.html", R.string.license);
+                    drawer.closeDrawer(GravityCompat.START, true);
                     break;
             }
             return false;
@@ -88,6 +96,13 @@ public class MainActivity extends AppCompatActivity {
         drawer.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
         selectNavigation(HOME);
+    }
+
+    private void asyncLayoutInflate() {
+        int[] layoutList = new int[]{R.layout.fragment_home, R.layout.fragment_dialog_search, R.layout.fragment_gallery};
+        for (int asyncLayoutInflate : layoutList) {
+            AsyncLayoutInflateManager.getInstance(this).doAsyncInflate(asyncLayoutInflate, null);
+        }
     }
 
     private void rateApp() {
@@ -197,6 +212,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        AsyncLayoutInflateManager.getInstance(this).onDestroy();
         if (mAdView != null) {
             mAdView.destroy();
         }

@@ -1,14 +1,13 @@
 package com.xlteam.socialcaption.external.database;
 
 import android.content.Context;
-import android.util.Log;
-
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.xlteam.socialcaption.external.dao.CommonCaptionDAO;
 import com.xlteam.socialcaption.external.dao.UserCaptionDAO;
+import com.xlteam.socialcaption.external.utility.logger.Log;
 import com.xlteam.socialcaption.model.CommonCaption;
 import com.xlteam.socialcaption.model.UserCaption;
 

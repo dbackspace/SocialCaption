@@ -7,11 +7,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.util.SparseArray;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+
+import com.xlteam.socialcaption.external.utility.logger.Log;
 
 import java.io.File;
 
@@ -22,6 +23,7 @@ import static com.xlteam.socialcaption.external.utility.Constant.MUSICS;
 import static com.xlteam.socialcaption.external.utility.Constant.PHOTOS;
 
 public class FileUtils {
+    private static final String TAG = "FileUtils";
     public static class FileWrapper extends File {
 
         public static FileWrapper createFile(@NonNull String path) {
@@ -165,7 +167,7 @@ public class FileUtils {
                 realPathUri = cursor.getString(column_index);
             }
         } catch (Exception e) {
-            Log.e("duc.nh3", "getRealPathFromURI Exception : " + e.toString());
+            Log.e(TAG, "getRealPathFromURI Exception : " + e.toString());
         } finally {
             if (cursor != null) {
                 cursor.close();

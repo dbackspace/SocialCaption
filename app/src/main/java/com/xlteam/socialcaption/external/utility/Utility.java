@@ -15,14 +15,11 @@ import android.graphics.drawable.ShapeDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
-import androidx.fragment.app.FragmentActivity;
-
 import com.xlteam.socialcaption.R;
+import com.xlteam.socialcaption.external.utility.logger.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -79,7 +76,7 @@ public class Utility {
                 bRet = false;
             }
         } else {
-            Log.d("duc.nh3", "isValidClick View is different");
+            Log.d("this", "isValidClick View is different");
         }
 
         sLastClickTime = clickTime;

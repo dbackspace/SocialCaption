@@ -4,6 +4,9 @@ import android.app.Application;
 
 import com.xlteam.socialcaption.external.repository.CommonCaptionRepository;
 import com.xlteam.socialcaption.external.repository.ILoader;
+import com.xlteam.socialcaption.external.utility.logger.Log;
+import com.xlteam.socialcaption.external.utility.logger.LogcatLogWriter;
+import com.xlteam.socialcaption.external.utility.thread.ThreadExecutorWithPool;
 import com.xlteam.socialcaption.model.CommonCaption;
 
 import java.util.List;
@@ -11,9 +14,13 @@ import java.util.List;
 
 public class MyApplication extends Application implements ILoader<CommonCaption> {
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
+    public MyApplication() {
+        super();
+        ThreadExecutorWithPool.getInstance().execute(() -> insertDatabase());
+        Log.init(new LogcatLogWriter());
+    }
+
+    private void insertDatabase() {
         CommonCaptionRepository mRepository = new CommonCaptionRepository(this, this);
         mRepository.insertToDatabase();
     }
