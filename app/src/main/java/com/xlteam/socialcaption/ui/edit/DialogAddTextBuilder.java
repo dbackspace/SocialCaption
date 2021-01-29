@@ -40,9 +40,14 @@ public class DialogAddTextBuilder {
     private int mNumberFont, mNumberColor, mNumberBg;
     private BackgroundColorSpan span;
 
-    public DialogAddTextBuilder(Context context) {
-        mContext = context;
-        mDialog = new Dialog(context, R.style.Theme_SocialCaption);
+    interface SavedCallback {
+        void onSaveClicked(EditText editText, BackgroundColorSpan span);
+    }
+
+
+    public DialogAddTextBuilder(SavedCallback savedCallback) {
+        mContext = (Context) savedCallback;
+        mDialog = new Dialog(mContext, R.style.Theme_SocialCaption);
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(mDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         mDialog.setContentView(R.layout.dialog_add_text);
@@ -64,7 +69,13 @@ public class DialogAddTextBuilder {
         //
         Utility.setColorForView(viewColor, ColorDataSource.getInstance().getAllDataMini().get(mNumberColor));
         imgBack.setOnClickListener(v -> mDialog.cancel());
-        imgDone.setOnClickListener(v -> mDialog.cancel());
+        imgDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                savedCallback.onSaveClicked(edtText, span);
+                mDialog.cancel();
+            }
+        });
 
         imgGravity.setOnClickListener(v -> {
             if (mGravityText == Gravity.CENTER) {
@@ -121,15 +132,15 @@ public class DialogAddTextBuilder {
             }
         });
 
-        rvFont.setLayoutManager(new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false));
-        rvFont.setAdapter(new FontAdapter(context, numberFont -> {
+        rvFont.setLayoutManager(new LinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false));
+        rvFont.setAdapter(new FontAdapter(mContext, numberFont -> {
             mNumberFont = numberFont;
             Font font = FontDataSource.getInstance().getAllFonts().get(numberFont);
-            Typeface type = Typeface.createFromAsset(context.getAssets(), "font/" + font.getFont());
+            Typeface type = Typeface.createFromAsset(mContext.getAssets(), "font/" + font.getFont());
             edtText.setTypeface(type);
         }));
 
-        rvColor.setLayoutManager(new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false));
+        rvColor.setLayoutManager(new LinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false));
         rvColor.setAdapter(new ColorAdapter(color -> {
             mNumberColor = color;
             String colorString = ColorDataSource.getInstance().getAllDataMini().get(color);

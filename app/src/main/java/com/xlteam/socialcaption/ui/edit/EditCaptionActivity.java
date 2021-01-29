@@ -1,6 +1,7 @@
 package com.xlteam.socialcaption.ui.edit;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +11,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Spannable;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -50,7 +53,7 @@ import java.util.Locale;
 
 import static com.xlteam.socialcaption.external.utility.Constant.SAVE_DATE_TIME_FORMAT;
 
-public class EditCaptionActivity extends AppCompatActivity {
+public class EditCaptionActivity extends AppCompatActivity implements DialogAddTextBuilder.SavedCallback {
     private static final int RESULT_LOAD_IMG = 1;
     private ImageView imgBack;
     private TextView tvDone;
@@ -76,7 +79,7 @@ public class EditCaptionActivity extends AppCompatActivity {
 
     // relative background
     private RelativeLayout relativeBackground;
-    private TextView tvContentEdit;
+    private EditText tvContentEdit;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -295,4 +298,14 @@ public class EditCaptionActivity extends AppCompatActivity {
                 }).check();
     }
 
+    @SuppressLint("ResourceAsColor")
+    @Override
+    public void onSaveClicked(EditText editText, BackgroundColorSpan span) {
+        tvContentEdit.setText(editText.getText().toString().trim());
+        tvContentEdit.setTextColor(editText.getTextColors());
+        tvContentEdit.getText().setSpan(span, 0, tvContentEdit.getEditableText().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tvContentEdit.setClickable(false);
+        tvContentEdit.setFocusableInTouchMode(false);
+        tvContentEdit.setFocusable(false);
+    }
 }
