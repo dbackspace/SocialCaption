@@ -16,4 +16,9 @@
     <color name="color_button_dialog">#3cc2f5</color>
     <color name="color_text">#252525</color>
     <color name="search_result_text_color_activated">#FFB949</color>
+
+    <!-- ProgressBar circle -->
+    <color name="progress_fill_color">#00000000</color>
+    <color name="progress_color1">#73F3A425</color>
+    <color name="progress_color2">#D9F3A425</color>
 </resources>

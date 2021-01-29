@@ -191,12 +191,18 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
     @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
+        if (disposable != null) {
+            disposable.dispose();
+        }
         mCallback.onCancel();
     }
 
     @Override
     public void onCancel(@NonNull DialogInterface dialog) {
         super.onCancel(dialog);
+        if (disposable != null) {
+            disposable.dispose();
+        }
         mCallback.onCancel();
     }
 }
