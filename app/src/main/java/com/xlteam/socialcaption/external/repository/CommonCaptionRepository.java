@@ -10,10 +10,11 @@ import com.xlteam.socialcaption.external.datasource.CaptionDataSource;
 import com.xlteam.socialcaption.external.utility.SearchQueryUtils;
 import com.xlteam.socialcaption.external.utility.thread.ThreadExecutor;
 import com.xlteam.socialcaption.model.CommonCaption;
-import com.xlteam.socialcaption.model.CommonCaptionComparator;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static com.xlteam.socialcaption.external.utility.Constant.LoaderTaskType.LOAD_ALL;
 import static com.xlteam.socialcaption.external.utility.Constant.LoaderTaskType.LOAD_BY_CATEGORY_TYPE;
@@ -101,7 +102,8 @@ public class CommonCaptionRepository extends AbsRepository {
 
     private void sortListCaption(final List<CommonCaption> result) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            result.sort(new CommonCaptionComparator());
+            result.sort((o1, o2) -> Collator.getInstance(new Locale("vi", "VN"))
+                    .compare(o1.getContent().toLowerCase(), o2.getContent().toLowerCase()));
         }
     }
 }
