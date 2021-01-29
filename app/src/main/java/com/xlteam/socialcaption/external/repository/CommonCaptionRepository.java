@@ -1,6 +1,7 @@
 package com.xlteam.socialcaption.external.repository;
 
 import android.content.Context;
+import android.os.Build;
 import android.text.TextUtils;
 
 import androidx.sqlite.db.SimpleSQLiteQuery;
@@ -9,6 +10,7 @@ import com.xlteam.socialcaption.external.datasource.CaptionDataSource;
 import com.xlteam.socialcaption.external.utility.SearchQueryUtils;
 import com.xlteam.socialcaption.external.utility.thread.ThreadExecutor;
 import com.xlteam.socialcaption.model.CommonCaption;
+import com.xlteam.socialcaption.model.CommonCaptionComparator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +53,7 @@ public class CommonCaptionRepository extends AbsRepository {
     public void getAllCaption() {
         ThreadExecutor.runOnDatabaseThread(() -> {
             final List<CommonCaption> result = mDatabase.commonCaptionDAO().getAllCaption();
+            sortListCaption(result);
             execute(LOAD_ALL, result);
         });
     }
@@ -59,6 +62,7 @@ public class CommonCaptionRepository extends AbsRepository {
         if (isBookmark)
             ThreadExecutor.runOnDatabaseThread(() -> {
                 final List<CommonCaption> result = mDatabase.commonCaptionDAO().getAllCaptionBySaved(isBookmark);
+                sortListCaption(result);
                 execute(LOAD_ALL, result);
             });
         else getAllCaption();
@@ -67,6 +71,7 @@ public class CommonCaptionRepository extends AbsRepository {
     public void getCaptionByCategoryType(int categoryType) {
         ThreadExecutor.runOnDatabaseThread(() -> {
             final List<CommonCaption> result = mDatabase.commonCaptionDAO().getCaptionByCategoryType(categoryType);
+            sortListCaption(result);
             execute(LOAD_BY_CATEGORY_TYPE, result);
         });
     }
@@ -75,6 +80,7 @@ public class CommonCaptionRepository extends AbsRepository {
         if (isBookmark)
             ThreadExecutor.runOnDatabaseThread(() -> {
                 final List<CommonCaption> result = mDatabase.commonCaptionDAO().getCaptionBySavedAndCategoryType(categoryType, isBookmark);
+                sortListCaption(result);
                 execute(LOAD_BY_CATEGORY_TYPE_AND_SAVED, result);
             });
         else getCaptionByCategoryType(categoryType);
@@ -85,10 +91,17 @@ public class CommonCaptionRepository extends AbsRepository {
             StringBuilder query = SearchQueryUtils.getSelectionArgs(content);
             ThreadExecutor.runOnDatabaseThread(() -> {
                 final List<CommonCaption> result = mDatabase.commonCaptionDAO().searchByContainingContent(new SimpleSQLiteQuery(query.toString()));
+                sortListCaption(result);
                 execute(SEARCH_BY_CONTENT, result);
             });
         } else {
             execute(SEARCH_BY_CONTENT, new ArrayList());
+        }
+    }
+
+    private void sortListCaption(final List<CommonCaption> result) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            result.sort(new CommonCaptionComparator());
         }
     }
 }
