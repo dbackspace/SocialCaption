@@ -34,10 +34,7 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
     public interface Callback {
         void openCaptionPreview(CommonCaption caption, int position);
 
-        void onBookmarkClick(long id, boolean saved, int positionRemove);
-
-        void updateTotalNumberCaption(int totalCaption);
-
+        void onBookmarkClick(long id, boolean saved);
     }
 
     public CaptionAdapter(Context context, List<CommonCaption> captions, Callback callback,
@@ -65,7 +62,7 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
         holder.imgBookmark.setActivated(caption.isSaved());
         holder.imgBookmark.setOnClickListener(v -> {
             holder.imgBookmark.setActivated(!holder.imgBookmark.isActivated());
-            mCallback.onBookmarkClick(caption.getId(), holder.imgBookmark.isActivated(), position);
+            mCallback.onBookmarkClick(caption.getId(), holder.imgBookmark.isActivated());
         });
         holder.view.setOnClickListener(view -> {
             //open preview dialog
@@ -91,12 +88,6 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
         } else {
             holder.tvCaptionContent.setText(content);
         }
-    }
-
-    public void removeCaption(int position) {
-        mCaptions.remove(position);
-        notifyDataSetChanged();
-        mCallback.updateTotalNumberCaption(mCaptions.size());
     }
 
     @Override

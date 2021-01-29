@@ -1,7 +1,6 @@
 package com.xlteam.socialcaption.ui.home;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,47 +10,32 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.xlteam.socialcaption.R;
-import com.xlteam.socialcaption.external.repository.CommonCaptionRepository;
-import com.xlteam.socialcaption.external.repository.ILoader;
-import com.xlteam.socialcaption.external.repository.RepositoryFactory;
-import com.xlteam.socialcaption.external.utility.Constant;
 import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
-import com.xlteam.socialcaption.model.CommonCaption;
 import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
 
-import java.util.List;
-
-import static com.xlteam.socialcaption.external.utility.Constant.RepositoryType.COMMON_REPOSITORY;
-
-public class HomeFragment extends Fragment implements ILoader<CommonCaption>, CaptionAdapter.Callback {
+public class HomeFragment extends Fragment {
     private static final String TAG = "HomeFragment";
 
-    private CommonCaptionRepository mRepository;
     private Context mContext;
-    private Activity mActivity;
-    private RecyclerView rvCaption;
-    private TextView tvNumberCaption, tvBookmarkCategory, tvEmptyCaption;
     private TabLayout tabLayoutCategory;
-    private CaptionAdapter mAdapter;
+    private ViewPager viewPager;
+    private SlidePagerAdapter mAdapter;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        mActivity = getActivity();
     }
 
     @Override
@@ -63,110 +47,12 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         final View root = AsyncLayoutInflateManager.getInstance(mContext).inflateView(inflater, container, R.layout.fragment_home);
-        mRepository = (CommonCaptionRepository) RepositoryFactory.createRepository(mContext, this, COMMON_REPOSITORY);
-        tvNumberCaption = root.findViewById(R.id.tv_number_caption);
         tabLayoutCategory = root.findViewById(R.id.tab_layout_category);
-        tvBookmarkCategory = root.findViewById(R.id.tv_bookmark_select);
-        tvEmptyCaption = root.findViewById(R.id.tv_empty_caption);
-        tabLayoutCategory.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                getCaptionList(tab.getPosition(), tvBookmarkCategory.isActivated());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-        tvBookmarkCategory.setOnClickListener(view1 -> {
-            boolean isBookmark;
-            if (tvBookmarkCategory.isActivated()) {
-                tvBookmarkCategory.setTextColor(mContext.getColor(R.color.color_25));
-                isBookmark = false;
-            } else {
-                tvBookmarkCategory.setTextColor(mContext.getColor(R.color.white));
-                isBookmark = true;
-            }
-            tvBookmarkCategory.setActivated(isBookmark);
-            getCaptionList(tabLayoutCategory.getSelectedTabPosition(), isBookmark);
-        });
-
-        rvCaption = root.findViewById(R.id.rv_caption);
-        rvCaption.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRepository.getAllCaption(false);
+        viewPager = root.findViewById(R.id.viewPager);
+        mAdapter = new SlidePagerAdapter(getChildFragmentManager(), mContext);
+        viewPager.setAdapter(mAdapter);
+        tabLayoutCategory.setupWithViewPager(viewPager);
         return root;
-    }
-
-    @Override
-    public void loadResult(int loaderTaskType, List<CommonCaption> captions) {
-        tvNumberCaption.setText(mContext.getString(R.string.number_captions, captions.size()));
-        if (captions.isEmpty()) {
-            tvEmptyCaption.setVisibility(View.VISIBLE);
-            rvCaption.setVisibility(View.GONE);
-        } else {
-            tvEmptyCaption.setVisibility(View.GONE);
-            rvCaption.setVisibility(View.VISIBLE);
-            mAdapter = new CaptionAdapter(mContext, captions, this, null, false);
-            rvCaption.setAdapter(mAdapter);
-        }
-    }
-
-    public void getCaptionList(int categoryNumber, boolean isBookmark) {
-        //lấy database rồi gọi mViewMvc.binCaptions(captions);
-        switch (categoryNumber) {
-            case 0: //ALL
-                mRepository.getAllCaption(isBookmark);
-                break;
-            case 1:
-                //get firebase caption đang hot
-                break;
-            case 2:
-                mRepository.getCaptionBySavedAndCategoryType(Constant.TYPE_THA_THINH, isBookmark);
-                break;
-            case 3:
-                mRepository.getCaptionBySavedAndCategoryType(Constant.TYPE_CUOC_SONG, isBookmark);
-                break;
-            case 4:
-                mRepository.getCaptionBySavedAndCategoryType(Constant.TYPE_BAN_BE, isBookmark);
-                break;
-            case 5:
-                mRepository.getCaptionBySavedAndCategoryType(Constant.TYPE_KHAC, isBookmark);
-                break;
-        }
-    }
-
-    @Override
-    public void openCaptionPreview(CommonCaption caption, int position) {
-        BottomSheetDialog dialog = new SelectedCaptionDialogBuilder(mContext, caption).build();
-        dialog.setOnCancelListener(dialogInterface -> {
-            if (mAdapter != null) {
-                mAdapter.notifyItem(position);
-            }
-        });
-        dialog.show();
-    }
-
-    @Override
-    public void onBookmarkClick(long id, boolean saved, int positionRemove) {
-        mRepository.updateCaptionBySaved(id, saved);
-        if (tvBookmarkCategory.isActivated()) {
-            mAdapter.removeCaption(positionRemove);
-        }
-    }
-
-    @Override
-    public void updateTotalNumberCaption(int totalCaption) {
-        if (totalCaption == 0) {
-            tvEmptyCaption.setVisibility(View.VISIBLE);
-            rvCaption.setVisibility(View.GONE);
-        }
-        tvNumberCaption.setText(mContext.getString(R.string.number_captions, totalCaption));
     }
 
     @SuppressLint("CheckResult")
@@ -181,13 +67,58 @@ public class HomeFragment extends Fragment implements ILoader<CommonCaption>, Ca
         if (item.getItemId() == R.id.action_search) {
             FragmentManager fragmentManager = getChildFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            SearchDialogFragment searchDialogFragment = new SearchDialogFragment(()
-                    -> getCaptionList(tabLayoutCategory.getSelectedTabPosition(), tvBookmarkCategory.isActivated()));
+            SearchDialogFragment searchDialogFragment = new SearchDialogFragment(() -> mAdapter.notifyDataSetChanged());
             searchDialogFragment.show(fragmentTransaction, "dialog");
         } else if (item.getItemId() == R.id.action_create_picture) {
             Intent intent = new Intent(mContext, EditCaptionActivity.class);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public class SlidePagerAdapter extends FragmentStatePagerAdapter {
+        private Context mContext;
+
+        SlidePagerAdapter(FragmentManager fm, Context context) {
+            super(fm);
+            mContext = context;
+        }
+
+        @NonNull
+        @Override
+        public Fragment getItem(int position) {
+            return new CaptionListFragment(position);
+        }
+
+        @Override
+        public int getItemPosition(@NonNull Object object) {
+            return POSITION_NONE;
+        }
+
+        @Override
+        public int getCount() {
+            return 7;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return mContext.getString(R.string.all);
+                case 1:
+                    return mContext.getString(R.string.trending);
+                case 2:
+                    return mContext.getString(R.string.give_love);
+                case 3:
+                    return mContext.getString(R.string.life);
+                case 4:
+                    return mContext.getString(R.string.friend);
+                case 5:
+                    return mContext.getString(R.string.family);
+                case 6:
+                    return mContext.getString(R.string.other);
+            }
+            return mContext.getString(R.string.all);
+        }
     }
 }

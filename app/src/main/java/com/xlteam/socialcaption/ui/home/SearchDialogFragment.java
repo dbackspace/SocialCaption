@@ -116,6 +116,7 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
      * hàm setCaptionContent() trong CaptionAdapter.
      * - observerOn(): Thực hiện việc nhận dữ liệu qua mainThread. Ở đây do subcribe đã xử lý thread và post lên mainThread
      * trong mRepository.searchCaptionByContainingContent() nên không cần cho nó chạy ngầm ở background thread nữa.
+     *
      * @param searchView
      * @return
      */
@@ -134,6 +135,7 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
      * Publish Subject là 1 loại đặc biệt, có cả tính chất của Observable và Observer,
      * tức là vừa phát vừa nhận. Ở đây dùng để tạo ra 1 RxSearchViewObservable nhằm phát
      * các text nhận được sau khi onQueryTextChange và onQueryTextSubmit.
+     *
      * @param searchView
      * @return
      */
@@ -182,13 +184,8 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
     }
 
     @Override
-    public void onBookmarkClick(long id, boolean saved, int positionRemove) {
+    public void onBookmarkClick(long id, boolean saved) {
         mRepository.updateCaptionBySaved(id, saved);
-    }
-
-    @Override
-    public void updateTotalNumberCaption(int totalCaption) {
-
     }
 
     @Override

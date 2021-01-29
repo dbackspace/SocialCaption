@@ -18,107 +18,11 @@
         app:tabMode="scrollable"
         app:tabRippleColor="@color/color_E0"
         app:tabSelectedTextColor="@color/color_3cc2f5_legend"
-        app:tabTextColor="@color/color_25">
+        app:tabTextColor="@color/color_25" />
 
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/all" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/trending" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/give_love" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/life" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/friend" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/family" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/other" />
-    </com.google.android.material.tabs.TabLayout>
-
-    <RelativeLayout
-        android:id="@+id/layout_below_tab"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tab_layout_category"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
-
-        <TextView
-            android:id="@+id/tv_number_caption"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="20dp"
-            android:fontFamily="sans-serif-medium"
-            android:text="@string/number_captions"
-            android:textColor="@color/color_25"
-            android:textSize="14dp" />
-
-        <TextView
-            android:id="@+id/tv_bookmark_select"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerInParent="true"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/bookmark_select_toggle_button"
-            android:fontFamily="sans-serif-medium"
-            android:paddingStart="10dp"
-            android:paddingTop="2dp"
-            android:paddingEnd="10dp"
-            android:paddingBottom="2dp"
-            android:text="Bạn đã lưu"
-            android:textColor="@color/color_25"
-            android:textSize="14dp" />
-    </RelativeLayout>
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@drawable/bg_bottom_divider_shadow"
-        android:layout_below="@id/layout_below_tab" />
-
-    <TextView
-        android:id="@+id/tv_empty_caption"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/divider"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="center"
-        android:paddingBottom="100dp"
-        android:text="@string/no_caption"
-        android:textColor="@color/color_25"
-        android:textSize="16dp"
-        android:visibility="gone" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_caption"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/divider"
-        android:layout_centerInParent="true" />
-
+        android:layout_below="@id/tab_layout_category" />
 </RelativeLayout>
