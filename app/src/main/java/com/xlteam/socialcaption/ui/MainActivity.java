@@ -100,7 +100,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void asyncLayoutInflate() {
-        int[] layoutList = new int[]{R.layout.fragment_home, R.layout.fragment_dialog_search, R.layout.fragment_gallery};
+        int[] layoutList = new int[]{R.layout.fragment_home,
+                R.layout.fragment_caption_list,
+                R.layout.fragment_dialog_search,
+                R.layout.fragment_gallery};
         for (int asyncLayoutInflate : layoutList) {
             AsyncLayoutInflateManager.getInstance(this).doAsyncInflate(asyncLayoutInflate, null);
         }
