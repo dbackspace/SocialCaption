@@ -11,7 +11,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.Spannable;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -79,7 +78,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
     // relative background
     private RelativeLayout relativeBackground;
-    private EditText tvContentEdit;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -118,7 +116,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         mImgBackground = findViewById(R.id.img_edit_background);
         layoutMenu = findViewById(R.id.layout_menu);
         relativeBackground = findViewById(R.id.relative_background_save_img);
-        tvContentEdit = findViewById(R.id.tv_content_edit);
     }
 
     @Override
@@ -301,11 +298,12 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     @SuppressLint("ResourceAsColor")
     @Override
     public void onSaveClicked(EditText editText, BackgroundColorSpan span) {
+        TextView tvContentEdit = new TextView(this);
         tvContentEdit.setText(editText.getText().toString().trim());
         tvContentEdit.setTextColor(editText.getTextColors());
-        tvContentEdit.getText().setSpan(span, 0, tvContentEdit.getEditableText().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         tvContentEdit.setClickable(false);
         tvContentEdit.setFocusableInTouchMode(false);
         tvContentEdit.setFocusable(false);
+        relativeBackground.addView(tvContentEdit);
     }
 }
