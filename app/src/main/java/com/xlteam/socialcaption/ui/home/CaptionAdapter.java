@@ -34,11 +34,8 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
     private Callback mCallback;
     private String mQueryText;
     private boolean mIsSearch;
-    private int numberSelected;
 
     public interface Callback {
-        void openCaptionPreview(CommonCaption caption, int position);
-
         void onBookmarkClick(long id, boolean saved);
     }
 
@@ -61,7 +58,6 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         CommonCaption caption = mCaptions.get(position);
-        holder.layoutMenu.setVisibility(View.GONE);
         setCaptionContent(holder, caption);
         int[] numberGradient = GradientDataSource.getInstance().getAllData().get((int) caption.getId() % 10);
         Utility.setColorGradient(holder.layoutBg, numberGradient);
@@ -74,11 +70,7 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
         holder.layoutBg.setOnClickListener(view -> {
             //open preview dialog
             if (holder.layoutMenu.getVisibility() == View.GONE) {
-                if (numberSelected > -1 && numberSelected < mCaptions.size() && numberSelected != position) {
-                    notifyItemChanged(numberSelected);
-                }
                 holder.layoutMenu.setVisibility(View.VISIBLE);
-                numberSelected = position;
             } else holder.layoutMenu.setVisibility(View.GONE);
         });
 
@@ -126,12 +118,6 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
     @Override
     public int getItemCount() {
         return mCaptions.size();
-    }
-
-    public void notifyItem(int position) {
-        if (position < mCaptions.size()) {
-            notifyItemChanged(position);
-        }
     }
 
     public void setCurrentListCaptions(List<CommonCaption> mCaptions) {

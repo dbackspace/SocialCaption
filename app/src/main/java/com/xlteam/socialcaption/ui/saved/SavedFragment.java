@@ -2,19 +2,17 @@ package com.xlteam.socialcaption.ui.saved;
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.android.material.bottomsheet.BottomSheetDialog;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.repository.CommonCaptionRepository;
 import com.xlteam.socialcaption.external.repository.ILoader;
@@ -22,7 +20,6 @@ import com.xlteam.socialcaption.external.repository.RepositoryFactory;
 import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
 import com.xlteam.socialcaption.model.CommonCaption;
 import com.xlteam.socialcaption.ui.home.CaptionAdapter;
-import com.xlteam.socialcaption.ui.home.SelectedCaptionDialogBuilder;
 
 import java.util.List;
 
@@ -75,17 +72,6 @@ public class SavedFragment extends Fragment implements ILoader<CommonCaption>, C
             mAdapter = new CaptionAdapter(mContext, captions, this, null, false);
             rvCaption.setAdapter(mAdapter);
         }
-    }
-
-    @Override
-    public void openCaptionPreview(CommonCaption caption, int position) {
-        BottomSheetDialog dialog = new SelectedCaptionDialogBuilder(mContext, caption).build();
-        dialog.setOnCancelListener(dialogInterface -> {
-            if (mAdapter != null) {
-                mAdapter.notifyItem(position);
-            }
-        });
-        dialog.show();
     }
 
     @Override

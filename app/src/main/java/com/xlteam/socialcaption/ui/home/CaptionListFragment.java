@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.repository.CommonCaptionRepository;
 import com.xlteam.socialcaption.external.repository.ILoader;
@@ -83,17 +82,6 @@ public class CaptionListFragment extends Fragment implements ILoader<CommonCapti
                 mRepository.getCaptionByCategoryType(Constant.TYPE_KHAC);
                 break;
         }
-    }
-
-    @Override
-    public void openCaptionPreview(CommonCaption caption, int position) {
-        BottomSheetDialog dialog = new SelectedCaptionDialogBuilder(mContext, caption).build();
-        dialog.setOnCancelListener(dialogInterface -> {
-            if (mAdapter != null) {
-                mAdapter.notifyItem(position);
-            }
-        });
-        dialog.show();
     }
 
     @Override
