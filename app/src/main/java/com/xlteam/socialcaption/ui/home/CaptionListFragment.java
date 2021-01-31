@@ -62,7 +62,7 @@ public class CaptionListFragment extends Fragment implements ILoader<CommonCapti
 
     private void getCaptionList(int categoryNumber) {
         //lấy database rồi gọi mViewMvc.binCaptions(captions);
-        mLoading.setVisibility(View.VISIBLE);
+        setStatusViewInLoadingProgress(true);
         switch (categoryNumber) {
             case 0: //ALL
                 mRepository.getAllCaption();
@@ -103,7 +103,7 @@ public class CaptionListFragment extends Fragment implements ILoader<CommonCapti
 
     @Override
     public void loadResult(int loaderTaskType, List<CommonCaption> captions) {
-        mLoading.setVisibility(View.GONE);
+        setStatusViewInLoadingProgress(false);
         tvNumberCaption.setVisibility(View.VISIBLE);
         tvNumberCaption.setText(mContext.getString(R.string.number_captions, captions.size()));
         if (captions.isEmpty()) {
@@ -115,5 +115,10 @@ public class CaptionListFragment extends Fragment implements ILoader<CommonCapti
             mAdapter = new CaptionAdapter(mContext, captions, this, null, false);
             rvCaption.setAdapter(mAdapter);
         }
+    }
+
+    private void setStatusViewInLoadingProgress(boolean inProgress) {
+        tvNumberCaption.setVisibility(inProgress ? View.INVISIBLE : View.VISIBLE);
+        mLoading.setVisibility(inProgress ? View.VISIBLE : View.GONE);
     }
 }

@@ -204,46 +204,6 @@ public class CaptionDataSource {
         listData.add(new CommonCaption("Hãy luôn nhớ câu nói \"không có gì là tuyệt đối\". Đừng buồn khi bạn thất bại, sai lầm nhất của con người là không mắc sai lầm.", null, TYPE_CUOC_SONG, false));
         listData.add(new CommonCaption("Đừng cố kiếm nhiều tiền, ước mơ cao sang, cố gắng khiến người khác biết bạn giàu có. Hãy cố gắng làm cho cuộc sống của bạn ý nghĩa hơn. Vì bạn không thể mang theo gì khi chết đâu.", null, TYPE_CUOC_SONG, false));
 
-
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-        listData.add(new CommonCaption("", null, TYPE_CUOC_SONG, false));
-
         //tình bạn
         listData.add(new CommonCaption("Mày ơi thương lấy tao cùng\nTuy rằng khác lớp nhưng chung một đề\nMày cho tao chép tí đê\nKẻo mai tao rớt mặt mày tím đen", null, TYPE_BAN_BE, false));
         listData.add(new CommonCaption("Đi khắp thế gian không đâu bằng đứa bạn thân khốn nạn", null, TYPE_BAN_BE, false));

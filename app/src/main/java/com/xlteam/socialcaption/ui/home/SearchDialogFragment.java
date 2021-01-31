@@ -14,7 +14,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
-import androidx.databinding.ObservableBoolean;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -50,7 +49,8 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
     private SearchView mSearchView;
     private LinearLayout mLoading;
     private String mQueryText = "";
-    private final static int REQUEST_DELAY_TIMEOUT = 1000;
+    private static final int REQUEST_DELAY_TIMEOUT = 300; // Thời gian accept dữ liệu nhập vào
+    private static final int WAIT_DELAY_TIMEOUT = 100; // Thời gian delay search và hiển thị kết quả
 
     public interface Callback {
         void onCancel();
@@ -120,19 +120,20 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
      * - observerOn(): Thực hiện việc nhận dữ liệu qua mainThread. Ở đây do subcribe đã xử lý thread và post lên mainThread
      * trong mRepository.searchCaptionByContainingContent() nên không cần cho nó chạy ngầm ở background thread nữa.
      *
+     * Ở đây có 2 doOnNext (1 cái để cập nhật trạng thái view, 1 cái để lấy query sau khi qua các operator
+     * => Tránh Force close khi cập nhật trạng thái view ở thread khác không phải main.
      * @param searchView
      * @return
      */
     private Disposable initRxSearchView(SearchView searchView) {
         return fromSearchView(searchView)
+                .doOnNext(s -> setStatusViewInLoadingProgress(true))
                 .debounce(REQUEST_DELAY_TIMEOUT, TimeUnit.MILLISECONDS)
                 .map(text -> text.toLowerCase().trim())
+                .delay(WAIT_DELAY_TIMEOUT, TimeUnit.MILLISECONDS)
                 .distinctUntilChanged()
                 .switchMap(Observable::just)
-                .doOnNext(query -> {
-                    mLoading.setVisibility(View.VISIBLE);
-                    mQueryText = query;
-                })
+                .doOnNext(query -> mQueryText = query)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(query -> mRepository.searchCaptionByContainingContent(query));
     }
@@ -166,7 +167,7 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
 
     @Override
     public void loadResult(int loaderTaskType, List<CommonCaption> captions) {
-        mLoading.setVisibility(View.GONE);
+        setStatusViewInLoadingProgress(false);
         tvNumberCaption.setText(mContext.getString(R.string.number_captions, captions.size()));
         if (captions.isEmpty()) {
             tvEmptyCaption.setVisibility(View.VISIBLE);
@@ -211,5 +212,10 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
             disposable.dispose();
         }
         mCallback.onCancel();
+    }
+
+    private void setStatusViewInLoadingProgress(boolean inProgress) {
+        tvNumberCaption.setVisibility(inProgress ? View.INVISIBLE : View.VISIBLE);
+        mLoading.setVisibility(inProgress ? View.VISIBLE : View.GONE);
     }
 }

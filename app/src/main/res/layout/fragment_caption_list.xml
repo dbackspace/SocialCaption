@@ -23,19 +23,6 @@
         android:layout_below="@id/tv_number_caption"
         android:background="@drawable/bg_bottom_divider_shadow" />
 
-    <TextView
-        android:id="@+id/tv_empty_caption"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/divider"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="center"
-        android:paddingBottom="100dp"
-        android:text="@string/no_caption"
-        android:textColor="@color/color_25"
-        android:textSize="16dp"
-        android:visibility="gone" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_caption"
         android:layout_width="match_parent"
@@ -48,6 +35,18 @@
         layout="@layout/loading_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/tv_number_caption"
+        android:layout_below="@id/divider"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_empty_caption"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/divider"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:text="@string/no_caption"
+        android:textColor="@color/color_25"
+        android:textSize="16dp"
         android:visibility="gone" />
 </RelativeLayout>
