@@ -19,6 +19,7 @@ import java.util.Locale;
 import static com.xlteam.socialcaption.external.utility.Constant.LoaderTaskType.LOAD_ALL;
 import static com.xlteam.socialcaption.external.utility.Constant.LoaderTaskType.LOAD_BY_CATEGORY_TYPE;
 import static com.xlteam.socialcaption.external.utility.Constant.LoaderTaskType.LOAD_BY_CATEGORY_TYPE_AND_SAVED;
+import static com.xlteam.socialcaption.external.utility.Constant.LoaderTaskType.LOAD_BY_SAVED;
 import static com.xlteam.socialcaption.external.utility.Constant.LoaderTaskType.SEARCH_BY_CONTENT;
 
 public class CommonCaptionRepository extends AbsRepository {
@@ -56,6 +57,14 @@ public class CommonCaptionRepository extends AbsRepository {
             final List<CommonCaption> result = mDatabase.commonCaptionDAO().getAllCaption();
             sortListCaption(result);
             execute(LOAD_ALL, result);
+        });
+    }
+
+    public void getCaptionBySaved(boolean saved) {
+        ThreadExecutor.runOnDatabaseThread(() -> {
+            final List<CommonCaption> result = mDatabase.commonCaptionDAO().getAllCaptionBySaved(saved);
+            sortListCaption(result);
+            execute(LOAD_BY_SAVED, result);
         });
     }
 

@@ -32,11 +32,12 @@ import com.xlteam.socialcaption.external.utility.animation.ViManager;
 import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
 import com.xlteam.socialcaption.ui.gallery.GalleryFragment;
 import com.xlteam.socialcaption.ui.home.HomeFragment;
+import com.xlteam.socialcaption.ui.saved.SavedFragment;
 
 public class MainActivity extends AppCompatActivity {
 
     private NavigationView navigationView;
-    private final int HOME = 0, GALLERY = 1;
+    private final int HOME = 0, GALLERY = 1, SAVED = 2;
     private Toolbar toolbar;
     private DrawerLayout drawer;
     private Fragment currentFragment;
@@ -64,6 +65,10 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 case R.id.nav_gallery:
                     selectNavigation(GALLERY);
+                    drawer.closeDrawer(GravityCompat.START, true);
+                    return true;
+                case R.id.nav_saved:
+                    selectNavigation(SAVED);
                     drawer.closeDrawer(GravityCompat.START, true);
                     return true;
                 case R.id.nav_rate:
@@ -103,7 +108,9 @@ public class MainActivity extends AppCompatActivity {
         int[] layoutList = new int[]{R.layout.fragment_caption_list,
                 R.layout.fragment_home,
                 R.layout.fragment_dialog_search,
-                R.layout.fragment_gallery};
+                R.layout.fragment_gallery,
+                R.layout.fragment_saved
+        };
         for (int asyncLayoutInflate : layoutList) {
             AsyncLayoutInflateManager.getInstance(this).doAsyncInflate(asyncLayoutInflate, null);
         }
@@ -164,9 +171,14 @@ public class MainActivity extends AppCompatActivity {
         } else if (type == GALLERY) { //giữ trạng thái khi chọn lại item
             if (!(currentFragment instanceof GalleryFragment)) {
                 currentFragment = new GalleryFragment();
-
                 navigationView.setCheckedItem(R.id.nav_gallery);
                 toolbar.setTitle(R.string.menu_gallery);
+            }
+        } else if (type == SAVED) { //giữ trạng thái khi chọn lại item
+            if (!(currentFragment instanceof SavedFragment)) {
+                currentFragment = new SavedFragment();
+                navigationView.setCheckedItem(R.id.nav_gallery);
+                toolbar.setTitle(R.string.menu_saved);
             }
         }
         replaceFragment(currentFragment);
@@ -177,6 +189,8 @@ public class MainActivity extends AppCompatActivity {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START, true);
         } else if (navigationView.getMenu().findItem(R.id.nav_gallery).isChecked()) {
+            selectNavigation(HOME);
+        } else if (navigationView.getMenu().findItem(R.id.nav_saved).isChecked()) {
             selectNavigation(HOME);
         } else {
             super.onBackPressed();

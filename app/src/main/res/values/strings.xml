@@ -7,6 +7,7 @@
 
     <string name="menu_home">Trang chủ</string>
     <string name="menu_gallery">Ảnh đã tạo</string>
+    <string name="menu_saved">Caption đã lưu</string>
     <string name="feedback_title">Phản hồi về ứng dụng</string>
     <string name="feedback_msg">Vui lòng mô tả vấn đề hoặc phản hồi của bạn khi dùng ứng dụng:\n</string>
     <string name="choose_one">Chọn một ứng dụng</string>
@@ -33,4 +34,6 @@
     <string name="ban_can_cap_du_quyen">Bạn cần cấp đủ quyền để sử dụng tính năng này</string>
     <string name="ok">Đồng ý</string>
     <string name="huy_bo">Hủy bỏ</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -12,6 +12,10 @@
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_menu_gallery"
             android:title="@string/menu_gallery" />
+        <item
+            android:id="@+id/nav_saved"
+            android:icon="@drawable/ic_menu_saved"
+            android:title="@string/menu_saved" />
     </group>
 
     <group android:checkableBehavior="single">

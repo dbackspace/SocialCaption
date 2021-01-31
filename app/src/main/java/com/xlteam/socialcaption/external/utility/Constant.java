@@ -38,10 +38,11 @@ public class Constant {
         }
 
         public static final int LOAD_ALL = 0;
-        public static final int LOAD_BY_CATEGORY_TYPE = 1;
-        public static final int LOAD_BY_CATEGORY_TYPE_AND_SAVED = 2;
-        public static final int SEARCH_BY_CONTENT = 3;
-        public static final int LOAD_ALL_USER_CAPTION = 4;
+        public static final int LOAD_BY_SAVED = 1;
+        public static final int LOAD_BY_CATEGORY_TYPE = 2;
+        public static final int LOAD_BY_CATEGORY_TYPE_AND_SAVED = 3;
+        public static final int SEARCH_BY_CONTENT = 4;
+        public static final int LOAD_ALL_USER_CAPTION = 5;
     }
 
     public static class RepositoryType {
