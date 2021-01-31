@@ -38,6 +38,7 @@ import com.xlteam.socialcaption.external.utility.Constant;
 import com.xlteam.socialcaption.external.utility.FileUtils;
 import com.xlteam.socialcaption.external.utility.PrefUtils;
 import com.xlteam.socialcaption.external.utility.Utility;
+import com.xlteam.socialcaption.external.utility.animation.MultiTouchListener;
 import com.xlteam.socialcaption.external.utility.logger.Log;
 import com.xlteam.socialcaption.model.CommonCaption;
 
@@ -201,7 +202,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
     public void rotateOnClick(View view) {
         mImgBackground.setRotation(mImgBackground.getRotation() + -90);
-
         enableBtnSave();
     }
 
@@ -215,7 +215,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     public void flipOnClick(View view) {
         flipCurrent = (flipCurrent + 180) % 360;
         mImgBackground.setRotationY(flipCurrent);
-
         enableBtnSave();
     }
 
@@ -304,6 +303,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         tvContentEdit.setClickable(false);
         tvContentEdit.setFocusableInTouchMode(false);
         tvContentEdit.setFocusable(false);
+        tvContentEdit.setOnTouchListener(new MultiTouchListener());
         relativeBackground.addView(tvContentEdit);
     }
 }
