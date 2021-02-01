@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.repository.CommonCaptionRepository;
 import com.xlteam.socialcaption.external.repository.ILoader;
 import com.xlteam.socialcaption.external.repository.RepositoryFactory;
+import com.xlteam.socialcaption.external.utility.SearchQueryUtils;
 import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
 import com.xlteam.socialcaption.model.CommonCaption;
 
@@ -110,30 +112,21 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
      * - debounce(): chờ cho đến khi hết khoảng thời gian được cung cấp, nếu có ký tự nào gõ
      * thêm trong thời điểm đó thì sẽ bỏ qua những chữ đằng trước và lại reset khoảng thời gian chờ. Chỉ
      * khi hết REQUEST_DELAY_TIMEOUT mà không có ký tự nào được gõ thêm thì nó sẽ dùng đoạn text cuối để search.
+     * - delay(): đợi một khoảng thời gian nhỏ để hiện cái progress loading trước khi hiển thị kết quả.
      * - map(): ở đây loại bỏ hết dấu cách thừa và lower case chuỗi text nhận được.
-     * - distinctUntilChanged(): tránh tạo ra các request trùng nhau. Ví dụ khi người dùng thêm ký tự xong xóa ký tự
-     * đó xong lại thêm, thì nó sẽ lấy chuỗi cuối cùng độc nhất thay vì request hết tất cả.
      * - switchMap(): hiện kết quả query gần nhất được gõ vào, bỏ qua tất cả các kết quả query khác, bổ trợ cho debounce().
-     * - doOnNext(): ở đây thực hiện tác động với phần tử được phát ra, đó là set mQueryText để highlight kết quả (tham khảo
-     * hàm setCaptionContent() trong CaptionAdapter.
      * - observerOn(): Thực hiện việc nhận dữ liệu qua mainThread. Ở đây do subcribe đã xử lý thread và post lên mainThread
      * trong mRepository.searchCaptionByContainingContent() nên không cần cho nó chạy ngầm ở background thread nữa.
      *
-     * Ở đây có 2 doOnNext (1 cái để cập nhật trạng thái view, 1 cái để lấy query sau khi qua các operator
-     * => Tránh Force close khi cập nhật trạng thái view ở thread khác không phải main.
      * @param searchView
      * @return
      */
     private Disposable initRxSearchView(SearchView searchView) {
         return fromSearchView(searchView)
-                .doOnNext(s -> setStatusViewInLoadingProgress(true))
                 .debounce(REQUEST_DELAY_TIMEOUT, TimeUnit.MILLISECONDS)
-                .map(text -> text.toLowerCase().trim())
-                .delay(WAIT_DELAY_TIMEOUT, TimeUnit.MILLISECONDS)
-                .distinctUntilChanged()
-                .switchMap(Observable::just)
-                .doOnNext(query -> mQueryText = query)
+                .switchMap(query -> Observable.just(query))
                 .observeOn(AndroidSchedulers.mainThread())
+                .delay(WAIT_DELAY_TIMEOUT, TimeUnit.MILLISECONDS)
                 .subscribe(query -> mRepository.searchCaptionByContainingContent(query));
     }
 
@@ -150,14 +143,20 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                subject.onNext(query);
                 searchView.clearFocus();
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                subject.onNext(newText);
+                String validQuery = SearchQueryUtils.checkSkipSpecialChar(newText.toLowerCase().trim());
+                if (!TextUtils.isEmpty(validQuery)) {
+                    setStatusViewInLoadingProgress(true);
+                    mQueryText = validQuery;
+                    subject.onNext(validQuery);
+                } else {
+                    mRepository.searchCaptionWithEmptyQuery();
+                }
                 return false;
             }
         });

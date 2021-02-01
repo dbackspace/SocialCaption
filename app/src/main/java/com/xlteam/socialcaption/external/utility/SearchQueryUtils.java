@@ -9,7 +9,8 @@ import java.util.stream.Collectors;
 public class SearchQueryUtils {
     private static final String TAG = "SearchQueryUtils";
 
-    static final String[] SPECIAL_CHARS = {"*", "+", "^", "$", "[", "]", "{", "}", "(", ")", ".", "?", "\"", "'"};
+    static final String[] SPECIAL_CHARS = {"*", "+", "^", "$", "[", "]", "{", "}", "(", ")", ".", "'"};
+    static final String[] SKIP_CHARS = {"'"};
 
     public static StringBuilder getSelectionArgs(String keyword) {
         StringBuilder query = new StringBuilder();
@@ -37,11 +38,22 @@ public class SearchQueryUtils {
     }
 
     private static String convertRegexString(String keyword) {
-        for (String c : SPECIAL_CHARS) {
-            if (keyword.contains(c)) {
-                keyword = keyword.replace(c, "\\" + c);
+        if (!TextUtils.isEmpty(keyword)) {
+            for (String c : SPECIAL_CHARS) {
+                if (keyword.contains(c)) {
+                    keyword = keyword.replace(c, "\\" + c);
+                }
             }
         }
-        return keyword;
+        return keyword.trim();
+    }
+
+    public static String checkSkipSpecialChar(String keyword) {
+        for (String c : SKIP_CHARS) {
+            if (keyword.contains(c)) {
+                keyword = keyword.replace(c, "");
+            }
+        }
+        return keyword.trim();
     }
 }
