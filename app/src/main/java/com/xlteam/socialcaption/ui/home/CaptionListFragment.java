@@ -19,6 +19,7 @@ import com.xlteam.socialcaption.external.repository.CommonCaptionRepository;
 import com.xlteam.socialcaption.external.repository.ILoader;
 import com.xlteam.socialcaption.external.repository.RepositoryFactory;
 import com.xlteam.socialcaption.external.utility.Constant;
+import com.xlteam.socialcaption.external.utility.Utility;
 import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
 import com.xlteam.socialcaption.model.CommonCaption;
 
@@ -96,6 +97,7 @@ public class CaptionListFragment extends Fragment implements ILoader<CommonCapti
         tvNumberCaption.setText(mContext.getString(R.string.number_captions, captions.size()));
         if (captions.isEmpty()) {
             tvEmptyCaption.setVisibility(View.VISIBLE);
+            Utility.vibrateAnimation(mContext, tvEmptyCaption);
             rvCaption.setVisibility(View.GONE);
         } else {
             tvEmptyCaption.setVisibility(View.GONE);
