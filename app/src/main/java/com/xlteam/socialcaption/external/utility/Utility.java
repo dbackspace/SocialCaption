@@ -16,6 +16,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.xlteam.socialcaption.R;
@@ -46,6 +48,11 @@ public class Utility {
         } else if (drawable instanceof ColorDrawable) {
             ((ColorDrawable) drawable).setColor(intColor);
         }
+    }
+
+    public static void vibrateAnimation(Context context, View view) {
+        Animation vibrate = AnimationUtils.loadAnimation(context, R.anim.vibrate_shake);
+        view.startAnimation(vibrate);
     }
 
     public static void setColorForTextView(TextView view, String color) {

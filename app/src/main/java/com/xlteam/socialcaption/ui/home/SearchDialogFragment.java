@@ -24,6 +24,7 @@ import com.xlteam.socialcaption.external.repository.CommonCaptionRepository;
 import com.xlteam.socialcaption.external.repository.ILoader;
 import com.xlteam.socialcaption.external.repository.RepositoryFactory;
 import com.xlteam.socialcaption.external.utility.SearchQueryUtils;
+import com.xlteam.socialcaption.external.utility.Utility;
 import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
 import com.xlteam.socialcaption.model.CommonCaption;
 
@@ -97,6 +98,7 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
         mRepository = (CommonCaptionRepository) RepositoryFactory.createRepository(mContext, this, COMMON_REPOSITORY);
         tvNumberCaption = root.findViewById(R.id.tv_number_caption);
         tvEmptyCaption = root.findViewById(R.id.tv_empty_caption);
+        Utility.vibrateAnimation(mContext, tvEmptyCaption);
         mSearchView = root.findViewById(R.id.search_view);
         rvCaption = root.findViewById(R.id.rv_caption);
         rvCaption.setLayoutManager(new LinearLayoutManager(mContext));
@@ -169,6 +171,7 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
         tvNumberCaption.setText(mContext.getString(R.string.number_captions, captions.size()));
         if (captions.isEmpty()) {
             tvEmptyCaption.setVisibility(View.VISIBLE);
+            Utility.vibrateAnimation(mContext, tvEmptyCaption);
             rvCaption.setVisibility(View.GONE);
         } else {
             tvEmptyCaption.setVisibility(View.GONE);
