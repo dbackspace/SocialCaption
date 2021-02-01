@@ -133,7 +133,6 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
                 .debounce(REQUEST_DELAY_TIMEOUT, TimeUnit.MILLISECONDS)
                 .distinctUntilChanged()
                 .switchMap(query -> Observable.just(query))
-                .delay(WAIT_DELAY_TIMEOUT, TimeUnit.MILLISECONDS)
                 .subscribe(query -> mRepository.searchCaptionByContainingContent(query));
     }
 
