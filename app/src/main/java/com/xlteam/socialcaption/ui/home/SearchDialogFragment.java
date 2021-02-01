@@ -55,7 +55,11 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
     private static final int WAIT_DELAY_TIMEOUT = 100; // Thời gian delay search và hiển thị kết quả
 
     public interface Callback {
-        void onCancel();
+        void onBookmarkClicked();
+    }
+
+    public SearchDialogFragment() {
+
     }
 
     public SearchDialogFragment(Callback listener) {
@@ -184,6 +188,7 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
     @Override
     public void onBookmarkClick(long id, boolean saved) {
         mRepository.updateCaptionBySaved(id, saved);
+        mCallback.onBookmarkClicked();
     }
 
     @Override
@@ -192,7 +197,6 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
         if (disposable != null) {
             disposable.dispose();
         }
-        mCallback.onCancel();
     }
 
     @Override
@@ -201,7 +205,6 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
         if (disposable != null) {
             disposable.dispose();
         }
-        mCallback.onCancel();
     }
 
     private void setStatusViewInLoadingProgress(boolean inProgress) {
