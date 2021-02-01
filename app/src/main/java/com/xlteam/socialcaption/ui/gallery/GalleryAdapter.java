@@ -18,27 +18,36 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     private List<String> mGalleryPaths;
     private GallerySelectCallback mCallback;
     private ImageLoader imageLoader;
+    private String mViewType;
 
     public interface GallerySelectCallback {
         void onItemGallerySelected(int position, String path);
     }
 
-    public GalleryAdapter(List<String> galleryPaths, ImageLoader imageLoader, GalleryAdapter.GallerySelectCallback callBack) {
+    public GalleryAdapter(List<String> galleryPaths, ImageLoader imageLoader, GalleryAdapter.GallerySelectCallback callBack, String viewType) {
         mGalleryPaths = galleryPaths;
         mCallback = callBack;
         this.imageLoader = imageLoader;
+        mViewType = viewType;
     }
 
     @NonNull
     @Override
     public GalleryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_gallery, parent, false);
-        return new GalleryAdapter.ViewHolder(v);
+        if (mViewType.equals("DIALOG_PREVIEW_GALLERY")) {
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_preview_image, parent, false);
+            return new GalleryAdapter.ViewHolder(v);
+        } else {
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_gallery, parent, false);
+            return new GalleryAdapter.ViewHolder(v);
+        }
+
     }
 
     @Override
     public void onBindViewHolder(@NonNull GalleryAdapter.ViewHolder holder, int position) {
         String path = mGalleryPaths.get(position);
+
         imageLoader.displayImage("file://" + path, holder.imgGallery);
         holder.imgGallery.setOnClickListener(v -> {
             mCallback.onItemGallerySelected(position, path);

@@ -102,6 +102,12 @@ public class PrefUtils {
         putStringArrayList(context, Constant.PREF_GALLERY, Constant.GALLERY_PATH, temp);
     }
 
+    public static void reduceListItemGallery(Context context, int position) {
+        ArrayList<String> temp = Lists.newArrayList(getListItemGallery(context));
+        temp.remove(position);
+        putStringArrayList(context, Constant.PREF_GALLERY, Constant.GALLERY_PATH, temp);
+    }
+
     public static int getVersionLocalDatabase(Context context) {
         return getInt(context, VERSION_DATABASE, VERSION_DATABASE_LOCAL, 0);
     }

@@ -25,6 +25,7 @@ import com.xlteam.socialcaption.external.utility.Utility;
 import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
 import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class GalleryFragment extends Fragment implements GalleryAdapter.GalleryS
     private GridLayoutManager gridLayoutManager;
     private TextView mEmptyImage;
     private GalleryAdapter galleryAdapter;
-    private List<String> mGalleries;
+    private List<String> mGalleryPaths;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -49,19 +50,19 @@ public class GalleryFragment extends Fragment implements GalleryAdapter.GalleryS
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        mGalleries = PrefUtils.getListItemGallery(mContext);
+        mGalleryPaths = PrefUtils.getListItemGallery(mContext);
 //        _staGridLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
-        galleryAdapter = new GalleryAdapter(mGalleries, getImageLoader(), this);
+        galleryAdapter = new GalleryAdapter(mGalleryPaths, getImageLoader(), this, "GALLERY_FRAGMENT");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mGalleries = PrefUtils.getListItemGallery(mContext);
-        if (!Utility.isEmpty(mGalleries)) {
+        mGalleryPaths = PrefUtils.getListItemGallery(mContext);
+        if (!Utility.isEmpty(mGalleryPaths)) {
             mEmptyImage.setVisibility(View.GONE);
-            Collections.sort(mGalleries);
-            galleryAdapter.updateList(mGalleries);
+            Collections.sort(mGalleryPaths);
+            galleryAdapter.updateList(mGalleryPaths);
             galleryAdapter.notifyDataSetChanged();
         } else {
             mEmptyImage.setVisibility(View.VISIBLE);
@@ -101,7 +102,8 @@ public class GalleryFragment extends Fragment implements GalleryAdapter.GalleryS
 
     @Override
     public void onItemGallerySelected(int position, String path) {
-
+        DialogPreviewGallery dialogPreview = DialogPreviewGallery.newInstance(new ArrayList<>(mGalleryPaths), position);
+        dialogPreview.show(getChildFragmentManager(), "DialogPreviewGallery");
     }
 
     public ImageLoader getImageLoader() {
