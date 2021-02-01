@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +21,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.PrefUtils;
+import com.xlteam.socialcaption.external.utility.Utility;
 import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
 import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
 
@@ -32,6 +34,7 @@ public class GalleryFragment extends Fragment implements GalleryAdapter.GalleryS
     private ImageLoader mImageLoader;
     //    private StaggeredGridLayoutManager _staGridLayoutManager;
     private GridLayoutManager gridLayoutManager;
+    private TextView mEmptyImage;
     private GalleryAdapter galleryAdapter;
     private List<String> mGalleries;
 
@@ -54,17 +57,23 @@ public class GalleryFragment extends Fragment implements GalleryAdapter.GalleryS
     @Override
     public void onResume() {
         super.onResume();
-
         mGalleries = PrefUtils.getListItemGallery(mContext);
-        Collections.sort(mGalleries);
-        galleryAdapter.updateList(mGalleries);
-        galleryAdapter.notifyDataSetChanged();
+        if (!Utility.isEmpty(mGalleries)) {
+            mEmptyImage.setVisibility(View.GONE);
+            Collections.sort(mGalleries);
+            galleryAdapter.updateList(mGalleries);
+            galleryAdapter.notifyDataSetChanged();
+        } else {
+            mEmptyImage.setVisibility(View.VISIBLE);
+            Utility.vibrateAnimation(mContext, mEmptyImage);
+        }
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         final View root = AsyncLayoutInflateManager.getInstance(mContext).inflateView(inflater, container, R.layout.fragment_gallery);
 
+        mEmptyImage = root.findViewById(R.id.tv_empty_image);
         // init recycler gallery by findViewById
         rvGallery = root.findViewById(R.id.rv_gallery_caption);
         gridLayoutManager = new GridLayoutManager(mContext, 3);
@@ -91,7 +100,7 @@ public class GalleryFragment extends Fragment implements GalleryAdapter.GalleryS
     }
 
     @Override
-    public void onGallerySelected(int positionSelected) {
+    public void onItemGallerySelected(int position, String path) {
 
     }
 

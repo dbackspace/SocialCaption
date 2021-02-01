@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -270,9 +271,13 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
                                 String savePath = saveFolder.getAbsolutePath() + File.separator + sdf.format(new Date(Utility.now())) + ".png";
                                 File saveFile = Utility.bitmapToFile(bitmap, savePath);
                                 if (saveFile != null) {
-                                    Toast.makeText(mContext, getString(R.string.save_success, savePath), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(mContext, getString(R.string.save_success), Toast.LENGTH_LONG).show();
+                                    MediaScannerConnection.scanFile(mContext,
+                                            new String[] {savePath}, null,
+                                            (path, uri) -> Log.i("SaveImage", "Finished scanning " + path));
 
 //                                    if (mActivity != null) mActivity.checkAndShowAds(3);
+
                                     // save image path to sharePref
                                     Log.e(this, savePath);
                                     PrefUtils.setListItemGallery(mContext, savePath);
