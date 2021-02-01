@@ -119,7 +119,8 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
      * thêm trong thời điểm đó thì sẽ bỏ qua những chữ đằng trước và lại reset khoảng thời gian chờ. Chỉ
      * khi hết REQUEST_DELAY_TIMEOUT mà không có ký tự nào được gõ thêm thì nó sẽ dùng đoạn text cuối để search.
      * - delay(): đợi một khoảng thời gian nhỏ để hiện cái progress loading trước khi hiển thị kết quả.
-     * - map(): ở đây loại bỏ hết dấu cách thừa và lower case chuỗi text nhận được.
+     * - distinctUntilChanged(): tránh tạo ra các request trùng nhau. Ví dụ khi người dùng thêm ký tự xong xóa ký tự
+     * đó xong lại thêm, thì nó sẽ lấy chuỗi cuối cùng độc nhất thay vì request hết tất cả.
      * - switchMap(): hiện kết quả query gần nhất được gõ vào, bỏ qua tất cả các kết quả query khác, bổ trợ cho debounce().
      * - observerOn(): Thực hiện việc nhận dữ liệu qua mainThread. Ở đây do subcribe đã xử lý thread và post lên mainThread
      * trong mRepository.searchCaptionByContainingContent() nên không cần cho nó chạy ngầm ở background thread nữa.
@@ -130,8 +131,8 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
     private Disposable initRxSearchView(SearchView searchView) {
         return fromSearchView(searchView)
                 .debounce(REQUEST_DELAY_TIMEOUT, TimeUnit.MILLISECONDS)
+                .distinctUntilChanged()
                 .switchMap(query -> Observable.just(query))
-                .observeOn(AndroidSchedulers.mainThread())
                 .delay(WAIT_DELAY_TIMEOUT, TimeUnit.MILLISECONDS)
                 .subscribe(query -> mRepository.searchCaptionByContainingContent(query));
     }
@@ -156,13 +157,8 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
             @Override
             public boolean onQueryTextChange(String newText) {
                 String validQuery = SearchQueryUtils.checkSkipSpecialChar(newText.toLowerCase().trim());
-                if (!TextUtils.isEmpty(validQuery)) {
-                    setStatusViewInLoadingProgress(true);
-                    mQueryText = validQuery;
-                    subject.onNext(validQuery);
-                } else {
-                    mRepository.searchCaptionWithEmptyQuery();
-                }
+                setStatusViewInLoadingProgress(true);
+                subject.onNext(validQuery);
                 return false;
             }
         });

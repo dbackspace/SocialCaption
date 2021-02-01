@@ -49,11 +49,13 @@ public class SearchQueryUtils {
     }
 
     public static String checkSkipSpecialChar(String keyword) {
-        for (String c : SKIP_CHARS) {
-            if (keyword.contains(c)) {
-                keyword = keyword.replace(c, "");
+        if (!TextUtils.isEmpty(keyword)) {
+            for (String c : SKIP_CHARS) {
+                if (keyword.contains(c)) {
+                    keyword = keyword.replace(c, "");
+                }
             }
         }
-        return keyword.trim();
+        return keyword;
     }
 }
