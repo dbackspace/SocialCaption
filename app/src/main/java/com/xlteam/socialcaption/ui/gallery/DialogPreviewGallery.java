@@ -16,8 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.utils.Constant;
 import com.xlteam.socialcaption.external.utility.utils.PrefUtils;
@@ -34,7 +32,6 @@ public class DialogPreviewGallery extends DialogFragment implements GalleryAdapt
 
     private RecyclerView rvPreviewGallery;
     private RelativeLayout relativeTopBar;
-    private ImageLoader mImageLoader;
     private GalleryAdapter mGalleryAdapter;
     ArrayList<String> mGalleryPaths;
     boolean isImageClicked = false;
@@ -65,8 +62,7 @@ public class DialogPreviewGallery extends DialogFragment implements GalleryAdapt
         setStyle(DialogFragment.STYLE_NORMAL,
                 android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         ArrayList<String> mGalleryPaths = getGalleryPaths();
-        mImageLoader = getImageLoader();
-        mGalleryAdapter = new GalleryAdapter(mGalleryPaths, mImageLoader, this, "DIALOG_PREVIEW_GALLERY");
+        mGalleryAdapter = new GalleryAdapter(mGalleryPaths, this, "DIALOG_PREVIEW_GALLERY");
         mListener = getDialogDismissListenerCallback();
 
         saveDialog = new DialogSaveChangesBuilder(getContext(),
@@ -124,14 +120,6 @@ public class DialogPreviewGallery extends DialogFragment implements GalleryAdapt
         return (DialogDismissListenerCallback) requireArguments().getSerializable(ARG_DIALOG_DISMISS_LISTENER);
     }
 
-    public ImageLoader getImageLoader() {
-        if (mImageLoader == null) {
-            mImageLoader = ImageLoader.getInstance();
-            mImageLoader.init(ImageLoaderConfiguration.createDefault(requireActivity()));
-        }
-        return mImageLoader;
-    }
-
     @Override
     public void onItemGallerySelected(int position, String path) {
         // do nothing
@@ -141,6 +129,11 @@ public class DialogPreviewGallery extends DialogFragment implements GalleryAdapt
 
     private void deleteImage() {
         Log.e("TEST", getCurrentPosition() + "");
+        if (mGalleryPaths.size() == 1) {
+            PrefUtils.putStringArrayList(getContext(), Constant.PREF_GALLERY, Constant.GALLERY_PATH, new ArrayList<>());
+            mListener.onDialogPreviewDismissed(true);
+            dismiss();
+        }
         if (getCurrentPosition() < mGalleryPaths.size()) {
             mGalleryPaths.remove(getCurrentPosition());
             PrefUtils.putStringArrayList(getContext(), Constant.PREF_GALLERY, Constant.GALLERY_PATH, mGalleryPaths);

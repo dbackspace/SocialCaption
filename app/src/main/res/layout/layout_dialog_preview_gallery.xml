@@ -6,12 +6,13 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_preview_gallery"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/relative_preview_top_bar"/>
 
     <RelativeLayout
         android:id="@+id/relative_preview_top_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:background="@android:color/transparent">
 
         <ImageView

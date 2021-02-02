@@ -17,8 +17,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.utils.PrefUtils;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
@@ -36,7 +34,6 @@ public class GalleryFragment extends Fragment
     private static final String TAG = "GalleryFragment";
     private RecyclerView rvGallery;
     private Context mContext;
-    private ImageLoader mImageLoader;
     //    private StaggeredGridLayoutManager _staGridLayoutManager;
     private GridLayoutManager gridLayoutManager;
     private TextView mEmptyImage;
@@ -56,7 +53,7 @@ public class GalleryFragment extends Fragment
 
         mGalleryPaths = PrefUtils.getListItemGallery(mContext);
 //        _staGridLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
-        mGalleryAdapter = new GalleryAdapter(mGalleryPaths, getImageLoader(), this, "GALLERY_FRAGMENT");
+        mGalleryAdapter = new GalleryAdapter(mGalleryPaths, this, "GALLERY_FRAGMENT");
     }
 
     @Override
@@ -110,20 +107,13 @@ public class GalleryFragment extends Fragment
         dialogPreview.show(getChildFragmentManager(), "DialogPreviewGallery");
     }
 
-    public ImageLoader getImageLoader() {
-        if (mImageLoader == null) {
-            mImageLoader = ImageLoader.getInstance();
-            mImageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
-        }
-        return mImageLoader;
-    }
-
     private void updateUI() {
         mGalleryPaths = PrefUtils.getListItemGallery(mContext);
-        Log.e("GalleryFragment", "updateUI" + mGalleryPaths.size());
-        if (!Utility.isEmpty(mGalleryPaths)) {
+        Log.e("GalleryFragment", "updateUI, list path size = " + mGalleryPaths.size());
+        if (mGalleryPaths.size() > 0) {
             mEmptyImage.setVisibility(View.GONE);
-            Collections.sort(mGalleryPaths);
+            rvGallery.setVisibility(View.VISIBLE);
+//            Collections.sort(mGalleryPaths);
             mGalleryAdapter.updateList(mGalleryPaths);
             mGalleryAdapter.notifyDataSetChanged();
         } else {
