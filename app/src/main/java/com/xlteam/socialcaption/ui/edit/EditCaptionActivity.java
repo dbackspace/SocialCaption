@@ -12,6 +12,8 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -41,6 +43,7 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.repository.UserCaptionRepository;
+import com.xlteam.socialcaption.external.utility.customview.SpannableTextView;
 import com.xlteam.socialcaption.external.utility.gesture.MultiTouchListener;
 import com.xlteam.socialcaption.external.utility.gesture.OnGestureControl;
 import com.xlteam.socialcaption.external.utility.gesture.OnPhotoEditorListener;
@@ -122,6 +125,8 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         tvDone.setClickable(false);
 
         imgBack.setOnClickListener(v -> finish());
+
+        mImgBackground.setOnClickListener(v -> clickBackgroundImage());
     }
 
     private void findViewById() {
@@ -285,7 +290,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
                                 if (saveFile != null) {
                                     Toast.makeText(mContext, getString(R.string.save_success), Toast.LENGTH_LONG).show();
                                     MediaScannerConnection.scanFile(mContext,
-                                            new String[] {savePath}, null,
+                                            new String[]{savePath}, null,
                                             (path, uri) -> Log.i("SaveImage", "Finished scanning " + path));
 
 //                                    if (mActivity != null) mActivity.checkAndShowAds(3);
@@ -319,10 +324,11 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         final ImageView imgClose = textAddedView.findViewById(R.id.btn_delete);
         final FrameLayout frameBorder = textAddedView.findViewById(R.id.text_border);
 
-        textInputTv.setText(editText.getText().toString().trim());
+        String text = editText.getText().toString().trim();
+        textInputTv.setText(text);
         textInputTv.setTextColor(editText.getTextColors());
         textInputTv.setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                getResources().getDimension(R.dimen.text_sticker_size));
+                getResources().getDimension(R.dimen.text_added_default_size));
 
         MultiTouchListener multiTouchListener = new MultiTouchListener(
                 imgClose,
@@ -330,9 +336,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
                 mImgBackground,
                 this, mContext);
         multiTouchListener.setOnGestureControl(new OnGestureControl() {
-
             boolean isDownAlready = false;
-
             @Override
             public void onClick() {
                 boolean isBackgroundVisible = frameBorder.getTag() != null && (boolean) frameBorder.getTag();
@@ -391,6 +395,17 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
             }
         }
         return rootView;
+    }
+
+    private void clickBackgroundImage() {
+        // disable all border and delete button in all text added
+        for (View view : addedViews) {
+            FrameLayout border = view.findViewById(R.id.text_border);
+            border.setBackgroundResource(0);
+            ImageView closeBtn = view.findViewById(R.id.btn_delete);
+            closeBtn.setVisibility(View.GONE);
+            border.setTag(false);
+        }
     }
 
     private void addViewToParent(View view) {
