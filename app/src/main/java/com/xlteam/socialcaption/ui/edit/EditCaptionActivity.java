@@ -35,11 +35,11 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.repository.UserCaptionRepository;
-import com.xlteam.socialcaption.external.utility.Constant;
-import com.xlteam.socialcaption.external.utility.FileUtils;
-import com.xlteam.socialcaption.external.utility.PrefUtils;
-import com.xlteam.socialcaption.external.utility.Utility;
-import com.xlteam.socialcaption.external.utility.animation.MultiTouchListener;
+import com.xlteam.socialcaption.external.utility.gesture.MultiTouchListener;
+import com.xlteam.socialcaption.external.utility.utils.Constant;
+import com.xlteam.socialcaption.external.utility.utils.FileUtils;
+import com.xlteam.socialcaption.external.utility.utils.PrefUtils;
+import com.xlteam.socialcaption.external.utility.utils.Utility;
 import com.xlteam.socialcaption.external.utility.logger.Log;
 import com.xlteam.socialcaption.model.CommonCaption;
 
@@ -52,7 +52,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static com.xlteam.socialcaption.external.utility.Constant.SAVE_DATE_TIME_FORMAT;
+import static com.xlteam.socialcaption.external.utility.utils.Constant.SAVE_DATE_TIME_FORMAT;
 
 public class EditCaptionActivity extends AppCompatActivity implements DialogAddTextBuilder.SavedCallback {
     private static final int RESULT_LOAD_IMG = 1;
@@ -308,7 +308,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         tvContentEdit.setClickable(false);
         tvContentEdit.setFocusableInTouchMode(false);
         tvContentEdit.setFocusable(false);
-        tvContentEdit.setOnTouchListener(new MultiTouchListener());
+//        tvContentEdit.setOnTouchListener(new MultiTouchListener());
         relativeBackground.addView(tvContentEdit);
     }
 }

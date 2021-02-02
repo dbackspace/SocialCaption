@@ -19,8 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.xlteam.socialcaption.R;
-import com.xlteam.socialcaption.external.utility.Constant;
-import com.xlteam.socialcaption.external.utility.PrefUtils;
+import com.xlteam.socialcaption.external.utility.utils.Constant;
+import com.xlteam.socialcaption.external.utility.utils.PrefUtils;
 import com.xlteam.socialcaption.external.utility.logger.Log;
 import com.xlteam.socialcaption.ui.commondialog.DialogSaveChangesBuilder;
 

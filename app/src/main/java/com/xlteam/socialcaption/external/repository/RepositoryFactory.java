@@ -2,8 +2,8 @@ package com.xlteam.socialcaption.external.repository;
 
 import android.content.Context;
 
-import static com.xlteam.socialcaption.external.utility.Constant.RepositoryType.COMMON_REPOSITORY;
-import static com.xlteam.socialcaption.external.utility.Constant.RepositoryType.USER_REPOSITORY;
+import static com.xlteam.socialcaption.external.utility.utils.Constant.RepositoryType.COMMON_REPOSITORY;
+import static com.xlteam.socialcaption.external.utility.utils.Constant.RepositoryType.USER_REPOSITORY;
 
 public class RepositoryFactory {
     private static final String TAG = "RepositoryFactory";

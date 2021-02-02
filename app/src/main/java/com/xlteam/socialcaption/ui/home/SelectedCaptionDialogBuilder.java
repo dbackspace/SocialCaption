@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.xlteam.socialcaption.R;
-import com.xlteam.socialcaption.external.utility.Constant;
+import com.xlteam.socialcaption.external.utility.utils.Constant;
 import com.xlteam.socialcaption.model.CommonCaption;
 import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
 

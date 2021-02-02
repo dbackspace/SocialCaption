@@ -17,14 +17,14 @@ import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.repository.CommonCaptionRepository;
 import com.xlteam.socialcaption.external.repository.ILoader;
 import com.xlteam.socialcaption.external.repository.RepositoryFactory;
-import com.xlteam.socialcaption.external.utility.Utility;
+import com.xlteam.socialcaption.external.utility.utils.Utility;
 import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
 import com.xlteam.socialcaption.model.CommonCaption;
 import com.xlteam.socialcaption.ui.home.CaptionAdapter;
 
 import java.util.List;
 
-import static com.xlteam.socialcaption.external.utility.Constant.RepositoryType.COMMON_REPOSITORY;
+import static com.xlteam.socialcaption.external.utility.utils.Constant.RepositoryType.COMMON_REPOSITORY;
 
 public class SavedFragment extends Fragment implements ILoader<CommonCaption>, CaptionAdapter.Callback {
     private Context mContext;

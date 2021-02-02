@@ -7,7 +7,7 @@ import com.xlteam.socialcaption.model.UserCaption;
 
 import java.util.List;
 
-import static com.xlteam.socialcaption.external.utility.Constant.LoaderTaskType.LOAD_ALL_USER_CAPTION;
+import static com.xlteam.socialcaption.external.utility.utils.Constant.LoaderTaskType.LOAD_ALL_USER_CAPTION;
 
 public class UserCaptionRepository extends AbsRepository {
     private static final String TAG = "UserCaptionRepository";

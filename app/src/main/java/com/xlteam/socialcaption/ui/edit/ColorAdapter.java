@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.datasource.ColorDataSource;
-import com.xlteam.socialcaption.external.utility.Utility;
+import com.xlteam.socialcaption.external.utility.utils.Utility;
 
 import java.util.ArrayList;
 

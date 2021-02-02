@@ -7,7 +7,7 @@ import android.text.TextUtils;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import com.xlteam.socialcaption.external.datasource.CaptionDataSource;
-import com.xlteam.socialcaption.external.utility.SearchQueryUtils;
+import com.xlteam.socialcaption.external.utility.utils.SearchQueryUtils;
 import com.xlteam.socialcaption.external.utility.thread.ThreadExecutor;
 import com.xlteam.socialcaption.model.CommonCaption;
 
@@ -16,11 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static com.xlteam.socialcaption.external.utility.Constant.LoaderTaskType.LOAD_ALL;
-import static com.xlteam.socialcaption.external.utility.Constant.LoaderTaskType.LOAD_BY_CATEGORY_TYPE;
-import static com.xlteam.socialcaption.external.utility.Constant.LoaderTaskType.LOAD_BY_CATEGORY_TYPE_AND_SAVED;
-import static com.xlteam.socialcaption.external.utility.Constant.LoaderTaskType.LOAD_BY_SAVED;
-import static com.xlteam.socialcaption.external.utility.Constant.LoaderTaskType.SEARCH_BY_CONTENT;
+import static com.xlteam.socialcaption.external.utility.utils.Constant.LoaderTaskType.LOAD_ALL;
+import static com.xlteam.socialcaption.external.utility.utils.Constant.LoaderTaskType.LOAD_BY_CATEGORY_TYPE;
+import static com.xlteam.socialcaption.external.utility.utils.Constant.LoaderTaskType.LOAD_BY_CATEGORY_TYPE_AND_SAVED;
+import static com.xlteam.socialcaption.external.utility.utils.Constant.LoaderTaskType.LOAD_BY_SAVED;
+import static com.xlteam.socialcaption.external.utility.utils.Constant.LoaderTaskType.SEARCH_BY_CONTENT;
 
 public class CommonCaptionRepository extends AbsRepository {
     private static final String TAG = "CommonCaptionRepository";

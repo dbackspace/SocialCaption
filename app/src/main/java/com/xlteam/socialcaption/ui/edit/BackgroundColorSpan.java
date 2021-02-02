@@ -7,7 +7,7 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.text.style.LineBackgroundSpan;
 
-import com.xlteam.socialcaption.external.utility.Constant;
+import com.xlteam.socialcaption.external.utility.utils.Constant;
 
 public class BackgroundColorSpan implements LineBackgroundSpan {
     private float padding;

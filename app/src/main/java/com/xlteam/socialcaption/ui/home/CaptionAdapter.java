@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.datasource.GradientDataSource;
-import com.xlteam.socialcaption.external.utility.Constant;
-import com.xlteam.socialcaption.external.utility.Utility;
+import com.xlteam.socialcaption.external.utility.utils.Constant;
+import com.xlteam.socialcaption.external.utility.utils.Utility;
 import com.xlteam.socialcaption.external.utility.customview.SpannableTextView;
 import com.xlteam.socialcaption.model.CommonCaption;
 import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;

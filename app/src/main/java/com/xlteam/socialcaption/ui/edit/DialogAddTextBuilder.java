@@ -21,8 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.datasource.ColorDataSource;
 import com.xlteam.socialcaption.external.datasource.FontDataSource;
-import com.xlteam.socialcaption.external.utility.Constant;
-import com.xlteam.socialcaption.external.utility.Utility;
+import com.xlteam.socialcaption.external.utility.utils.Constant;
+import com.xlteam.socialcaption.external.utility.utils.Utility;
 import com.xlteam.socialcaption.model.Font;
 
 import java.util.Objects;
