@@ -34,7 +34,10 @@
     <string name="canh_bao">Cảnh báo</string>
     <string name="ban_can_cap_du_quyen">Bạn cần cấp đủ quyền để sử dụng tính năng này</string>
     <string name="ok">Đồng ý</string>
-    <string name="huy_bo">Hủy bỏ</string>
+    <string name="huy_bo">Không</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="luu">Có</string>
+    <string name="close">Thoát</string>
+    <string name="save_or_cancel">Bạn có muốn lưu các thay đổi?</string>
 </resources>

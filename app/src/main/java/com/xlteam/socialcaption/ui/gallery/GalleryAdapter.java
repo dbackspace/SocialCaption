@@ -45,7 +45,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull GalleryAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String path = mGalleryPaths.get(position);
 
         imageLoader.displayImage("file://" + path, holder.imgGallery);
@@ -73,4 +73,5 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     public void updateList(List<String> galleryPaths) {
         mGalleryPaths = new ArrayList<>(galleryPaths);
     }
+
 }

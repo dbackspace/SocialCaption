@@ -22,6 +22,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.PrefUtils;
 import com.xlteam.socialcaption.external.utility.Utility;
+import com.xlteam.socialcaption.external.utility.logger.Log;
 import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
 import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
 
@@ -29,14 +30,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class GalleryFragment extends Fragment implements GalleryAdapter.GallerySelectCallback {
+public class GalleryFragment extends Fragment
+        implements GalleryAdapter.GallerySelectCallback,
+        DialogPreviewGallery.DialogDismissListenerCallback {
+    private static final String TAG = "GalleryFragment";
     private RecyclerView rvGallery;
     private Context mContext;
     private ImageLoader mImageLoader;
     //    private StaggeredGridLayoutManager _staGridLayoutManager;
     private GridLayoutManager gridLayoutManager;
     private TextView mEmptyImage;
-    private GalleryAdapter galleryAdapter;
+    private GalleryAdapter mGalleryAdapter;
     private List<String> mGalleryPaths;
 
     @Override
@@ -52,22 +56,14 @@ public class GalleryFragment extends Fragment implements GalleryAdapter.GalleryS
 
         mGalleryPaths = PrefUtils.getListItemGallery(mContext);
 //        _staGridLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
-        galleryAdapter = new GalleryAdapter(mGalleryPaths, getImageLoader(), this, "GALLERY_FRAGMENT");
+        mGalleryAdapter = new GalleryAdapter(mGalleryPaths, getImageLoader(), this, "GALLERY_FRAGMENT");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mGalleryPaths = PrefUtils.getListItemGallery(mContext);
-        if (!Utility.isEmpty(mGalleryPaths)) {
-            mEmptyImage.setVisibility(View.GONE);
-            Collections.sort(mGalleryPaths);
-            galleryAdapter.updateList(mGalleryPaths);
-            galleryAdapter.notifyDataSetChanged();
-        } else {
-            mEmptyImage.setVisibility(View.VISIBLE);
-            Utility.vibrateAnimation(mContext, mEmptyImage);
-        }
+        Log.e(TAG, "onResume");
+        updateUI();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -79,10 +75,15 @@ public class GalleryFragment extends Fragment implements GalleryAdapter.GalleryS
         rvGallery = root.findViewById(R.id.rv_gallery_caption);
         gridLayoutManager = new GridLayoutManager(mContext, 3);
         rvGallery.setLayoutManager(gridLayoutManager);
-        rvGallery.setAdapter(galleryAdapter);
+        rvGallery.setAdapter(mGalleryAdapter);
         rvGallery.setHasFixedSize(true);
 
         return root;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
@@ -102,7 +103,10 @@ public class GalleryFragment extends Fragment implements GalleryAdapter.GalleryS
 
     @Override
     public void onItemGallerySelected(int position, String path) {
-        DialogPreviewGallery dialogPreview = DialogPreviewGallery.newInstance(new ArrayList<>(mGalleryPaths), position);
+        DialogPreviewGallery dialogPreview = DialogPreviewGallery.newInstance(
+                new ArrayList<>(mGalleryPaths),
+                position,
+                this);
         dialogPreview.show(getChildFragmentManager(), "DialogPreviewGallery");
     }
 
@@ -112,5 +116,27 @@ public class GalleryFragment extends Fragment implements GalleryAdapter.GalleryS
             mImageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
         }
         return mImageLoader;
+    }
+
+    private void updateUI() {
+        mGalleryPaths = PrefUtils.getListItemGallery(mContext);
+        Log.e("GalleryFragment", "updateUI" + mGalleryPaths.size());
+        if (!Utility.isEmpty(mGalleryPaths)) {
+            mEmptyImage.setVisibility(View.GONE);
+            Collections.sort(mGalleryPaths);
+            mGalleryAdapter.updateList(mGalleryPaths);
+            mGalleryAdapter.notifyDataSetChanged();
+        } else {
+            rvGallery.setVisibility(View.GONE);
+            mEmptyImage.setVisibility(View.VISIBLE);
+            Utility.vibrateAnimation(mContext, mEmptyImage);
+        }
+    }
+
+    @Override
+    public void onDialogPreviewDismissed(Boolean isImageDeleted) {
+        if (isImageDeleted) {
+            updateUI();
+        }
     }
 }

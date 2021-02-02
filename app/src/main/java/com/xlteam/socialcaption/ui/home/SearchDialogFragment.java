@@ -133,8 +133,12 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
                 .debounce(REQUEST_DELAY_TIMEOUT, TimeUnit.MILLISECONDS)
                 .distinctUntilChanged()
                 .switchMap(query -> Observable.just(query))
-                .subscribe(query -> mRepository.searchCaptionByContainingContent(query));
+                .subscribe(query -> {
+                    mQueryText = query;
+                    mRepository.searchCaptionByContainingContent(query);
+                });
     }
+
 
     /**
      * Publish Subject là 1 loại đặc biệt, có cả tính chất của Observable và Observer,
