@@ -69,12 +69,9 @@ public class DialogAddTextBuilder {
         //
         Utility.setColorForView(viewColor, ColorDataSource.getInstance().getAllDataMini().get(mNumberColor));
         imgBack.setOnClickListener(v -> mDialog.cancel());
-        imgDone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                savedCallback.onSaveClicked(edtText, span);
-                mDialog.cancel();
-            }
+        imgDone.setOnClickListener(v -> {
+            savedCallback.onSaveClicked(edtText, span);
+            mDialog.cancel();
         });
 
         imgGravity.setOnClickListener(v -> {

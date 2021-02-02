@@ -12,8 +12,14 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
+import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -36,6 +42,8 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.repository.UserCaptionRepository;
 import com.xlteam.socialcaption.external.utility.gesture.MultiTouchListener;
+import com.xlteam.socialcaption.external.utility.gesture.OnGestureControl;
+import com.xlteam.socialcaption.external.utility.gesture.OnPhotoEditorListener;
 import com.xlteam.socialcaption.external.utility.utils.Constant;
 import com.xlteam.socialcaption.external.utility.utils.FileUtils;
 import com.xlteam.socialcaption.external.utility.utils.PrefUtils;
@@ -48,13 +56,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import static com.xlteam.socialcaption.external.utility.utils.Constant.SAVE_DATE_TIME_FORMAT;
 
-public class EditCaptionActivity extends AppCompatActivity implements DialogAddTextBuilder.SavedCallback {
+public class EditCaptionActivity extends AppCompatActivity implements DialogAddTextBuilder.SavedCallback, OnPhotoEditorListener {
     private static final int RESULT_LOAD_IMG = 1;
     private ImageView imgBack;
     private TextView tvDone;
@@ -81,6 +90,8 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     // relative background
     private RelativeLayout relativeBackground;
 
+    private List<View> addedViews;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         // init view
@@ -92,6 +103,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
+        addedViews = new ArrayList<>();
         Intent intent = getIntent();
         mCommonCaption = (CommonCaption) intent.getSerializableExtra(Constant.EXTRA_CAPTION);
         if (mCommonCaption != null) {
@@ -180,7 +192,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         Log.e(this, result.size() + "");
     }
 
-    public void textOnClick(View view) {
+    public void onAddTextClicked(View view) {
         imgBack.setVisibility(View.INVISIBLE);
         tvDone.setVisibility(View.INVISIBLE);
         layoutMenu.setVisibility(View.INVISIBLE);
@@ -193,7 +205,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         addTextDialog.show();
     }
 
-    public void imageOnClick(View view) {
+    public void onAddImageClicked(View view) {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -201,19 +213,19 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     }
 
 
-    public void rotateOnClick(View view) {
+    public void onRotateClicked(View view) {
         mImgBackground.setRotation(mImgBackground.getRotation() + -90);
         enableBtnSave();
     }
 
-    public void cropOnClick(View view) {
+    public void onCropClicked(View view) {
         // start cropping activity for pre-acquired image saved on the device
         CropImage.activity(getImageUri(getApplicationContext(), getBitmapFromImageView(mImgBackground)))
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .start(this);
     }
 
-    public void flipOnClick(View view) {
+    public void onFlipClicked(View view) {
         flipCurrent = (flipCurrent + 180) % 360;
         mImgBackground.setRotationY(flipCurrent);
         enableBtnSave();
@@ -302,13 +314,130 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     @SuppressLint("ResourceAsColor")
     @Override
     public void onSaveClicked(EditText editText, BackgroundColorSpan span) {
-        TextView tvContentEdit = new TextView(this);
-        tvContentEdit.setText(editText.getText().toString().trim());
-        tvContentEdit.setTextColor(editText.getTextColors());
-        tvContentEdit.setClickable(false);
-        tvContentEdit.setFocusableInTouchMode(false);
-        tvContentEdit.setFocusable(false);
-//        tvContentEdit.setOnTouchListener(new MultiTouchListener());
-        relativeBackground.addView(tvContentEdit);
+        final View textAddedView = getTextStickerLayout();
+        final TextView textInputTv = textAddedView.findViewById(R.id.text_tv);
+        final ImageView imgClose = textAddedView.findViewById(R.id.btn_delete);
+        final FrameLayout frameBorder = textAddedView.findViewById(R.id.text_border);
+
+        textInputTv.setText(editText.getText().toString().trim());
+        textInputTv.setTextColor(editText.getTextColors());
+        textInputTv.setTextSize(TypedValue.COMPLEX_UNIT_SP,
+                getResources().getDimension(R.dimen.text_sticker_size));
+
+        MultiTouchListener multiTouchListener = new MultiTouchListener(
+                imgClose,
+                relativeBackground,
+                mImgBackground,
+                this, mContext);
+        multiTouchListener.setOnGestureControl(new OnGestureControl() {
+
+            boolean isDownAlready = false;
+
+            @Override
+            public void onClick() {
+                boolean isBackgroundVisible = frameBorder.getTag() != null && (boolean) frameBorder.getTag();
+                if (isBackgroundVisible && !isDownAlready) {
+                    String textInput = textInputTv.getText().toString();
+                    int currentTextColor = textInputTv.getCurrentTextColor();
+
+                    // TODO: thêm showTextDialog khi ấn vào text
+//                    showTextEditDialog(textAddedView, textInput, currentTextColor);
+                }
+            }
+
+            @Override
+            public void onDown() {
+                boolean isBackgroundVisible = frameBorder.getTag() != null && (boolean) frameBorder.getTag();
+                if (!isBackgroundVisible) {
+                    frameBorder.setBackgroundResource(R.drawable.background_border_text_added);
+                    imgClose.setVisibility(View.VISIBLE);
+                    frameBorder.setTag(true);
+                    updateViewsBordersVisibilityExcept(textAddedView);
+                    isDownAlready = true;
+                } else {
+                    isDownAlready = false;
+                }
+            }
+
+            @Override
+            public void onLongClick() {
+            }
+        });
+
+        textAddedView.setOnTouchListener(multiTouchListener);
+        addViewToParent(textAddedView);
+    }
+
+    private void editText(View view, String inputText, int colorCode) {
+        TextView inputTextView = view.findViewById(R.id.text_tv);
+        if (inputTextView != null && addedViews.contains(view) && !TextUtils.isEmpty(inputText)) {
+            inputTextView.setText(inputText);
+            inputTextView.setTextColor(colorCode);
+            relativeBackground.updateViewLayout(view, view.getLayoutParams());
+            int i = addedViews.indexOf(view);
+            if (i > -1) addedViews.set(i, view);
+        }
+    }
+
+    private View getTextStickerLayout() {
+        LayoutInflater layoutInflater = LayoutInflater.from(mContext);
+        View rootView = layoutInflater.inflate(R.layout.item_text_added, null);
+        TextView txtText = rootView.findViewById(R.id.text_tv);
+        if (txtText != null) {
+            txtText.setGravity(Gravity.CENTER);
+            ImageView imgClose = rootView.findViewById(R.id.btn_delete);
+            if (imgClose != null) {
+                imgClose.setOnClickListener(view -> deleteViewFromParent(rootView));
+            }
+        }
+        return rootView;
+    }
+
+    private void addViewToParent(View view) {
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        relativeBackground.addView(view, params);
+        addedViews.add(view);
+        updateViewsBordersVisibilityExcept(view);
+    }
+
+    private void deleteViewFromParent(View view) {
+        relativeBackground.removeView(view);
+        addedViews.remove(view);
+        relativeBackground.invalidate();
+        updateViewsBordersVisibilityExcept(null);
+    }
+
+    private void updateViewsBordersVisibilityExcept(@Nullable View keepView) {
+        for (View view : addedViews) {
+            if (view != keepView) {
+                FrameLayout border = view.findViewById(R.id.text_border);
+                border.setBackgroundResource(0);
+                ImageView closeBtn = view.findViewById(R.id.btn_delete);
+                closeBtn.setVisibility(View.GONE);
+                border.setTag(false);
+            }
+        }
+    }
+
+    @Override
+    public void onAddViewListener(int numberOfAddedViews) {
+
+    }
+
+    @Override
+    public void onRemoveViewListener(int numberOfAddedViews) {
+
+    }
+
+    @Override
+    public void onStartViewChangeListener() {
+
+    }
+
+    @Override
+    public void onStopViewChangeListener() {
+
     }
 }

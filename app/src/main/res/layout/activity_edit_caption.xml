@@ -86,7 +86,7 @@
             android:layout_weight="1"
             android:background="@drawable/bg_ripple_click_view_rectangle"
             android:gravity="center"
-            android:onClick="textOnClick"
+            android:onClick="onAddTextClicked"
             android:orientation="vertical">
 
             <ImageView
@@ -110,7 +110,7 @@
             android:layout_weight="1"
             android:background="@drawable/bg_ripple_click_view_rectangle"
             android:gravity="center"
-            android:onClick="imageOnClick"
+            android:onClick="onAddImageClicked"
             android:orientation="vertical">
 
             <ImageView
@@ -134,7 +134,7 @@
             android:layout_weight="1"
             android:background="@drawable/bg_ripple_click_view_rectangle"
             android:gravity="center"
-            android:onClick="rotateOnClick"
+            android:onClick="onRotateClicked"
             android:orientation="vertical">
 
             <ImageView
@@ -158,7 +158,7 @@
             android:layout_weight="1"
             android:background="@drawable/bg_ripple_click_view_rectangle"
             android:gravity="center"
-            android:onClick="cropOnClick"
+            android:onClick="onCropClicked"
             android:orientation="vertical">
 
             <ImageView
@@ -182,7 +182,7 @@
             android:layout_weight="1"
             android:background="@drawable/bg_ripple_click_view_rectangle"
             android:gravity="center"
-            android:onClick="flipOnClick"
+            android:onClick="onFlipClicked"
             android:orientation="vertical">
 
             <ImageView
