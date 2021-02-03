@@ -17,30 +17,28 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
+public class ItemPreviewGallery extends RecyclerView.Adapter<ItemPreviewGallery.ViewHolder> {
     private List<String> mGalleryPaths;
-    private GallerySelectCallback mCallback;
-    private String mViewType;
+    private ItemPreviewGallery.GallerySelectCallback mCallback;
 
     public interface GallerySelectCallback {
         void onItemGallerySelected(int position, String path);
     }
 
-    public GalleryAdapter(List<String> galleryPaths, GalleryAdapter.GallerySelectCallback callBack, String viewType) {
+    public ItemPreviewGallery(List<String> galleryPaths, ItemPreviewGallery.GallerySelectCallback callBack) {
         mGalleryPaths = galleryPaths;
         mCallback = callBack;
-        mViewType = viewType;
     }
 
     @NonNull
     @Override
-    public GalleryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_gallery, parent, false);
-            return new GalleryAdapter.ViewHolder(v);
+    public ItemPreviewGallery.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_preview_image, parent, false);
+            return new ItemPreviewGallery.ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull com.xlteam.socialcaption.ui.gallery.ItemPreviewGallery.ViewHolder holder, int position) {
         String path = mGalleryPaths.get(position);
         Log.e("onBindViewHolder", "file://" + path);
         File imgFile = new File(path);
@@ -72,5 +70,4 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     public void updateList(List<String> galleryPaths) {
         mGalleryPaths = new ArrayList<>(galleryPaths);
     }
-
 }
