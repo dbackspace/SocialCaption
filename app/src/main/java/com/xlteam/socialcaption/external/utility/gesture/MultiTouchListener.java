@@ -128,6 +128,8 @@ public class MultiTouchListener implements OnTouchListener {
                 activePointerId = event.getPointerId(0);
                 view.bringToFront();
                 firePhotoEditorSDKListener(view, true);
+                deleteView.setScaleX(1f);
+                deleteView.setScaleY(1f);
                 break;
             case MotionEvent.ACTION_MOVE:
                 int pointerIndexMove = event.findPointerIndex(activePointerId);
@@ -137,6 +139,13 @@ public class MultiTouchListener implements OnTouchListener {
                     if (!scaleGestureDetector.isInProgress()) {
                         adjustTranslation(view, currX - prevX, currY - prevY);
                     }
+                }
+                if (deleteView != null && isViewInBounds(deleteView, x, y)) {
+                    deleteView.setScaleX(1.5f);
+                    deleteView.setScaleY(1.5f);
+                } else {
+                    deleteView.setScaleX(1f);
+                    deleteView.setScaleY(1f);
                 }
                 break;
             case MotionEvent.ACTION_CANCEL:
@@ -150,6 +159,8 @@ public class MultiTouchListener implements OnTouchListener {
                 } else if (!isViewInBounds(photoEditImageView, x, y)) {
                     view.animate().translationY(0).translationY(0);
                 }
+                deleteView.setScaleX(1f);
+                deleteView.setScaleY(1f);
                 firePhotoEditorSDKListener(view, false);
                 break;
             case MotionEvent.ACTION_POINTER_UP:

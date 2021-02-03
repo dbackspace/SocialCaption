@@ -21,7 +21,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +44,7 @@ import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.repository.UserCaptionRepository;
 import com.xlteam.socialcaption.external.utility.gesture.MultiTouchListener;
 import com.xlteam.socialcaption.external.utility.gesture.OnGestureControl;
+import com.xlteam.socialcaption.external.utility.gesture.OnMultiTouchListener;
 import com.xlteam.socialcaption.external.utility.gesture.OnPhotoEditorListener;
 import com.xlteam.socialcaption.external.utility.logger.Log;
 import com.xlteam.socialcaption.external.utility.utils.Constant;
@@ -65,7 +65,8 @@ import java.util.Locale;
 
 import static com.xlteam.socialcaption.external.utility.utils.Constant.SAVE_DATE_TIME_FORMAT;
 
-public class EditCaptionActivity extends AppCompatActivity implements DialogAddTextBuilder.SavedCallback, OnPhotoEditorListener {
+public class EditCaptionActivity extends AppCompatActivity implements DialogAddTextBuilder.SavedCallback,
+        OnPhotoEditorListener, OnMultiTouchListener {
     private static final int RESULT_LOAD_IMG = 1;
     private ImageView imgBack;
     private TextView tvDone;
@@ -93,6 +94,8 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     private RelativeLayout relativeBackground;
 
     private List<View> addedViews;
+    private RelativeLayout layoutDelete;
+    private TextView tvDelete;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -124,8 +127,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         tvDone.setClickable(false);
 
         imgBack.setOnClickListener(v -> finish());
-
-        mImgBackground.setOnClickListener(v -> clickBackgroundImage());
     }
 
     private void findViewById() {
@@ -134,6 +135,8 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         mImgBackground = findViewById(R.id.img_edit_background);
         layoutMenu = findViewById(R.id.layout_menu);
         relativeBackground = findViewById(R.id.relative_background_save_img);
+        layoutDelete = findViewById(R.id.delete_rl);
+        tvDelete = findViewById(R.id.delete_tv);
     }
 
     @Override
@@ -316,7 +319,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     public void onSaveClicked(EditText editText, BackgroundColorSpan span) {
         final View textAddedView = getTextStickerLayout();
         final TextView textInputTv = textAddedView.findViewById(R.id.text_tv);
-        final ImageView imgClose = textAddedView.findViewById(R.id.btn_delete);
+//        final ImageView imgClose = textAddedView.findViewById(R.id.btn_delete);
         final FrameLayout frameBorder = textAddedView.findViewById(R.id.text_border);
 
         String text = editText.getText().toString().trim();
@@ -326,7 +329,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
                 getResources().getDimension(R.dimen.text_added_default_size));
 
         MultiTouchListener multiTouchListener = new MultiTouchListener(
-                imgClose,
+                layoutDelete,
                 relativeBackground,
                 mImgBackground,
                 this, mContext);
@@ -350,7 +353,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
                 boolean isBackgroundVisible = frameBorder.getTag() != null && (boolean) frameBorder.getTag();
                 if (!isBackgroundVisible) {
                     frameBorder.setBackgroundResource(R.drawable.background_border_text_added);
-                    imgClose.setVisibility(View.VISIBLE);
+                    layoutDelete.setVisibility(View.VISIBLE);
                     frameBorder.setTag(true);
                     updateViewsBordersVisibilityExcept(textAddedView);
                     isDownAlready = true;
@@ -385,10 +388,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         TextView txtText = rootView.findViewById(R.id.text_tv);
         if (txtText != null) {
             txtText.setGravity(Gravity.CENTER);
-            ImageView imgClose = rootView.findViewById(R.id.btn_delete);
-            if (imgClose != null) {
-                imgClose.setOnClickListener(view -> deleteViewFromParent(rootView));
-            }
         }
         return rootView;
     }
@@ -398,8 +397,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         for (View view : addedViews) {
             FrameLayout border = view.findViewById(R.id.text_border);
             border.setBackgroundResource(0);
-            ImageView closeBtn = view.findViewById(R.id.btn_delete);
-            closeBtn.setVisibility(View.GONE);
             border.setTag(false);
         }
     }
@@ -425,8 +422,8 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
             if (view != keepView) {
                 FrameLayout border = view.findViewById(R.id.text_border);
                 border.setBackgroundResource(0);
-                ImageView closeBtn = view.findViewById(R.id.btn_delete);
-                closeBtn.setVisibility(View.GONE);
+//                ImageView closeBtn = view.findViewById(R.id.btn_delete);
+//                closeBtn.setVisibility(View.GONE);
                 border.setTag(false);
             }
         }
@@ -444,11 +441,16 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
     @Override
     public void onStartViewChangeListener() {
-
+        layoutDelete.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onStopViewChangeListener() {
+        layoutDelete.setVisibility(View.GONE);
+    }
 
+    @Override
+    public void onRemoveViewListener(View removedView) {
+        deleteViewFromParent(removedView);
     }
 }
