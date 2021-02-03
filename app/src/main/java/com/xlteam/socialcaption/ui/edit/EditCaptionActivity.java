@@ -12,15 +12,12 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -36,23 +33,23 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.karumi.dexter.Dexter;
-import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.karumi.dexter.listener.single.PermissionListener;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.repository.UserCaptionRepository;
-import com.xlteam.socialcaption.external.utility.customview.SpannableTextView;
 import com.xlteam.socialcaption.external.utility.gesture.MultiTouchListener;
 import com.xlteam.socialcaption.external.utility.gesture.OnGestureControl;
 import com.xlteam.socialcaption.external.utility.gesture.OnPhotoEditorListener;
+import com.xlteam.socialcaption.external.utility.logger.Log;
 import com.xlteam.socialcaption.external.utility.utils.Constant;
 import com.xlteam.socialcaption.external.utility.utils.FileUtils;
 import com.xlteam.socialcaption.external.utility.utils.PrefUtils;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
-import com.xlteam.socialcaption.external.utility.logger.Log;
 import com.xlteam.socialcaption.model.CommonCaption;
 
 import java.io.ByteArrayOutputStream;
@@ -277,41 +274,41 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     // save image
     private void saveImageCreatedToSdcard(View view) {
         Dexter.withContext(this)
-                .withPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .withListener(new MultiplePermissionsListener() {
+                .withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .withListener(new PermissionListener() {
                     @Override
-                    public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
-                        if (multiplePermissionsReport.areAllPermissionsGranted()) {
-                            Bitmap bitmap = Utility.getBitmapFromView(view);
-                            File saveFolder = FileUtils.findExistingFolderSaveImage();
-                            if (saveFolder != null) {
-                                SimpleDateFormat sdf = new SimpleDateFormat(SAVE_DATE_TIME_FORMAT, Locale.getDefault());
-                                String savePath = saveFolder.getAbsolutePath() + File.separator + sdf.format(new Date(Utility.now())) + ".png";
-                                File saveFile = Utility.bitmapToFile(bitmap, savePath);
-                                if (saveFile != null) {
-                                    Toast.makeText(mContext, getString(R.string.save_success), Toast.LENGTH_LONG).show();
-                                    MediaScannerConnection.scanFile(mContext,
-                                            new String[]{savePath}, null,
-                                            (path, uri) -> Log.i("SaveImage", "Finished scanning " + path));
+                    public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
+                        Bitmap bitmap = Utility.getBitmapFromView(view);
+                        File saveFolder = FileUtils.findExistingFolderSaveImage();
+                        if (saveFolder != null) {
+                            SimpleDateFormat sdf = new SimpleDateFormat(SAVE_DATE_TIME_FORMAT, Locale.getDefault());
+                            String savePath = saveFolder.getAbsolutePath() + File.separator + sdf.format(new Date(Utility.now())) + ".png";
+                            File saveFile = Utility.bitmapToFile(bitmap, savePath);
+                            if (saveFile != null) {
+                                Toast.makeText(mContext, getString(R.string.save_success), Toast.LENGTH_LONG).show();
+                                MediaScannerConnection.scanFile(mContext,
+                                        new String[]{savePath}, null,
+                                        (path, uri) -> Log.i("SaveImage", "Finished scanning " + path));
 
 //                                    if (mActivity != null) mActivity.checkAndShowAds(3);
 
-                                    // save image path to sharePref
-                                    Log.e(this, savePath);
-                                    PrefUtils.setListItemGallery(mContext, savePath);
-                                    finish();
-                                } else {
-                                    Toast.makeText(mContext, getString(R.string.save_fail), Toast.LENGTH_SHORT).show();
-                                }
+                                // save image path to sharePref
+                                Log.e(this, savePath);
+                                PrefUtils.setListItemGallery(mContext, savePath);
+                                finish();
+                            } else {
+                                Toast.makeText(mContext, getString(R.string.save_fail), Toast.LENGTH_SHORT).show();
                             }
-                        } else {
-                            Toast.makeText(mContext, getString(R.string.notify_not_enough_permission), Toast.LENGTH_SHORT).show();
-                            Utility.showDialogRequestPermission(mContext);
                         }
                     }
 
                     @Override
-                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
+                    public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
+                        Toast.makeText(mContext, getString(R.string.notify_not_enough_permission), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
                         permissionToken.continuePermissionRequest();
                     }
                 }).check();
@@ -338,6 +335,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
                 this, mContext);
         multiTouchListener.setOnGestureControl(new OnGestureControl() {
             boolean isDownAlready = false;
+
             @Override
             public void onClick() {
                 boolean isBackgroundVisible = frameBorder.getTag() != null && (boolean) frameBorder.getTag();

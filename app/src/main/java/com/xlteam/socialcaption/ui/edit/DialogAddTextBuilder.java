@@ -11,7 +11,6 @@ import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -194,16 +193,16 @@ public class DialogAddTextBuilder {
     }
 
     public void showKeyboard() {
-        if (!Utility.isKeyboardOpened(mContext)) {
+/*        if (!Utility.isKeyboardOpened(mContext)) {
             edtText.clearFocus();
             edtText.requestFocus();
             edtText.setSelectAllOnFocus(false);
             InputMethodManager mInputMethodManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
             mInputMethodManager.showSoftInput(edtText, 0);
-        }
+        }*/
     }
 
-    public void hideKeyboard() {
+/*    public void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
         boolean isMobileKeyboard = Utility.isMobileKeyboardAvailable(mContext);
         if (Utility.isKeyboardOpened(mContext)) {
@@ -213,5 +212,5 @@ public class DialogAddTextBuilder {
                 imm.hideSoftInputFromWindow(edtText.getWindowToken(), 0);
             }
         }
-    }
+    }*/
 }
