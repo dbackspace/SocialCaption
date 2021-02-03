@@ -5,11 +5,13 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.text.Editable;
+import android.text.Selection;
 import android.text.Spannable;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -158,6 +160,13 @@ public class DialogAddTextBuilder {
 
         edtText.setShadowLayer(padding, 0f, 0f, 0);
         edtText.setPadding(padding, padding, padding, padding);
+        edtText.setFocusableInTouchMode(true);
+        edtText.setFocusable(true);
+        edtText.setCursorVisible(true);
+        int position = edtText.getText().length();
+        Editable editObj = edtText.getText();
+        Selection.setSelection(editObj, position);
+        showKeyboard();
         edtText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -182,5 +191,27 @@ public class DialogAddTextBuilder {
 
     private int dp(int value) {
         return (int) (mContext.getResources().getDisplayMetrics().density * value + 0.5f);
+    }
+
+    public void showKeyboard() {
+        if (!Utility.isKeyboardOpened(mContext)) {
+            edtText.clearFocus();
+            edtText.requestFocus();
+            edtText.setSelectAllOnFocus(false);
+            InputMethodManager mInputMethodManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+            mInputMethodManager.showSoftInput(edtText, 0);
+        }
+    }
+
+    public void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+        boolean isMobileKeyboard = Utility.isMobileKeyboardAvailable(mContext);
+        if (Utility.isKeyboardOpened(mContext)) {
+            if (isMobileKeyboard) {
+                imm.toggleSoftInput(0, 0);
+            } else {
+                imm.hideSoftInputFromWindow(edtText.getWindowToken(), 0);
+            }
+        }
     }
 }

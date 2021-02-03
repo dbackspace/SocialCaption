@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -18,6 +19,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import com.xlteam.socialcaption.R;
@@ -106,6 +108,16 @@ public class Utility {
                 .subject(context.getString(R.string.feedback_title))
                 .body(preGetAppInfo(context, pInfo).toString())
                 .start();
+    }
+
+    public static boolean isKeyboardOpened(Context context) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        return imm.semIsInputMethodShown();
+    }
+
+    public static boolean isMobileKeyboardAvailable(Context mContext) {
+        Configuration config = mContext.getResources().getConfiguration();
+        return config.semMobileKeyboardCovered == Configuration.SEM_MOBILE_KEYBOARD_COVERED_YES;
     }
 
     private static StringBuilder preGetAppInfo(Context context, PackageInfo pInfo) {

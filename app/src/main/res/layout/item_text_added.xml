@@ -17,8 +17,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_4dp"
             android:textColor="@color/black"
-            android:textSize="@dimen/text_size_18sp"
-            tools:text="Sample text"
             tools:textColor="@android:color/white" />
 
     </FrameLayout>
@@ -27,8 +25,7 @@
         android:id="@+id/btn_delete"
         android:layout_width="@dimen/delete_icon_size"
         android:layout_height="@dimen/delete_icon_size"
-        android:layout_gravity="top|start"
-        android:elevation="@dimen/elevation_2dp"
+        android:layout_gravity="top|end"
         android:src="@drawable/ic_remove_text" />
 
 </FrameLayout>
