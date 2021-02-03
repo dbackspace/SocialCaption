@@ -59,7 +59,7 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         CommonCaption caption = mCaptions.get(position);
         setCaptionContent(holder, caption);
-        int[] numberGradient = GradientDataSource.getInstance().getAllData().get((int) caption.getId() % 10);
+        int[] numberGradient = GradientDataSource.getInstance().getAllData().get(position % 9);
         Utility.setColorGradient(holder.layoutBg, numberGradient);
         holder.imgSaved.setActivated(caption.isSaved());
         holder.imgSaved.setOnClickListener(v -> {

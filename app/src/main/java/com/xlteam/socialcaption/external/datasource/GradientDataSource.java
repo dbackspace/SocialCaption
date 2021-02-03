@@ -26,7 +26,7 @@ public class GradientDataSource {
         colors.add(new int[]{0xFF7F7FD5, 0xFF86A8E7, 0xFF91EAE4});
         colors.add(new int[]{0xFF654eA3, 0xFFeAAfc8});
         colors.add(new int[]{0xFFA8ff78, 0xFF78ffd6});
-        colors.add(new int[]{0xFFFDC830, 0xFFFDC830});
+        // colors.add(new int[]{0xFFFDC830, 0xFFFDC830});
         colors.add(new int[]{0xFF00B4DB, 0xFF00B4DB});
         colors.add(new int[]{0xFFFFEFBA, 0xFFFFFFFF});
     }
