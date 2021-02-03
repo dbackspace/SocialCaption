@@ -17,9 +17,9 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.xlteam.socialcaption.R;
+import com.xlteam.socialcaption.external.utility.logger.Log;
 import com.xlteam.socialcaption.external.utility.utils.Constant;
 import com.xlteam.socialcaption.external.utility.utils.PrefUtils;
-import com.xlteam.socialcaption.external.utility.logger.Log;
 import com.xlteam.socialcaption.ui.commondialog.DialogSaveChangesBuilder;
 
 import java.io.Serializable;
@@ -30,7 +30,8 @@ public class DialogPreviewGallery extends DialogFragment implements GalleryAdapt
     private static final String ARG_CURRENT_POSITION = "ARG_CURRENT_POSITION";
     private static final String ARG_DIALOG_DISMISS_LISTENER = "ARG_DIALOG_DISMISS_LISTENER";
 
-    private RecyclerView rvPreviewGallery;
+    private RecyclerView mRecyclerPreviewGallery;
+    private LinearLayoutManager mLinearLayoutManager;
     private RelativeLayout relativeTopBar;
     private GalleryAdapter mGalleryAdapter;
     ArrayList<String> mGalleryPaths;
@@ -38,6 +39,7 @@ public class DialogPreviewGallery extends DialogFragment implements GalleryAdapt
 
     private Dialog saveDialog;
     private Boolean isDeleted = false;
+    private int mCurrentPosition;
 
     interface DialogDismissListenerCallback extends Serializable {
         void onDialogPreviewDismissed(Boolean isImageDeleted);
@@ -64,6 +66,7 @@ public class DialogPreviewGallery extends DialogFragment implements GalleryAdapt
         ArrayList<String> mGalleryPaths = getGalleryPaths();
         mGalleryAdapter = new GalleryAdapter(mGalleryPaths, this, "DIALOG_PREVIEW_GALLERY");
         mListener = getDialogDismissListenerCallback();
+        mCurrentPosition = getPickedPosition();
 
         saveDialog = new DialogSaveChangesBuilder(getContext(),
                 v -> {
@@ -85,13 +88,13 @@ public class DialogPreviewGallery extends DialogFragment implements GalleryAdapt
 
         relativeTopBar = view.findViewById(R.id.relative_preview_top_bar);
 
-        rvPreviewGallery = view.findViewById(R.id.rv_preview_gallery);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, true);
-        rvPreviewGallery.setLayoutManager(linearLayoutManager);
-        rvPreviewGallery.setAdapter(mGalleryAdapter);
-        rvPreviewGallery.scrollToPosition(getCurrentPosition());
+        mRecyclerPreviewGallery = view.findViewById(R.id.rv_preview_gallery);
+        mLinearLayoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, true);
+        mRecyclerPreviewGallery.setLayoutManager(mLinearLayoutManager);
+        mRecyclerPreviewGallery.setAdapter(mGalleryAdapter);
+        mRecyclerPreviewGallery.scrollToPosition(mCurrentPosition);
         PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
-        pagerSnapHelper.attachToRecyclerView(rvPreviewGallery);
+        pagerSnapHelper.attachToRecyclerView(mRecyclerPreviewGallery);
 
         ImageView btnBackToGalleryFragment = view.findViewById(R.id.btn_preview_back_to_gallery_fragment);
         btnBackToGalleryFragment.setOnClickListener(v -> {
@@ -112,7 +115,7 @@ public class DialogPreviewGallery extends DialogFragment implements GalleryAdapt
         return requireArguments().getStringArrayList(ARG_LIST_PATH);
     }
 
-    private int getCurrentPosition() {
+    private int getPickedPosition() {
         return requireArguments().getInt(ARG_CURRENT_POSITION);
     }
 
@@ -123,19 +126,21 @@ public class DialogPreviewGallery extends DialogFragment implements GalleryAdapt
     @Override
     public void onItemGallerySelected(int position, String path) {
         // do nothing
+        mCurrentPosition = position;
         relativeTopBar.setVisibility(isImageClicked ? View.VISIBLE : View.INVISIBLE);
         isImageClicked = !isImageClicked;
     }
 
     private void deleteImage() {
-        Log.e("TEST", getCurrentPosition() + "");
+        mCurrentPosition = mLinearLayoutManager.findLastCompletelyVisibleItemPosition();
+        Log.e("deleteImage", "mCurrentPosition" + " " + mCurrentPosition);
         if (mGalleryPaths.size() == 1) {
             PrefUtils.putStringArrayList(getContext(), Constant.PREF_GALLERY, Constant.GALLERY_PATH, new ArrayList<>());
             mListener.onDialogPreviewDismissed(true);
             dismiss();
         }
-        if (getCurrentPosition() < mGalleryPaths.size()) {
-            mGalleryPaths.remove(getCurrentPosition());
+        if (mCurrentPosition < mGalleryPaths.size()) {
+            mGalleryPaths.remove(mCurrentPosition);
             PrefUtils.putStringArrayList(getContext(), Constant.PREF_GALLERY, Constant.GALLERY_PATH, mGalleryPaths);
             mGalleryAdapter.updateList(mGalleryPaths);
             mGalleryAdapter.notifyDataSetChanged();
