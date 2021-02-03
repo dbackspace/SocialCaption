@@ -6,6 +6,7 @@ public class Constant {
     public static final String LINK_MARKET_DEVELOPER = "market://search?q=pub:XL+team";
     public static final String LINK_GOOGLE_PLAY_DEVELOPER = "http://play.google.com/store/apps/developer?id=XL+team";
     public static final String EMAIL_TEAM = "developer.xlteam@gmail.com";
+    public static final String FILE_PROVIDER_PATH = "com.xlteam.socialcaption.external.utility.utils.fileprovider";
 
     public static final String SAVE_DATE_TIME_FORMAT = "HH_mm_ss dd_MM_yyyy";
     public static final int PHOTOS = 1;

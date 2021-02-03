@@ -28,6 +28,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.FileProvider;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -56,6 +57,8 @@ import com.xlteam.socialcaption.model.CommonCaption;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -63,6 +66,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static com.xlteam.socialcaption.external.utility.utils.Constant.FILE_PROVIDER_PATH;
 import static com.xlteam.socialcaption.external.utility.utils.Constant.SAVE_DATE_TIME_FORMAT;
 
 public class EditCaptionActivity extends AppCompatActivity implements DialogAddTextBuilder.SavedCallback,
@@ -240,11 +244,19 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         return drawable.getBitmap();
     }
 
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "temp", null);
-        return Uri.parse(path);
+    public Uri getImageUri(Context context, Bitmap bitmap) {
+        try {
+            File cachePath = new File(context.getCacheDir(), "images");
+            cachePath.mkdirs();
+            FileOutputStream stream = new FileOutputStream(cachePath + "/image.png"); // overwrites this image every time
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            stream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        File imagePath = new File(context.getCacheDir(), "images");
+        File newFile = new File(imagePath, "image.png");
+        return FileProvider.getUriForFile(context, FILE_PROVIDER_PATH, newFile);
     }
 
     @Override
