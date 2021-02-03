@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -70,7 +71,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     private TextView tvDone;
     private CommonCaption mCommonCaption;
     private ImageView mImgBackground;
-    private LinearLayout layoutMenu;
+    private ConstraintLayout layoutMenu;
 
     // set default for tool
     private int mTextSizeDefault; // default = 1    [0 -> 4]
@@ -189,10 +190,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
     private boolean checkChangeBackground(ImageView imageView) {
         return isPickedPicture || imageView.getRotation() % 360 != 0 || isCropped || (flipCurrent == 180);
-    }
-
-    private void bindUserCaptions(List result) {
-        Log.e(this, result.size() + "");
     }
 
     public void onAddTextClicked(View view) {

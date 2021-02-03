@@ -70,24 +70,27 @@
         </RelativeLayout>
     </RelativeLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_menu"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="51dp"
         android:background="#121212"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:gravity="center">
 
         <LinearLayout
+            android:id="@+id/layout_btn_add_text"
             android:layout_width="60dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/bg_ripple_click_view_rectangle"
             android:gravity="center"
             android:onClick="onAddTextClicked"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            ads:layout_constraintEnd_toStartOf="@id/layout_btn_add_image"
+            ads:layout_constraintHorizontal_chainStyle="spread"
+            ads:layout_constraintStart_toStartOf="@id/layout_menu">
 
             <ImageView
                 android:layout_width="30dp"
@@ -105,13 +108,16 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/layout_btn_add_image"
             android:layout_width="60dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/bg_ripple_click_view_rectangle"
             android:gravity="center"
             android:onClick="onAddImageClicked"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            ads:layout_constraintEnd_toStartOf="@id/layout_btn_rotate"
+            ads:layout_constraintStart_toEndOf="@id/layout_btn_add_text">
 
             <ImageView
                 android:layout_width="30dp"
@@ -129,13 +135,16 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/layout_btn_rotate"
             android:layout_width="60dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/bg_ripple_click_view_rectangle"
             android:gravity="center"
             android:onClick="onRotateClicked"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            ads:layout_constraintEnd_toStartOf="@id/layout_btn_crop"
+            ads:layout_constraintStart_toEndOf="@id/layout_btn_add_image">
 
             <ImageView
                 android:layout_width="30dp"
@@ -153,13 +162,16 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/layout_btn_crop"
             android:layout_width="60dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/bg_ripple_click_view_rectangle"
             android:gravity="center"
             android:onClick="onCropClicked"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            ads:layout_constraintEnd_toStartOf="@id/layout_btn_flip"
+            ads:layout_constraintStart_toEndOf="@id/layout_btn_rotate">
 
             <ImageView
                 android:layout_width="30dp"
@@ -177,13 +189,16 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/layout_btn_flip"
             android:layout_width="60dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/bg_ripple_click_view_rectangle"
             android:gravity="center"
             android:onClick="onFlipClicked"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            ads:layout_constraintEnd_toEndOf="@id/layout_menu"
+            ads:layout_constraintStart_toEndOf="@id/layout_btn_crop">
 
             <ImageView
                 android:layout_width="30dp"
@@ -199,7 +214,7 @@
                 android:textColor="@color/white"
                 android:textSize="10dp" />
         </LinearLayout>
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"
