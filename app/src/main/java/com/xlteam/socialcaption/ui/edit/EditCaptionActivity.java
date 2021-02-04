@@ -444,14 +444,12 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     public void onStartViewChangeListener() {
         layoutTop.setVisibility(View.INVISIBLE);
         layoutMenu.setVisibility(View.INVISIBLE);
-        rlTrash.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onStopViewChangeListener() {
         layoutTop.setVisibility(View.VISIBLE);
         layoutMenu.setVisibility(View.VISIBLE);
-        rlTrash.setVisibility(View.GONE);
     }
 
     @Override

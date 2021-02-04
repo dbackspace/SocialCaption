@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.xlteam.socialcaption.external.utility.logger.Log;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
 
 import androidx.annotation.Nullable;
@@ -146,23 +147,25 @@ public class MultiTouchListener implements OnTouchListener {
                     if (!scaleGestureDetector.isInProgress()) {
                         adjustTranslation(view, currX - prevX, currY - prevY);
                     }
-                }
-                if (!mIsInViewBounds) {
-                    if (deleteView != null && isViewInBounds(deleteView, x, y, DIFF_IN_BOUND_AREA)) {
-                        mIsInViewBounds = true;
-                        Utility.vibratorNotify(mContext, 50);
-                        deleteView.setScaleX(1.5f);
-                        deleteView.setScaleY(1.5f);
+                    deleteView.setVisibility(View.VISIBLE);
+                    boolean checkViewInBound = isViewInBounds(deleteView, x, y, DIFF_IN_BOUND_AREA);
+                    if (!mIsInViewBounds) {
+                        if (deleteView != null && checkViewInBound) {
+                            mIsInViewBounds = true;
+                            Utility.vibratorNotify(mContext, 50);
+                            deleteView.setScaleX(1.5f);
+                            deleteView.setScaleY(1.5f);
+                        } else {
+                            mIsInViewBounds = false;
+                            deleteView.setScaleX(1f);
+                            deleteView.setScaleY(1f);
+                        }
                     } else {
-                        mIsInViewBounds = false;
-                        deleteView.setScaleX(1f);
-                        deleteView.setScaleY(1f);
-                    }
-                } else {
-                    if (deleteView != null && !isViewInBounds(deleteView, x, y, DIFF_IN_BOUND_AREA)) {
-                        mIsInViewBounds = false;
-                        deleteView.setScaleX(1f);
-                        deleteView.setScaleY(1f);
+                        if (deleteView != null && !checkViewInBound) {
+                            mIsInViewBounds = false;
+                            deleteView.setScaleX(1f);
+                            deleteView.setScaleY(1f);
+                        }
                     }
                 }
                 break;
@@ -180,6 +183,7 @@ public class MultiTouchListener implements OnTouchListener {
                 mIsInViewBounds = false;
                 deleteView.setScaleX(1f);
                 deleteView.setScaleY(1f);
+                deleteView.setVisibility(View.GONE);
                 firePhotoEditorSDKListener(view, false);
                 break;
             case MotionEvent.ACTION_POINTER_UP:
@@ -234,6 +238,8 @@ public class MultiTouchListener implements OnTouchListener {
         view.getDrawingRect(outRect);
         view.getLocationOnScreen(location);
         outRect.offset(location[0], location[1]);
+        Log.d(this, "view: x = " + location[0] + ", y = " + location[1]);
+        Log.d(this, "so sánh: x = " + x + ", y = " + y);
         return checkInAreaBounds(outRect, x, y, Utility.getDp(mContext, diff));
     }
 

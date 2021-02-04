@@ -6,6 +6,8 @@ import androidx.annotation.Nullable;
 import timber.log.Timber;
 
 public class MyCustomLogDebugTree extends Timber.DebugTree {
+    private static final String TAG = "SocialCaption";
+
     @Override
     protected @Nullable
     String createStackElementTag(@NotNull StackTraceElement element) {
@@ -14,13 +16,14 @@ public class MyCustomLogDebugTree extends Timber.DebugTree {
 
     private String makeClickableLineNumber(@NotNull StackTraceElement element) {
 
-        StringBuilder stringBuilder = new StringBuilder(element.getMethodName())
-                .append("SocialCaption ")
-                .append("(")
+        StringBuilder stringBuilder = new StringBuilder(TAG)
+                .append(": (")
                 .append(element.getFileName())
                 .append(":")
                 .append(element.getLineNumber())
-                .append(")  ");
+                .append(") ")
+                .append(" ")
+                .append(element.getMethodName());
         return stringBuilder.toString();
     }
 }
