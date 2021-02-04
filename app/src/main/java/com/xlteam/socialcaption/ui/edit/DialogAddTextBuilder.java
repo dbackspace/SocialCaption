@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.datasource.ColorDataSource;
 import com.xlteam.socialcaption.external.datasource.FontDataSource;
+import com.xlteam.socialcaption.external.utility.customview.AutoFitEditText;
 import com.xlteam.socialcaption.external.utility.utils.Constant;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
 import com.xlteam.socialcaption.model.Font;
@@ -32,7 +33,7 @@ import java.util.Objects;
 public class DialogAddTextBuilder {
     private Dialog mDialog;
     private ImageView imgGravity, imgBack, imgDone, imgFont;
-    private EditText edtText;
+    private AutoFitEditText edtText;
     private TextView tvBg;
     private RecyclerView rvFont, rvColor;
     private LinearLayout lnColor, lnBg;
