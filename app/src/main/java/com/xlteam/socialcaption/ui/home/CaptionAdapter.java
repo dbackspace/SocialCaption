@@ -12,19 +12,18 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.datasource.GradientDataSource;
+import com.xlteam.socialcaption.external.utility.customview.SpannableTextView;
 import com.xlteam.socialcaption.external.utility.utils.Constant;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
-import com.xlteam.socialcaption.external.utility.customview.SpannableTextView;
 import com.xlteam.socialcaption.model.CommonCaption;
 import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHolder> {
     private static final String TAG = "CaptionAdapter";
@@ -118,13 +117,6 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
     @Override
     public int getItemCount() {
         return mCaptions.size();
-    }
-
-    public void setCurrentListCaptions(List<CommonCaption> mCaptions) {
-        if (mCaptions != null && !mCaptions.isEmpty())
-            this.mCaptions = mCaptions;
-        else this.mCaptions = new ArrayList<>();
-        notifyDataSetChanged();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

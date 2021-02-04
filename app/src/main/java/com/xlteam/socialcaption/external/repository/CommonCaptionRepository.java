@@ -5,11 +5,9 @@ import android.content.Context;
 import android.os.Build;
 import android.text.TextUtils;
 
-import androidx.sqlite.db.SimpleSQLiteQuery;
-
 import com.xlteam.socialcaption.external.datasource.CaptionDataSource;
-import com.xlteam.socialcaption.external.utility.utils.SearchQueryUtils;
 import com.xlteam.socialcaption.external.utility.thread.ThreadExecutor;
+import com.xlteam.socialcaption.external.utility.utils.SearchQueryUtils;
 import com.xlteam.socialcaption.model.CommonCaption;
 
 import java.text.Collator;
@@ -18,6 +16,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import androidx.sqlite.db.SimpleSQLiteQuery;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;

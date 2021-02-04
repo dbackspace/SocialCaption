@@ -6,15 +6,13 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
-
-import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
+
+import androidx.annotation.Nullable;
 
 public class MultiTouchListener implements OnTouchListener {
 

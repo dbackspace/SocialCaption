@@ -1,15 +1,15 @@
 package com.xlteam.socialcaption.external.dao;
 
+import com.xlteam.socialcaption.model.CommonCaption;
+
+import java.util.List;
+
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.RawQuery;
 import androidx.room.Update;
 import androidx.sqlite.db.SimpleSQLiteQuery;
-
-import com.xlteam.socialcaption.model.CommonCaption;
-
-import java.util.List;
 
 @Dao
 public abstract class CommonCaptionDAO {

@@ -10,6 +10,20 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.material.navigation.NavigationView;
+import com.xlteam.socialcaption.BuildConfig;
+import com.xlteam.socialcaption.R;
+import com.xlteam.socialcaption.external.utility.animation.ViManager;
+import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
+import com.xlteam.socialcaption.external.utility.utils.Constant;
+import com.xlteam.socialcaption.external.utility.utils.Utility;
+import com.xlteam.socialcaption.ui.gallery.GalleryFragment;
+import com.xlteam.socialcaption.ui.home.HomeFragment;
+import com.xlteam.socialcaption.ui.saved.SavedFragment;
+
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -19,20 +33,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.material.navigation.NavigationView;
-import com.xlteam.socialcaption.BuildConfig;
-import com.xlteam.socialcaption.R;
-import com.xlteam.socialcaption.external.utility.utils.Constant;
-import com.xlteam.socialcaption.external.utility.utils.Utility;
-import com.xlteam.socialcaption.external.utility.animation.ViManager;
-import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
-import com.xlteam.socialcaption.ui.gallery.GalleryFragment;
-import com.xlteam.socialcaption.ui.home.HomeFragment;
-import com.xlteam.socialcaption.ui.saved.SavedFragment;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -9,13 +9,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.PagerSnapHelper;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.logger.Log;
 import com.xlteam.socialcaption.external.utility.utils.Constant;
@@ -24,6 +17,13 @@ import com.xlteam.socialcaption.ui.commondialog.DialogSaveChangesBuilder;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class DialogPreviewGallery extends DialogFragment implements ItemPreviewGalleryAdapter.GallerySelectCallback {
     private static final String ARG_LIST_PATH = "ARG_LIST_PATH";
@@ -68,11 +68,13 @@ public class DialogPreviewGallery extends DialogFragment implements ItemPreviewG
         mListener = getDialogDismissListenerCallback();
         mCurrentPosition = getPickedPosition();
 
-        saveDialog = new DialogSaveChangesBuilder(getContext(),
-                v -> {
-                },
-                v -> dismiss(),
-                v -> deleteImage()).build();
+        saveDialog = DialogSaveChangesBuilder.create(getContext())
+                .setTitleMessage(getString(R.string.save_or_cancel))
+                .setCancelable(false)
+                .setFirstButton(v -> {}, getString(R.string.close))
+                .setSecondButton(v -> dismiss(), getString(R.string.huy_bo))
+                .setThirdButton(v -> deleteImage(), getString(R.string.luu))
+                .build();
     }
 
     @NonNull

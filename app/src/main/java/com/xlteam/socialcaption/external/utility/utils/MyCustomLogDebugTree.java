@@ -1,9 +1,8 @@
 package com.xlteam.socialcaption.external.utility.utils;
 
-import androidx.annotation.Nullable;
-
 import org.jetbrains.annotations.NotNull;
 
+import androidx.annotation.Nullable;
 import timber.log.Timber;
 
 public class MyCustomLogDebugTree extends Timber.DebugTree {
