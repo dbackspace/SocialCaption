@@ -22,7 +22,6 @@ public class MyCustomLogDebugTree extends Timber.DebugTree {
                 .append(":")
                 .append(element.getLineNumber())
                 .append(") ")
-                .append(" ")
                 .append(element.getMethodName());
         return stringBuilder.toString();
     }
