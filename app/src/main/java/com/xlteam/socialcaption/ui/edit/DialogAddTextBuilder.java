@@ -195,13 +195,13 @@ public class DialogAddTextBuilder {
     }
 
     public void showKeyboard() {
-        if (!Utility.isKeyboardOpened(mContext)) {
-            edtText.clearFocus();
-            edtText.requestFocus();
-            edtText.setSelectAllOnFocus(false);
-            InputMethodManager mInputMethodManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
-            mInputMethodManager.showSoftInput(edtText, 0);
-        }
+//        if (!Utility.isKeyboardOpened(mContext)) {
+//            edtText.clearFocus();
+//            edtText.requestFocus();
+//            edtText.setSelectAllOnFocus(false);
+//            InputMethodManager mInputMethodManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+//            mInputMethodManager.showSoftInput(edtText, 0);
+//        }
     }
 
 /*    public void hideKeyboard() {

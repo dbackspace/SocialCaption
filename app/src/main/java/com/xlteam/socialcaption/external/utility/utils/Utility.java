@@ -159,15 +159,15 @@ public class Utility {
                 .start();
     }
 
-    public static boolean isKeyboardOpened(Context context) {
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        return imm.semIsInputMethodShown();
-    }
-
-    public static boolean isMobileKeyboardAvailable(Context mContext) {
-        Configuration config = mContext.getResources().getConfiguration();
-        return config.semMobileKeyboardCovered == Configuration.SEM_MOBILE_KEYBOARD_COVERED_YES;
-    }
+//    public static boolean isKeyboardOpened(Context context) {
+//        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+//        return imm.semIsInputMethodShown();
+//    }
+//
+//    public static boolean isMobileKeyboardAvailable(Context mContext) {
+//        Configuration config = mContext.getResources().getConfiguration();
+//        return config.semMobileKeyboardCovered == Configuration.SEM_MOBILE_KEYBOARD_COVERED_YES;
+//    }
 
     private static StringBuilder preGetAppInfo(Context context, PackageInfo pInfo) {
         StringBuilder info = new StringBuilder();
