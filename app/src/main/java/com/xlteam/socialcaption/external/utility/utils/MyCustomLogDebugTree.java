@@ -15,14 +15,14 @@ public class MyCustomLogDebugTree extends Timber.DebugTree {
     }
 
     private String makeClickableLineNumber(@NotNull StackTraceElement element) {
-
         StringBuilder stringBuilder = new StringBuilder(TAG)
                 .append(": (")
                 .append(element.getFileName())
                 .append(":")
                 .append(element.getLineNumber())
-                .append(") ")
-                .append(element.getMethodName());
+                .append(") [")
+                .append(element.getMethodName())
+                .append("]");
         return stringBuilder.toString();
     }
 }
