@@ -3,14 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#BD000000"
     android:paddingBottom="5dp">
 
     <ImageView
         android:id="@+id/imgBack"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_margin="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
         android:background="@drawable/bg_ripple_click_view_circle"
         android:padding="5dp"
         android:src="@drawable/ic_close" />
@@ -30,7 +34,9 @@
         android:id="@+id/edtText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_above="@id/rvColor"
+        android:layout_marginBottom="80dp"
+        android:layout_centerHorizontal="true"
         android:background="@null"
         android:backgroundTint="@color/color_25"
         android:fontFamily="sans-serif-medium"

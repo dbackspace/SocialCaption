@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -14,11 +15,16 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Vibrator;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.logger.Log;
@@ -26,9 +32,12 @@ import com.xlteam.socialcaption.external.utility.logger.Log;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Collection;
 
 import de.cketti.mailto.EmailIntentBuilder;
+
+import static com.xlteam.socialcaption.external.utility.utils.Constant.FILE_PROVIDER_PATH;
 
 public class Utility {
     private static final String TAG = "Utility";
@@ -53,6 +62,48 @@ public class Utility {
     public static void vibrateAnimation(Context context, View view) {
         Animation vibrate = AnimationUtils.loadAnimation(context, R.anim.vibrate_shake);
         view.startAnimation(vibrate);
+    }
+
+    public static void vibratorNotify(Context context, int duration) {
+        Vibrator vibe = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        vibe.vibrate(duration);
+    }
+
+    public static int getDp(Context context, int value) {
+        return (int) (context.getResources().getDisplayMetrics().density * value + 0.5f);
+    }
+
+    public static Uri getImageUri(Context context, Bitmap bitmap) {
+        try {
+            File cachePath = new File(context.getCacheDir(), "images");
+            cachePath.mkdirs();
+            FileOutputStream stream = new FileOutputStream(cachePath + "/image.png"); // overwrites this image every time
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            stream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        File imagePath = new File(context.getCacheDir(), "images");
+        File newFile = new File(imagePath, "image.png");
+        return FileProvider.getUriForFile(context, FILE_PROVIDER_PATH, newFile);
+    }
+
+    public static void shareImage(Context context, Uri imageUri) {
+        if (imageUri == null) {
+//            showSnackbar(getString(R.string.msg_save_image_to_share));
+            return;
+        }
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_STREAM, buildFileProviderUri(context, imageUri));
+        context.startActivity(Intent.createChooser(intent, "Share image"));
+    }
+
+    private static Uri buildFileProviderUri(Context context, Uri uri) {
+        return FileProvider.getUriForFile(context,
+                FILE_PROVIDER_PATH,
+                new File(uri.getPath()));
     }
 
     public static void setColorForTextView(TextView view, String color) {
@@ -108,7 +159,7 @@ public class Utility {
                 .start();
     }
 
-/*    public static boolean isKeyboardOpened(Context context) {
+    public static boolean isKeyboardOpened(Context context) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         return imm.semIsInputMethodShown();
     }
@@ -116,7 +167,7 @@ public class Utility {
     public static boolean isMobileKeyboardAvailable(Context mContext) {
         Configuration config = mContext.getResources().getConfiguration();
         return config.semMobileKeyboardCovered == Configuration.SEM_MOBILE_KEYBOARD_COVERED_YES;
-    }*/
+    }
 
     private static StringBuilder preGetAppInfo(Context context, PackageInfo pInfo) {
         StringBuilder info = new StringBuilder();

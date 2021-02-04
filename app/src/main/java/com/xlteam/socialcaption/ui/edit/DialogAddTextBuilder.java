@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -46,7 +47,7 @@ public class DialogAddTextBuilder {
     }
 
 
-    public DialogAddTextBuilder(SavedCallback savedCallback) {
+    public DialogAddTextBuilder(SavedCallback savedCallback, ItemText itemText) {
         mContext = (Context) savedCallback;
         mDialog = new Dialog(mContext, R.style.Theme_SocialCaption);
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -99,34 +100,31 @@ public class DialogAddTextBuilder {
             rvColor.setVisibility(View.VISIBLE);
             rvFont.setVisibility(View.GONE);
         });
-        lnBg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mNumberBg == Constant.BACKGROUND_SPAN_TRANSPARENT) {
-                    //blur
-                    mNumberBg = Constant.BACKGROUND_SPAN_BLUR;
-                    Utility.setColorForView(tvBg, "#80FFFFFF");
-                    Utility.setColorForTextView(tvBg, "#FFFFFFFF");
-                    Utility.setColorForTextView(edtText, "#FFFFFFFF");
-                    String colorString = ColorDataSource.getInstance().getAllDataMini().get(mNumberColor);
-                    span.setColor("#80" + colorString.substring(3));
-                } else if (mNumberBg == Constant.BACKGROUND_SPAN_BLUR) {
-                    //color solid
-                    mNumberBg = Constant.BACKGROUND_SPAN_FULL_SOLID;
-                    Utility.setColorForView(tvBg, "#FFFFFFFF");
-                    Utility.setColorForTextView(tvBg, "#FF000000");
-                    Utility.setColorForTextView(edtText, "#FFFFFFFF");
-                    String colorString = ColorDataSource.getInstance().getAllDataMini().get(mNumberColor);
-                    span.setColor(colorString);
-                } else {
-                    //transparent
-                    mNumberBg = Constant.BACKGROUND_SPAN_TRANSPARENT;
-                    Utility.setColorForView(tvBg, "#00FFFFFF");
-                    Utility.setColorForTextView(tvBg, "#FFFFFFFF");
-                    String colorString = ColorDataSource.getInstance().getAllDataMini().get(mNumberColor);
-                    Utility.setColorForTextView(edtText, colorString);
-                    span.setColor("#00FFFFFF");
-                }
+        lnBg.setOnClickListener(v -> {
+            if (mNumberBg == Constant.BACKGROUND_SPAN_TRANSPARENT) {
+                //blur
+                mNumberBg = Constant.BACKGROUND_SPAN_BLUR;
+                Utility.setColorForView(tvBg, "#80FFFFFF");
+                Utility.setColorForTextView(tvBg, "#FFFFFFFF");
+                Utility.setColorForTextView(edtText, "#FFFFFFFF");
+                String colorString = ColorDataSource.getInstance().getAllDataMini().get(mNumberColor);
+                span.setColor("#80" + colorString.substring(3));
+            } else if (mNumberBg == Constant.BACKGROUND_SPAN_BLUR) {
+                //color solid
+                mNumberBg = Constant.BACKGROUND_SPAN_FULL_SOLID;
+                Utility.setColorForView(tvBg, "#FFFFFFFF");
+                Utility.setColorForTextView(tvBg, "#FF000000");
+                Utility.setColorForTextView(edtText, "#FFFFFFFF");
+                String colorString = ColorDataSource.getInstance().getAllDataMini().get(mNumberColor);
+                span.setColor(colorString);
+            } else {
+                //transparent
+                mNumberBg = Constant.BACKGROUND_SPAN_TRANSPARENT;
+                Utility.setColorForView(tvBg, "#00FFFFFF");
+                Utility.setColorForTextView(tvBg, "#FFFFFFFF");
+                String colorString = ColorDataSource.getInstance().getAllDataMini().get(mNumberColor);
+                Utility.setColorForTextView(edtText, colorString);
+                span.setColor("#00FFFFFF");
             }
         });
 
@@ -152,10 +150,17 @@ public class DialogAddTextBuilder {
             }
         }));
 
-        int padding = dp(8);
-        int radius = dp(5);
+        // setup for item text info if not null
+//        if (itemText != null) {
+//            edtText.setText(itemText.getText());
+//            edtText.setTextColor(itemText.getColor());
+//            edtText.setTextSize(itemText.getSize());
+//            edtText.setTextAlignment(itemText.getAlignment());
+//        }
 
-        span = new BackgroundColorSpan("#00FFFFFF", (float) padding, (float) radius);
+        int padding = Utility.getDp(mContext, 8);
+        int radius = Utility.getDp(mContext, 5);
+        span = new BackgroundColorSpan("#FFFFFF", (float) padding, (float) radius);
 
         edtText.setShadowLayer(padding, 0f, 0f, 0);
         edtText.setPadding(padding, padding, padding, padding);
@@ -188,18 +193,14 @@ public class DialogAddTextBuilder {
         return mDialog;
     }
 
-    private int dp(int value) {
-        return (int) (mContext.getResources().getDisplayMetrics().density * value + 0.5f);
-    }
-
     public void showKeyboard() {
-/*        if (!Utility.isKeyboardOpened(mContext)) {
+        if (!Utility.isKeyboardOpened(mContext)) {
             edtText.clearFocus();
             edtText.requestFocus();
             edtText.setSelectAllOnFocus(false);
             InputMethodManager mInputMethodManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
             mInputMethodManager.showSoftInput(edtText, 0);
-        }*/
+        }
     }
 
 /*    public void hideKeyboard() {

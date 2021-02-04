@@ -11,7 +11,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -28,7 +27,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.FileProvider;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -54,11 +52,8 @@ import com.xlteam.socialcaption.external.utility.utils.PrefUtils;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
 import com.xlteam.socialcaption.model.CommonCaption;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -66,7 +61,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static com.xlteam.socialcaption.external.utility.utils.Constant.FILE_PROVIDER_PATH;
 import static com.xlteam.socialcaption.external.utility.utils.Constant.SAVE_DATE_TIME_FORMAT;
 
 public class EditCaptionActivity extends AppCompatActivity implements DialogAddTextBuilder.SavedCallback,
@@ -77,6 +71,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     private CommonCaption mCommonCaption;
     private ImageView mImgBackground;
     private ConstraintLayout layoutMenu;
+    private RelativeLayout layoutTop;
 
     // set default for tool
     private int mTextSizeDefault; // default = 1    [0 -> 4]
@@ -98,8 +93,8 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     private RelativeLayout relativeBackground;
 
     private List<View> addedViews;
-    private RelativeLayout layoutDelete;
-    private TextView tvDelete;
+    private RelativeLayout rlTrash;
+    private ImageView imgTrash;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -138,9 +133,10 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         tvDone = findViewById(R.id.tv_edit_save);
         mImgBackground = findViewById(R.id.img_edit_background);
         layoutMenu = findViewById(R.id.layout_menu);
+        layoutTop = findViewById(R.id.layout_top);
         relativeBackground = findViewById(R.id.relative_background_save_img);
-        layoutDelete = findViewById(R.id.delete_rl);
-        tvDelete = findViewById(R.id.delete_tv);
+        rlTrash = findViewById(R.id.rlTrash);
+        imgTrash = findViewById(R.id.imgTrash);
     }
 
     @Override
@@ -203,7 +199,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         imgBack.setVisibility(View.INVISIBLE);
         tvDone.setVisibility(View.INVISIBLE);
         layoutMenu.setVisibility(View.INVISIBLE);
-        Dialog addTextDialog = new DialogAddTextBuilder(this).build();
+        Dialog addTextDialog = new DialogAddTextBuilder(this, null).build();
         addTextDialog.setOnCancelListener(dialog -> {
             imgBack.setVisibility(View.VISIBLE);
             tvDone.setVisibility(View.VISIBLE);
@@ -227,7 +223,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
     public void onCropClicked(View view) {
         // start cropping activity for pre-acquired image saved on the device
-        CropImage.activity(getImageUri(getApplicationContext(), getBitmapFromImageView(mImgBackground)))
+        CropImage.activity(Utility.getImageUri(getApplicationContext(), getBitmapFromImageView(mImgBackground)))
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .start(this);
     }
@@ -242,21 +238,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         imageView.invalidate();
         BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
         return drawable.getBitmap();
-    }
-
-    public Uri getImageUri(Context context, Bitmap bitmap) {
-        try {
-            File cachePath = new File(context.getCacheDir(), "images");
-            cachePath.mkdirs();
-            FileOutputStream stream = new FileOutputStream(cachePath + "/image.png"); // overwrites this image every time
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-            stream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        File imagePath = new File(context.getCacheDir(), "images");
-        File newFile = new File(imagePath, "image.png");
-        return FileProvider.getUriForFile(context, FILE_PROVIDER_PATH, newFile);
     }
 
     @Override
@@ -331,7 +312,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     public void onSaveClicked(EditText editText, BackgroundColorSpan span) {
         final View textAddedView = getTextStickerLayout();
         final TextView textInputTv = textAddedView.findViewById(R.id.text_tv);
-//        final ImageView imgClose = textAddedView.findViewById(R.id.btn_delete);
         final FrameLayout frameBorder = textAddedView.findViewById(R.id.text_border);
 
         String text = editText.getText().toString().trim();
@@ -341,7 +321,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
                 getResources().getDimension(R.dimen.text_added_default_size));
 
         MultiTouchListener multiTouchListener = new MultiTouchListener(
-                layoutDelete,
+                rlTrash,
                 relativeBackground,
                 mImgBackground,
                 this, mContext);
@@ -354,9 +334,10 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
                 if (isBackgroundVisible && !isDownAlready) {
                     String textInput = textInputTv.getText().toString();
                     int currentTextColor = textInputTv.getCurrentTextColor();
-
-                    // TODO: thêm showTextDialog khi ấn vào text
-//                    showTextEditDialog(textAddedView, textInput, currentTextColor);
+                    float textSize = textInputTv.getTextSize();
+                    int textAlignment = textInputTv.getTextAlignment();
+                    ItemText itemText = new ItemText(textInput, currentTextColor, textSize, textAlignment);
+                    editTextByClickTextView(textAddedView, itemText);
                 }
             }
 
@@ -364,8 +345,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
             public void onDown() {
                 boolean isBackgroundVisible = frameBorder.getTag() != null && (boolean) frameBorder.getTag();
                 if (!isBackgroundVisible) {
-                    frameBorder.setBackgroundResource(R.drawable.background_border_text_added);
-                    layoutDelete.setVisibility(View.VISIBLE);
+                    rlTrash.setVisibility(View.VISIBLE);
                     frameBorder.setTag(true);
                     updateViewsBordersVisibilityExcept(textAddedView);
                     isDownAlready = true;
@@ -381,6 +361,19 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
         textAddedView.setOnTouchListener(multiTouchListener);
         addViewToParent(textAddedView);
+    }
+
+    public void editTextByClickTextView(View view, ItemText itemText) {
+        imgBack.setVisibility(View.INVISIBLE);
+        tvDone.setVisibility(View.INVISIBLE);
+        layoutMenu.setVisibility(View.INVISIBLE);
+        Dialog addTextDialog = new DialogAddTextBuilder(this, itemText).build();
+        addTextDialog.setOnCancelListener(dialog -> {
+            imgBack.setVisibility(View.VISIBLE);
+            tvDone.setVisibility(View.VISIBLE);
+            layoutMenu.setVisibility(View.VISIBLE);
+        });
+        addTextDialog.show();
     }
 
     private void editText(View view, String inputText, int colorCode) {
@@ -408,7 +401,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         // disable all border and delete button in all text added
         for (View view : addedViews) {
             FrameLayout border = view.findViewById(R.id.text_border);
-            border.setBackgroundResource(0);
             border.setTag(false);
         }
     }
@@ -433,9 +425,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         for (View view : addedViews) {
             if (view != keepView) {
                 FrameLayout border = view.findViewById(R.id.text_border);
-                border.setBackgroundResource(0);
-//                ImageView closeBtn = view.findViewById(R.id.btn_delete);
-//                closeBtn.setVisibility(View.GONE);
                 border.setTag(false);
             }
         }
@@ -453,12 +442,16 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
     @Override
     public void onStartViewChangeListener() {
-        layoutDelete.setVisibility(View.VISIBLE);
+        layoutTop.setVisibility(View.INVISIBLE);
+        layoutMenu.setVisibility(View.INVISIBLE);
+        rlTrash.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onStopViewChangeListener() {
-        layoutDelete.setVisibility(View.GONE);
+        layoutTop.setVisibility(View.VISIBLE);
+        layoutMenu.setVisibility(View.VISIBLE);
+        rlTrash.setVisibility(View.GONE);
     }
 
     @Override
