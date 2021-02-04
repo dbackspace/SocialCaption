@@ -9,6 +9,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,14 +20,13 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.xlteam.socialcaption.R;
-import com.xlteam.socialcaption.external.utility.utils.PrefUtils;
-import com.xlteam.socialcaption.external.utility.utils.Utility;
 import com.xlteam.socialcaption.external.utility.logger.Log;
 import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
+import com.xlteam.socialcaption.external.utility.utils.PrefUtils;
+import com.xlteam.socialcaption.external.utility.utils.Utility;
 import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class GalleryFragment extends Fragment
@@ -39,6 +40,8 @@ public class GalleryFragment extends Fragment
     private TextView mEmptyImage;
     private GalleryAdapter mGalleryAdapter;
     private List<String> mGalleryPaths;
+    private LinearLayout mLinearCheckAll;
+    private CheckBox mCheckBoxAll;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -53,7 +56,7 @@ public class GalleryFragment extends Fragment
 
         mGalleryPaths = PrefUtils.getListItemGallery(mContext);
 //        _staGridLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
-        mGalleryAdapter = new GalleryAdapter(mGalleryPaths, this, "GALLERY_FRAGMENT");
+        mGalleryAdapter = new GalleryAdapter(mGalleryPaths, this);
     }
 
     @Override
@@ -68,6 +71,12 @@ public class GalleryFragment extends Fragment
         final View root = AsyncLayoutInflateManager.getInstance(mContext).inflateView(inflater, container, R.layout.fragment_gallery);
 
         mEmptyImage = root.findViewById(R.id.tv_empty_image);
+        mLinearCheckAll = root.findViewById(R.id.linear_check_all);
+        mCheckBoxAll = root.findViewById(R.id.checkbox_all);
+        mCheckBoxAll.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            mGalleryAdapter.onCheckBoxAllChecked(isChecked);
+        });
+
         // init recycler gallery by findViewById
         rvGallery = root.findViewById(R.id.rv_gallery_caption);
         gridLayoutManager = new GridLayoutManager(mContext, 3);
@@ -99,12 +108,18 @@ public class GalleryFragment extends Fragment
     }
 
     @Override
-    public void onItemGallerySelected(int position, String path) {
+    public void onItemGallerySelected(int position) {
         DialogPreviewGallery dialogPreview = DialogPreviewGallery.newInstance(
                 new ArrayList<>(mGalleryPaths),
                 position,
                 this);
         dialogPreview.show(getChildFragmentManager(), "DialogPreviewGallery");
+    }
+
+    @Override
+    public void onCheckBoxChecked(boolean isCheckBoxChecked) {
+        mLinearCheckAll.setVisibility(isCheckBoxChecked ? View.VISIBLE : View.GONE);
+        mCheckBoxAll.setVisibility(isCheckBoxChecked ? View.VISIBLE : View.GONE);
     }
 
     private void updateUI() {
@@ -129,4 +144,5 @@ public class GalleryFragment extends Fragment
             updateUI();
         }
     }
+
 }

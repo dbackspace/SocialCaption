@@ -25,7 +25,7 @@ import com.xlteam.socialcaption.ui.commondialog.DialogSaveChangesBuilder;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class DialogPreviewGallery extends DialogFragment implements ItemPreviewGallery.GallerySelectCallback {
+public class DialogPreviewGallery extends DialogFragment implements ItemPreviewGalleryAdapter.GallerySelectCallback {
     private static final String ARG_LIST_PATH = "ARG_LIST_PATH";
     private static final String ARG_CURRENT_POSITION = "ARG_CURRENT_POSITION";
     private static final String ARG_DIALOG_DISMISS_LISTENER = "ARG_DIALOG_DISMISS_LISTENER";
@@ -33,7 +33,7 @@ public class DialogPreviewGallery extends DialogFragment implements ItemPreviewG
     private RecyclerView mRecyclerPreviewGallery;
     private LinearLayoutManager mLinearLayoutManager;
     private RelativeLayout relativeTopBar;
-    private ItemPreviewGallery mItemPreviewGallery;
+    private ItemPreviewGalleryAdapter mItemPreviewGalleryAdapter;
     ArrayList<String> mGalleryPaths;
     boolean isImageClicked = false;
 
@@ -64,7 +64,7 @@ public class DialogPreviewGallery extends DialogFragment implements ItemPreviewG
         setStyle(DialogFragment.STYLE_NORMAL,
                 android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         ArrayList<String> mGalleryPaths = getGalleryPaths();
-        mItemPreviewGallery = new ItemPreviewGallery(mGalleryPaths, this);
+        mItemPreviewGalleryAdapter = new ItemPreviewGalleryAdapter(mGalleryPaths, this);
         mListener = getDialogDismissListenerCallback();
         mCurrentPosition = getPickedPosition();
 
@@ -91,7 +91,7 @@ public class DialogPreviewGallery extends DialogFragment implements ItemPreviewG
         mRecyclerPreviewGallery = view.findViewById(R.id.rv_preview_gallery);
         mLinearLayoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, true);
         mRecyclerPreviewGallery.setLayoutManager(mLinearLayoutManager);
-        mRecyclerPreviewGallery.setAdapter(mItemPreviewGallery);
+        mRecyclerPreviewGallery.setAdapter(mItemPreviewGalleryAdapter);
         mRecyclerPreviewGallery.scrollToPosition(mCurrentPosition);
         PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(mRecyclerPreviewGallery);
@@ -142,8 +142,8 @@ public class DialogPreviewGallery extends DialogFragment implements ItemPreviewG
         if (mCurrentPosition < mGalleryPaths.size()) {
             mGalleryPaths.remove(mCurrentPosition);
             PrefUtils.putStringArrayList(getContext(), Constant.PREF_GALLERY, Constant.GALLERY_PATH, mGalleryPaths);
-            mItemPreviewGallery.updateList(mGalleryPaths);
-            mItemPreviewGallery.notifyDataSetChanged();
+            mItemPreviewGalleryAdapter.updateList(mGalleryPaths);
+            mItemPreviewGalleryAdapter.notifyDataSetChanged();
             isDeleted = true;
         }
     }

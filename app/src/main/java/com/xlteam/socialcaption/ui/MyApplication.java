@@ -2,14 +2,18 @@ package com.xlteam.socialcaption.ui;
 
 import android.app.Application;
 
+import com.xlteam.socialcaption.BuildConfig;
 import com.xlteam.socialcaption.external.repository.CommonCaptionRepository;
 import com.xlteam.socialcaption.external.repository.ILoader;
 import com.xlteam.socialcaption.external.utility.logger.Log;
 import com.xlteam.socialcaption.external.utility.logger.LogcatLogWriter;
 import com.xlteam.socialcaption.external.utility.thread.ThreadExecutorWithPool;
+import com.xlteam.socialcaption.external.utility.utils.MyCustomLogDebugTree;
 import com.xlteam.socialcaption.model.CommonCaption;
 
 import java.util.List;
+
+import timber.log.Timber;
 
 
 public class MyApplication extends Application implements ILoader<CommonCaption> {
@@ -18,6 +22,9 @@ public class MyApplication extends Application implements ILoader<CommonCaption>
         super();
         ThreadExecutorWithPool.getInstance().execute(() -> insertDatabase());
         Log.init(new LogcatLogWriter());
+        if (Timber.treeCount() == 0) {
+            if(BuildConfig.DEBUG) Timber.plant(new MyCustomLogDebugTree());
+        }
     }
 
     private void insertDatabase() {
