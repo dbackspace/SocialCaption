@@ -22,7 +22,7 @@ public class AbsRepository<CaptionType> {
 
     protected void execute(int loaderTaskType, List<CaptionType> result) {
         if (result != null) {
-            ThreadExecutor.runOnMainThread(() -> mCallback.loadResult(loaderTaskType, result));
+            ThreadExecutor.runOnMainThread(() -> mCallback.loadResult(loaderTaskType, result), true);
             Log.d(TAG, "execute done: type = " + loaderTaskType);
         }
     }
