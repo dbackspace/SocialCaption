@@ -68,11 +68,13 @@ public class DialogPreviewGallery extends DialogFragment implements ItemPreviewG
         mListener = getDialogDismissListenerCallback();
         mCurrentPosition = getPickedPosition();
 
-        saveDialog = new DialogSaveChangesBuilder(getContext(),
-                v -> {
-                },
-                v -> dismiss(),
-                v -> deleteImage()).build();
+        saveDialog = DialogSaveChangesBuilder.create(getContext())
+                .setTitleMessage(getString(R.string.save_or_cancel))
+                .setCancelable(false)
+                .setFirstButton(v -> {}, getString(R.string.close))
+                .setSecondButton(v -> dismiss(), getString(R.string.huy_bo))
+                .setThirdButton(v -> deleteImage(), getString(R.string.luu))
+                .build();
     }
 
     @NonNull
