@@ -2,9 +2,9 @@ package com.xlteam.socialcaption.external.utility.animation;
 
 import android.content.Context;
 
-import androidx.fragment.app.FragmentTransaction;
-
 import com.xlteam.socialcaption.R;
+
+import androidx.fragment.app.FragmentTransaction;
 
 public class ViManager {
     private static class ViManagerHolder {

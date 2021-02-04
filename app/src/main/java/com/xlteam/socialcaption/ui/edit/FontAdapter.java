@@ -7,14 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.datasource.FontDataSource;
 import com.xlteam.socialcaption.model.Font;
 
 import java.util.ArrayList;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class FontAdapter extends RecyclerView.Adapter<FontAdapter.ViewHolder> {
     private Context mContext;

@@ -9,12 +9,12 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.SparseArray;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-
 import com.xlteam.socialcaption.external.utility.logger.Log;
 
 import java.io.File;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import static com.xlteam.socialcaption.external.utility.utils.Constant.CATEGORIES;
 import static com.xlteam.socialcaption.external.utility.utils.Constant.COLORS;

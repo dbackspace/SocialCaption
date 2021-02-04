@@ -8,9 +8,9 @@ import com.xlteam.socialcaption.model.CommonCaption;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.xlteam.socialcaption.external.utility.utils.Constant.TYPE_BAN_BE;
 import static com.xlteam.socialcaption.external.utility.utils.Constant.TYPE_CUOC_SONG;
 import static com.xlteam.socialcaption.external.utility.utils.Constant.TYPE_THA_THINH;
-import static com.xlteam.socialcaption.external.utility.utils.Constant.TYPE_BAN_BE;
 
 public class CaptionDataSource {
     private static final String TAG = "CaptionDataSource";

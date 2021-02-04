@@ -9,13 +9,13 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.AttributeSet;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatTextView;
-
 import com.xlteam.socialcaption.R;
 
 import java.util.Locale;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatTextView;
 
 public class SpannableTextView extends AppCompatTextView {
     public SpannableTextView(@NonNull Context context) {

@@ -13,12 +13,6 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.logger.Log;
 import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
@@ -28,6 +22,12 @@ import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class GalleryFragment extends Fragment
         implements GalleryAdapter.GallerySelectCallback,

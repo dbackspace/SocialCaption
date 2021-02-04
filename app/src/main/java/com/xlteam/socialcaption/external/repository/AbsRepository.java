@@ -3,10 +3,11 @@ package com.xlteam.socialcaption.external.repository;
 import android.content.Context;
 
 import com.xlteam.socialcaption.external.database.MyDatabase;
-import com.xlteam.socialcaption.external.utility.logger.Log;
 import com.xlteam.socialcaption.external.utility.thread.ThreadExecutor;
 
 import java.util.List;
+
+import timber.log.Timber;
 
 public class AbsRepository<CaptionType> {
     private static final String TAG = "AbsRepository";
@@ -23,7 +24,7 @@ public class AbsRepository<CaptionType> {
     protected void execute(int loaderTaskType, List<CaptionType> result) {
         if (result != null) {
             ThreadExecutor.runOnMainThread(() -> mCallback.loadResult(loaderTaskType, result), true);
-            Log.d(TAG, "execute done: type = " + loaderTaskType);
+            Timber.d("execute done: type = " + loaderTaskType);
         }
     }
 }

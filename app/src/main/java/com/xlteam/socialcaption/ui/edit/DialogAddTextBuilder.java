@@ -17,9 +17,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.datasource.ColorDataSource;
 import com.xlteam.socialcaption.external.datasource.FontDataSource;
@@ -29,6 +26,9 @@ import com.xlteam.socialcaption.external.utility.utils.Utility;
 import com.xlteam.socialcaption.model.Font;
 
 import java.util.Objects;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class DialogAddTextBuilder {
     private Dialog mDialog;
@@ -195,13 +195,13 @@ public class DialogAddTextBuilder {
     }
 
     public void showKeyboard() {
-        if (!Utility.isKeyboardOpened(mContext)) {
-            edtText.clearFocus();
-            edtText.requestFocus();
-            edtText.setSelectAllOnFocus(false);
-            InputMethodManager mInputMethodManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
-            mInputMethodManager.showSoftInput(edtText, 0);
-        }
+//        if (!Utility.isKeyboardOpened(mContext)) {
+//            edtText.clearFocus();
+//            edtText.requestFocus();
+//            edtText.setSelectAllOnFocus(false);
+//            InputMethodManager mInputMethodManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+//            mInputMethodManager.showSoftInput(edtText, 0);
+//        }
     }
 
 /*    public void hideKeyboard() {
