@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.logger.Log;
@@ -14,6 +15,9 @@ import com.xlteam.socialcaption.external.utility.logger.Log;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+
+import timber.log.Timber;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,15 +31,16 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     // = 0 -> all check box is checked
     // = -1 -> default
     private int isCheckBoxAllChecked = -1;
-
     private boolean isItemLongClicked = false;
 
     public interface GallerySelectCallback {
         void onItemGallerySelected(int position);
 
-        void onCheckBoxChecked(boolean isCheckBoxChecked);
+        // hide/show checkbox all
+        void showCheckBoxAll(boolean isCheckBoxChecked);
 
-//        void setCheckBoxIsChecked(boolean isCheckBoxAllChecked);
+        // callback All items was checked to GalleryFragment
+        void setAllItemChecked(boolean isCheckBoxAllChecked);
     }
 
     public GalleryAdapter(List<String> galleryPaths, GalleryAdapter.GallerySelectCallback callBack) {
@@ -61,14 +66,19 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         holder.imgGallery.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
         // checkbox
-        if (isCheckBoxAllChecked == -1) {
-            holder.checkBox.setVisibility(checkedList.size() > 0 ? View.VISIBLE : View.GONE);
-            mCallback.onCheckBoxChecked(checkedList.size() > 0);
+        if (isItemLongClicked) {
+            if (isCheckBoxAllChecked == -1) {
+                holder.checkBox.setVisibility(checkedList.size() > 0 ? View.VISIBLE : View.GONE);
+                mCallback.showCheckBoxAll(checkedList.size() > 0);
+            } else {
+                holder.checkBox.setVisibility(View.VISIBLE);
+                mCallback.showCheckBoxAll(true);
+            }
+            holder.checkBox.setChecked(checkedList.contains(position));
         } else {
-            holder.checkBox.setVisibility(View.VISIBLE);
-            mCallback.onCheckBoxChecked(true);
+            holder.checkBox.setVisibility(View.GONE);
         }
-        holder.checkBox.setChecked(checkedList.contains(position));
+
     }
 
     @Override
@@ -92,7 +102,6 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
                 } else {
                     checkBox.setChecked(!checkBox.isChecked());
                 }
-
             });
 
             imgGallery.setOnLongClickListener(v -> {
@@ -117,20 +126,25 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
             });
 
             checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if (isCheckBoxAllChecked == -1) {
-//                    mCallback.setCheckBoxIsChecked(checkedList.size() == mGalleryPaths.size());
-                    if (isChecked) {
-                        if (!checkedList.contains(getAdapterPosition()))
-                            checkedList.add(getAdapterPosition());
-                    } else {
-                        checkedList.remove(Integer.valueOf(getAdapterPosition()));
-//                        if (checkedList.size() == 0) {
-//                            notifyDataSetChanged();
-//                        }
+//                if (isCheckBoxAllChecked == -1) {
+                if (isChecked) {
+                    if (!checkedList.contains(getAdapterPosition())) {
+                        checkedList.add(getAdapterPosition());
                     }
+
+                } else {
+                    checkedList.remove(Integer.valueOf(getAdapterPosition()));
+//                if (checkedList.size() == 0) {
+//                    notifyDataSetChanged();
+//                }
+
                 }
+//                }
+                Timber.d("GalleryPath size: " + mGalleryPaths.size() + " - checkedList size: " + checkedList.size());
+                mCallback.setAllItemChecked(checkedList.size() == mGalleryPaths.size());
             });
         }
+
     }
 
     public void updateList(List<String> galleryPaths) {
@@ -153,6 +167,10 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
             }
         }
         notifyDataSetChanged();
+    }
+
+    public void cancelMultipleMode() {
+        isItemLongClicked = false;
     }
 
 }

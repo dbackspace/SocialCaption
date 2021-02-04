@@ -10,7 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.LinearLayout;
+import android.widget.CompoundButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xlteam.socialcaption.R;
@@ -40,8 +41,9 @@ public class GalleryFragment extends Fragment
     private TextView mEmptyImage;
     private GalleryAdapter mGalleryAdapter;
     private List<String> mGalleryPaths;
-    private LinearLayout mLinearCheckAll;
+    private RelativeLayout mRelativeCheckAll;
     private CheckBox mCheckBoxAll;
+    private TextView mTvCancelMultipleMode;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -71,11 +73,16 @@ public class GalleryFragment extends Fragment
         final View root = AsyncLayoutInflateManager.getInstance(mContext).inflateView(inflater, container, R.layout.fragment_gallery);
 
         mEmptyImage = root.findViewById(R.id.tv_empty_image);
-        mLinearCheckAll = root.findViewById(R.id.linear_check_all);
-        mCheckBoxAll = root.findViewById(R.id.checkbox_all);
-        mCheckBoxAll.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            mGalleryAdapter.onCheckBoxAllChecked(isChecked);
+        mRelativeCheckAll = root.findViewById(R.id.linear_check_all);
+        mTvCancelMultipleMode = root.findViewById(R.id.tv_cancel_multiple_mode);
+        mTvCancelMultipleMode.setOnClickListener(v -> {
+            mCheckBoxAll.setChecked(false);
+            mGalleryAdapter.onCheckBoxAllChecked(false);
+            mGalleryAdapter.cancelMultipleMode();
+            mRelativeCheckAll.setVisibility(View.GONE);
         });
+        mCheckBoxAll = root.findViewById(R.id.checkbox_all);
+        mCheckBoxAll.setOnCheckedChangeListener(onCheckedChangeListener);
 
         // init recycler gallery by findViewById
         rvGallery = root.findViewById(R.id.rv_gallery_caption);
@@ -91,6 +98,8 @@ public class GalleryFragment extends Fragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
+
+    CompoundButton.OnCheckedChangeListener onCheckedChangeListener = (buttonView, isChecked) -> mGalleryAdapter.onCheckBoxAllChecked(isChecked);
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
@@ -117,9 +126,15 @@ public class GalleryFragment extends Fragment
     }
 
     @Override
-    public void onCheckBoxChecked(boolean isCheckBoxChecked) {
-        mLinearCheckAll.setVisibility(isCheckBoxChecked ? View.VISIBLE : View.GONE);
-        mCheckBoxAll.setVisibility(isCheckBoxChecked ? View.VISIBLE : View.GONE);
+    public void showCheckBoxAll(boolean isCheckBoxChecked) {
+        mRelativeCheckAll.setVisibility(isCheckBoxChecked ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void setAllItemChecked(boolean isCheckBoxAllChecked) {
+        mCheckBoxAll.setOnCheckedChangeListener(null);
+        mCheckBoxAll.setChecked(isCheckBoxAllChecked);
+        mCheckBoxAll.setOnCheckedChangeListener(onCheckedChangeListener);
     }
 
     private void updateUI() {

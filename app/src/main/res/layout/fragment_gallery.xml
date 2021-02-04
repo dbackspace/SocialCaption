@@ -5,28 +5,44 @@
     android:layout_height="match_parent"
     tools:context=".ui.gallery.GalleryFragment">
 
-    <LinearLayout
+
+    <RelativeLayout
         android:id="@+id/linear_check_all"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="15dp"
-        android:visibility="gone"
-        android:orientation="horizontal">
+        android:layout_marginBottom="5dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_cancel_multiple_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="15dp"
+            android:background="@drawable/bg_ripple_click_view_rectangle"
+            android:text="Cancel"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <CheckBox
             android:id="@+id/checkbox_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/tv_temp1" />
 
         <TextView
+            android:id="@+id/tv_temp1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
             android:text="All"
             android:textSize="20sp" />
-    </LinearLayout>
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tv_empty_image"
