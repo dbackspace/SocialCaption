@@ -12,6 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.datasource.GradientDataSource;
 import com.xlteam.socialcaption.external.utility.customview.SpannableTextView;
@@ -21,9 +24,6 @@ import com.xlteam.socialcaption.model.CommonCaption;
 import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
 
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHolder> {
     private static final String TAG = "CaptionAdapter";
@@ -35,7 +35,9 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
     private boolean mIsSearch;
 
     public interface Callback {
-        void onBookmarkClick(long id, boolean saved);
+        void onBookmarkClick(long id, boolean saved, int positionRemove);
+
+        void updateTotalCaptions(int total);
     }
 
     public CaptionAdapter(Context context, List<CommonCaption> captions, Callback callback,
@@ -63,7 +65,7 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
         holder.imgSaved.setActivated(caption.isSaved());
         holder.imgSaved.setOnClickListener(v -> {
             holder.imgSaved.setActivated(!holder.imgSaved.isActivated());
-            mCallback.onBookmarkClick(caption.getId(), holder.imgSaved.isActivated());
+            mCallback.onBookmarkClick(caption.getId(), holder.imgSaved.isActivated(), position);
         });
 
         holder.layoutBg.setOnClickListener(view -> {
@@ -112,6 +114,12 @@ public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHold
         } else {
             holder.tvCaptionContent.setText(content);
         }
+    }
+
+    public void removeCaption(int position) {
+        mCaptions.remove(position);
+        notifyDataSetChanged();
+        mCallback.updateTotalCaptions(mCaptions.size());
     }
 
     @Override

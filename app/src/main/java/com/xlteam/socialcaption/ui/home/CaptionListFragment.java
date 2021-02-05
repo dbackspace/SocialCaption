@@ -8,6 +8,12 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.repository.CommonCaptionRepository;
 import com.xlteam.socialcaption.external.repository.ILoader;
@@ -18,12 +24,6 @@ import com.xlteam.socialcaption.external.utility.utils.Utility;
 import com.xlteam.socialcaption.model.CommonCaption;
 
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import static com.xlteam.socialcaption.external.utility.utils.Constant.RepositoryType.COMMON_REPOSITORY;
 
@@ -86,8 +86,13 @@ public class CaptionListFragment extends Fragment implements ILoader<CommonCapti
     }
 
     @Override
-    public void onBookmarkClick(long id, boolean saved) {
+    public void onBookmarkClick(long id, boolean saved, int positionRemove) {
         mRepository.updateCaptionBySaved(id, saved);
+    }
+
+    @Override
+    public void updateTotalCaptions(int total) {
+
     }
 
     @Override

@@ -8,6 +8,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.repository.CommonCaptionRepository;
 import com.xlteam.socialcaption.external.repository.ILoader;
@@ -18,11 +23,6 @@ import com.xlteam.socialcaption.model.CommonCaption;
 import com.xlteam.socialcaption.ui.home.CaptionAdapter;
 
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import static com.xlteam.socialcaption.external.utility.utils.Constant.RepositoryType.COMMON_REPOSITORY;
 
@@ -77,8 +77,16 @@ public class SavedFragment extends Fragment implements ILoader<CommonCaption>, C
     }
 
     @Override
-    public void onBookmarkClick(long id, boolean saved) {
+    public void onBookmarkClick(long id, boolean saved, int positionRemove) {
+        if (!saved) {
+            mAdapter.removeCaption(positionRemove);
+        }
         mRepository.updateCaptionBySaved(id, saved);
+    }
+
+    @Override
+    public void updateTotalCaptions(int total) {
+        tvNumberCaption.setText(mContext.getString(R.string.number_captions, total));
     }
 
     private void setStatusViewInLoadingProgress(boolean inProgress) {

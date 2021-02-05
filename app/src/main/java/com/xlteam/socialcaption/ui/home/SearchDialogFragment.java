@@ -11,6 +11,13 @@ import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.repository.CommonCaptionRepository;
 import com.xlteam.socialcaption.external.repository.ILoader;
@@ -24,12 +31,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
-import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.PublishSubject;
@@ -182,9 +183,14 @@ public class SearchDialogFragment extends DialogFragment implements ILoader<Comm
     }
 
     @Override
-    public void onBookmarkClick(long id, boolean saved) {
+    public void onBookmarkClick(long id, boolean saved, int positionRemove) {
         mRepository.updateCaptionBySaved(id, saved);
         mCallback.onBookmarkClicked();
+    }
+
+    @Override
+    public void updateTotalCaptions(int total) {
+
     }
 
     @Override
