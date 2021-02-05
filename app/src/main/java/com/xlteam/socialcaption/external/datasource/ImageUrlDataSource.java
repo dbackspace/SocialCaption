@@ -3,8 +3,6 @@ package com.xlteam.socialcaption.external.datasource;
 import java.util.ArrayList;
 
 public class ImageUrlDataSource {
-
-    private static final String TAG = "ImageUrlDataSource";
     private final ArrayList<String> urls = new ArrayList<>();
 
     private static class SingletonHelper {

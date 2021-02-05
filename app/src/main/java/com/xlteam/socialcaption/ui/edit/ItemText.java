@@ -1,10 +1,12 @@
 package com.xlteam.socialcaption.ui.edit;
 
+import android.text.TextUtils;
+
 public class ItemText {
-    private String text;
-    private int color;
-    private float size;
-    private int alignment;
+    private String text = "";
+    private int color = -1;
+    private float size = -1;
+    private int alignment = -1;
 
     public ItemText(String text, int color, float size, int alignment) {
         this.text = text;
@@ -43,5 +45,9 @@ public class ItemText {
 
     public void setAlignment(int alignment) {
         this.alignment = alignment;
+    }
+
+    public boolean isEmpty() {
+        return !TextUtils.isEmpty(text) || size != -1 || color != -1 || alignment != -1;
     }
 }

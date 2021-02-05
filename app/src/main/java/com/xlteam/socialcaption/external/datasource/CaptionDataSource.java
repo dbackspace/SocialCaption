@@ -13,8 +13,6 @@ import static com.xlteam.socialcaption.external.utility.utils.Constant.TYPE_CUOC
 import static com.xlteam.socialcaption.external.utility.utils.Constant.TYPE_THA_THINH;
 
 public class CaptionDataSource {
-    private static final String TAG = "CaptionDataSource";
-
     private CaptionDataSource() {
     }
 

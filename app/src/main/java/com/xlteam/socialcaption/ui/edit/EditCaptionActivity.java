@@ -50,6 +50,7 @@ import com.xlteam.socialcaption.external.utility.gesture.OnPhotoEditorListener;
 import com.xlteam.socialcaption.external.utility.logger.Log;
 import com.xlteam.socialcaption.external.utility.utils.Constant;
 import com.xlteam.socialcaption.external.utility.utils.FileUtils;
+import com.xlteam.socialcaption.external.utility.utils.MapViewUtils;
 import com.xlteam.socialcaption.external.utility.utils.PrefUtils;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
 import com.xlteam.socialcaption.model.CommonCaption;
@@ -106,6 +107,8 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     private ImageView imgGravity;
     private SeekBar sbTransparentBg;
 
+    private MapViewUtils mapViewUtils;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         // init view
@@ -117,6 +120,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
+        mapViewUtils = MapViewUtils.getInstance();
         addedViews = new ArrayList<>();
         Intent intent = getIntent();
         mCommonCaption = (CommonCaption) intent.getSerializableExtra(Constant.EXTRA_CAPTION);

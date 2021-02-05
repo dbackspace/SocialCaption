@@ -3,7 +3,6 @@ package com.xlteam.socialcaption.external.datasource;
 import java.util.ArrayList;
 
 public class GradientDataSource {
-    private static final String TAG = "ColorDataSource";
     private ArrayList<int[]> colors = new ArrayList<>();
 
     private static class SingletonHelper {

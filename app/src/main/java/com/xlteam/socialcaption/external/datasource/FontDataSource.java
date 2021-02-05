@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class FontDataSource {
-    private static final String TAG = "FontDataSource";
     private final ArrayList<Font> fonts = new ArrayList<>();
 
     private static class SingletonHelper {
