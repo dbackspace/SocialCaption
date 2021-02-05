@@ -17,12 +17,17 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -56,10 +61,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import static com.xlteam.socialcaption.external.utility.utils.Constant.SAVE_DATE_TIME_FORMAT;
 
@@ -96,6 +97,9 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     private RelativeLayout rlTrash;
     private ImageView imgTrash;
 
+    //text editor
+    private RecyclerView rvFont, rvColor;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         // init view
@@ -124,7 +128,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
             saveImageCreatedToSdcard(relativeBackground);
         });
         tvDone.setClickable(false);
-
         imgBack.setOnClickListener(v -> finish());
     }
 
@@ -137,6 +140,10 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         relativeBackground = findViewById(R.id.relative_background_save_img);
         rlTrash = findViewById(R.id.rlTrash);
         imgTrash = findViewById(R.id.imgTrash);
+
+        //text editor
+        rvColor = findViewById(R.id.rvColor);
+        rvFont = findViewById(R.id.rvFont);
     }
 
     @Override
@@ -233,6 +240,15 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         enableBtnSave();
     }
 
+    public void onTextColorClicked(View view) {
+    }
+
+    public void onTextFontClicked(View view) {
+    }
+
+    public void onTextBgClicked(View view) {
+    }
+
     public Bitmap getBitmapFromImageView(ImageView imageView) {
         imageView.invalidate();
         BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
@@ -308,14 +324,11 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
     @SuppressLint("ResourceAsColor")
     @Override
-    public void onSaveClicked(EditText editText, BackgroundColorSpan span) {
+    public void onSaveClicked(String text, int gravity) {
         final View textAddedView = getTextStickerLayout();
         final TextView textInputTv = textAddedView.findViewById(R.id.text_tv);
         final FrameLayout frameBorder = textAddedView.findViewById(R.id.text_border);
-
-        String text = editText.getText().toString().trim();
         textInputTv.setText(text);
-        textInputTv.setTextColor(editText.getTextColors());
         textInputTv.setTextSize(TypedValue.COMPLEX_UNIT_SP,
                 getResources().getDimension(R.dimen.text_added_default_size));
 
@@ -454,5 +467,18 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     @Override
     public void onRemoveViewListener(View removedView) {
         deleteViewFromParent(removedView);
+    }
+
+
+    private void initTextEditor() {
+        rvFont.setLayoutManager(new LinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false));
+        rvFont.setAdapter(new FontAdapter(mContext, numberFont -> {
+
+        }));
+
+        rvColor.setLayoutManager(new LinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false));
+        rvColor.setAdapter(new ColorAdapter(color -> {
+
+        }));
     }
 }

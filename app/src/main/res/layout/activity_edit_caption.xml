@@ -10,41 +10,77 @@
     <RelativeLayout
         android:id="@+id/layout_top"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:background="#121212">
 
-        <ImageView
-            android:id="@+id/btn_edit_back_and_cancel"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentStart="true"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="5dp"
-            android:background="@drawable/bg_ripple_click_view_circle"
-            android:padding="5dp"
-            android:src="@drawable/ic_back_white" />
+        <RelativeLayout
+            android:id="@+id/layout_save_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_edit_save"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_alignParentEnd="true"
-            android:layout_margin="5dp"
-            android:alpha="0.7"
-            android:background="@drawable/bg_ripple_click_view_rectangle"
-            android:clickable="false"
-            android:gravity="center"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:text="Lưu"
-            android:textColor="@color/white"
-            android:textSize="20dp" />
+            <ImageView
+                android:id="@+id/btn_edit_back_and_cancel"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/bg_ripple_click_view_circle"
+                android:padding="5dp"
+                android:src="@drawable/ic_back_white" />
+
+            <TextView
+                android:id="@+id/tv_edit_save"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="5dp"
+                android:alpha="0.7"
+                android:background="@drawable/bg_ripple_click_view_rectangle"
+                android:clickable="false"
+                android:gravity="center"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="Lưu"
+                android:textColor="@color/white"
+                android:textSize="20dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_save_cancel_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/btn_cancel_edit_text"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/bg_ripple_click_view_circle"
+                android:padding="5dp"
+                android:src="@drawable/ic_close" />
+
+            <ImageView
+                android:id="@+id/image_save_text"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/bg_ripple_click_view_circle"
+                android:padding="5dp"
+                android:src="@drawable/ic_done" />
+        </RelativeLayout>
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/layout_menu"
+        android:layout_above="@id/layout_bottom"
         android:layout_below="@id/layout_top">
 
         <RelativeLayout
@@ -52,6 +88,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/relative_background_save_img"
             android:layout_alignParentTop="true">
+
             <RelativeLayout
                 android:id="@+id/rlTrash"
                 android:layout_width="50dp"
@@ -95,151 +132,276 @@
         </RelativeLayout>
     </RelativeLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout_menu"
+    <RelativeLayout
+        android:id="@+id/layout_bottom"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="51dp"
-        android:background="#121212"
-        android:gravity="center">
+        android:background="#121212">
 
-        <LinearLayout
-            android:id="@+id/layout_btn_add_text"
-            android:layout_width="60dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_menu"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/bg_ripple_click_view_rectangle"
-            android:gravity="center"
-            android:onClick="onAddTextClicked"
-            android:orientation="vertical"
-            ads:layout_constraintEnd_toStartOf="@id/layout_btn_add_image"
-            ads:layout_constraintHorizontal_chainStyle="spread"
-            ads:layout_constraintStart_toStartOf="@id/layout_menu">
+            android:gravity="center">
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_edit_add_text" />
+            <LinearLayout
+                android:id="@+id/layout_btn_add_text"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bg_ripple_click_view_rectangle"
+                android:gravity="center"
+                android:onClick="onAddTextClicked"
+                android:orientation="vertical"
+                ads:layout_constraintEnd_toStartOf="@id/layout_btn_add_image"
+                ads:layout_constraintHorizontal_chainStyle="spread"
+                ads:layout_constraintStart_toStartOf="@id/layout_menu">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:fontFamily="sans-serif-medium"
-                android:text="Thêm chữ"
-                android:textColor="@color/white"
-                android:textSize="10dp" />
-        </LinearLayout>
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_edit_add_text" />
 
-        <LinearLayout
-            android:id="@+id/layout_btn_add_image"
-            android:layout_width="60dp"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Thêm chữ"
+                    android:textColor="@color/white"
+                    android:textSize="10dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_btn_add_image"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bg_ripple_click_view_rectangle"
+                android:gravity="center"
+                android:onClick="onAddImageClicked"
+                android:orientation="vertical"
+                ads:layout_constraintEnd_toStartOf="@id/layout_btn_rotate"
+                ads:layout_constraintStart_toEndOf="@id/layout_btn_add_text">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_edit_image" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Ảnh nền"
+                    android:textColor="@color/white"
+                    android:textSize="10dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_btn_rotate"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bg_ripple_click_view_rectangle"
+                android:gravity="center"
+                android:onClick="onRotateClicked"
+                android:orientation="vertical"
+                ads:layout_constraintEnd_toStartOf="@id/layout_btn_crop"
+                ads:layout_constraintStart_toEndOf="@id/layout_btn_add_image">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_edit_rotate" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Xoay"
+                    android:textColor="@color/white"
+                    android:textSize="10dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_btn_crop"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bg_ripple_click_view_rectangle"
+                android:gravity="center"
+                android:onClick="onCropClicked"
+                android:orientation="vertical"
+                ads:layout_constraintEnd_toStartOf="@id/layout_btn_flip"
+                ads:layout_constraintStart_toEndOf="@id/layout_btn_rotate">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_edit_crop" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Cắt"
+                    android:textColor="@color/white"
+                    android:textSize="10dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_btn_flip"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bg_ripple_click_view_rectangle"
+                android:gravity="center"
+                android:onClick="onFlipClicked"
+                android:orientation="vertical"
+                ads:layout_constraintEnd_toEndOf="@id/layout_menu"
+                ads:layout_constraintStart_toEndOf="@id/layout_btn_crop">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_edit_flip" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Lật ảnh"
+                    android:textColor="@color/white"
+                    android:textSize="10dp" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_menu_text"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/bg_ripple_click_view_rectangle"
             android:gravity="center"
-            android:onClick="onAddImageClicked"
-            android:orientation="vertical"
-            ads:layout_constraintEnd_toStartOf="@id/layout_btn_rotate"
-            ads:layout_constraintStart_toEndOf="@id/layout_btn_add_text">
+            android:visibility="gone">
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_edit_image" />
+            <LinearLayout
+                android:id="@+id/layout_btn_text_color"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bg_ripple_click_view_rectangle"
+                android:gravity="center"
+                android:onClick="onTextColorClicked"
+                android:orientation="vertical"
+                ads:layout_constraintHorizontal_chainStyle="spread"
+                ads:layout_constraintStart_toStartOf="@id/layout_menu_text">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:fontFamily="sans-serif-medium"
-                android:text="Ảnh nền"
-                android:textColor="@color/white"
-                android:textSize="10dp" />
-        </LinearLayout>
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_text_color" />
 
-        <LinearLayout
-            android:id="@+id/layout_btn_rotate"
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/bg_ripple_click_view_rectangle"
-            android:gravity="center"
-            android:onClick="onRotateClicked"
-            android:orientation="vertical"
-            ads:layout_constraintEnd_toStartOf="@id/layout_btn_crop"
-            ads:layout_constraintStart_toEndOf="@id/layout_btn_add_image">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Màu sắc"
+                    android:textColor="@color/white"
+                    android:textSize="10dp" />
+            </LinearLayout>
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_edit_rotate" />
+            <LinearLayout
+                android:id="@+id/layout_btn_text_font"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bg_ripple_click_view_rectangle"
+                android:gravity="center"
+                android:onClick="onTextFontClicked"
+                android:orientation="vertical"
+                ads:layout_constraintEnd_toStartOf="@id/layout_btn_text_span"
+                ads:layout_constraintStart_toEndOf="@id/layout_btn_text_color">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:fontFamily="sans-serif-medium"
-                android:text="Xoay"
-                android:textColor="@color/white"
-                android:textSize="10dp" />
-        </LinearLayout>
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_text_font" />
 
-        <LinearLayout
-            android:id="@+id/layout_btn_crop"
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/bg_ripple_click_view_rectangle"
-            android:gravity="center"
-            android:onClick="onCropClicked"
-            android:orientation="vertical"
-            ads:layout_constraintEnd_toStartOf="@id/layout_btn_flip"
-            ads:layout_constraintStart_toEndOf="@id/layout_btn_rotate">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Font"
+                    android:textColor="@color/white"
+                    android:textSize="10dp" />
+            </LinearLayout>
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_edit_crop" />
+            <LinearLayout
+                android:id="@+id/layout_btn_text_span"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bg_ripple_click_view_rectangle"
+                android:gravity="center"
+                android:onClick="onTextBgClicked"
+                android:orientation="vertical"
+                ads:layout_constraintStart_toEndOf="@id/layout_btn_text_font">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:fontFamily="sans-serif-medium"
-                android:text="Cắt"
-                android:textColor="@color/white"
-                android:textSize="10dp" />
-        </LinearLayout>
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_text_bg" />
 
-        <LinearLayout
-            android:id="@+id/layout_btn_flip"
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/bg_ripple_click_view_rectangle"
-            android:gravity="center"
-            android:onClick="onFlipClicked"
-            android:orientation="vertical"
-            ads:layout_constraintEnd_toEndOf="@id/layout_menu"
-            ads:layout_constraintStart_toEndOf="@id/layout_btn_crop">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Nền chữ"
+                    android:textColor="@color/white"
+                    android:textSize="10dp" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_edit_flip" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_above="@id/layout_bottom">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:fontFamily="sans-serif-medium"
-                android:text="Lật ảnh"
-                android:textColor="@color/white"
-                android:textSize="10dp" />
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvColor"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvFont"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:visibility="gone" />
+
+        <SeekBar
+            android:id="@+id/seek_bar_blur_background"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_below="@id/rvColor"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp" />
+    </RelativeLayout>
+
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"

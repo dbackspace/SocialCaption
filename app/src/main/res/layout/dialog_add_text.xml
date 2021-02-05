@@ -3,36 +3,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#EA000000"
     android:paddingBottom="5dp">
 
     <RelativeLayout
         android:id="@+id/layout_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true">
+
         <ImageView
             android:id="@+id/imgBack"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentStart="true"
+            android:layout_centerInParent="true"
             android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
             android:background="@drawable/bg_ripple_click_view_circle"
             android:padding="5dp"
             android:src="@drawable/ic_close" />
+
+        <ImageView
+            android:id="@+id/imgGravity"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/bg_ripple_click_view_circle"
+            android:padding="5dp"
+            android:src="@drawable/ic_align_center" />
 
         <ImageView
             android:id="@+id/imgDone"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
             android:layout_marginEnd="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
             android:background="@drawable/bg_ripple_click_view_circle"
             android:padding="5dp"
             android:src="@drawable/ic_done" />
@@ -42,95 +49,23 @@
         android:id="@+id/rlEmptyClick"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/rvColor"
-        android:layout_below="@id/layout_top"
-        android:layout_marginBottom="60dp">
+        android:layout_below="@id/layout_top">
+
         <com.xlteam.socialcaption.external.utility.customview.AutoFitEditText
             android:id="@+id/edtText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:layout_marginStart="40dp"
             android:layout_marginEnd="40dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerInParent="true"
-            android:inputType="textNoSuggestions|textMultiLine"
             android:background="@null"
             android:backgroundTint="@color/color_25"
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
-            android:textSize="22sp"
-            android:hint="Nhập văn bản"/>
+            android:hint="Nhập văn bản"
+            android:inputType="textNoSuggestions|textMultiLine"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="22sp" />
     </RelativeLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvColor"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_above="@id/layout_menu"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvFont"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_above="@id/layout_menu"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:visibility="gone" />
-
-    <LinearLayout
-        android:id="@+id/layout_menu"
-        android:layout_width="wrap_content"
-        android:layout_height="45dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true">
-
-        <ImageView
-            android:id="@+id/imgGravity"
-            android:layout_width="45dp"
-            android:layout_height="match_parent"
-            android:padding="10dp"
-            android:src="@drawable/ic_align_center" />
-
-        <LinearLayout
-            android:id="@+id/lnColor"
-            android:layout_width="45dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:padding="10dp">
-
-            <View
-                android:id="@+id/viewColor"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_circle_color" />
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/imgFont"
-            android:layout_width="45dp"
-            android:layout_height="match_parent"
-            android:padding="7dp"
-            android:src="@drawable/ic_edit_font" />
-
-        <LinearLayout
-            android:id="@+id/lnBg"
-            android:layout_width="45dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:padding="10dp">
-
-            <TextView
-                android:id="@+id/tvBg"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_font_button"
-                android:fontFamily="sans-serif-medium"
-                android:gravity="center"
-                android:text="Aa"
-                android:textColor="@color/white"
-                android:textSize="12dp" />
-        </LinearLayout>
-    </LinearLayout>
 </RelativeLayout>
