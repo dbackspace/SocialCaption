@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,7 +68,7 @@ import static com.xlteam.socialcaption.external.utility.utils.Constant.SAVE_DATE
 public class EditCaptionActivity extends AppCompatActivity implements DialogAddTextBuilder.SavedCallback,
         OnPhotoEditorListener, OnMultiTouchListener {
     private static final int RESULT_LOAD_IMG = 1;
-    private ImageView imgBack;
+    private ImageView imgBack, imgCancelText, imgDoneText;
     private TextView tvDone;
     private CommonCaption mCommonCaption;
     private ImageView mImgBackground;
@@ -101,6 +102,9 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
     //text editor
     private RecyclerView rvFont, rvColor;
+    private int mGravityText;
+    private ImageView imgGravity;
+    private SeekBar sbTransparentBg;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -122,6 +126,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
             //show dialog
         }
         findViewById();
+        initTextEditor();
         tvDone.setOnClickListener(v -> {
 //            UserCaption userCaption = new UserCaption(mEdtCaption.getText().toString(), mPathImg, mColorTextDefault, mFontDefault, mAlignTextDefault, true);
 //            mRepository.insertUserCaption(userCaption);
@@ -131,6 +136,18 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         });
         tvDone.setClickable(false);
         imgBack.setOnClickListener(v -> finish());
+        imgCancelText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTextMode(false);
+            }
+        });
+        imgDoneText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTextMode(false);
+            }
+        });
     }
 
     private void findViewById() {
@@ -147,10 +164,15 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         containerTrash = findViewById(R.id.container_trash);
 
         //text editor
+        imgCancelText = findViewById(R.id.btn_cancel_edit_text);
+        imgDoneText = findViewById(R.id.image_save_text);
         layoutMenuText = findViewById(R.id.layout_menu_text);
         layoutSaveCancelText = findViewById(R.id.layout_save_cancel_text);
         rvColor = findViewById(R.id.rvColor);
         rvFont = findViewById(R.id.rvFont);
+        imgGravity = findViewById(R.id.imgGravity);
+        sbTransparentBg = findViewById(R.id.seek_bar_blur_background);
+
     }
 
     @Override
@@ -245,13 +267,46 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         enableBtnSave();
     }
 
+    public void onTextChangeClicked(View view) {
+        layoutTop.setVisibility(View.INVISIBLE);
+        layoutBottom.setVisibility(View.INVISIBLE);
+        Dialog addTextDialog = new DialogAddTextBuilder(this, null).build(); //truyền text vào đây
+        addTextDialog.setOnCancelListener(dialog -> {
+            layoutTop.setVisibility(View.VISIBLE);
+            layoutBottom.setVisibility(View.VISIBLE);
+        });
+        addTextDialog.show();
+    }
+
     public void onTextColorClicked(View view) {
+        rvColor.setVisibility(View.VISIBLE);
+        rvFont.setVisibility(View.GONE);
+        sbTransparentBg.setVisibility(View.GONE);
     }
 
     public void onTextFontClicked(View view) {
+        rvFont.setVisibility(View.VISIBLE);
+        rvColor.setVisibility(View.GONE);
+        sbTransparentBg.setVisibility(View.GONE);
     }
 
     public void onTextBgClicked(View view) {
+        rvFont.setVisibility(View.GONE);
+        rvColor.setVisibility(View.VISIBLE);
+        sbTransparentBg.setVisibility(View.VISIBLE);
+    }
+
+    public void onTextAlignClicked(View view) {
+        if (mGravityText == Gravity.CENTER) {
+            mGravityText = Gravity.END;
+            imgGravity.setImageResource(R.drawable.ic_align_right);
+        } else if (mGravityText == Gravity.END) {
+            mGravityText = Gravity.START;
+            imgGravity.setImageResource(R.drawable.ic_align_left);
+        } else {
+            mGravityText = Gravity.CENTER;
+            imgGravity.setImageResource(R.drawable.ic_align_center);
+        }
     }
 
     public Bitmap getBitmapFromImageView(ImageView imageView) {
@@ -380,10 +435,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     }
 
     public void editTextByClickTextView(View view, ItemText itemText) {
-        layoutMenu.setVisibility(View.GONE);
-        layoutSaveCancel.setVisibility(View.GONE);
-        layoutMenuText.setVisibility(View.VISIBLE);
-        layoutSaveCancelText.setVisibility(View.VISIBLE);
+        showTextMode(true);
     }
 
     private void editText(View view, String inputText, int colorCode) {
@@ -485,5 +537,19 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         rvColor.setAdapter(new ColorAdapter(color -> {
 
         }));
+    }
+
+    private void showTextMode(boolean isShow) {
+        if (isShow) {
+            layoutSaveCancelText.setVisibility(View.VISIBLE);
+            layoutMenuText.setVisibility(View.VISIBLE);
+            layoutSaveCancel.setVisibility(View.GONE);
+            layoutMenu.setVisibility(View.GONE);
+        } else {
+            layoutSaveCancelText.setVisibility(View.GONE);
+            layoutMenuText.setVisibility(View.GONE);
+            layoutSaveCancel.setVisibility(View.VISIBLE);
+            layoutMenu.setVisibility(View.VISIBLE);
+        }
     }
 }
