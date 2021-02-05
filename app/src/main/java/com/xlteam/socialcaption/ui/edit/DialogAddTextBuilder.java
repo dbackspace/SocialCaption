@@ -33,6 +33,7 @@ public class DialogAddTextBuilder {
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         mDialog.setContentView(R.layout.dialog_add_text);
+        mDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         imgGravity = mDialog.findViewById(R.id.imgGravity);
         imgBack = mDialog.findViewById(R.id.imgBack);
         edtText = mDialog.findViewById(R.id.edtText);
@@ -63,7 +64,10 @@ public class DialogAddTextBuilder {
             }
             edtText.setGravity(mGravityText);
         });
-        mDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        edtText.requestFocus();
+        edtText.setShowSoftInputOnFocus(true);
+//        InputMethodManager mInputMethodManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+//        mInputMethodManager.showSoftInput(edtText, 0);
     }
 
     public Dialog build() {

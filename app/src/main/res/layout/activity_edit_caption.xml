@@ -119,7 +119,8 @@
             android:id="@+id/layout_menu"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center">
+            android:gravity="center"
+            android:visibility="gone">
 
             <LinearLayout
                 android:id="@+id/layout_btn_add_text"
@@ -263,7 +264,35 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:visibility="gone">
+            android:visibility="visible">
+
+            <LinearLayout
+                android:id="@+id/layout_btn_text_edit"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bg_ripple_click_view_rectangle"
+                android:gravity="center"
+                android:onClick="onAddTextClicked"
+                android:orientation="vertical"
+                ads:layout_constraintEnd_toStartOf="@id/layout_btn_text_color"
+                ads:layout_constraintHorizontal_chainStyle="spread"
+                ads:layout_constraintStart_toStartOf="@id/layout_menu_text">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_text_edit" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Văn bản"
+                    android:textColor="@color/white"
+                    android:textSize="10dp" />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/layout_btn_text_color"
@@ -274,8 +303,8 @@
                 android:gravity="center"
                 android:onClick="onTextColorClicked"
                 android:orientation="vertical"
-                ads:layout_constraintHorizontal_chainStyle="spread"
-                ads:layout_constraintStart_toStartOf="@id/layout_menu_text">
+                ads:layout_constraintEnd_toStartOf="@id/layout_btn_text_font"
+                ads:layout_constraintStart_toEndOf="@id/layout_btn_text_edit">
 
                 <ImageView
                     android:layout_width="30dp"
@@ -344,14 +373,41 @@
                     android:textColor="@color/white"
                     android:textSize="10dp" />
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_btn_text_align"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bg_ripple_click_view_rectangle"
+                android:gravity="center"
+                android:onClick="onFlipClicked"
+                android:orientation="vertical"
+                ads:layout_constraintEnd_toEndOf="@id/layout_menu_text"
+                ads:layout_constraintStart_toEndOf="@id/layout_btn_text_span">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_align_center" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Vị trí"
+                    android:textColor="@color/white"
+                    android:textSize="10dp" />
+            </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_above="@id/layout_bottom">
+        android:layout_above="@id/layout_bottom"
+        android:visibility="gone">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvColor"
@@ -383,25 +439,25 @@
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:visibility="gone"
-        android:layout_marginBottom="51dp">
+        android:layout_marginBottom="51dp"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_above="@id/rlTrash"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="10dp"
-            android:textAlignment="center"
-            android:layout_above="@id/rlTrash"
             android:text="Kéo vào đây để xóa"
-            android:textColor="@color/white"/>
+            android:textAlignment="center"
+            android:textColor="@color/white" />
 
         <RelativeLayout
             android:id="@+id/rlTrash"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_centerInParent="true"
             android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
             android:layout_marginBottom="10dp"
             android:background="@drawable/trash_round_style"
             android:padding="5dp"
