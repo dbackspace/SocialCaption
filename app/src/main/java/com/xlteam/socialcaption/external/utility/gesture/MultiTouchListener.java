@@ -147,7 +147,6 @@ public class MultiTouchListener implements OnTouchListener {
                     if (!scaleGestureDetector.isInProgress()) {
                         adjustTranslation(view, currX - prevX, currY - prevY);
                     }
-                    deleteView.setVisibility(View.VISIBLE);
                     boolean checkViewInBound = isViewInBounds(deleteView, x, y, DIFF_IN_BOUND_AREA);
                     if (!mIsInViewBounds) {
                         if (deleteView != null && checkViewInBound) {
@@ -183,7 +182,6 @@ public class MultiTouchListener implements OnTouchListener {
                 mIsInViewBounds = false;
                 deleteView.setScaleX(1f);
                 deleteView.setScaleY(1f);
-                deleteView.setVisibility(View.GONE);
                 firePhotoEditorSDKListener(view, false);
                 break;
             case MotionEvent.ACTION_POINTER_UP:

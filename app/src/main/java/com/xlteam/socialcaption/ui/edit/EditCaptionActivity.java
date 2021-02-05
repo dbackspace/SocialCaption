@@ -96,7 +96,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     private List<View> addedViews;
     private RelativeLayout rlTrash;
     private ImageView imgTrash;
-    private TextView tvTrash;
+    private RelativeLayout containerTrash;
 
     //text editor
     private RecyclerView rvFont, rvColor;
@@ -141,7 +141,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         relativeBackground = findViewById(R.id.relative_background_save_img);
         rlTrash = findViewById(R.id.rlTrash);
         imgTrash = findViewById(R.id.imgTrash);
-        tvTrash = findViewById(R.id.tvTrash);
+        containerTrash = findViewById(R.id.container_trash);
 
         //text editor
         rvColor = findViewById(R.id.rvColor);
@@ -359,7 +359,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
             public void onDown() {
                 boolean isBackgroundVisible = frameBorder.getTag() != null && (boolean) frameBorder.getTag();
                 if (!isBackgroundVisible) {
-                    rlTrash.setVisibility(View.VISIBLE);
+                    containerTrash.setVisibility(View.VISIBLE);
                     frameBorder.setTag(true);
                     updateViewsBordersVisibilityExcept(textAddedView);
                     isDownAlready = true;
@@ -456,14 +456,14 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
     @Override
     public void onStartViewChangeListener() {
-        tvTrash.setVisibility(View.VISIBLE);
+        containerTrash.setVisibility(View.VISIBLE);
         layoutTop.setVisibility(View.INVISIBLE);
         layoutMenu.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void onStopViewChangeListener() {
-        tvTrash.setVisibility(View.GONE);
+        containerTrash.setVisibility(View.GONE);
         layoutTop.setVisibility(View.VISIBLE);
         layoutMenu.setVisibility(View.VISIBLE);
     }
