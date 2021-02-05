@@ -554,6 +554,9 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
             layoutMenuText.setVisibility(View.GONE);
             layoutSaveCancel.setVisibility(View.VISIBLE);
             layoutMenu.setVisibility(View.VISIBLE);
+            rvFont.setVisibility(View.GONE);
+            rvColor.setVisibility(View.GONE);
+            sbTransparentBg.setVisibility(View.GONE);
         }
     }
 }

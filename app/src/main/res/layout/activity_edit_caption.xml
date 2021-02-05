@@ -415,6 +415,7 @@
             android:layout_height="40dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
+            android:layout_marginBottom="5dp"
             android:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -423,6 +424,7 @@
             android:layout_height="40dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
+            android:layout_marginBottom="5dp"
             android:visibility="gone" />
 
         <SeekBar
@@ -432,6 +434,7 @@
             android:layout_below="@id/rvColor"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
+
             android:visibility="gone" />
     </RelativeLayout>
 
