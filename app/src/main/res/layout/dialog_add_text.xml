@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#BD000000"
+    android:background="#EA000000"
     android:paddingBottom="5dp">
 
     <RelativeLayout
@@ -38,22 +38,29 @@
             android:src="@drawable/ic_done" />
     </RelativeLayout>
 
-    <com.xlteam.socialcaption.external.utility.customview.AutoFitEditText
-        android:id="@+id/edtText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:id="@+id/rlEmptyClick"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_above="@id/rvColor"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginBottom="40dp"
-        android:layout_centerInParent="true"
-        android:inputType="textNoSuggestions|textMultiLine"
-        android:background="@null"
-        android:backgroundTint="@color/color_25"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="center"
-        android:textSize="22sp"
-        android:hint="Nhập văn bản"/>
+        android:layout_below="@id/layout_top"
+        android:layout_marginBottom="60dp">
+        <com.xlteam.socialcaption.external.utility.customview.AutoFitEditText
+            android:id="@+id/edtText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:inputType="textNoSuggestions|textMultiLine"
+            android:background="@null"
+            android:backgroundTint="@color/color_25"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:textSize="22sp"
+            android:hint="Nhập văn bản"/>
+    </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvColor"
