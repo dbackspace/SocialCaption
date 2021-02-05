@@ -71,8 +71,9 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     private TextView tvDone;
     private CommonCaption mCommonCaption;
     private ImageView mImgBackground;
-    private ConstraintLayout layoutMenu;
-    private RelativeLayout layoutTop;
+    private ConstraintLayout layoutMenu, layoutMenuText;
+    private RelativeLayout layoutTop, layoutBottom;
+    private RelativeLayout layoutSaveCancel, layoutSaveCancelText;
 
     // set default for tool
     private int mTextSizeDefault; // default = 1    [0 -> 4]
@@ -136,14 +137,18 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         imgBack = findViewById(R.id.btn_edit_back_and_cancel);
         tvDone = findViewById(R.id.tv_edit_save);
         mImgBackground = findViewById(R.id.img_edit_background);
-        layoutMenu = findViewById(R.id.layout_menu);
         layoutTop = findViewById(R.id.layout_top);
+        layoutBottom = findViewById(R.id.layout_bottom);
+        layoutMenu = findViewById(R.id.layout_menu);
+        layoutSaveCancel = findViewById(R.id.layout_save_cancel);
         relativeBackground = findViewById(R.id.relative_background_save_img);
         rlTrash = findViewById(R.id.rlTrash);
         imgTrash = findViewById(R.id.imgTrash);
         containerTrash = findViewById(R.id.container_trash);
 
         //text editor
+        layoutMenuText = findViewById(R.id.layout_menu_text);
+        layoutSaveCancelText = findViewById(R.id.layout_save_cancel_text);
         rvColor = findViewById(R.id.rvColor);
         rvFont = findViewById(R.id.rvFont);
     }
@@ -205,14 +210,12 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     }
 
     public void onAddTextClicked(View view) {
-        imgBack.setVisibility(View.INVISIBLE);
-        tvDone.setVisibility(View.INVISIBLE);
-        layoutMenu.setVisibility(View.INVISIBLE);
+        layoutTop.setVisibility(View.INVISIBLE);
+        layoutBottom.setVisibility(View.INVISIBLE);
         Dialog addTextDialog = new DialogAddTextBuilder(this, null).build();
         addTextDialog.setOnCancelListener(dialog -> {
-            imgBack.setVisibility(View.VISIBLE);
-            tvDone.setVisibility(View.VISIBLE);
-            layoutMenu.setVisibility(View.VISIBLE);
+            layoutTop.setVisibility(View.VISIBLE);
+            layoutBottom.setVisibility(View.VISIBLE);
         });
         addTextDialog.show();
     }
@@ -377,16 +380,10 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     }
 
     public void editTextByClickTextView(View view, ItemText itemText) {
-        imgBack.setVisibility(View.INVISIBLE);
-        tvDone.setVisibility(View.INVISIBLE);
-        layoutMenu.setVisibility(View.INVISIBLE);
-        Dialog addTextDialog = new DialogAddTextBuilder(this, itemText).build();
-        addTextDialog.setOnCancelListener(dialog -> {
-            imgBack.setVisibility(View.VISIBLE);
-            tvDone.setVisibility(View.VISIBLE);
-            layoutMenu.setVisibility(View.VISIBLE);
-        });
-        addTextDialog.show();
+        layoutMenu.setVisibility(View.GONE);
+        layoutSaveCancel.setVisibility(View.GONE);
+        layoutMenuText.setVisibility(View.VISIBLE);
+        layoutSaveCancelText.setVisibility(View.VISIBLE);
     }
 
     private void editText(View view, String inputText, int colorCode) {
@@ -462,14 +459,14 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     public void onEventMoveChangeListener() {
         containerTrash.setVisibility(View.VISIBLE);
         layoutTop.setVisibility(View.INVISIBLE);
-        layoutMenu.setVisibility(View.INVISIBLE);
+        layoutBottom.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void onEventUpChangeListener() {
         containerTrash.setVisibility(View.GONE);
         layoutTop.setVisibility(View.VISIBLE);
-        layoutMenu.setVisibility(View.VISIBLE);
+        layoutBottom.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -479,12 +476,12 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
 
     private void initTextEditor() {
-        rvFont.setLayoutManager(new LinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false));
-        rvFont.setAdapter(new FontAdapter(mContext, numberFont -> {
+        rvFont.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        rvFont.setAdapter(new FontAdapter(this, numberFont -> {
 
         }));
 
-        rvColor.setLayoutManager(new LinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false));
+        rvColor.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         rvColor.setAdapter(new ColorAdapter(color -> {
 
         }));
