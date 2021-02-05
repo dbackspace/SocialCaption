@@ -136,6 +136,7 @@ public class MultiTouchListener implements OnTouchListener {
                 prevRawY = event.getRawY();
                 activePointerId = event.getPointerId(0);
                 view.bringToFront();
+                firePhotoEditorSDKListener(view, EventType.ON_DOWN);
                 mIsInViewBounds = false;
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -149,7 +150,7 @@ public class MultiTouchListener implements OnTouchListener {
                     boolean checkViewInBound = isViewInBounds(deleteView, x, y, DIFF_IN_BOUND_AREA);
                     long duration = event.getEventTime() - event.getDownTime();
                     if (!(duration < CLICK_THRESHOLD_DURATION && isSingleTapEvent(prevRawX, x, prevRawY, y))) {
-                        firePhotoEditorSDKListener(view, true);
+                        firePhotoEditorSDKListener(view, EventType.ON_MOVE);
                         if (!mIsInViewBounds) {
                             if (deleteView != null && checkViewInBound) {
                                 mIsInViewBounds = true;
@@ -185,7 +186,7 @@ public class MultiTouchListener implements OnTouchListener {
                 mIsInViewBounds = false;
                 deleteView.setScaleX(1f);
                 deleteView.setScaleY(1f);
-                firePhotoEditorSDKListener(view, false);
+                firePhotoEditorSDKListener(view, EventType.ON_UP);
                 break;
             case MotionEvent.ACTION_POINTER_UP:
                 int pointerIndexPointerUp = (action & MotionEvent.ACTION_POINTER_INDEX_MASK) >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
@@ -201,36 +202,42 @@ public class MultiTouchListener implements OnTouchListener {
         return true;
     }
 
+    enum EventType {
+        ON_DOWN,
+        ON_MOVE,
+        ON_UP
+    };
+
     private boolean isSingleTapEvent(float startX, float endX, float startY, float endY) {
         float differenceX = Math.abs(startX - endX);
         float differenceY = Math.abs(startY - endY);
         return (CLICK_THRESHOLD_DISTANCE > differenceX) || (CLICK_THRESHOLD_DISTANCE > differenceY);
     }
 
-    // TODO: refactor hàm này, chuyển sang việc truyền vào type (ON_DOWN, ON_MOVE, ON_UP) tương ứng các sự kiện
-    private void firePhotoEditorSDKListener(View view, boolean isStart) {
+    private void firePhotoEditorSDKListener(View view, EventType eventType) {
         if (view instanceof TextView) {
             if (onMultiTouchListener != null) {
-                if (onPhotoEditorListener != null) {
-                    if (isStart)
-                        onPhotoEditorListener.onStartViewChangeListener();
-                    else
-                        onPhotoEditorListener.onStopViewChangeListener();
-                }
+                notifyWhenEventChangeListener(eventType);
             } else {
-                if (onPhotoEditorListener != null) {
-                    if (isStart)
-                        onPhotoEditorListener.onStartViewChangeListener();
-                    else
-                        onPhotoEditorListener.onStopViewChangeListener();
-                }
+                notifyWhenEventChangeListener(eventType);
             }
         } else {
-            if (onPhotoEditorListener != null) {
-                if (isStart)
-                    onPhotoEditorListener.onStartViewChangeListener();
-                else
-                    onPhotoEditorListener.onStopViewChangeListener();
+            notifyWhenEventChangeListener(eventType);
+        }
+    }
+
+    private void notifyWhenEventChangeListener(EventType eventType) {
+        if (onPhotoEditorListener != null) {
+            switch (eventType) {
+                case ON_DOWN:
+                    onPhotoEditorListener.onEventDownChangeListener();
+                    break;
+                case ON_MOVE:
+                    onPhotoEditorListener.onEventMoveChangeListener();
+                    break;
+                case ON_UP:
+                    onPhotoEditorListener.onEventUpChangeListener();
+                    break;
             }
         }
     }
