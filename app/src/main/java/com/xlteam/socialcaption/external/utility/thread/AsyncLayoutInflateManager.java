@@ -13,6 +13,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import androidx.annotation.Nullable;
 import androidx.asynclayoutinflater.view.AsyncLayoutInflater;
 
+import timber.log.Timber;
+
 public class AsyncLayoutInflateManager {
     private Context mContext;
     private AsyncLayoutInflater mInflater;
@@ -72,7 +74,7 @@ public class AsyncLayoutInflateManager {
             }
             if (viewList != null) {
                 viewList.add(view);
-                Log.d(this, "Add viewList : " + resId);
+                Timber.d("add viewList : " + resId);
             }
         };
     }
@@ -80,15 +82,15 @@ public class AsyncLayoutInflateManager {
     public View getView(int resId) {
         ViewList viewList = mPreLoadedViewList.get(resId);
         if (viewList == null) {
-            Log.d(this, "getView is null");
+            Timber.d("getView is null - resId: " + resId);
             return null;
         }
 
         View view = viewList.remove();
         if (view != null) {
-            Log.d(this, "getView " + resId + ", return view");
+            Timber.d("getView " + resId + ", return view");
         } else {
-            Log.d(this, "getView is null");
+            Timber.d("getView is null - remove()" + resId);
         }
         return view;
     }

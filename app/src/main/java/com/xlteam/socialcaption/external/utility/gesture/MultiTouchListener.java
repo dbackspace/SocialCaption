@@ -238,8 +238,6 @@ public class MultiTouchListener implements OnTouchListener {
         view.getDrawingRect(outRect);
         view.getLocationOnScreen(location);
         outRect.offset(location[0], location[1]);
-        Log.d(this, "view: x = " + location[0] + ", y = " + location[1]);
-        Log.d(this, "so sánh: x = " + x + ", y = " + y);
         return checkInAreaBounds(outRect, x, y, Utility.getDp(mContext, diff));
     }
 

@@ -215,7 +215,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
     }
 
-
     public void onRotateClicked(View view) {
         mImgBackground.setRotation(mImgBackground.getRotation() + -90);
         enableBtnSave();

@@ -10,7 +10,6 @@ import java.util.List;
 import timber.log.Timber;
 
 public class AbsRepository<CaptionType> {
-    private static final String TAG = "AbsRepository";
     protected MyDatabase mDatabase;
     protected ILoader mCallback;
     protected Context mContext;

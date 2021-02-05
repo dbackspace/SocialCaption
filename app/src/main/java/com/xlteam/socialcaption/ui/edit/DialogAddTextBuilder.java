@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xlteam.socialcaption.R;
@@ -35,6 +36,7 @@ public class DialogAddTextBuilder {
     private ImageView imgGravity, imgBack, imgDone, imgFont;
     private AutoFitEditText edtText;
     private TextView tvBg;
+    private RelativeLayout rlEmptyClick; // cho phép click vào vùng trống khi edit để lưu text
     private RecyclerView rvFont, rvColor;
     private LinearLayout lnColor, lnBg;
     private View viewColor;
@@ -65,6 +67,7 @@ public class DialogAddTextBuilder {
         viewColor = mDialog.findViewById(R.id.viewColor);
         lnBg = mDialog.findViewById(R.id.lnBg);
         tvBg = mDialog.findViewById(R.id.tvBg);
+        rlEmptyClick = mDialog.findViewById(R.id.rlEmptyClick);
 
         //init default
         mNumberFont = 1; // tạm
@@ -73,6 +76,10 @@ public class DialogAddTextBuilder {
         Utility.setColorForView(viewColor, ColorDataSource.getInstance().getAllDataMini().get(mNumberColor));
         imgBack.setOnClickListener(v -> mDialog.cancel());
         imgDone.setOnClickListener(v -> {
+            savedCallback.onSaveClicked(edtText, span);
+            mDialog.cancel();
+        });
+        rlEmptyClick.setOnClickListener(v -> {
             savedCallback.onSaveClicked(edtText, span);
             mDialog.cancel();
         });
