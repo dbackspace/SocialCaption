@@ -87,6 +87,11 @@ public class SavedFragment extends Fragment implements ILoader<CommonCaption>, C
     @Override
     public void updateTotalCaptions(int total) {
         tvNumberCaption.setText(mContext.getString(R.string.number_captions, total));
+        if (total == 0) {
+            tvEmptyCaption.setVisibility(View.VISIBLE);
+            Utility.vibrateAnimation(mContext, tvEmptyCaption);
+            rvCaption.setVisibility(View.GONE);
+        }
     }
 
     private void setStatusViewInLoadingProgress(boolean inProgress) {
