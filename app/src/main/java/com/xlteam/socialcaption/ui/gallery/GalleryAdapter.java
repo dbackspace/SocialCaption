@@ -7,7 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.logger.Log;
@@ -15,12 +17,8 @@ import com.xlteam.socialcaption.external.utility.logger.Log;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
 
 import timber.log.Timber;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
     private List<String> mGalleryPaths;
@@ -33,6 +31,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     private int isCheckBoxAllChecked = -1;
     private boolean isItemLongClicked = false;
 
+
     public interface GallerySelectCallback {
         void onItemGallerySelected(int position);
 
@@ -41,6 +40,8 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 
         // callback All items was checked to GalleryFragment
         void setAllItemChecked(boolean isCheckBoxAllChecked);
+
+        void showBottomSheetShareAndDelete(int numberImageChecked);
     }
 
     public GalleryAdapter(List<String> galleryPaths, GalleryAdapter.GallerySelectCallback callBack) {
@@ -78,7 +79,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         } else {
             holder.checkBox.setVisibility(View.GONE);
         }
-
+        mCallback.showBottomSheetShareAndDelete(checkedList.size());
     }
 
     @Override
@@ -142,6 +143,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 //                }
                 Timber.d("GalleryPath size: " + mGalleryPaths.size() + " - checkedList size: " + checkedList.size());
                 mCallback.setAllItemChecked(checkedList.size() == mGalleryPaths.size());
+                mCallback.showBottomSheetShareAndDelete(checkedList.size());
             });
         }
 
@@ -172,5 +174,10 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     public void cancelMultipleMode() {
         isItemLongClicked = false;
     }
+
+    public ArrayList<Integer> getCheckedList() {
+        return checkedList;
+    }
+
 
 }
