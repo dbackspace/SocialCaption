@@ -359,7 +359,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
             public void onDown() {
                 boolean isBackgroundVisible = frameBorder.getTag() != null && (boolean) frameBorder.getTag();
                 if (!isBackgroundVisible) {
-                    containerTrash.setVisibility(View.VISIBLE);
                     frameBorder.setTag(true);
                     updateViewsBordersVisibilityExcept(textAddedView);
                     isDownAlready = true;

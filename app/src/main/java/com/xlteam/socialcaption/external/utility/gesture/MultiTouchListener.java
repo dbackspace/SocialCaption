@@ -26,6 +26,8 @@ public class MultiTouchListener implements OnTouchListener {
     float minimumScale = 0.2f;
     float maximumScale = 10.0f;
     private int activePointerId = INVALID_POINTER_ID;
+    private static final int CLICK_THRESHOLD_DURATION = 100;
+    private static final float CLICK_THRESHOLD_DISTANCE = 2f;
     private float prevX, prevY, prevRawX, prevRawY;
     private ScaleGestureDetector scaleGestureDetector;
 
@@ -134,9 +136,6 @@ public class MultiTouchListener implements OnTouchListener {
                 prevRawY = event.getRawY();
                 activePointerId = event.getPointerId(0);
                 view.bringToFront();
-                firePhotoEditorSDKListener(view, true);
-                deleteView.setScaleX(1f);
-                deleteView.setScaleY(1f);
                 mIsInViewBounds = false;
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -148,22 +147,26 @@ public class MultiTouchListener implements OnTouchListener {
                         adjustTranslation(view, currX - prevX, currY - prevY);
                     }
                     boolean checkViewInBound = isViewInBounds(deleteView, x, y, DIFF_IN_BOUND_AREA);
-                    if (!mIsInViewBounds) {
-                        if (deleteView != null && checkViewInBound) {
-                            mIsInViewBounds = true;
-                            Utility.vibratorNotify(mContext, 50);
-                            deleteView.setScaleX(1.2f);
-                            deleteView.setScaleY(1.2f);
+                    long duration = event.getEventTime() - event.getDownTime();
+                    if (!(duration < CLICK_THRESHOLD_DURATION && isSingleTapEvent(prevRawX, x, prevRawY, y))) {
+                        firePhotoEditorSDKListener(view, true);
+                        if (!mIsInViewBounds) {
+                            if (deleteView != null && checkViewInBound) {
+                                mIsInViewBounds = true;
+                                Utility.vibratorNotify(mContext, 50);
+                                deleteView.setScaleX(1.2f);
+                                deleteView.setScaleY(1.2f);
+                            } else {
+                                mIsInViewBounds = false;
+                                deleteView.setScaleX(1f);
+                                deleteView.setScaleY(1f);
+                            }
                         } else {
-                            mIsInViewBounds = false;
-                            deleteView.setScaleX(1f);
-                            deleteView.setScaleY(1f);
-                        }
-                    } else {
-                        if (deleteView != null && !checkViewInBound) {
-                            mIsInViewBounds = false;
-                            deleteView.setScaleX(1f);
-                            deleteView.setScaleY(1f);
+                            if (deleteView != null && !checkViewInBound) {
+                                mIsInViewBounds = false;
+                                deleteView.setScaleX(1f);
+                                deleteView.setScaleY(1f);
+                            }
                         }
                     }
                 }
@@ -198,6 +201,13 @@ public class MultiTouchListener implements OnTouchListener {
         return true;
     }
 
+    private boolean isSingleTapEvent(float startX, float endX, float startY, float endY) {
+        float differenceX = Math.abs(startX - endX);
+        float differenceY = Math.abs(startY - endY);
+        return (CLICK_THRESHOLD_DISTANCE > differenceX) || (CLICK_THRESHOLD_DISTANCE > differenceY);
+    }
+
+    // TODO: refactor hàm này, chuyển sang việc truyền vào type (ON_DOWN, ON_MOVE, ON_UP) tương ứng các sự kiện
     private void firePhotoEditorSDKListener(View view, boolean isStart) {
         if (view instanceof TextView) {
             if (onMultiTouchListener != null) {
