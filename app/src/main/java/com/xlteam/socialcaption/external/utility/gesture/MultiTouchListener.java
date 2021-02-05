@@ -153,8 +153,8 @@ public class MultiTouchListener implements OnTouchListener {
                         if (deleteView != null && checkViewInBound) {
                             mIsInViewBounds = true;
                             Utility.vibratorNotify(mContext, 50);
-                            deleteView.setScaleX(1.5f);
-                            deleteView.setScaleY(1.5f);
+                            deleteView.setScaleX(1.2f);
+                            deleteView.setScaleY(1.2f);
                         } else {
                             mIsInViewBounds = false;
                             deleteView.setScaleX(1f);

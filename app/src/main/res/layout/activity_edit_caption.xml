@@ -43,34 +43,49 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_centerInParent="true"
+        android:layout_above="@+id/adView">
+
+        <TextView
+            android:id="@+id/tvTrash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:textAlignment="center"
+            android:layout_above="@id/rlTrash"
+            android:text="Kéo vào đây để xóa"
+            android:visibility="gone"
+            android:textColor="@color/white"/>
+
+        <RelativeLayout
+            android:id="@+id/rlTrash"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/trash_round_style"
+            android:padding="5dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/imgTrash"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/ic_trash"
+                android:textColor="#FFFFFF" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/layout_menu"
         android:layout_below="@id/layout_top">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/relative_background_save_img"
-            android:layout_alignParentTop="true">
-            <RelativeLayout
-                android:id="@+id/rlTrash"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_centerInParent="true"
-                android:background="@drawable/trash_round_style"
-                android:padding="5dp"
-                android:visibility="gone">
-
-                <ImageView
-                    android:id="@+id/imgTrash"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/ic_trash"
-                    android:textColor="#FFFFFF" />
-            </RelativeLayout>
-
-        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/relative_background_save_img"
@@ -99,6 +114,7 @@
         android:id="@+id/layout_menu"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:visibility="visible"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="51dp"
         android:background="#121212"
