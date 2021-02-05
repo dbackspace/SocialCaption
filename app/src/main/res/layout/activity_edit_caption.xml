@@ -357,6 +357,7 @@
                 android:gravity="center"
                 android:onClick="onTextBgClicked"
                 android:orientation="vertical"
+                ads:layout_constraintEnd_toStartOf="@id/layout_btn_text_align"
                 ads:layout_constraintStart_toEndOf="@id/layout_btn_text_font">
 
                 <ImageView
