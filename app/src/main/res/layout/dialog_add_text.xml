@@ -26,15 +26,6 @@
             android:src="@drawable/ic_close" />
 
         <ImageView
-            android:id="@+id/imgGravity"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerInParent="true"
-            android:background="@drawable/bg_ripple_click_view_circle"
-            android:padding="5dp"
-            android:src="@drawable/ic_align_center" />
-
-        <ImageView
             android:id="@+id/imgDone"
             android:layout_width="40dp"
             android:layout_height="40dp"

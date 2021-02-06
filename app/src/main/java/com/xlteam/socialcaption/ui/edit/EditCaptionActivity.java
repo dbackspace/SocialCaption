@@ -387,7 +387,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
     @SuppressLint("ResourceAsColor")
     @Override
-    public void onSaveClicked(String text, int gravity) {
+    public void onSaveClicked(String text) {
         final View textAddedView = getTextStickerLayout();
         final TextView textInputTv = textAddedView.findViewById(R.id.text_tv);
         final FrameLayout frameBorder = textAddedView.findViewById(R.id.text_border);
