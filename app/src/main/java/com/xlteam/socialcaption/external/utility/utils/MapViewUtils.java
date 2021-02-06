@@ -1,12 +1,14 @@
 package com.xlteam.socialcaption.external.utility.utils;
 
 import android.os.Build;
-import android.widget.TextView;
+import android.view.View;
 
 import com.xlteam.socialcaption.ui.edit.ItemText;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import timber.log.Timber;
 
 public class MapViewUtils {
     private static final Map<Integer, ItemText> mapViews = new HashMap<>();
@@ -22,7 +24,7 @@ public class MapViewUtils {
         return Holder.INSTANCE;
     }
 
-    public void put(TextView textView, ItemText itemText) {
+    public void put(View textView, ItemText itemText) {
         if (textView != null && !itemText.isEmpty()) {
             int viewId = textView.getId();
             if (!mapViews.containsKey(viewId)) {
@@ -32,15 +34,25 @@ public class MapViewUtils {
                     mapViews.replace(viewId, itemText);
                 }
             }
+            Timber.v("put view item: resId = " + viewId + ", item = " + itemText);
         }
     }
 
-    public ItemText get(TextView textView) {
+    public ItemText get(View textView) {
         ItemText itemText = null;
         if (textView != null) {
             int viewId = textView.getId();
             itemText = mapViews.get(viewId);
         }
+        Timber.v("get item by view: item = " + itemText);
         return itemText;
+    }
+
+    public void remove(View textView) {
+        int viewId = textView.getId();
+        if (mapViews.containsKey(viewId)) {
+            Timber.v("remove view: resId = " + viewId);
+            mapViews.remove(viewId);
+        }
     }
 }

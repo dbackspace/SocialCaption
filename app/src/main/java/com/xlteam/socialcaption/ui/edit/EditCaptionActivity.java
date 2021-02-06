@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
@@ -98,13 +99,13 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     private List<View> addedViews;
     private RelativeLayout rlTrash;
     private RelativeLayout containerTrash;
-    private FrameLayout frameBorder;
 
     //text editor
     private RecyclerView rvFont, rvColor;
     private int mGravityText, mNumberBg;
     private ImageView imgGravity;
     private TextView tvBg;
+    private RelativeLayout containerBgImage;
 
     private MapViewUtils mapViewUtils;
 
@@ -139,18 +140,8 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         });
         tvDone.setClickable(false);
         imgBack.setOnClickListener(v -> finish());
-        imgCancelText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showTextMode(false);
-            }
-        });
-        imgDoneText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showTextMode(false);
-            }
-        });
+        imgCancelText.setOnClickListener(view -> showTextMode(false));
+        imgDoneText.setOnClickListener(view -> showTextMode(false));
     }
 
     private void findViewById() {
@@ -164,7 +155,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         relativeBackground = findViewById(R.id.relative_background_save_img);
         rlTrash = findViewById(R.id.rlTrash);
         containerTrash = findViewById(R.id.container_trash);
-        frameBorder = findViewById(R.id.text_border);
+        containerBgImage = findViewById(R.id.container_background_image);
 
         //text editor
         imgCancelText = findViewById(R.id.btn_cancel_edit_text);
@@ -423,6 +414,13 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
                     float textSize = textInputTv.getTextSize();
                     int textAlignment = textInputTv.getTextAlignment();
                     ItemText itemText = new ItemText(textInput, currentTextColor, textSize, textAlignment);
+
+                    // Solution tạm thời cho việc get itemText từ map
+                    ItemText itemTextTemp = mapViewUtils.get(textInputTv);
+                    if (!itemTextTemp.isEmpty()) {
+                        // editClickTextByClickTextView()
+                    }
+
                     editTextByClickTextView(textAddedView, itemText);
                 }
             }
@@ -431,6 +429,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
             public void onDown() {
                 boolean isBackgroundVisible = frameBorder.getTag() != null && (boolean) frameBorder.getTag();
                 if (!isBackgroundVisible) {
+                    frameBorder.setBackgroundResource(R.drawable.background_border_text_added);
                     frameBorder.setTag(true);
                     updateViewsBordersVisibilityExcept(textAddedView);
                     isDownAlready = true;
@@ -444,8 +443,12 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
             }
         });
 
+        // Solution tạm thời cho việc put vào map
+        ItemText itemText = new ItemText(text, Color.parseColor("FFFFFF"),
+                getResources().getDimension(R.dimen.text_added_default_size), Gravity.CENTER);
+
         textAddedView.setOnTouchListener(multiTouchListener);
-        addViewToParent(textAddedView);
+        addViewToParent(textAddedView, itemText);
     }
 
     public void editTextByClickTextView(View view, ItemText itemText) {
@@ -477,22 +480,25 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         // disable all border and delete button in all text added
         for (View view : addedViews) {
             FrameLayout border = view.findViewById(R.id.text_border);
+            border.setBackgroundResource(0);
             border.setTag(false);
         }
     }
 
-    private void addViewToParent(View view) {
+    private void addViewToParent(View view, ItemText itemText) {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         relativeBackground.addView(view, params);
         addedViews.add(view);
+        mapViewUtils.put(view, itemText);
         updateViewsBordersVisibilityExcept(view);
     }
 
     private void deleteViewFromParent(View view) {
         relativeBackground.removeView(view);
         addedViews.remove(view);
+        mapViewUtils.remove(view);
         relativeBackground.invalidate();
         updateViewsBordersVisibilityExcept(null);
     }
@@ -501,6 +507,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         for (View view : addedViews) {
             if (view != keepView) {
                 FrameLayout border = view.findViewById(R.id.text_border);
+                border.setBackgroundResource(0);
                 border.setTag(false);
             }
         }
@@ -553,6 +560,8 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         rvColor.setAdapter(new ColorAdapter(color -> {
 
         }));
+
+        containerBgImage.setOnClickListener(v -> clickBackgroundImage());
     }
 
     private void showTextMode(boolean isShow) {
