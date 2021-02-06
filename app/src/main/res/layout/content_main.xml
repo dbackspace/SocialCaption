@@ -49,6 +49,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_centerInParent="true"
+            android:layout_marginEnd="5dp"
             android:layout_toStartOf="@id/btn_create_picture"
             android:background="@drawable/bg_ripple_click_view_circle"
             android:padding="5dp"
