@@ -43,7 +43,6 @@ public class GalleryFragment extends Fragment
         DialogPreviewGallery.DialogDismissListenerCallback {
     private RecyclerView rvGallery;
     private Context mContext;
-    //    private StaggeredGridLayoutManager _staGridLayoutManager;
     private TextView mEmptyImage;
     private GalleryAdapter mGalleryAdapter;
     private List<String> mGalleryPaths;
@@ -68,7 +67,6 @@ public class GalleryFragment extends Fragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mGalleryPaths = PrefUtils.getListItemGallery(mContext);
-//        _staGridLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
         mGalleryAdapter = new GalleryAdapter(mGalleryPaths, this);
 
         // set animation for bottom sheet (layout share and delete)
