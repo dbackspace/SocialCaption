@@ -27,9 +27,9 @@ public class Constant {
     public static int ALIGN_START = 1;
     public static int ALIGN_END = 2;
 
-    public static int BACKGROUND_SPAN_TRANSPARENT = 0;
-    public static int BACKGROUND_SPAN_BLUR = 1;
-    public static int BACKGROUND_SPAN_FULL_SOLID = 2;
+    public static int BACKGROUND_COLOR_0 = 0;
+    public static int BACKGROUND_COLOR_50 = 1;
+    public static int BACKGROUND_COLOR_100 = 2;
 
     public static String PREF_GALLERY = "PREF_GALLERY";
     public static final String GALLERY_PATH = "GALLERY_PATH";

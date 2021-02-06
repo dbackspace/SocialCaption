@@ -20,7 +20,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -103,9 +102,9 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
     //text editor
     private RecyclerView rvFont, rvColor;
-    private int mGravityText;
+    private int mGravityText, mNumberBg;
     private ImageView imgGravity;
-    private SeekBar sbTransparentBg;
+    private TextView tvBg;
 
     private MapViewUtils mapViewUtils;
 
@@ -175,7 +174,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         rvColor = findViewById(R.id.rvColor);
         rvFont = findViewById(R.id.rvFont);
         imgGravity = findViewById(R.id.imgGravity);
-        sbTransparentBg = findViewById(R.id.seek_bar_blur_background);
+        tvBg = findViewById(R.id.tvBg);
     }
 
     @Override
@@ -237,6 +236,8 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     public void onAddTextClicked(View view) {
         layoutTop.setVisibility(View.INVISIBLE);
         layoutBottom.setVisibility(View.INVISIBLE);
+        rvColor.setVisibility(View.GONE);
+        rvFont.setVisibility(View.GONE);
         Dialog addTextDialog = new DialogAddTextBuilder(this, null).build();
         addTextDialog.setOnCancelListener(dialog -> {
             layoutTop.setVisibility(View.VISIBLE);
@@ -273,6 +274,8 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     public void onTextChangeClicked(View view) {
         layoutTop.setVisibility(View.INVISIBLE);
         layoutBottom.setVisibility(View.INVISIBLE);
+        rvColor.setVisibility(View.GONE);
+        rvFont.setVisibility(View.GONE);
         Dialog addTextDialog = new DialogAddTextBuilder(this, null).build(); //truyền text vào đây
         addTextDialog.setOnCancelListener(dialog -> {
             layoutTop.setVisibility(View.VISIBLE);
@@ -284,19 +287,27 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     public void onTextColorClicked(View view) {
         rvColor.setVisibility(View.VISIBLE);
         rvFont.setVisibility(View.GONE);
-        sbTransparentBg.setVisibility(View.GONE);
     }
 
     public void onTextFontClicked(View view) {
         rvFont.setVisibility(View.VISIBLE);
         rvColor.setVisibility(View.GONE);
-        sbTransparentBg.setVisibility(View.GONE);
     }
 
     public void onTextBgClicked(View view) {
-        rvFont.setVisibility(View.GONE);
-        rvColor.setVisibility(View.VISIBLE);
-        sbTransparentBg.setVisibility(View.VISIBLE);
+        if (mNumberBg == Constant.BACKGROUND_COLOR_0) {
+            mNumberBg = Constant.BACKGROUND_COLOR_50;
+            Utility.setColorForView(tvBg, "#60FFFFFF");
+            Utility.setColorForTextView(tvBg, "#FFFFFFFF");
+        } else if (mNumberBg == Constant.BACKGROUND_COLOR_50) {
+            mNumberBg = Constant.BACKGROUND_COLOR_100;
+            Utility.setColorForView(tvBg, "#FFFFFFFF");
+            Utility.setColorForTextView(tvBg, "#FF000000");
+        } else {
+            mNumberBg = Constant.BACKGROUND_COLOR_0;
+            Utility.setColorForView(tvBg, "#00FFFFFF");
+            Utility.setColorForTextView(tvBg, "#FFFFFFFF");
+        }
     }
 
     public void onTextAlignClicked(View view) {
@@ -514,6 +525,8 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     public void onEventMoveChangeListener() {
         containerTrash.setVisibility(View.VISIBLE);
         layoutTop.setVisibility(View.INVISIBLE);
+        rvColor.setVisibility(View.GONE);
+        rvFont.setVisibility(View.GONE);
         layoutBottom.setVisibility(View.INVISIBLE);
     }
 
@@ -555,7 +568,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
             layoutMenu.setVisibility(View.VISIBLE);
             rvFont.setVisibility(View.GONE);
             rvColor.setVisibility(View.GONE);
-            sbTransparentBg.setVisibility(View.GONE);
         }
     }
 }

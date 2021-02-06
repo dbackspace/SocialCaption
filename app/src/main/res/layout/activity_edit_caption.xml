@@ -359,10 +359,16 @@
                 ads:layout_constraintEnd_toStartOf="@id/layout_btn_text_align"
                 ads:layout_constraintStart_toEndOf="@id/layout_btn_text_font">
 
-                <ImageView
+                <TextView
+                    android:id="@+id/tvBg"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/ic_text_bg" />
+                    android:background="@drawable/bg_font_button"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center"
+                    android:text="A"
+                    android:textColor="@color/white"
+                    android:textSize="22dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -425,16 +431,6 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="5dp"
-            android:visibility="gone" />
-
-        <SeekBar
-            android:id="@+id/seek_bar_blur_background"
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_below="@id/rvColor"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-
             android:visibility="gone" />
     </RelativeLayout>
 

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -23,6 +22,8 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
+import androidx.core.content.FileProvider;
+
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.logger.Log;
 
@@ -32,7 +33,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collection;
 
-import androidx.core.content.FileProvider;
 import de.cketti.mailto.EmailIntentBuilder;
 
 import static com.xlteam.socialcaption.external.utility.utils.Constant.FILE_PROVIDER_PATH;
@@ -112,7 +112,7 @@ public class Utility {
     public static void setColorGradient(View view, int[] colors) {
         GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, colors);
         gd.setCornerRadius(0f);
-        view.setBackground(gd);
+        if (view != null) view.setBackground(gd);
     }
 
     public static boolean isValidClick(int id) { // view.getId()
