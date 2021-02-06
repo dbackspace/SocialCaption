@@ -152,7 +152,6 @@ public class GalleryFragment extends Fragment
         if (item.getItemId() == R.id.action_create_picture) {
             Intent intent = new Intent(mContext, EditCaptionActivity.class);
             startActivity(intent);
-            getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
         }
         return super.onOptionsItemSelected(item);
     }
