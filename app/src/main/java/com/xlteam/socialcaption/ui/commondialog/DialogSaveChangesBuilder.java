@@ -31,23 +31,23 @@ public class DialogSaveChangesBuilder {
         return this;
     }
 
-    public DialogSaveChangesBuilder setFirstButton(View.OnClickListener cancelClick, String btnName) {
-        TextView tvCancel = mDialog.findViewById(R.id.tvCancel);
-        tvCancel.setVisibility(View.VISIBLE);
-        tvCancel.setText(btnName);
-        tvCancel.setOnClickListener(v -> {
-            cancelClick.onClick(v);
-            mDialog.dismiss();
-        });
-        return this;
-    }
-
-    public DialogSaveChangesBuilder setSecondButton(View.OnClickListener closeClick, String btnName) {
+    public DialogSaveChangesBuilder setFirstButton(View.OnClickListener closeClick, String btnName) {
         TextView tvClose = mDialog.findViewById(R.id.tvClose);
         tvClose.setVisibility(View.VISIBLE);
         tvClose.setText(btnName);
         tvClose.setOnClickListener(v -> {
             closeClick.onClick(v);
+            mDialog.dismiss();
+        });
+        return this;
+    }
+
+    public DialogSaveChangesBuilder setSecondButton(View.OnClickListener cancelClick, String btnName) {
+        TextView tvCancel = mDialog.findViewById(R.id.tvCancel);
+        tvCancel.setVisibility(View.VISIBLE);
+        tvCancel.setText(btnName);
+        tvCancel.setOnClickListener(v -> {
+            cancelClick.onClick(v);
             mDialog.dismiss();
         });
         return this;
