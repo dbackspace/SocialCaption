@@ -1,19 +1,21 @@
 package com.xlteam.socialcaption.ui.gallery;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.logger.Log;
+import com.xlteam.socialcaption.external.utility.thread.ThreadExecutor;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -62,7 +64,18 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         String path = mGalleryPaths.get(position);
         Log.e("onBindViewHolder", "file://" + path);
 
-        Picasso.get().load(new File(path)).into(holder.imgGallery);
+        ThreadExecutor.runOnMainThread(() -> Picasso.get()
+                .load(new File(path))
+                .into(holder.imgGallery, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        holder.rlItemGallery.setBackgroundColor(Color.BLACK);
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                    }
+                }));
 
         // checkbox
         if (isItemLongClicked) {
@@ -86,12 +99,13 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-
+        private final RelativeLayout rlItemGallery;
         private final ImageView imgGallery;
         private final CheckBox checkBox;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
+            rlItemGallery = itemView.findViewById(R.id.rl_item_gallery);
             imgGallery = itemView.findViewById(R.id.img_item_gallery);
             checkBox = itemView.findViewById(R.id.checkbox_item_gallery);
 
