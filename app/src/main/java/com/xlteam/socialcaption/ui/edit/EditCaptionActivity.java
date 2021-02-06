@@ -98,8 +98,8 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
     private List<View> addedViews;
     private RelativeLayout rlTrash;
-    private ImageView imgTrash;
     private RelativeLayout containerTrash;
+    private FrameLayout frameBorder;
 
     //text editor
     private RecyclerView rvFont, rvColor;
@@ -164,8 +164,8 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         layoutSaveCancel = findViewById(R.id.layout_save_cancel);
         relativeBackground = findViewById(R.id.relative_background_save_img);
         rlTrash = findViewById(R.id.rlTrash);
-        imgTrash = findViewById(R.id.imgTrash);
         containerTrash = findViewById(R.id.container_trash);
+        frameBorder = findViewById(R.id.text_border);
 
         //text editor
         imgCancelText = findViewById(R.id.btn_cancel_edit_text);
@@ -176,7 +176,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         rvFont = findViewById(R.id.rvFont);
         imgGravity = findViewById(R.id.imgGravity);
         sbTransparentBg = findViewById(R.id.seek_bar_blur_background);
-
     }
 
     @Override

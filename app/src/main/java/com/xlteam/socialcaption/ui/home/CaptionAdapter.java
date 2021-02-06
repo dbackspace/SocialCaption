@@ -26,8 +26,6 @@ import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
 import java.util.List;
 
 public class CaptionAdapter extends RecyclerView.Adapter<CaptionAdapter.ViewHolder> {
-    private static final String TAG = "CaptionAdapter";
-
     private List<CommonCaption> mCaptions;
     private Context mContext;
     private Callback mCallback;

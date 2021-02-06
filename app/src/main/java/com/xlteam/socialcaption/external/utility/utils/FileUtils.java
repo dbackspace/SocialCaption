@@ -35,18 +35,6 @@ public class FileUtils {
         }
     }
 
-    public static class PhotoLoader {
-        private static final SparseArray<Bitmap> photoLoaderList = new SparseArray<>();
-
-        public static void setPhotoLoaded(int position, Bitmap bitmap) {
-            photoLoaderList.append(position, bitmap);
-        }
-
-        public static Bitmap getPhotoLoaded(int position) {
-            return photoLoaderList.get(position);
-        }
-    }
-
     public static class StoragePathUtils {
         public static final String DATA_FOLDER = "/SocialCaption";
         public static final String DATA_INTERNAL_PATH = getInternalStoragePath() + DATA_FOLDER;
@@ -149,7 +137,7 @@ public class FileUtils {
             }, null, null, null)) {
                 if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
                     fileName = cursor.getString(cursor.getColumnIndex(MediaStore.Images.ImageColumns.DISPLAY_NAME));
-                    Log.d("duc.nh3", "name is " + fileName);
+                    Log.d(TAG, "name is " + fileName);
                 }
             }
         }

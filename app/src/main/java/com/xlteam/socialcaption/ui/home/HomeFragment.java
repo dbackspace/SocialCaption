@@ -26,8 +26,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 public class HomeFragment extends Fragment {
-    private static final String TAG = "HomeFragment";
-
     private Context mContext;
     private TabLayout tabLayoutCategory;
     private ViewPager viewPager;

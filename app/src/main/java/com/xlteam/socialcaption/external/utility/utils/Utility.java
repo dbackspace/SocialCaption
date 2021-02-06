@@ -132,7 +132,7 @@ public class Utility {
                 bRet = false;
             }
         } else {
-            Log.d("this", "isValidClick View is different");
+            Log.d(TAG, "isValidClick View is different");
         }
 
         sLastClickTime = clickTime;

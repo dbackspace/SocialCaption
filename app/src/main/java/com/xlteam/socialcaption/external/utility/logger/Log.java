@@ -43,7 +43,6 @@ public class Log {
     private static int sLogIndex = 0;
 
     private final LogWriter mLogWriter;
-    private static Boolean sNeedEncode;
 
     private static final String SLUGGISH_TAG = "VerificationLog";
 

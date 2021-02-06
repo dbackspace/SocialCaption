@@ -45,7 +45,6 @@ import static com.xlteam.socialcaption.external.utility.utils.Constant.FILE_PROV
 public class GalleryFragment extends Fragment
         implements GalleryAdapter.GallerySelectCallback,
         DialogPreviewGallery.DialogDismissListenerCallback {
-    private static final String TAG = "GalleryFragment";
     private RecyclerView rvGallery;
     private Context mContext;
     //    private StaggeredGridLayoutManager _staGridLayoutManager;
@@ -90,7 +89,7 @@ public class GalleryFragment extends Fragment
     @Override
     public void onResume() {
         super.onResume();
-        Log.e(TAG, "onResume");
+        Log.e(this, "onResume");
         updateUI();
     }
 
@@ -198,7 +197,7 @@ public class GalleryFragment extends Fragment
 
     private void updateUI() {
         mGalleryPaths = PrefUtils.getListItemGallery(mContext);
-        Log.e("GalleryFragment", "updateUI, list path size = " + mGalleryPaths.size());
+        Timber.e("updateUI, list path size = " + mGalleryPaths.size());
         if (mGalleryPaths.size() > 0) {
             mEmptyImage.setVisibility(View.GONE);
             rvGallery.setVisibility(View.VISIBLE);
