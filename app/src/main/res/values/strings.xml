@@ -38,4 +38,7 @@
     <string name="save_or_cancel">Bạn có muốn lưu các thay đổi?</string>
     <string name="select_items">Chọn ảnh</string>
     <string name="select_number_image">Đã chọn %d</string>
+    <string name="share">Chia sẻ</string>
+    <string name="delete">Xóa</string>
+    <string name="selected">Đã chọn</string>
 </resources>
