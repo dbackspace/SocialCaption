@@ -417,7 +417,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
                     // Solution tạm thời cho việc get itemText từ map
                     ItemText itemTextTemp = mapViewUtils.get(textInputTv);
-                    if (!itemTextTemp.isEmpty()) {
+                    if (itemTextTemp != null && !itemTextTemp.isEmpty()) {
                         // editClickTextByClickTextView()
                     }
 
@@ -444,7 +444,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         });
 
         // Solution tạm thời cho việc put vào map
-        ItemText itemText = new ItemText(text, Color.parseColor("FFFFFF"),
+        ItemText itemText = new ItemText(text, Color.parseColor("#FFFFFF"),
                 getResources().getDimension(R.dimen.text_added_default_size), Gravity.CENTER);
 
         textAddedView.setOnTouchListener(multiTouchListener);
