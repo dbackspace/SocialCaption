@@ -5,17 +5,75 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/app_bar_main">
+    tools:context=".ui.MainActivity">
+
+    <RelativeLayout
+        android:id="@+id/toolbarCustom"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="?attr/colorPrimary"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/btn_menu"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="5dp"
+            android:background="@drawable/bg_ripple_click_view_circle"
+            android:padding="5dp"
+            android:src="@drawable/ic_menu" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="20dp" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/btn_menu"
+            android:fontFamily="sans-serif-medium"
+            android:text="Trang chủ"
+            android:textColor="@color/white"
+            android:textSize="22dp" />
+
+        <ImageView
+            android:id="@+id/btn_search"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:layout_toStartOf="@id/btn_create_picture"
+            android:background="@drawable/bg_ripple_click_view_circle"
+            android:padding="5dp"
+            android:src="@drawable/ic_search" />
+
+        <ImageView
+            android:id="@+id/btn_create_picture"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/bg_ripple_click_view_circle"
+            android:padding="5dp"
+            android:src="@drawable/ic_create_picture" />
+    </RelativeLayout>
 
     <FrameLayout
         android:id="@+id/frame"
         android:layout_width="match_parent"
+        android:layout_height="0dp"
         ads:layout_constraintBottom_toTopOf="@+id/adView"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_height="0dp" />
+        app:layout_constraintTop_toBottomOf="@id/toolbarCustom" />
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"
@@ -26,4 +84,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

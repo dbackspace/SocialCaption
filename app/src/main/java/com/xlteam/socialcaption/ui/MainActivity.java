@@ -5,10 +5,20 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -20,28 +30,22 @@ import com.xlteam.socialcaption.external.utility.animation.ViManager;
 import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
 import com.xlteam.socialcaption.external.utility.utils.Constant;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
+import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
 import com.xlteam.socialcaption.ui.gallery.GalleryFragment;
 import com.xlteam.socialcaption.ui.home.HomeFragment;
+import com.xlteam.socialcaption.ui.home.SearchDialogFragment;
 import com.xlteam.socialcaption.ui.saved.SavedFragment;
-
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 public class MainActivity extends AppCompatActivity {
 
     private NavigationView navigationView;
     private final int HOME = 0, GALLERY = 1, SAVED = 2;
-    private Toolbar toolbar;
     private DrawerLayout drawer;
     private Fragment currentFragment;
     private AdView mAdView;
+    private ImageView imgMenu, imgSearch, imgCreatePicture;
+    private TextView tvTitle;
+    private RelativeLayout toolbarCustom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +56,11 @@ public class MainActivity extends AppCompatActivity {
         mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
-        toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.title_home);
-        setSupportActionBar(toolbar);
+        tvTitle = findViewById(R.id.tv_title);
+        imgMenu = findViewById(R.id.btn_menu);
+        imgSearch = findViewById(R.id.btn_search);
+        imgCreatePicture = findViewById(R.id.btn_create_picture);
+        toolbarCustom = findViewById(R.id.toolbarCustom);
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(item -> {
@@ -98,9 +104,22 @@ public class MainActivity extends AppCompatActivity {
             }
             return false;
         });
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.app_name, R.string.app_name);
-        drawer.addDrawerListener(actionBarDrawerToggle);
-        actionBarDrawerToggle.syncState();
+        imgMenu.setOnClickListener(view -> drawer.openDrawer(GravityCompat.START, true));
+        imgCreatePicture.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, EditCaptionActivity.class);
+            startActivity(intent);
+        });
+        imgSearch.setOnClickListener(view -> {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            ViManager.getInstance().setFragmentDefaultAnimation(MainActivity.this, fragmentTransaction);
+            SearchDialogFragment searchDialogFragment = new SearchDialogFragment(() -> {
+                if (currentFragment instanceof HomeFragment) {
+                    ((HomeFragment) currentFragment).updateData();
+                }
+            });
+            searchDialogFragment.show(fragmentTransaction, "dialog");
+        });
         selectNavigation(HOME);
     }
 
@@ -166,28 +185,38 @@ public class MainActivity extends AppCompatActivity {
             if (!(currentFragment instanceof HomeFragment)) {
                 currentFragment = new HomeFragment();
                 navigationView.setCheckedItem(R.id.nav_home);
-                toolbar.setTitle(R.string.title_home);
+                tvTitle.setText(R.string.title_home);
+                imgSearch.setVisibility(View.VISIBLE);
             }
         } else if (type == GALLERY) { //giữ trạng thái khi chọn lại item
             if (!(currentFragment instanceof GalleryFragment)) {
                 currentFragment = new GalleryFragment();
                 navigationView.setCheckedItem(R.id.nav_gallery);
-                toolbar.setTitle(R.string.menu_gallery);
+                tvTitle.setText(R.string.menu_gallery);
+                imgSearch.setVisibility(View.GONE);
             }
         } else if (type == SAVED) { //giữ trạng thái khi chọn lại item
             if (!(currentFragment instanceof SavedFragment)) {
                 currentFragment = new SavedFragment();
                 navigationView.setCheckedItem(R.id.nav_gallery);
-                toolbar.setTitle(R.string.menu_saved);
+                tvTitle.setText(R.string.menu_saved);
+                imgSearch.setVisibility(View.GONE);
             }
         }
         replaceFragment(currentFragment);
+    }
+
+    public void showToolbarCustom(boolean isShow) {
+        toolbarCustom.setVisibility(isShow ? View.VISIBLE : View.GONE);
     }
 
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START, true);
+        } else if (currentFragment instanceof GalleryFragment && toolbarCustom.getVisibility() == View.GONE) {
+            toolbarCustom.setVisibility(View.VISIBLE);
+            ((GalleryFragment) currentFragment).onBackPress();
         } else if (navigationView.getMenu().findItem(R.id.nav_gallery).isChecked()) {
             selectNavigation(HOME);
         } else if (navigationView.getMenu().findItem(R.id.nav_saved).isChecked()) {

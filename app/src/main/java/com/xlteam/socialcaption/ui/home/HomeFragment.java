@@ -1,29 +1,20 @@
 package com.xlteam.socialcaption.ui.home;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.material.tabs.TabLayout;
-import com.xlteam.socialcaption.R;
-import com.xlteam.socialcaption.external.utility.animation.ViManager;
-import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
-import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.tabs.TabLayout;
+import com.xlteam.socialcaption.R;
+import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
 
 public class HomeFragment extends Fragment {
     private Context mContext;
@@ -37,12 +28,6 @@ public class HomeFragment extends Fragment {
         mContext = context;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         final View root = AsyncLayoutInflateManager.getInstance(mContext).inflateView(inflater, container, R.layout.fragment_home);
@@ -54,26 +39,8 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
-    @SuppressLint("CheckResult")
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_toolbar_home, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_search) {
-            FragmentManager fragmentManager = getChildFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            ViManager.getInstance().setFragmentDefaultAnimation(mContext, fragmentTransaction);
-            SearchDialogFragment searchDialogFragment = new SearchDialogFragment(() -> mAdapter.notifyDataSetChanged());
-            searchDialogFragment.show(fragmentTransaction, "dialog");
-        } else if (item.getItemId() == R.id.action_create_picture) {
-            Intent intent = new Intent(mContext, EditCaptionActivity.class);
-            startActivity(intent);
-        }
-        return super.onOptionsItemSelected(item);
+    public void updateData() {
+        mAdapter.notifyDataSetChanged();
     }
 
     public class SlidePagerAdapter extends FragmentStatePagerAdapter {

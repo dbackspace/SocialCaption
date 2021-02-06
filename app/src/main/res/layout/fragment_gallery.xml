@@ -5,69 +5,53 @@
     android:layout_height="match_parent"
     tools:context=".ui.gallery.GalleryFragment">
 
-
     <RelativeLayout
-        android:id="@+id/linear_check_all"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="5dp"
-        android:visibility="gone">
+        android:id="@+id/layout_top"
+        android:layout_width="match_parent"
+        android:layout_height="56dp">
 
-        <TextView
-            android:id="@+id/tv_cancel_multiple_mode"
+        <LinearLayout
+            android:id="@+id/layout_check_all"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="15dp"
-            android:background="@drawable/bg_ripple_click_view_rectangle"
-            android:text="Cancel"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp">
+
+            <ImageView
+                android:id="@+id/image_check_all"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@drawable/bg_ripple_click_view_circle"
+                android:src="@drawable/checkbox_custom" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tất cả"
+                android:textColor="@color/color_25"
+                android:textSize="12dp" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tv_number_image_checked"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="15dp"
-            android:layout_toStartOf="@id/temp2"
-            android:textSize="18sp" />
-
-        <RelativeLayout
-            android:id="@+id/temp2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="10dp"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <CheckBox
-                android:id="@+id/checkbox_all"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/tv_temp1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="35dp"
-
-                android:text="All"
-                android:textSize="20sp" />
-        </RelativeLayout>
-
+            android:layout_centerInParent="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/layout_check_all"
+            android:fontFamily="sans-serif-medium"
+            android:text="Đã chọn"
+            android:textColor="@color/black"
+            android:textSize="22dp" />
     </RelativeLayout>
 
     <TextView
         android:id="@+id/tv_empty_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/layout_top"
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
         android:text="@string/no_image"
@@ -79,7 +63,7 @@
         android:id="@+id/rv_gallery_caption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/linear_check_all" />
+        android:layout_below="@id/layout_top" />
 
     <LinearLayout
         android:id="@+id/bottom_sheet"
