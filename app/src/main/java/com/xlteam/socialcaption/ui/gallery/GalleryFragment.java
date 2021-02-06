@@ -106,7 +106,10 @@ public class GalleryFragment extends Fragment
         });
 
         imgCheckAll = root.findViewById(R.id.image_check_all);
-        imgCheckAll.setOnClickListener(view -> mGalleryAdapter.onCheckBoxAllChecked(imgCheckAll.isActivated()));
+        imgCheckAll.setOnClickListener(view -> {
+            imgCheckAll.setActivated(!imgCheckAll.isActivated());
+            mGalleryAdapter.onCheckBoxAllChecked(imgCheckAll.isActivated());
+        });
 
         // init recycler gallery by findViewById
         rvGallery = root.findViewById(R.id.rv_gallery_caption);
@@ -152,7 +155,7 @@ public class GalleryFragment extends Fragment
         boolean isShow = numberImageChecked != 0;
         TransitionManager.beginDelayedTransition(viewGroup, transition);
         if (isShow) {
-            tvTotalChecked.setText(String.valueOf(numberImageChecked));
+            tvTotalChecked.setText(mContext.getString(R.string.select_number_image, numberImageChecked));
         } else {
             tvTotalChecked.setText(R.string.select_items);
         }

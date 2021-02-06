@@ -2,20 +2,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="1dp">
+    android:layout_margin="2dp"
+    android:background="#000000"
+    android:padding="0.5dp">
 
     <ImageView
         android:id="@+id/img_item_gallery"
         android:layout_width="wrap_content"
-        android:layout_height="250dp"
-        android:layout_margin="0.5dp"
+        android:layout_height="100dp"
         android:scaleType="centerCrop" />
 
     <CheckBox
         android:id="@+id/checkbox_item_gallery"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@id/img_item_gallery"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_alignTop="@+id/img_item_gallery"
+        android:layout_alignEnd="@id/img_item_gallery"
+        android:layout_margin="2dp"
+        android:background="@drawable/checkbox_custom_2"
+        android:button="@null"
         android:visibility="gone" />
 </RelativeLayout>
