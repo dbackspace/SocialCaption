@@ -86,4 +86,7 @@ dependencies {
 
     // Logging
     implementation 'com.jakewharton.timber:timber:4.7.1'
+
+    // Picasso for load image
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }

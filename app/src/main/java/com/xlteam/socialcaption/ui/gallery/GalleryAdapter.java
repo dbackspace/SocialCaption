@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.logger.Log;
 
@@ -61,10 +62,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         String path = mGalleryPaths.get(position);
         Log.e("onBindViewHolder", "file://" + path);
 
-        File imgFile = new File(path);
-        Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-        holder.imgGallery.setImageBitmap(bitmap);
-        holder.imgGallery.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        Picasso.get().load(new File(path)).into(holder.imgGallery);
 
         // checkbox
         if (isItemLongClicked) {
