@@ -4,9 +4,9 @@ public class Color {
     private String color;
     private String textColor;
 
-    public Color(String color, String text) {
+    public Color(String color, String textColor) {
         this.color = color;
-        this.textColor = text;
+        this.textColor = textColor;
     }
 
     public String getColor() {

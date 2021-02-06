@@ -16,9 +16,6 @@
     <string name="term_of_use">Điều khoản sử dụng</string>
     <string name="send_friend">Gửi cho bạn bè</string>
     <string name="copied">Đã sao chép</string>
-    <string name="edit">Chỉnh sửa</string>
-    <string name="copy_text">Sao chép</string>
-    <string name="share">Chia sẻ</string>
     <string name="all">Tất cả</string>
     <string name="trending">Đang HOT</string>
     <string name="give_love">Thả thính</string>
@@ -36,7 +33,6 @@
     <string name="ok">Đồng ý</string>
     <string name="huy_bo">Không</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="luu">Có</string>
     <string name="close">Thoát</string>
     <string name="save_or_cancel">Bạn có muốn lưu các thay đổi?</string>

@@ -6,9 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -32,7 +29,6 @@ import com.xlteam.socialcaption.external.utility.logger.Log;
 import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
 import com.xlteam.socialcaption.external.utility.utils.PrefUtils;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
-import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -73,8 +69,6 @@ public class GalleryFragment extends Fragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-
         mGalleryPaths = PrefUtils.getListItemGallery(mContext);
 //        _staGridLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
         mGalleryAdapter = new GalleryAdapter(mGalleryPaths, this);
@@ -139,21 +133,6 @@ public class GalleryFragment extends Fragment
     }
 
     CompoundButton.OnCheckedChangeListener onCheckedChangeListener = (buttonView, isChecked) -> mGalleryAdapter.onCheckBoxAllChecked(isChecked);
-
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_toolbar_gallery, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_create_picture) {
-            Intent intent = new Intent(mContext, EditCaptionActivity.class);
-            startActivity(intent);
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public void onItemGallerySelected(int position) {

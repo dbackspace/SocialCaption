@@ -11,14 +11,60 @@
         android:layout_height="wrap_content"
         android:theme="@style/Theme.SocialCaption.AppBarOverlay">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            style="@style/Widget.SocialCaption.Toolbar.Solid"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            android:theme="@style/ThemeOverlay.SocialCaption.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            android:layout_height="56dp"
+            android:background="?attr/colorPrimary">
+
+            <ImageView
+                android:id="@+id/btn_menu"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/bg_ripple_click_view_circle"
+                android:padding="5dp"
+                android:src="@drawable/ic_menu" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@id/btn_menu"
+                android:fontFamily="sans-serif-medium"
+                android:text="Trang chủ"
+                android:textColor="@color/white"
+                android:textSize="22dp" />
+
+            <ImageView
+                android:id="@+id/btn_search"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:layout_toStartOf="@id/btn_create_picture"
+                android:background="@drawable/bg_ripple_click_view_circle"
+                android:padding="5dp"
+                android:src="@drawable/ic_search" />
+
+            <ImageView
+                android:id="@+id/btn_create_picture"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:layout_marginEnd="5dp"
+                android:background="@drawable/bg_ripple_click_view_circle"
+                android:padding="5dp"
+                android:src="@drawable/ic_create_picture" />
+        </RelativeLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
