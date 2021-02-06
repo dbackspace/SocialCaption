@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private AdView mAdView;
     private ImageView imgMenu, imgSearch, imgCreatePicture;
     private TextView tvTitle;
+    private RelativeLayout toolbarCustom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         imgMenu = findViewById(R.id.btn_menu);
         imgSearch = findViewById(R.id.btn_search);
         imgCreatePicture = findViewById(R.id.btn_create_picture);
+        toolbarCustom = findViewById(R.id.toolbarCustom);
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(item -> {
@@ -203,10 +206,17 @@ public class MainActivity extends AppCompatActivity {
         replaceFragment(currentFragment);
     }
 
+    public void showToolbarCustom(boolean isShow) {
+        toolbarCustom.setVisibility(isShow ? View.VISIBLE : View.GONE);
+    }
+
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START, true);
+        } else if (currentFragment instanceof GalleryFragment && toolbarCustom.getVisibility() == View.GONE) {
+            toolbarCustom.setVisibility(View.VISIBLE);
+            ((GalleryFragment) currentFragment).onBackPress();
         } else if (navigationView.getMenu().findItem(R.id.nav_gallery).isChecked()) {
             selectNavigation(HOME);
         } else if (navigationView.getMenu().findItem(R.id.nav_saved).isChecked()) {

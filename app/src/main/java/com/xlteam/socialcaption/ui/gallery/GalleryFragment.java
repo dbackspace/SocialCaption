@@ -8,8 +8,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -29,6 +28,7 @@ import com.xlteam.socialcaption.external.utility.logger.Log;
 import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
 import com.xlteam.socialcaption.external.utility.utils.PrefUtils;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
+import com.xlteam.socialcaption.ui.MainActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -44,21 +44,19 @@ public class GalleryFragment extends Fragment
     private RecyclerView rvGallery;
     private Context mContext;
     //    private StaggeredGridLayoutManager _staGridLayoutManager;
-    private GridLayoutManager gridLayoutManager;
     private TextView mEmptyImage;
     private GalleryAdapter mGalleryAdapter;
     private List<String> mGalleryPaths;
-    private RelativeLayout mRelativeCheckAll;
-    private CheckBox mCheckBoxAll;
-    private TextView mTvCancelMultipleMode;
+    private RelativeLayout layoutTop;
+    private ImageView imgCheckAll;
 
-    private LinearLayout mLinearShareAndDelete;
+    private LinearLayout layoutBottom;
     private boolean showed = false;
     private Transition transition;
     private ViewGroup viewGroup;
     private LinearLayout mBtnShareGallery;
     private LinearLayout mBtnDeleteGallery;
-    private TextView mTvNumberOfImageChecked;
+    private TextView tvTotalChecked;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -92,10 +90,10 @@ public class GalleryFragment extends Fragment
         final View root = AsyncLayoutInflateManager.getInstance(mContext).inflateView(inflater, container, R.layout.fragment_gallery);
         this.viewGroup = container;
         mEmptyImage = root.findViewById(R.id.tv_empty_image);
-        mRelativeCheckAll = root.findViewById(R.id.linear_check_all);
-        mLinearShareAndDelete = root.findViewById(R.id.bottom_sheet);
+        layoutTop = root.findViewById(R.id.layout_top);
+        layoutBottom = root.findViewById(R.id.bottom_sheet);
 
-        mTvNumberOfImageChecked = root.findViewById(R.id.tv_number_image_checked);
+        tvTotalChecked = root.findViewById(R.id.tv_number_image_checked);
 
         mBtnDeleteGallery = root.findViewById(R.id.btn_delete_gallery);
         mBtnDeleteGallery.setOnClickListener(v -> {
@@ -107,20 +105,12 @@ public class GalleryFragment extends Fragment
             shareImages(mGalleryAdapter.getCheckedList());
         });
 
-        mTvCancelMultipleMode = root.findViewById(R.id.tv_cancel_multiple_mode);
-        mTvCancelMultipleMode.setOnClickListener(v -> {
-            mCheckBoxAll.setChecked(false);
-            mGalleryAdapter.onCheckBoxAllChecked(false);
-            mGalleryAdapter.cancelMultipleMode();
-            mRelativeCheckAll.setVisibility(View.GONE);
-        });
-        mCheckBoxAll = root.findViewById(R.id.checkbox_all);
-        mCheckBoxAll.setOnCheckedChangeListener(onCheckedChangeListener);
+        imgCheckAll = root.findViewById(R.id.image_check_all);
+        imgCheckAll.setOnClickListener(view -> mGalleryAdapter.onCheckBoxAllChecked(imgCheckAll.isActivated()));
 
         // init recycler gallery by findViewById
         rvGallery = root.findViewById(R.id.rv_gallery_caption);
-        gridLayoutManager = new GridLayoutManager(mContext, 3);
-        rvGallery.setLayoutManager(gridLayoutManager);
+        rvGallery.setLayoutManager(new GridLayoutManager(mContext, 3));
         rvGallery.setAdapter(mGalleryAdapter);
         rvGallery.setHasFixedSize(true);
 
@@ -131,8 +121,6 @@ public class GalleryFragment extends Fragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
-
-    CompoundButton.OnCheckedChangeListener onCheckedChangeListener = (buttonView, isChecked) -> mGalleryAdapter.onCheckBoxAllChecked(isChecked);
 
     @Override
     public void onItemGallerySelected(int position) {
@@ -145,14 +133,17 @@ public class GalleryFragment extends Fragment
 
     @Override
     public void showCheckBoxAll(boolean isCheckBoxChecked) {
-        mRelativeCheckAll.setVisibility(isCheckBoxChecked ? View.VISIBLE : View.GONE);
+        if (isCheckBoxChecked) {
+            ((MainActivity) getActivity()).showToolbarCustom(false);
+            layoutTop.setVisibility(View.VISIBLE);
+        } else {
+            layoutTop.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void setAllItemChecked(boolean isCheckBoxAllChecked) {
-        mCheckBoxAll.setOnCheckedChangeListener(null);
-        mCheckBoxAll.setChecked(isCheckBoxAllChecked);
-        mCheckBoxAll.setOnCheckedChangeListener(onCheckedChangeListener);
+        imgCheckAll.setActivated(isCheckBoxAllChecked);
     }
 
     @Override
@@ -161,15 +152,15 @@ public class GalleryFragment extends Fragment
         boolean isShow = numberImageChecked != 0;
         TransitionManager.beginDelayedTransition(viewGroup, transition);
         if (isShow) {
-            mTvNumberOfImageChecked.setText(String.valueOf(numberImageChecked));
+            tvTotalChecked.setText(String.valueOf(numberImageChecked));
         } else {
-            mTvNumberOfImageChecked.setText(R.string.select_items);
+            tvTotalChecked.setText(R.string.select_items);
         }
         if (isShow && !showed) {
-            mLinearShareAndDelete.setVisibility(View.VISIBLE);
+            layoutBottom.setVisibility(View.VISIBLE);
             showed = true;
         } else if (!isShow && showed) {
-            mLinearShareAndDelete.setVisibility(View.GONE);
+            layoutBottom.setVisibility(View.GONE);
             showed = false;
         }
     }
@@ -218,5 +209,12 @@ public class GalleryFragment extends Fragment
 
     private void deleteImages(ArrayList<Integer> checkedList) {
 
+    }
+
+    public void onBackPress() { // cancel selecting image mode
+        imgCheckAll.setActivated(false);
+        mGalleryAdapter.onCheckBoxAllChecked(false);
+        mGalleryAdapter.cancelMultipleMode();
+        layoutTop.setVisibility(View.GONE);
     }
 }
