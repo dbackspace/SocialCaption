@@ -1,18 +1,33 @@
 package com.xlteam.socialcaption.ui.edit;
 
-import android.text.TextUtils;
+import android.graphics.Color;
+import android.view.Gravity;
+
+import com.xlteam.socialcaption.R;
 
 public class ItemText {
-    private String text = "";
-    private int color = -1;
-    private float size = -1;
-    private int alignment = -1;
+    private static final int DEFAULT_COLOR = Color.WHITE;
+    private static final int DEFAULT_SIZE = R.dimen.text_added_default_size;
+    private static final int DEFAULT_GRAVITY = Gravity.CENTER;
+
+    private String text;
+    private int color;
+    private float size;
+    private int gravity;
+
+    // Khởi tạo giá trị default
+    public ItemText(String text) {
+        this.text = text;
+        this.color = DEFAULT_COLOR;
+        this.size = DEFAULT_SIZE;
+        this.gravity = DEFAULT_GRAVITY;
+    }
 
     public ItemText(String text, int color, float size, int alignment) {
         this.text = text;
         this.color = color;
         this.size = size;
-        this.alignment = alignment;
+        this.gravity = alignment;
     }
 
     public String getText() {
@@ -39,15 +54,11 @@ public class ItemText {
         this.size = size;
     }
 
-    public int getAlignment() {
-        return alignment;
+    public int getGravity() {
+        return gravity;
     }
 
-    public void setAlignment(int alignment) {
-        this.alignment = alignment;
-    }
-
-    public boolean isEmpty() {
-        return !TextUtils.isEmpty(text) || size != -1 || color != -1 || alignment != -1;
+    public void setGravity(int gravity) {
+        this.gravity = gravity;
     }
 }

@@ -25,7 +25,7 @@ public class MapViewUtils {
     }
 
     public void put(View textView, ItemText itemText) {
-        if (textView != null && !itemText.isEmpty()) {
+        if (textView != null) {
             int viewId = textView.getId();
             if (!mapViews.containsKey(viewId)) {
                 mapViews.put(viewId, itemText);

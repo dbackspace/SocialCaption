@@ -105,6 +105,8 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     private int mGravityText, mNumberBg;
     private ImageView imgGravity;
     private TextView tvBg;
+    private TextView mTextViewClicked;
+    private ItemText mItemTextViewClicked;
     private RelativeLayout containerBgImage;
 
     private MapViewUtils mapViewUtils;
@@ -312,6 +314,9 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
             mGravityText = Gravity.CENTER;
             imgGravity.setImageResource(R.drawable.ic_align_center);
         }
+        mTextViewClicked.setGravity(mGravityText);
+        mItemTextViewClicked.setGravity(mGravityText);
+        mapViewUtils.put(mTextViewClicked, mItemTextViewClicked);
     }
 
     public Bitmap getBitmapFromImageView(ImageView imageView) {
@@ -417,8 +422,10 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
                     // Solution tạm thời cho việc get itemText từ map
                     ItemText itemTextTemp = mapViewUtils.get(textInputTv);
-                    if (itemTextTemp != null && !itemTextTemp.isEmpty()) {
+                    if (itemTextTemp != null) {
                         // editClickTextByClickTextView()
+                        mTextViewClicked = textInputTv;
+                        mItemTextViewClicked = itemTextTemp;
                     }
 
                     editTextByClickTextView(textAddedView, itemText);
@@ -444,11 +451,10 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         });
 
         // Solution tạm thời cho việc put vào map
-        ItemText itemText = new ItemText(text, Color.parseColor("#FFFFFF"),
-                getResources().getDimension(R.dimen.text_added_default_size), Gravity.CENTER);
+        ItemText itemText = new ItemText(text);
 
         textAddedView.setOnTouchListener(multiTouchListener);
-        addViewToParent(textAddedView, itemText);
+        addViewToParent(textAddedView, textInputTv, itemText);
     }
 
     public void editTextByClickTextView(View view, ItemText itemText) {
@@ -485,13 +491,13 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         }
     }
 
-    private void addViewToParent(View view, ItemText itemText) {
+    private void addViewToParent(View view, TextView textInputView, ItemText itemText) {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         relativeBackground.addView(view, params);
         addedViews.add(view);
-        mapViewUtils.put(view, itemText);
+        mapViewUtils.put(textInputView, itemText);
         updateViewsBordersVisibilityExcept(view);
     }
 
@@ -565,7 +571,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     }
 
     private void showTextMode(boolean isShow) {
-        if (isShow) {
+        if (isShow && !Utility.isEmpty(addedViews)) {
             layoutSaveCancelText.setVisibility(View.VISIBLE);
             layoutMenuText.setVisibility(View.VISIBLE);
             layoutSaveCancel.setVisibility(View.GONE);
