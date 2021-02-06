@@ -417,7 +417,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
                     // Solution tạm thời cho việc get itemText từ map
                     ItemText itemTextTemp = mapViewUtils.get(textInputTv);
-                    if (itemText != null && !itemTextTemp.isEmpty()) {
+                    if (itemTextTemp != null && !itemTextTemp.isEmpty()) {
                         // editClickTextByClickTextView()
                     }
 
