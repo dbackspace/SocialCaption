@@ -105,7 +105,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
     //text editor
     private RecyclerView rvFont, rvColor;
-    private int mGravityText, mNumberBg;
+    private int mGravityText, mNumberBg, mNumberColor;
     private ImageView imgGravity;
     private TextView tvBg;
     private TextView mTextViewClicked;
@@ -113,7 +113,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     private RelativeLayout containerBgImage;
     private FontAdapter mFontAdapter;
     private ColorAdapter mColorAdapter;
-
     private MapViewUtils mapViewUtils;
 
     @Override
@@ -285,7 +284,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     public void onTextColorClicked(View view) {
         rvColor.setVisibility(View.VISIBLE);
         rvFont.setVisibility(View.GONE);
-        int color = mItemTextViewClicked.getFont();
     }
 
     public void onTextFontClicked(View view) {
@@ -294,20 +292,30 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     }
 
     public void onTextBgClicked(View view) {
+        Color color = ColorDataSource.getInstance().getAllData().get(mNumberColor);
         if (mNumberBg == Constant.BACKGROUND_COLOR_0) {
             mNumberBg = Constant.BACKGROUND_COLOR_50;
             Utility.setColorForView(tvBg, "#60FFFFFF");
             Utility.setColorForTextView(tvBg, "#FFFFFFFF");
+            String colorBlur = "#80" + color.getColor().substring(3);
+            Utility.setColorForView(mTextViewClicked, colorBlur);
+            Utility.setColorForTextView(mTextViewClicked, color.getTextColor());
+
         } else if (mNumberBg == Constant.BACKGROUND_COLOR_50) {
             mNumberBg = Constant.BACKGROUND_COLOR_100;
             Utility.setColorForView(tvBg, "#FFFFFFFF");
             Utility.setColorForTextView(tvBg, "#FF000000");
+            Utility.setColorForView(mTextViewClicked, color.getColor());
+            Utility.setColorForTextView(mTextViewClicked, color.getTextColor());
         } else {
             mNumberBg = Constant.BACKGROUND_COLOR_0;
             Utility.setColorForView(tvBg, "#00FFFFFF");
             Utility.setColorForTextView(tvBg, "#FFFFFFFF");
+            Utility.setColorForView(mTextViewClicked, "#00FFFFFF");
+            Utility.setColorForTextView(mTextViewClicked, color.getColor());
         }
-
+        mItemTextViewClicked.setBg(mNumberBg);
+        mapViewUtils.put(mTextViewClicked, mItemTextViewClicked);
     }
 
     public void onTextAlignClicked(View view) {
@@ -576,9 +584,10 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
         rvColor.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         mColorAdapter = new ColorAdapter(colorPosition -> {
+            mNumberColor = colorPosition;
             Color color = ColorDataSource.getInstance().getAllData().get(colorPosition);
             if (mNumberBg == Constant.BACKGROUND_COLOR_0) {
-                Utility.setColorForView(mTextViewClicked, "#00000000");
+                Utility.setColorForView(mTextViewClicked, "#00FFFFFF");
                 Utility.setColorForTextView(mTextViewClicked, color.getColor());
             } else if (mNumberBg == Constant.BACKGROUND_COLOR_50) {
                 String colorBlur = "#80" + color.getColor().substring(3);//loại bỏ #FF, thay bằng #80

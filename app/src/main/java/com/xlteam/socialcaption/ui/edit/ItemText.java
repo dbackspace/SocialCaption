@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.view.Gravity;
 
 import com.xlteam.socialcaption.R;
+import com.xlteam.socialcaption.external.utility.utils.Constant;
 
 public class ItemText {
     private static final int DEFAULT_COLOR = Color.WHITE;
@@ -16,6 +17,7 @@ public class ItemText {
     private float size;
     private int gravity;
     private int font;
+    private int bg;
 
     // Khởi tạo giá trị default
     public ItemText(String text) {
@@ -24,6 +26,7 @@ public class ItemText {
         this.size = DEFAULT_SIZE;
         this.gravity = DEFAULT_GRAVITY;
         this.font = DEFAULT_FONT;
+        this.bg = Constant.BACKGROUND_COLOR_0;
     }
 
     public ItemText(String text, int color, float size, int alignment) {
@@ -71,5 +74,13 @@ public class ItemText {
 
     public void setFont(int font) {
         this.font = font;
+    }
+
+    public int getBg() {
+        return bg;
+    }
+
+    public void setBg(int bg) {
+        this.bg = bg;
     }
 }
