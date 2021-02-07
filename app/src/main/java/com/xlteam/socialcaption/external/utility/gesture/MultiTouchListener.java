@@ -10,10 +10,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.xlteam.socialcaption.external.utility.logger.Log;
-import com.xlteam.socialcaption.external.utility.utils.Utility;
-
 import androidx.annotation.Nullable;
+
+import com.xlteam.socialcaption.external.utility.utils.Utility;
 
 public class MultiTouchListener implements OnTouchListener {
 
@@ -26,7 +25,7 @@ public class MultiTouchListener implements OnTouchListener {
     float minimumScale = 0.2f;
     float maximumScale = 10.0f;
     private int activePointerId = INVALID_POINTER_ID;
-    private static final int CLICK_THRESHOLD_DURATION = 100;
+    private static final int CLICK_THRESHOLD_DURATION = 300;
     private static final float CLICK_THRESHOLD_DISTANCE = 2f;
     private float prevX, prevY, prevRawX, prevRawY;
     private ScaleGestureDetector scaleGestureDetector;

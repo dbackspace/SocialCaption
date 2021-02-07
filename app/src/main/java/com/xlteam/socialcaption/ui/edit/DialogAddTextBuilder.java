@@ -21,12 +21,14 @@ public class DialogAddTextBuilder {
     private RelativeLayout rlEmptyClick; // cho phép click vào vùng trống khi edit để lưu text
     private Context mContext;
 
-    interface SavedCallback {
+    interface Callback {
         void onSaveClicked(String text);
+
+        void onCancelAllTextDialog(boolean isNoText);
     }
 
-    public DialogAddTextBuilder(SavedCallback savedCallback, String text) {
-        mContext = (Context) savedCallback;
+    public DialogAddTextBuilder(Context context, Callback callback, String text, boolean isFirstText) {
+        mContext = context;
         mDialog = new Dialog(mContext, R.style.Theme_SocialCaption);
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -38,20 +40,24 @@ public class DialogAddTextBuilder {
         rlEmptyClick = mDialog.findViewById(R.id.rlEmptyClick);
 
         //init default
-        imgBack.setOnClickListener(v -> mDialog.cancel());
+        imgBack.setOnClickListener(v -> mDialog.dismiss());
         imgDone.setOnClickListener(v -> {
-            savedCallback.onSaveClicked(edtText.getText().toString());
-            mDialog.cancel();
+            callback.onSaveClicked(edtText.getText().toString());
+            mDialog.dismiss();
         });
         rlEmptyClick.setOnClickListener(v -> {
-            savedCallback.onSaveClicked(edtText.getText().toString());
-            mDialog.cancel();
+            callback.onSaveClicked(edtText.getText().toString());
+            mDialog.dismiss();
         });
         if (!TextUtils.isEmpty(text)) edtText.setText(text);
         edtText.requestFocus();
         edtText.setShowSoftInputOnFocus(true);
 //        InputMethodManager mInputMethodManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
 //        mInputMethodManager.showSoftInput(edtText, 0);
+
+        // khi dismiss thì callback onDismiss(), khi cancel callback cả onDismiss() và onCancel()
+
+        mDialog.setOnDismissListener(dialogInterface -> callback.onCancelAllTextDialog(isFirstText && TextUtils.isEmpty(edtText.getText().toString())));
     }
 
     public Dialog build() {

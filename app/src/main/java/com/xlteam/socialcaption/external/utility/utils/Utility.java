@@ -46,6 +46,7 @@ public class Utility {
     private static int sPrevPosition;
 
     public static void setColorForView(View view, String color) {
+        if (view == null) return;
         int intColor = Color.parseColor(color);
         Drawable drawable = view.getBackground();
         if (drawable instanceof ShapeDrawable) {
@@ -55,6 +56,12 @@ public class Utility {
         } else if (drawable instanceof ColorDrawable) {
             ((ColorDrawable) drawable).setColor(intColor);
         }
+    }
+
+    public static void setColorForTextView(TextView view, String color) {
+        if (view == null) return;
+        int intColor = Color.parseColor(color);
+        view.setTextColor(intColor);
     }
 
     public static void vibrateAnimation(Context context, View view) {
@@ -107,11 +114,6 @@ public class Utility {
         return FileProvider.getUriForFile(context,
                 FILE_PROVIDER_PATH,
                 new File(uri.getPath()));
-    }
-
-    public static void setColorForTextView(TextView view, String color) {
-        int intColor = Color.parseColor(color);
-        view.setTextColor(intColor);
     }
 
     public static void setColorGradient(View view, int[] colors) {

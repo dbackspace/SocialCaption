@@ -131,7 +131,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/bg_ripple_click_view_rectangle"
                 android:gravity="center"
-                android:onClick="onAddTextClicked"
+                android:onClick="onOpenTextEditorClicked"
                 android:orientation="vertical">
 
                 <ImageView
@@ -150,7 +150,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/layout_btn_add_image"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="10dp"
@@ -176,7 +175,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/layout_btn_crop"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -248,7 +246,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/bg_ripple_click_view_rectangle"
                     android:gravity="center"
-                    android:onClick="onTextChangeClicked"
+                    android:onClick="onAddTextClicked"
                     android:orientation="vertical"
                     ads:layout_constraintEnd_toStartOf="@id/layout_btn_text_color"
                     ads:layout_constraintHorizontal_chainStyle="spread"

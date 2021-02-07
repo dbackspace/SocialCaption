@@ -72,7 +72,7 @@ import java.util.Locale;
 import static com.xlteam.socialcaption.external.utility.utils.Constant.BACKGROUND_COLOR_0;
 import static com.xlteam.socialcaption.external.utility.utils.Constant.SAVE_DATE_TIME_FORMAT;
 
-public class EditCaptionActivity extends AppCompatActivity implements DialogAddTextBuilder.SavedCallback,
+public class EditCaptionActivity extends AppCompatActivity implements DialogAddTextBuilder.Callback,
         OnPhotoEditorListener, OnMultiTouchListener {
     private static final int RESULT_LOAD_IMG = 1;
     private ImageView imgBack, imgCancelText, imgDoneText;
@@ -190,8 +190,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
                     Uri resultUri = result.getUri();
                     mImgBackground.setImageURI(resultUri);
                     isCropped = true;
-
-                    enableBtnSave();
                 } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                     Exception error = result.getError();
                 }
@@ -210,7 +208,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
                             // co su thay doi
                             isPickedPicture = true;
-                            enableBtnSave();
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
                             Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
@@ -221,30 +218,17 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         }
     }
 
-    void enableBtnSave() {
-        if (checkChangeBackground(mImgBackground)) {
-            tvDone.setAlpha(1);
-            tvDone.setClickable(true);
-        } else {
-            tvDone.setAlpha(0.7f);
-            tvDone.setClickable(false);
-        }
-    }
-
-
-    private boolean checkChangeBackground(ImageView imageView) {
-        return isPickedPicture || imageView.getRotation() % 360 != 0 || isCropped || (flipCurrent == 180);
+    public void onOpenTextEditorClicked(View view) {
+        layoutTop.setVisibility(View.INVISIBLE);
+        layoutBottom.setVisibility(View.INVISIBLE);
+        Dialog addTextDialog = new DialogAddTextBuilder(this, this, null, true).build();
+        addTextDialog.show();
     }
 
     public void onAddTextClicked(View view) {
         layoutTop.setVisibility(View.INVISIBLE);
         layoutBottom.setVisibility(View.INVISIBLE);
-        Dialog addTextDialog = new DialogAddTextBuilder(this, null).build();
-        addTextDialog.setOnCancelListener(dialog -> {
-            layoutTop.setVisibility(View.VISIBLE);
-            layoutBottom.setVisibility(View.VISIBLE);
-            showTextMode(true);
-        });
+        Dialog addTextDialog = new DialogAddTextBuilder(this, this, null, false).build();
         addTextDialog.show();
     }
 
@@ -260,18 +244,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         CropImage.activity(Utility.getImageUri(getApplicationContext(), getBitmapFromImageView(mImgBackground)))
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .start(this);
-    }
-
-    public void onTextChangeClicked(View view) {
-        layoutTop.setVisibility(View.INVISIBLE);
-        layoutBottom.setVisibility(View.INVISIBLE);
-        Dialog addTextDialog = new DialogAddTextBuilder(this, null).build(); //truyền text vào đây
-        addTextDialog.setOnCancelListener(dialog -> {
-            layoutTop.setVisibility(View.VISIBLE);
-            layoutBottom.setVisibility(View.VISIBLE);
-            showTextMode(true);
-        });
-        addTextDialog.show();
     }
 
     public void onTextColorClicked(View view) {
@@ -442,10 +414,11 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
                     if (itemTextTemp != null) {
                         mTextViewClicked = textInputTv;
                         mItemTextViewClicked = itemTextTemp;
-                        mNumberBg = itemTextTemp.getBg();
-                        mNumberColor = itemTextTemp.getColor();
-                        mGravityText = itemTextTemp.getGravity();
-                        mNumberFont = itemTextTemp.getFont();
+                        //FC nhiều vl, đ' chơi mutil text được thì thôi, single text
+//                        mNumberBg = itemTextTemp.getBg();
+//                        mNumberColor = itemTextTemp.getColor();
+//                        mGravityText = itemTextTemp.getGravity();
+//                        mNumberFont = itemTextTemp.getFont();
                     }
 
                     editTextByClickTextView(textAddedView, itemTextTemp);
@@ -474,6 +447,14 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         ItemText itemText = new ItemText(text);
         textAddedView.setOnTouchListener(multiTouchListener);
         addViewToParent(textAddedView, textInputTv, itemText);
+    }
+
+    @Override
+    public void onCancelAllTextDialog(boolean isNoText) {
+        Log.d("binh.ngk" , "  " + isNoText);
+        layoutTop.setVisibility(View.VISIBLE);
+        layoutBottom.setVisibility(View.VISIBLE);
+        showTextMode(!isNoText);
     }
 
     public void editTextByClickTextView(View view, ItemText itemText) {
@@ -623,8 +604,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         rvColor.setAdapter(mColorAdapter);
 
         containerBgImage.setOnClickListener(v -> {
-            clearAllViewBordersVisibility();
-            showTextMode(false);
+            //cái này rất mua việc, xóa cho khỏe
         });
     }
 
@@ -645,6 +625,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     @Override
     public void onBackPressed() {
         if (layoutMenuText.getVisibility() == View.VISIBLE) {
+            //hỏi xem có lưu thay đổi
             showTextMode(false);
         } else {
             super.onBackPressed();
