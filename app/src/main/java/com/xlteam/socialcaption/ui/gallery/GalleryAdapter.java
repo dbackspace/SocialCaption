@@ -11,14 +11,10 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.logger.Log;
 import com.xlteam.socialcaption.external.utility.thread.BitmapLruCache;
-import com.xlteam.socialcaption.external.utility.thread.ThreadExecutor;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
