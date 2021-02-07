@@ -7,7 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
@@ -42,6 +42,8 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.xlteam.socialcaption.R;
+import com.xlteam.socialcaption.external.datasource.ColorDataSource;
+import com.xlteam.socialcaption.external.datasource.FontDataSource;
 import com.xlteam.socialcaption.external.repository.UserCaptionRepository;
 import com.xlteam.socialcaption.external.utility.gesture.MultiTouchListener;
 import com.xlteam.socialcaption.external.utility.gesture.OnGestureControl;
@@ -53,6 +55,7 @@ import com.xlteam.socialcaption.external.utility.utils.FileUtils;
 import com.xlteam.socialcaption.external.utility.utils.MapViewUtils;
 import com.xlteam.socialcaption.external.utility.utils.PrefUtils;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
+import com.xlteam.socialcaption.model.Color;
 import com.xlteam.socialcaption.model.CommonCaption;
 
 import java.io.File;
@@ -108,6 +111,8 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     private TextView mTextViewClicked;
     private ItemText mItemTextViewClicked;
     private RelativeLayout containerBgImage;
+    private FontAdapter mFontAdapter;
+    private ColorAdapter mColorAdapter;
 
     private MapViewUtils mapViewUtils;
 
@@ -280,6 +285,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     public void onTextColorClicked(View view) {
         rvColor.setVisibility(View.VISIBLE);
         rvFont.setVisibility(View.GONE);
+        int color = mItemTextViewClicked.getFont();
     }
 
     public void onTextFontClicked(View view) {
@@ -301,6 +307,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
             Utility.setColorForView(tvBg, "#00FFFFFF");
             Utility.setColorForTextView(tvBg, "#FFFFFFFF");
         }
+
     }
 
     public void onTextAlignClicked(View view) {
@@ -398,6 +405,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         final View textAddedView = getTextStickerLayout();
         final TextView textInputTv = textAddedView.findViewById(R.id.text_tv);
         final FrameLayout frameBorder = textAddedView.findViewById(R.id.text_border);
+        textInputTv.setBackgroundResource(R.drawable.bg_text_view_edit);
         textInputTv.setText(text);
         textInputTv.setTextSize(TypedValue.COMPLEX_UNIT_SP,
                 getResources().getDimension(R.dimen.text_added_default_size));
@@ -558,14 +566,32 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
     private void initTextEditor() {
         rvFont.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
-        rvFont.setAdapter(new FontAdapter(this, numberFont -> {
-
-        }));
+        mFontAdapter = new FontAdapter(this, numberFont -> {
+            Typeface typeface = Typeface.createFromAsset(mContext.getAssets(), "font/" + FontDataSource.getInstance().getAllFonts().get(numberFont).getFont());
+            mTextViewClicked.setTypeface(typeface);
+            mItemTextViewClicked.setFont(numberFont);
+            mapViewUtils.put(mTextViewClicked, mItemTextViewClicked);
+        });
+        rvFont.setAdapter(mFontAdapter);
 
         rvColor.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
-        rvColor.setAdapter(new ColorAdapter(color -> {
-
-        }));
+        mColorAdapter = new ColorAdapter(colorPosition -> {
+            Color color = ColorDataSource.getInstance().getAllData().get(colorPosition);
+            if (mNumberBg == Constant.BACKGROUND_COLOR_0) {
+                Utility.setColorForView(mTextViewClicked, "#00000000");
+                Utility.setColorForTextView(mTextViewClicked, color.getColor());
+            } else if (mNumberBg == Constant.BACKGROUND_COLOR_50) {
+                String colorBlur = "#80" + color.getColor().substring(3);//loại bỏ #FF, thay bằng #80
+                Utility.setColorForView(mTextViewClicked, colorBlur);
+                Utility.setColorForTextView(mTextViewClicked, color.getTextColor());
+            } else {
+                Utility.setColorForView(mTextViewClicked, color.getColor());
+                Utility.setColorForTextView(mTextViewClicked, color.getTextColor());
+            }
+            mItemTextViewClicked.setColor(colorPosition);
+            mapViewUtils.put(mTextViewClicked, mItemTextViewClicked);
+        });
+        rvColor.setAdapter(mColorAdapter);
 
         containerBgImage.setOnClickListener(v -> clickBackgroundImage());
     }

@@ -9,11 +9,13 @@ public class ItemText {
     private static final int DEFAULT_COLOR = Color.WHITE;
     private static final int DEFAULT_SIZE = R.dimen.text_added_default_size;
     private static final int DEFAULT_GRAVITY = Gravity.CENTER;
+    private static final int DEFAULT_FONT = 3;
 
     private String text;
     private int color;
     private float size;
     private int gravity;
+    private int font;
 
     // Khởi tạo giá trị default
     public ItemText(String text) {
@@ -21,6 +23,7 @@ public class ItemText {
         this.color = DEFAULT_COLOR;
         this.size = DEFAULT_SIZE;
         this.gravity = DEFAULT_GRAVITY;
+        this.font = DEFAULT_FONT;
     }
 
     public ItemText(String text, int color, float size, int alignment) {
@@ -60,5 +63,13 @@ public class ItemText {
 
     public void setGravity(int gravity) {
         this.gravity = gravity;
+    }
+
+    public int getFont() {
+        return font;
+    }
+
+    public void setFont(int font) {
+        this.font = font;
     }
 }

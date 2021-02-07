@@ -32,7 +32,7 @@ public class ColorDataSource {
         colors.add(new Color("#FFFF00FF", "#FF000000")); // magenta
     }
 
-    public ArrayList<Color> getAllDataMini() {
+    public ArrayList<Color> getAllData() {
         return colors;
     }
 
