@@ -20,7 +20,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -150,7 +149,10 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         tvDone.setClickable(false);
         imgBack.setOnClickListener(v -> finish());
         imgCancelText.setOnClickListener(view -> showTextMode(false));
-        imgDoneText.setOnClickListener(view -> showTextMode(false));
+        imgDoneText.setOnClickListener(view -> {
+            showTextMode(false);
+            clearAllViewBordersVisibility();
+        });
     }
 
     private void findViewById() {
@@ -302,7 +304,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
             Utility.setColorForTextView(mTextViewClicked, color.getColor());
         }
         mItemTextViewClicked.setBg(mNumberBg);
-        mapViewUtils.put(mTextViewClicked, mItemTextViewClicked);
+        mapViewUtils.put(mTextViewClicked, (Integer) mTextViewClicked.getTag(), mItemTextViewClicked);
     }
 
     public void onTextAlignClicked(View view) {
@@ -318,7 +320,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         }
         mTextViewClicked.setGravity(mGravityText);
         mItemTextViewClicked.setGravity(mGravityText);
-        mapViewUtils.put(mTextViewClicked, mItemTextViewClicked);
+        mapViewUtils.put(mTextViewClicked, (Integer) mTextViewClicked.getTag(), mItemTextViewClicked);
     }
 
     public Bitmap getBitmapFromImageView(ImageView imageView) {
@@ -408,6 +410,9 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         final View textAddedView = getTextStickerLayout();
         final TextView textInputTv = textAddedView.findViewById(R.id.text_tv);
         final FrameLayout frameBorder = textAddedView.findViewById(R.id.text_border);
+        frameBorder.setBackgroundResource(0);
+        frameBorder.setTag(false);
+        textInputTv.setTag(addedViews.size());
         textInputTv.setBackgroundResource(R.drawable.bg_text_view_edit);
         textInputTv.setText(text);
         textInputTv.setTextSize(TypedValue.COMPLEX_UNIT_SP,
@@ -433,20 +438,16 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
                     // Solution tạm thời cho việc get itemText từ map
                     ItemText itemTextTemp = mapViewUtils.get(textInputTv);
-                    Log.d("binh.ngk ", "1__" + itemTextTemp);
                     if (itemTextTemp != null) {
-                        // editClickTextByClickTextView()
-                        Log.d("binh.ngk ", "1");
                         mTextViewClicked = textInputTv;
-                        //đoạn code này có vấn đề, chưa lấy ra đc thông số của item text
-//                        mItemTextViewClicked = itemTextTemp;
-//                        mNumberBg = itemTextTemp.getBg();
-//                        mNumberColor = itemTextTemp.getColor();
-//                        mGravityText = itemTextTemp.getGravity();
-//                        mNumberFont = itemTextTemp.getFont();
+                        mItemTextViewClicked = itemTextTemp;
+                        mNumberBg = itemTextTemp.getBg();
+                        mNumberColor = itemTextTemp.getColor();
+                        mGravityText = itemTextTemp.getGravity();
+                        mNumberFont = itemTextTemp.getFont();
                     }
 
-                    editTextByClickTextView(textAddedView, itemText);
+                    editTextByClickTextView(textAddedView, itemTextTemp);
                 }
             }
 
@@ -470,7 +471,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
         // Solution tạm thời cho việc put vào map
         ItemText itemText = new ItemText(text);
-
         textAddedView.setOnTouchListener(multiTouchListener);
         addViewToParent(textAddedView, textInputTv, itemText);
     }
@@ -517,7 +517,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         return rootView;
     }
 
-    private void clickBackgroundImage() {
+    private void clearAllViewBordersVisibility() {
         // disable all border and delete button in all text added
         for (View view : addedViews) {
             FrameLayout border = view.findViewById(R.id.text_border);
@@ -532,8 +532,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         relativeBackground.addView(view, params);
         addedViews.add(view);
-        mapViewUtils.put(textInputView, itemText);
-        updateViewsBordersVisibilityExcept(view);
+        mapViewUtils.put(textInputView, (Integer) textInputView.getTag(), itemText);
     }
 
     private void deleteViewFromParent(View view) {
@@ -565,19 +564,22 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     }
 
     @Override
-    public void onEventDownChangeListener() {
+    public void onEventDownChangeListener(View view) {
 
     }
 
     @Override
-    public void onEventMoveChangeListener() {
+    public void onEventMoveChangeListener(View view) {
         containerTrash.setVisibility(View.VISIBLE);
         layoutTop.setVisibility(View.INVISIBLE);
         layoutBottom.setVisibility(View.INVISIBLE);
     }
 
     @Override
-    public void onEventUpChangeListener() {
+    public void onEventUpChangeListener(View view) {
+        FrameLayout border = view.findViewById(R.id.text_border);
+        border.setBackgroundResource(0);
+        border.setTag(false);
         containerTrash.setVisibility(View.GONE);
         layoutTop.setVisibility(View.VISIBLE);
         layoutBottom.setVisibility(View.VISIBLE);
@@ -595,7 +597,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
             Typeface typeface = Typeface.createFromAsset(mContext.getAssets(), "font/" + FontDataSource.getInstance().getAllFonts().get(numberFont).getFont());
             mTextViewClicked.setTypeface(typeface);
             mItemTextViewClicked.setFont(numberFont);
-            mapViewUtils.put(mTextViewClicked, mItemTextViewClicked);
+            mapViewUtils.put(mTextViewClicked, (Integer) mTextViewClicked.getTag(), mItemTextViewClicked);
         });
         rvFont.setAdapter(mFontAdapter);
 
@@ -615,11 +617,14 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
                 Utility.setColorForTextView(mTextViewClicked, color.getTextColor());
             }
             mItemTextViewClicked.setColor(colorPosition);
-            mapViewUtils.put(mTextViewClicked, mItemTextViewClicked);
+            mapViewUtils.put(mTextViewClicked, (Integer) mTextViewClicked.getTag(), mItemTextViewClicked);
         });
         rvColor.setAdapter(mColorAdapter);
 
-        containerBgImage.setOnClickListener(v -> clickBackgroundImage());
+        containerBgImage.setOnClickListener(v -> {
+            clearAllViewBordersVisibility();
+            showTextMode(false);
+        });
     }
 
     private void showTextMode(boolean isShow) {

@@ -11,6 +11,7 @@ public class ItemText {
     private static final int DEFAULT_SIZE = R.dimen.text_added_default_size;
     private static final int DEFAULT_GRAVITY = Gravity.CENTER;
     private static final int DEFAULT_FONT = 3;
+    private static final int DEFAULT_BG = Constant.BACKGROUND_COLOR_0;
 
     private String text;
     private int color;
@@ -26,7 +27,7 @@ public class ItemText {
         this.size = DEFAULT_SIZE;
         this.gravity = DEFAULT_GRAVITY;
         this.font = DEFAULT_FONT;
-        this.bg = Constant.BACKGROUND_COLOR_0;
+        this.bg = DEFAULT_BG;
     }
 
     public ItemText(String text, int color, float size, int alignment) {
