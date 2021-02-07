@@ -539,7 +539,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         relativeBackground.addView(view, params);
         addedViews.add(view);
         mapViewUtils.put(textInputView, (Integer) textInputView.getTag(), itemText);
-        updateViewsBordersVisibilityExcept(view);
     }
 
     private void deleteViewFromParent(View view) {
