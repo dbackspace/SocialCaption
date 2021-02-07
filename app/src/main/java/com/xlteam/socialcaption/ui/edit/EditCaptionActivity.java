@@ -438,7 +438,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
             @Override
             public void onClick() {
                 boolean isBackgroundVisible = frameBorder.getTag() != null && (boolean) frameBorder.getTag();
-                if (isBackgroundVisible && !isDownAlready) {
+                if (isBackgroundVisible && isDownAlready) {
                     String textInput = textInputTv.getText().toString();
                     int currentTextColor = textInputTv.getCurrentTextColor();
                     float textSize = textInputTv.getTextSize();
