@@ -68,6 +68,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static com.xlteam.socialcaption.external.utility.utils.Constant.BACKGROUND_COLOR_0;
 import static com.xlteam.socialcaption.external.utility.utils.Constant.SAVE_DATE_TIME_FORMAT;
 
 public class EditCaptionActivity extends AppCompatActivity implements DialogAddTextBuilder.SavedCallback,
@@ -106,9 +107,8 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
     //text editor
     private RecyclerView rvFont, rvColor;
-    private int mGravityText, mNumberBg, mNumberColor, mNumberFont;
-    private ImageView imgGravity;
-    private TextView tvBg;
+    private int mGravityText, mNumberBg = BACKGROUND_COLOR_0, mNumberColor = 0, mNumberFont = 0;
+    private ImageView imgGravity, imgBackground;
     private TextView mTextViewClicked;
     private ItemText mItemTextViewClicked;
     private RelativeLayout containerBgImage;
@@ -172,7 +172,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         rvColor = findViewById(R.id.rvColor);
         rvFont = findViewById(R.id.rvFont);
         imgGravity = findViewById(R.id.imgGravity);
-        tvBg = findViewById(R.id.tvBg);
+        imgBackground = findViewById(R.id.image_background);
     }
 
     @Override
@@ -292,22 +292,19 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         Color color = ColorDataSource.getInstance().getAllData().get(mNumberColor);
         if (mNumberBg == Constant.BACKGROUND_COLOR_0) {
             mNumberBg = Constant.BACKGROUND_COLOR_50;
-            Utility.setColorForView(tvBg, "#60FFFFFF");
-            Utility.setColorForTextView(tvBg, "#FFFFFFFF");
+            imgBackground.setImageResource(R.drawable.ic_align_right);
             String colorBlur = "#80" + color.getColor().substring(3);
             Utility.setColorForView(mTextViewClicked, colorBlur);
             Utility.setColorForTextView(mTextViewClicked, color.getTextColor());
 
         } else if (mNumberBg == Constant.BACKGROUND_COLOR_50) {
             mNumberBg = Constant.BACKGROUND_COLOR_100;
-            Utility.setColorForView(tvBg, "#FFFFFFFF");
-            Utility.setColorForTextView(tvBg, "#FF000000");
+            imgBackground.setImageResource(R.drawable.ic_align_left);
             Utility.setColorForView(mTextViewClicked, color.getColor());
             Utility.setColorForTextView(mTextViewClicked, color.getTextColor());
         } else {
             mNumberBg = Constant.BACKGROUND_COLOR_0;
-            Utility.setColorForView(tvBg, "#00FFFFFF");
-            Utility.setColorForTextView(tvBg, "#FFFFFFFF");
+            imgBackground.setImageResource(R.drawable.ic_align_center);
             Utility.setColorForView(mTextViewClicked, "#00FFFFFF");
             Utility.setColorForTextView(mTextViewClicked, color.getColor());
         }
@@ -448,11 +445,12 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
                         // editClickTextByClickTextView()
                         Log.d("binh.ngk ", "1");
                         mTextViewClicked = textInputTv;
-                        mItemTextViewClicked = itemTextTemp;
-                        mNumberBg = itemTextTemp.getBg();
-                        mNumberColor = itemTextTemp.getColor();
-                        mGravityText = itemTextTemp.getGravity();
-                        mNumberFont = itemTextTemp.getFont();
+                        //đoạn code này có vấn đề, chưa lấy ra đc thông số của item text
+//                        mItemTextViewClicked = itemTextTemp;
+//                        mNumberBg = itemTextTemp.getBg();
+//                        mNumberColor = itemTextTemp.getColor();
+//                        mGravityText = itemTextTemp.getGravity();
+//                        mNumberFont = itemTextTemp.getFont();
                     }
 
                     editTextByClickTextView(textAddedView, itemText);
@@ -495,14 +493,11 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
             imgGravity.setImageResource(R.drawable.ic_align_left);
         }
         if (mNumberBg == Constant.BACKGROUND_COLOR_0) {
-            Utility.setColorForView(tvBg, "#00FFFFFF");
-            Utility.setColorForTextView(tvBg, "#FFFFFFFF");
+            imgBackground.setImageResource(R.drawable.ic_align_center);
         } else if (mNumberBg == Constant.BACKGROUND_COLOR_50) {
-            Utility.setColorForView(tvBg, "#60FFFFFF");
-            Utility.setColorForTextView(tvBg, "#FFFFFFFF");
+            imgBackground.setImageResource(R.drawable.ic_align_right);
         } else {
-            Utility.setColorForView(tvBg, "#FFFFFFFF");
-            Utility.setColorForTextView(tvBg, "#FF000000");
+            imgBackground.setImageResource(R.drawable.ic_align_left);
         }
         showTextMode(true);
 

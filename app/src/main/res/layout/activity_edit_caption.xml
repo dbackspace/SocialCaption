@@ -392,16 +392,11 @@
                     ads:layout_constraintEnd_toStartOf="@id/layout_btn_text_align"
                     ads:layout_constraintStart_toEndOf="@id/layout_btn_text_font">
 
-                    <TextView
-                        android:id="@+id/tvBg"
+                    <ImageView
+                        android:id="@+id/image_background"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:background="@drawable/bg_font_button"
-                        android:fontFamily="sans-serif-medium"
-                        android:gravity="center"
-                        android:text="A"
-                        android:textColor="@color/white"
-                        android:textSize="22dp" />
+                        android:src="@drawable/ic_align_center" />
 
                     <TextView
                         android:layout_width="wrap_content"
