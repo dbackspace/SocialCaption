@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -78,7 +79,8 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     private TextView tvDone;
     private CommonCaption mCommonCaption;
     private ImageView mImgBackground;
-    private ConstraintLayout layoutMenu, layoutMenuText;
+    private LinearLayout layoutMenu;
+    private ConstraintLayout layoutMenuText;
     private RelativeLayout layoutTop, layoutBottom;
     private RelativeLayout layoutSaveCancel, layoutSaveCancelText;
 
@@ -238,6 +240,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         addTextDialog.setOnCancelListener(dialog -> {
             layoutTop.setVisibility(View.VISIBLE);
             layoutBottom.setVisibility(View.VISIBLE);
+            showTextMode(true);
         });
         addTextDialog.show();
     }
@@ -249,22 +252,11 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
     }
 
-    public void onRotateClicked(View view) {
-        mImgBackground.setRotation(mImgBackground.getRotation() + -90);
-        enableBtnSave();
-    }
-
-    public void onCropClicked(View view) {
+    public void onEditPictureClicked(View view) {
         // start cropping activity for pre-acquired image saved on the device
         CropImage.activity(Utility.getImageUri(getApplicationContext(), getBitmapFromImageView(mImgBackground)))
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .start(this);
-    }
-
-    public void onFlipClicked(View view) {
-        flipCurrent = (flipCurrent + 180) % 360;
-        mImgBackground.setRotationY(flipCurrent);
-        enableBtnSave();
     }
 
     public void onTextChangeClicked(View view) {
@@ -274,6 +266,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         addTextDialog.setOnCancelListener(dialog -> {
             layoutTop.setVisibility(View.VISIBLE);
             layoutBottom.setVisibility(View.VISIBLE);
+            showTextMode(true);
         });
         addTextDialog.show();
     }
@@ -630,7 +623,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     }
 
     private void showTextMode(boolean isShow) {
-        if (isShow && !Utility.isEmpty(addedViews)) {
+        if (isShow) {
             layoutSaveCancelText.setVisibility(View.VISIBLE);
             layoutMenuText.setVisibility(View.VISIBLE);
             layoutSaveCancel.setVisibility(View.GONE);
@@ -640,6 +633,15 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
             layoutMenuText.setVisibility(View.GONE);
             layoutSaveCancel.setVisibility(View.VISIBLE);
             layoutMenu.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (layoutMenuText.getVisibility() == View.VISIBLE) {
+            showTextMode(false);
+        } else {
+            super.onBackPressed();
         }
     }
 }

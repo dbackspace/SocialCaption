@@ -114,25 +114,25 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="51dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:id="@+id/layout_menu"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="#121212"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp">
 
             <LinearLayout
-                android:id="@+id/layout_btn_add_text"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
+                android:layout_marginEnd="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/bg_ripple_click_view_rectangle"
                 android:gravity="center"
                 android:onClick="onAddTextClicked"
-                android:orientation="vertical"
-                ads:layout_constraintEnd_toStartOf="@id/layout_btn_add_image"
-                ads:layout_constraintHorizontal_chainStyle="spread"
-                ads:layout_constraintStart_toStartOf="@id/layout_menu">
+                android:orientation="vertical">
 
                 <ImageView
                     android:layout_width="30dp"
@@ -153,13 +153,12 @@
                 android:id="@+id/layout_btn_add_image"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
+                android:layout_marginEnd="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/bg_ripple_click_view_rectangle"
                 android:gravity="center"
                 android:onClick="onAddImageClicked"
-                android:orientation="vertical"
-                ads:layout_constraintEnd_toStartOf="@id/layout_btn_rotate"
-                ads:layout_constraintStart_toEndOf="@id/layout_btn_add_text">
+                android:orientation="vertical">
 
                 <ImageView
                     android:layout_width="30dp"
@@ -177,86 +176,30 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/layout_btn_rotate"
-                android:layout_width="60dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/bg_ripple_click_view_rectangle"
-                android:gravity="center"
-                android:onClick="onRotateClicked"
-                android:orientation="vertical"
-                ads:layout_constraintEnd_toStartOf="@id/layout_btn_crop"
-                ads:layout_constraintStart_toEndOf="@id/layout_btn_add_image">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_edit_rotate" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="Xoay"
-                    android:textColor="@color/white"
-                    android:textSize="10dp" />
-            </LinearLayout>
-
-            <LinearLayout
                 android:id="@+id/layout_btn_crop"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/bg_ripple_click_view_rectangle"
                 android:gravity="center"
-                android:onClick="onCropClicked"
-                android:orientation="vertical"
-                ads:layout_constraintEnd_toStartOf="@id/layout_btn_flip"
-                ads:layout_constraintStart_toEndOf="@id/layout_btn_rotate">
+                android:onClick="onEditPictureClicked"
+                android:orientation="vertical">
 
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/ic_edit_crop" />
+                    android:src="@drawable/ic_text_edit" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:fontFamily="sans-serif-medium"
-                    android:text="Cắt"
+                    android:text="Chỉnh sửa"
                     android:textColor="@color/white"
                     android:textSize="10dp" />
             </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layout_btn_flip"
-                android:layout_width="60dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/bg_ripple_click_view_rectangle"
-                android:gravity="center"
-                android:onClick="onFlipClicked"
-                android:orientation="vertical"
-                ads:layout_constraintEnd_toEndOf="@id/layout_menu"
-                ads:layout_constraintStart_toEndOf="@id/layout_btn_crop">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_edit_flip" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="Lật ảnh"
-                    android:textColor="@color/white"
-                    android:textSize="10dp" />
-            </LinearLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_menu_text"
@@ -314,7 +257,7 @@
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:src="@drawable/ic_text_edit" />
+                        android:src="@drawable/ic_add_text" />
 
                     <TextView
                         android:layout_width="wrap_content"
