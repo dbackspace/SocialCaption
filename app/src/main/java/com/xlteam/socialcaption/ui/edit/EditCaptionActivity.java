@@ -408,6 +408,13 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     @SuppressLint("ResourceAsColor")
     @Override
     public void onSaveClicked(String text) {
+        /**
+         * Không tạo empty text.
+         * TODO: Xử lý trong textChange ở DialogAddText, có cho enable nút DONE hay không
+         */
+        if (TextUtils.isEmpty(text.trim())) {
+            return;
+        }
         final View textAddedView = getTextStickerLayout();
         final TextView textInputTv = textAddedView.findViewById(R.id.text_tv);
         final FrameLayout frameBorder = textAddedView.findViewById(R.id.text_border);
