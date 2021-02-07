@@ -24,35 +24,34 @@ public class MapViewUtils {
         return Holder.INSTANCE;
     }
 
-    public void put(View textView, ItemText itemText) {
+    public void put(View textView, int id, ItemText itemText) {
         if (textView != null) {
-            int viewId = textView.getId();
-            if (!mapViews.containsKey(viewId)) {
-                mapViews.put(viewId, itemText);
+            if (!mapViews.containsKey(id)) {
+                mapViews.put(id, itemText);
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    mapViews.replace(viewId, itemText);
+                    mapViews.replace(id, itemText);
                 }
             }
-            Timber.v("put view item: resId = " + viewId + ", item = " + itemText);
+            Timber.v("put view item: Id = " + id + ", item = " + itemText);
         }
     }
 
     public ItemText get(View textView) {
         ItemText itemText = null;
         if (textView != null) {
-            int viewId = textView.getId();
-            itemText = mapViews.get(viewId);
+            int id = (int) textView.getTag();
+            itemText = mapViews.get(id);
         }
         Timber.v("get item by view: item = " + itemText);
         return itemText;
     }
 
     public void remove(View textView) {
-        int viewId = textView.getId();
-        if (mapViews.containsKey(viewId)) {
-            Timber.v("remove view: resId = " + viewId);
-            mapViews.remove(viewId);
+        int id = (int) textView.getTag();
+        if (mapViews.containsKey(id)) {
+            Timber.v("remove view: id = " + id);
+            mapViews.remove(id);
         }
     }
 }

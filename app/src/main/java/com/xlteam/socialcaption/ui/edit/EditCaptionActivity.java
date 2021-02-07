@@ -309,7 +309,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
             Utility.setColorForTextView(mTextViewClicked, color.getColor());
         }
         mItemTextViewClicked.setBg(mNumberBg);
-        mapViewUtils.put(mTextViewClicked, mItemTextViewClicked);
+        mapViewUtils.put(mTextViewClicked, (Integer) mTextViewClicked.getTag(), mItemTextViewClicked);
     }
 
     public void onTextAlignClicked(View view) {
@@ -325,7 +325,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         }
         mTextViewClicked.setGravity(mGravityText);
         mItemTextViewClicked.setGravity(mGravityText);
-        mapViewUtils.put(mTextViewClicked, mItemTextViewClicked);
+        mapViewUtils.put(mTextViewClicked, (Integer) mTextViewClicked.getTag(), mItemTextViewClicked);
     }
 
     public Bitmap getBitmapFromImageView(ImageView imageView) {
@@ -415,6 +415,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         final View textAddedView = getTextStickerLayout();
         final TextView textInputTv = textAddedView.findViewById(R.id.text_tv);
         final FrameLayout frameBorder = textAddedView.findViewById(R.id.text_border);
+        textInputTv.setTag(addedViews.size());
         textInputTv.setBackgroundResource(R.drawable.bg_text_view_edit);
         textInputTv.setText(text);
         textInputTv.setTextSize(TypedValue.COMPLEX_UNIT_SP,
@@ -440,20 +441,16 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
                     // Solution tạm thời cho việc get itemText từ map
                     ItemText itemTextTemp = mapViewUtils.get(textInputTv);
-                    Log.d("binh.ngk ", "1__" + itemTextTemp);
                     if (itemTextTemp != null) {
-                        // editClickTextByClickTextView()
-                        Log.d("binh.ngk ", "1");
                         mTextViewClicked = textInputTv;
-                        //đoạn code này có vấn đề, chưa lấy ra đc thông số của item text
-//                        mItemTextViewClicked = itemTextTemp;
-//                        mNumberBg = itemTextTemp.getBg();
-//                        mNumberColor = itemTextTemp.getColor();
-//                        mGravityText = itemTextTemp.getGravity();
-//                        mNumberFont = itemTextTemp.getFont();
+                        mItemTextViewClicked = itemTextTemp;
+                        mNumberBg = itemTextTemp.getBg();
+                        mNumberColor = itemTextTemp.getColor();
+                        mGravityText = itemTextTemp.getGravity();
+                        mNumberFont = itemTextTemp.getFont();
                     }
 
-                    editTextByClickTextView(textAddedView, itemText);
+                    editTextByClickTextView(textAddedView, itemTextTemp);
                 }
             }
 
@@ -477,7 +474,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
         // Solution tạm thời cho việc put vào map
         ItemText itemText = new ItemText(text);
-
         textAddedView.setOnTouchListener(multiTouchListener);
         addViewToParent(textAddedView, textInputTv, itemText);
     }
@@ -539,7 +535,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         relativeBackground.addView(view, params);
         addedViews.add(view);
-        mapViewUtils.put(textInputView, itemText);
+        mapViewUtils.put(textInputView, (Integer) textInputView.getTag(), itemText);
         updateViewsBordersVisibilityExcept(view);
     }
 
@@ -602,7 +598,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
             Typeface typeface = Typeface.createFromAsset(mContext.getAssets(), "font/" + FontDataSource.getInstance().getAllFonts().get(numberFont).getFont());
             mTextViewClicked.setTypeface(typeface);
             mItemTextViewClicked.setFont(numberFont);
-            mapViewUtils.put(mTextViewClicked, mItemTextViewClicked);
+            mapViewUtils.put(mTextViewClicked, (Integer) mTextViewClicked.getTag(), mItemTextViewClicked);
         });
         rvFont.setAdapter(mFontAdapter);
 
@@ -622,7 +618,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
                 Utility.setColorForTextView(mTextViewClicked, color.getTextColor());
             }
             mItemTextViewClicked.setColor(colorPosition);
-            mapViewUtils.put(mTextViewClicked, mItemTextViewClicked);
+            mapViewUtils.put(mTextViewClicked, (Integer) mTextViewClicked.getTag(), mItemTextViewClicked);
         });
         rvColor.setAdapter(mColorAdapter);
 
