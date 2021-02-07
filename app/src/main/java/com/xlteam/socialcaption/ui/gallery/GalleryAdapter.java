@@ -65,19 +65,6 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         String path = mGalleryPaths.get(position);
         Log.e("onBindViewHolder", "file://" + path);
 
-//        ThreadExecutor.runOnMainThread(() -> Picasso.get()
-//                .load(new File(path))
-//                .into(holder.imgGallery, new Callback() {
-//                    @Override
-//                    public void onSuccess() {
-//                        holder.rlItemGallery.setBackgroundColor(Color.BLACK);
-//                    }
-//
-//                    @Override
-//                    public void onError(Exception e) {
-//                    }
-//                }));
-
         holder.imgGallery.setImageBitmap(BitmapLruCache.getInstance().retrieveBitmapFromCache(path));
         holder.imgGallery.setScaleType(ImageView.ScaleType.CENTER_CROP);
         holder.rlItemGallery.setBackgroundColor(Color.BLACK);
