@@ -106,7 +106,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
     //text editor
     private RecyclerView rvFont, rvColor;
-    private int mGravityText, mNumberBg, mNumberColor;
+    private int mGravityText, mNumberBg, mNumberColor, mNumberFont;
     private ImageView imgGravity;
     private TextView tvBg;
     private TextView mTextViewClicked;
@@ -451,6 +451,10 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
                         // editClickTextByClickTextView()
                         mTextViewClicked = textInputTv;
                         mItemTextViewClicked = itemTextTemp;
+                        mNumberBg = mItemTextViewClicked.getBg();
+                        mNumberColor = mItemTextViewClicked.getColor();
+                        mGravityText = mItemTextViewClicked.getGravity();
+                        mNumberFont = mItemTextViewClicked.getFont();
                     }
 
                     editTextByClickTextView(textAddedView, itemText);
@@ -483,7 +487,27 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     }
 
     public void editTextByClickTextView(View view, ItemText itemText) {
+        mColorAdapter.setNumberSelect(mNumberColor);
+        mFontAdapter.setNumberFont(mNumberFont);
+        if (mGravityText == Gravity.CENTER) {
+            imgGravity.setImageResource(R.drawable.ic_align_center);
+        } else if (mGravityText == Gravity.END) {
+            imgGravity.setImageResource(R.drawable.ic_align_right);
+        } else {
+            imgGravity.setImageResource(R.drawable.ic_align_left);
+        }
+        if (mNumberBg == Constant.BACKGROUND_COLOR_0) {
+            Utility.setColorForView(tvBg, "#00FFFFFF");
+            Utility.setColorForTextView(tvBg, "#FFFFFFFF");
+        } else if (mNumberBg == Constant.BACKGROUND_COLOR_50) {
+            Utility.setColorForView(tvBg, "#60FFFFFF");
+            Utility.setColorForTextView(tvBg, "#FFFFFFFF");
+        } else {
+            Utility.setColorForView(tvBg, "#FFFFFFFF");
+            Utility.setColorForTextView(tvBg, "#FF000000");
+        }
         showTextMode(true);
+
     }
 
     private void editText(View view, String inputText, int colorCode) {
