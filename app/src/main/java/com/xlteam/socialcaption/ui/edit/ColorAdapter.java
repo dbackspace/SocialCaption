@@ -24,7 +24,7 @@ public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ViewHolder> 
     }
 
     public ColorAdapter(ColorSelectCallback callBack) {
-        mColors = ColorDataSource.getInstance().getAllDataMini();
+        mColors = ColorDataSource.getInstance().getAllData();
         mCallback = callBack;
     }
 
@@ -37,8 +37,8 @@ public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ColorAdapter.ViewHolder holder, int position) {
-        String color = mColors.get(position).getColor();
-        Utility.setColorForView(holder.itemView, color);
+        Color color = mColors.get(position);
+        Utility.setColorForView(holder.itemView, color.getColor());
         holder.itemView.setOnClickListener(v -> {
             mCallback.selectColor(position);
             mNumberSelect = position;

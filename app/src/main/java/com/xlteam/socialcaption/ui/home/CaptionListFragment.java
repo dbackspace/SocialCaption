@@ -36,6 +36,10 @@ public class CaptionListFragment extends Fragment implements ILoader<CommonCapti
     private CommonCaptionRepository mRepository;
     private LinearLayout mLoading;
 
+    public CaptionListFragment() {
+
+    }
+
     public CaptionListFragment(int categoryNumber) {
         mCategoryNumber = categoryNumber;
     }
