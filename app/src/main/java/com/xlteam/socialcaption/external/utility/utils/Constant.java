@@ -8,7 +8,7 @@ public class Constant {
     public static final String EMAIL_TEAM = "developer.xlteam@gmail.com";
     public static final String FILE_PROVIDER_PATH = "com.xlteam.socialcaption.external.utility.utils.fileprovider";
 
-    public static final String SAVE_DATE_TIME_FORMAT = "HH_mm_ss dd_MM_yyyy";
+    public static final String SAVE_DATE_TIME_FORMAT = "yyyyMMddHHmmss";
     public static final int PHOTOS = 1;
     public static final int FONTS = 2;
     public static final int COLORS = 3;

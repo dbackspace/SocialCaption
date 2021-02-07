@@ -136,13 +136,13 @@ public class DialogPreviewGallery extends DialogFragment implements ItemPreviewG
         mCurrentPosition = mLinearLayoutManager.findLastCompletelyVisibleItemPosition();
         Log.e("deleteImage", "mCurrentPosition" + " " + mCurrentPosition);
         if (mGalleryPaths.size() == 1) {
-            PrefUtils.putStringArrayList(getContext(), Constant.PREF_GALLERY, Constant.GALLERY_PATH, new ArrayList<>());
+            PrefUtils.setListItemGallery(getContext(), new ArrayList<>());
             mListener.onDialogPreviewDismissed(true);
             dismiss();
         }
         if (mCurrentPosition < mGalleryPaths.size()) {
             mGalleryPaths.remove(mCurrentPosition);
-            PrefUtils.putStringArrayList(getContext(), Constant.PREF_GALLERY, Constant.GALLERY_PATH, mGalleryPaths);
+            PrefUtils.setListItemGallery(getContext(), mGalleryPaths);
             mItemPreviewGalleryAdapter.updateList(mGalleryPaths);
             mItemPreviewGalleryAdapter.notifyDataSetChanged();
             isDeleted = true;
