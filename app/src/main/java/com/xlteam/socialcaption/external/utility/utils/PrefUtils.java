@@ -7,6 +7,7 @@ import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -73,7 +74,7 @@ public class PrefUtils {
         return false;
     }
 
-    public static void putStringArrayList(Context context, String key, String keyWord, ArrayList<String> strings) {
+    public static void putStringArrayList(Context context, String key, String keyWord, List<String> strings) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(key, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Set<String> set = new HashSet<>(strings);
@@ -81,7 +82,8 @@ public class PrefUtils {
         editor.apply();
     }
 
-    public static ArrayList<String> getStringArrayList(Context context, String key, String keyWord) {
+
+    public static List<String> getStringArrayList(Context context, String key, String keyWord) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(key, MODE_PRIVATE);
         if (sharedPreferences != null) {
             Set<String> set = sharedPreferences.getStringSet(keyWord, new HashSet<>());
@@ -92,7 +94,7 @@ public class PrefUtils {
         return Lists.newArrayList();
     }
 
-    public static ArrayList<String> getListItemGallery(Context context) {
+    public static List<String> getListItemGallery(Context context) {
         return getStringArrayList(context, Constant.PREF_GALLERY, Constant.GALLERY_PATH);
     }
 
@@ -100,6 +102,10 @@ public class PrefUtils {
         ArrayList<String> temp = Lists.newArrayList(getListItemGallery(context));
         temp.add(savePath);
         putStringArrayList(context, Constant.PREF_GALLERY, Constant.GALLERY_PATH, temp);
+    }
+
+    public static void setListItemGallery(Context context, List<String> savePaths) {
+        putStringArrayList(context, Constant.PREF_GALLERY, Constant.GALLERY_PATH, savePaths);
     }
 
     public static int getVersionLocalDatabase(Context context) {

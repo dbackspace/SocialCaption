@@ -11,13 +11,10 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.logger.Log;
-import com.xlteam.socialcaption.external.utility.thread.ThreadExecutor;
+import com.xlteam.socialcaption.external.utility.thread.BitmapLruCache;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,18 +61,9 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         String path = mGalleryPaths.get(position);
         Log.e("onBindViewHolder", "file://" + path);
 
-        ThreadExecutor.runOnMainThread(() -> Picasso.get()
-                .load(new File(path))
-                .into(holder.imgGallery, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        holder.rlItemGallery.setBackgroundColor(Color.BLACK);
-                    }
-
-                    @Override
-                    public void onError(Exception e) {
-                    }
-                }));
+        holder.imgGallery.setImageBitmap(BitmapLruCache.getInstance().retrieveBitmapFromCache(path));
+        holder.imgGallery.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        holder.rlItemGallery.setBackgroundColor(Color.BLACK);
 
         // checkbox
         if (isItemLongClicked) {

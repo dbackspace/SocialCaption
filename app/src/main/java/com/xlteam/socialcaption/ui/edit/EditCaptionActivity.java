@@ -50,6 +50,7 @@ import com.xlteam.socialcaption.external.utility.gesture.OnGestureControl;
 import com.xlteam.socialcaption.external.utility.gesture.OnMultiTouchListener;
 import com.xlteam.socialcaption.external.utility.gesture.OnPhotoEditorListener;
 import com.xlteam.socialcaption.external.utility.logger.Log;
+import com.xlteam.socialcaption.external.utility.thread.BitmapLruCache;
 import com.xlteam.socialcaption.external.utility.utils.Constant;
 import com.xlteam.socialcaption.external.utility.utils.FileUtils;
 import com.xlteam.socialcaption.external.utility.utils.MapViewUtils;
@@ -387,6 +388,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
                                 // save image path to sharePref
                                 Log.e(this, savePath);
+                                BitmapLruCache.getInstance().saveBitmapToCache(savePath, bitmap);
                                 PrefUtils.setListItemGallery(mContext, savePath);
                                 finish();
                             } else {

@@ -32,6 +32,7 @@ import com.xlteam.socialcaption.ui.MainActivity;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import timber.log.Timber;
@@ -168,11 +169,12 @@ public class GalleryFragment extends Fragment
 
     private void updateUI() {
         mGalleryPaths = PrefUtils.getListItemGallery(mContext);
-        Timber.e("updateUI, list path size = " + mGalleryPaths.size());
         if (mGalleryPaths.size() > 0) {
+            Timber.e("updateUI, list path size = " + mGalleryPaths.size());
             mEmptyImage.setVisibility(View.GONE);
             rvGallery.setVisibility(View.VISIBLE);
-//            Collections.sort(mGalleryPaths);
+            Collections.sort(mGalleryPaths, (s1, s2) -> s1.substring(s1.lastIndexOf("/") + 1)
+                    .compareTo(s2.substring(s2.lastIndexOf("/") + 1)));
             mGalleryAdapter.updateList(mGalleryPaths);
             mGalleryAdapter.notifyDataSetChanged();
         } else {
