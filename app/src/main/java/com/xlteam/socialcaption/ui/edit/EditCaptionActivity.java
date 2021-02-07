@@ -418,6 +418,8 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         final View textAddedView = getTextStickerLayout();
         final TextView textInputTv = textAddedView.findViewById(R.id.text_tv);
         final FrameLayout frameBorder = textAddedView.findViewById(R.id.text_border);
+        frameBorder.setBackgroundResource(0);
+        frameBorder.setTag(false);
         textInputTv.setTag(addedViews.size());
         textInputTv.setBackgroundResource(R.drawable.bg_text_view_edit);
         textInputTv.setText(text);
@@ -627,20 +629,16 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         });
         rvColor.setAdapter(mColorAdapter);
 
-        containerBgImage.setOnClickListener(v -> clearAllViewBordersVisibility());
+        containerBgImage.setOnClickListener(v -> {
+            clearAllViewBordersVisibility();
+            showTextMode(false);
+        });
     }
 
     private void showTextMode(boolean isShow) {
-        if (isShow && !Utility.isEmpty(addedViews)) {
-            layoutSaveCancelText.setVisibility(View.VISIBLE);
-            layoutMenuText.setVisibility(View.VISIBLE);
-            layoutSaveCancel.setVisibility(View.GONE);
-            layoutMenu.setVisibility(View.GONE);
-        } else {
-            layoutSaveCancelText.setVisibility(View.GONE);
-            layoutMenuText.setVisibility(View.GONE);
-            layoutSaveCancel.setVisibility(View.VISIBLE);
-            layoutMenu.setVisibility(View.VISIBLE);
-        }
+        layoutSaveCancelText.setVisibility(isShow ? View.VISIBLE : View.GONE);
+        layoutMenuText.setVisibility(isShow ? View.VISIBLE : View.GONE);
+        layoutSaveCancel.setVisibility(isShow ? View.GONE : View.VISIBLE);
+        layoutMenu.setVisibility(isShow ? View.GONE : View.VISIBLE);
     }
 }
