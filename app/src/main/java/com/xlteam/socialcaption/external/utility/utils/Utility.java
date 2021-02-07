@@ -62,6 +62,11 @@ public class Utility {
         view.startAnimation(vibrate);
     }
 
+    public static void setEnable(View view, boolean isEnable) {
+        view.setAlpha(isEnable ? 1.0f : 0.3f);
+        view.setEnabled(isEnable);
+    }
+
     public static void vibratorNotify(Context context, int duration) {
         Vibrator vibe = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         vibe.vibrate(duration);
