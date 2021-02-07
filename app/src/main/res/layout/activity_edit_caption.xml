@@ -81,8 +81,8 @@
         android:id="@+id/container_background_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/layout_bottom"
-        android:layout_below="@id/layout_top">
+        android:layout_below="@id/layout_top"
+        android:layout_marginBottom="111dp">
 
         <RelativeLayout
             android:id="@+id/relative_background_save_img"
@@ -110,15 +110,15 @@
     <RelativeLayout
         android:id="@+id/layout_bottom"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="51dp"
-        android:background="#121212">
+        android:layout_marginBottom="51dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_menu"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="60dp"
+            android:background="#121212"
             android:gravity="center">
 
             <LinearLayout
@@ -261,177 +261,187 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_menu_text"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
+            android:layout_height="wrap_content"
             android:visibility="gone">
 
-            <LinearLayout
-                android:id="@+id/layout_btn_text_edit"
-                android:layout_width="60dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/bg_ripple_click_view_rectangle"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvFont"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="5dp"
+                android:visibility="gone"
+                ads:layout_constraintBottom_toTopOf="@id/layout_1"
+                ads:layout_constraintEnd_toEndOf="parent"
+                ads:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvColor"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="5dp"
+                android:visibility="gone"
+                ads:layout_constraintBottom_toTopOf="@id/layout_1"
+                ads:layout_constraintEnd_toEndOf="parent"
+                ads:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_1"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="#121212"
                 android:gravity="center"
-                android:onClick="onTextChangeClicked"
-                android:orientation="vertical"
-                ads:layout_constraintEnd_toStartOf="@id/layout_btn_text_color"
-                ads:layout_constraintHorizontal_chainStyle="spread"
-                ads:layout_constraintStart_toStartOf="@id/layout_menu_text">
+                ads:layout_constraintBottom_toBottomOf="parent"
+                ads:layout_constraintEnd_toEndOf="parent"
+                ads:layout_constraintStart_toStartOf="parent">
 
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_text_edit" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="Văn bản"
-                    android:textColor="@color/white"
-                    android:textSize="10dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layout_btn_text_color"
-                android:layout_width="60dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/bg_ripple_click_view_rectangle"
-                android:gravity="center"
-                android:onClick="onTextColorClicked"
-                android:orientation="vertical"
-                ads:layout_constraintEnd_toStartOf="@id/layout_btn_text_font"
-                ads:layout_constraintStart_toEndOf="@id/layout_btn_text_edit">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_text_color" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="Màu sắc"
-                    android:textColor="@color/white"
-                    android:textSize="10dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layout_btn_text_font"
-                android:layout_width="60dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/bg_ripple_click_view_rectangle"
-                android:gravity="center"
-                android:onClick="onTextFontClicked"
-                android:orientation="vertical"
-                ads:layout_constraintEnd_toStartOf="@id/layout_btn_text_span"
-                ads:layout_constraintStart_toEndOf="@id/layout_btn_text_color">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_text_font" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="Font"
-                    android:textColor="@color/white"
-                    android:textSize="10dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layout_btn_text_span"
-                android:layout_width="60dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/bg_ripple_click_view_rectangle"
-                android:gravity="center"
-                android:onClick="onTextBgClicked"
-                android:orientation="vertical"
-                ads:layout_constraintEnd_toStartOf="@id/layout_btn_text_align"
-                ads:layout_constraintStart_toEndOf="@id/layout_btn_text_font">
-
-                <TextView
-                    android:id="@+id/tvBg"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:background="@drawable/bg_font_button"
-                    android:fontFamily="sans-serif-medium"
+                <LinearLayout
+                    android:id="@+id/layout_btn_text_edit"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_ripple_click_view_rectangle"
                     android:gravity="center"
-                    android:text="A"
-                    android:textColor="@color/white"
-                    android:textSize="22dp" />
+                    android:onClick="onTextChangeClicked"
+                    android:orientation="vertical"
+                    ads:layout_constraintEnd_toStartOf="@id/layout_btn_text_color"
+                    ads:layout_constraintHorizontal_chainStyle="spread"
+                    ads:layout_constraintStart_toStartOf="@id/layout_1">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="Nền chữ"
-                    android:textColor="@color/white"
-                    android:textSize="10dp" />
-            </LinearLayout>
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_text_edit" />
 
-            <LinearLayout
-                android:id="@+id/layout_btn_text_align"
-                android:layout_width="60dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/bg_ripple_click_view_rectangle"
-                android:gravity="center"
-                android:onClick="onTextAlignClicked"
-                android:orientation="vertical"
-                ads:layout_constraintEnd_toEndOf="@id/layout_menu_text"
-                ads:layout_constraintStart_toEndOf="@id/layout_btn_text_span">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="Văn bản"
+                        android:textColor="@color/white"
+                        android:textSize="10dp" />
+                </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/imgGravity"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_align_center" />
+                <LinearLayout
+                    android:id="@+id/layout_btn_text_color"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_ripple_click_view_rectangle"
+                    android:gravity="center"
+                    android:onClick="onTextColorClicked"
+                    android:orientation="vertical"
+                    ads:layout_constraintEnd_toStartOf="@id/layout_btn_text_font"
+                    ads:layout_constraintStart_toEndOf="@id/layout_btn_text_edit">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="Vị trí"
-                    android:textColor="@color/white"
-                    android:textSize="10dp" />
-            </LinearLayout>
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_text_color" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="Màu sắc"
+                        android:textColor="@color/white"
+                        android:textSize="10dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_btn_text_font"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_ripple_click_view_rectangle"
+                    android:gravity="center"
+                    android:onClick="onTextFontClicked"
+                    android:orientation="vertical"
+                    ads:layout_constraintEnd_toStartOf="@id/layout_btn_text_span"
+                    ads:layout_constraintStart_toEndOf="@id/layout_btn_text_color">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_text_font" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="Font"
+                        android:textColor="@color/white"
+                        android:textSize="10dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_btn_text_span"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_ripple_click_view_rectangle"
+                    android:gravity="center"
+                    android:onClick="onTextBgClicked"
+                    android:orientation="vertical"
+                    ads:layout_constraintEnd_toStartOf="@id/layout_btn_text_align"
+                    ads:layout_constraintStart_toEndOf="@id/layout_btn_text_font">
+
+                    <TextView
+                        android:id="@+id/tvBg"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/bg_font_button"
+                        android:fontFamily="sans-serif-medium"
+                        android:gravity="center"
+                        android:text="A"
+                        android:textColor="@color/white"
+                        android:textSize="22dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="Nền chữ"
+                        android:textColor="@color/white"
+                        android:textSize="10dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_btn_text_align"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_ripple_click_view_rectangle"
+                    android:gravity="center"
+                    android:onClick="onTextAlignClicked"
+                    android:orientation="vertical"
+                    ads:layout_constraintEnd_toEndOf="@id/layout_1"
+                    ads:layout_constraintStart_toEndOf="@id/layout_btn_text_span">
+
+                    <ImageView
+                        android:id="@+id/imgGravity"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_align_center" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="Vị trí"
+                        android:textColor="@color/white"
+                        android:textSize="10dp" />
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/layout_bottom">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvColor"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="5dp"
-            android:visibility="gone" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvFont"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="5dp"
-            android:visibility="gone" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -473,7 +483,6 @@
         </RelativeLayout>
 
     </RelativeLayout>
-
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"

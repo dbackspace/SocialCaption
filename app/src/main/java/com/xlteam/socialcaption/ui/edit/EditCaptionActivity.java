@@ -234,8 +234,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     public void onAddTextClicked(View view) {
         layoutTop.setVisibility(View.INVISIBLE);
         layoutBottom.setVisibility(View.INVISIBLE);
-        rvColor.setVisibility(View.GONE);
-        rvFont.setVisibility(View.GONE);
         Dialog addTextDialog = new DialogAddTextBuilder(this, null).build();
         addTextDialog.setOnCancelListener(dialog -> {
             layoutTop.setVisibility(View.VISIBLE);
@@ -272,8 +270,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     public void onTextChangeClicked(View view) {
         layoutTop.setVisibility(View.INVISIBLE);
         layoutBottom.setVisibility(View.INVISIBLE);
-        rvColor.setVisibility(View.GONE);
-        rvFont.setVisibility(View.GONE);
         Dialog addTextDialog = new DialogAddTextBuilder(this, null).build(); //truyền text vào đây
         addTextDialog.setOnCancelListener(dialog -> {
             layoutTop.setVisibility(View.VISIBLE);
@@ -440,14 +436,16 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
                     // Solution tạm thời cho việc get itemText từ map
                     ItemText itemTextTemp = mapViewUtils.get(textInputTv);
+                    Log.d("binh.ngk ", "1__" + itemTextTemp);
                     if (itemTextTemp != null) {
                         // editClickTextByClickTextView()
+                        Log.d("binh.ngk ", "1");
                         mTextViewClicked = textInputTv;
                         mItemTextViewClicked = itemTextTemp;
-                        mNumberBg = mItemTextViewClicked.getBg();
-                        mNumberColor = mItemTextViewClicked.getColor();
-                        mGravityText = mItemTextViewClicked.getGravity();
-                        mNumberFont = mItemTextViewClicked.getFont();
+                        mNumberBg = itemTextTemp.getBg();
+                        mNumberColor = itemTextTemp.getColor();
+                        mGravityText = itemTextTemp.getGravity();
+                        mNumberFont = itemTextTemp.getFont();
                     }
 
                     editTextByClickTextView(textAddedView, itemText);
@@ -580,8 +578,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     public void onEventMoveChangeListener() {
         containerTrash.setVisibility(View.VISIBLE);
         layoutTop.setVisibility(View.INVISIBLE);
-        rvColor.setVisibility(View.GONE);
-        rvFont.setVisibility(View.GONE);
         layoutBottom.setVisibility(View.INVISIBLE);
     }
 
@@ -642,8 +638,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
             layoutMenuText.setVisibility(View.GONE);
             layoutSaveCancel.setVisibility(View.VISIBLE);
             layoutMenu.setVisibility(View.VISIBLE);
-            rvFont.setVisibility(View.GONE);
-            rvColor.setVisibility(View.GONE);
         }
     }
 }
