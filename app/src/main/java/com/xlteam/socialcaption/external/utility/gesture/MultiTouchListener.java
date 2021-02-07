@@ -186,7 +186,10 @@ public class MultiTouchListener implements OnTouchListener {
                 mIsInViewBounds = false;
                 deleteView.setScaleX(1f);
                 deleteView.setScaleY(1f);
-                firePhotoEditorSDKListener(view, EventType.ON_UP);
+                long duration = event.getEventTime() - event.getDownTime();
+                if (!(duration < CLICK_THRESHOLD_DURATION && isSingleTapEvent(prevRawX, x, prevRawY, y))) {
+                    firePhotoEditorSDKListener(view, EventType.ON_UP);
+                }
                 break;
             case MotionEvent.ACTION_POINTER_UP:
                 int pointerIndexPointerUp = (action & MotionEvent.ACTION_POINTER_INDEX_MASK) >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
@@ -217,26 +220,26 @@ public class MultiTouchListener implements OnTouchListener {
     private void firePhotoEditorSDKListener(View view, EventType eventType) {
         if (view instanceof TextView) {
             if (onMultiTouchListener != null) {
-                notifyWhenEventChangeListener(eventType);
+                notifyWhenEventChangeListener(view, eventType);
             } else {
-                notifyWhenEventChangeListener(eventType);
+                notifyWhenEventChangeListener(view, eventType);
             }
         } else {
-            notifyWhenEventChangeListener(eventType);
+            notifyWhenEventChangeListener(view, eventType);
         }
     }
 
-    private void notifyWhenEventChangeListener(EventType eventType) {
+    private void notifyWhenEventChangeListener(View view, EventType eventType) {
         if (onPhotoEditorListener != null) {
             switch (eventType) {
                 case ON_DOWN:
-                    onPhotoEditorListener.onEventDownChangeListener();
+                    onPhotoEditorListener.onEventDownChangeListener(view);
                     break;
                 case ON_MOVE:
-                    onPhotoEditorListener.onEventMoveChangeListener();
+                    onPhotoEditorListener.onEventMoveChangeListener(view);
                     break;
                 case ON_UP:
-                    onPhotoEditorListener.onEventUpChangeListener();
+                    onPhotoEditorListener.onEventUpChangeListener(view);
                     break;
             }
         }

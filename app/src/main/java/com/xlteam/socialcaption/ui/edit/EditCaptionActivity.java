@@ -148,7 +148,10 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         tvDone.setClickable(false);
         imgBack.setOnClickListener(v -> finish());
         imgCancelText.setOnClickListener(view -> showTextMode(false));
-        imgDoneText.setOnClickListener(view -> showTextMode(false));
+        imgDoneText.setOnClickListener(view -> {
+            showTextMode(false);
+            clearAllViewBordersVisibility();
+        });
     }
 
     private void findViewById() {
@@ -520,7 +523,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         return rootView;
     }
 
-    private void clickBackgroundImage() {
+    private void clearAllViewBordersVisibility() {
         // disable all border and delete button in all text added
         for (View view : addedViews) {
             FrameLayout border = view.findViewById(R.id.text_border);
@@ -568,19 +571,22 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     }
 
     @Override
-    public void onEventDownChangeListener() {
+    public void onEventDownChangeListener(View view) {
 
     }
 
     @Override
-    public void onEventMoveChangeListener() {
+    public void onEventMoveChangeListener(View view) {
         containerTrash.setVisibility(View.VISIBLE);
         layoutTop.setVisibility(View.INVISIBLE);
         layoutBottom.setVisibility(View.INVISIBLE);
     }
 
     @Override
-    public void onEventUpChangeListener() {
+    public void onEventUpChangeListener(View view) {
+        FrameLayout border = view.findViewById(R.id.text_border);
+        border.setBackgroundResource(0);
+        border.setTag(false);
         containerTrash.setVisibility(View.GONE);
         layoutTop.setVisibility(View.VISIBLE);
         layoutBottom.setVisibility(View.VISIBLE);
@@ -622,7 +628,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         });
         rvColor.setAdapter(mColorAdapter);
 
-        containerBgImage.setOnClickListener(v -> clickBackgroundImage());
+        containerBgImage.setOnClickListener(v -> clearAllViewBordersVisibility());
     }
 
     private void showTextMode(boolean isShow) {
