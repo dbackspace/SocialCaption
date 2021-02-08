@@ -54,7 +54,7 @@ public class HomeFragment extends Fragment {
         @NonNull
         @Override
         public Fragment getItem(int position) {
-            return new CaptionListFragment(position);
+            return new PictureListFragment(position);
         }
 
         @Override
@@ -64,7 +64,7 @@ public class HomeFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return 7;
+            return 5;
         }
 
         @Override
@@ -73,17 +73,13 @@ public class HomeFragment extends Fragment {
                 case 0:
                     return mContext.getString(R.string.all);
                 case 1:
-                    return mContext.getString(R.string.trending);
+                    return mContext.getString(R.string.mood);
                 case 2:
-                    return mContext.getString(R.string.give_love);
+                    return mContext.getString(R.string.love);
                 case 3:
-                    return mContext.getString(R.string.life);
+                    return mContext.getString(R.string.nature);
                 case 4:
-                    return mContext.getString(R.string.friend);
-                case 5:
-                    return mContext.getString(R.string.family);
-                case 6:
-                    return mContext.getString(R.string.other);
+                    return mContext.getString(R.string.black_white);
             }
             return mContext.getString(R.string.all);
         }

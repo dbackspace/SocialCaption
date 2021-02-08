@@ -33,8 +33,6 @@ import com.xlteam.socialcaption.external.utility.utils.Utility;
 import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
 import com.xlteam.socialcaption.ui.gallery.GalleryFragment;
 import com.xlteam.socialcaption.ui.home.HomeFragment;
-import com.xlteam.socialcaption.ui.home.SearchDialogFragment;
-import com.xlteam.socialcaption.ui.saved.SavedFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawer;
     private Fragment currentFragment;
     private AdView mAdView;
-    private ImageView imgMenu, imgSearch, imgCreatePicture;
+    private ImageView imgMenu, imgCreatePicture;
     private TextView tvTitle;
     private RelativeLayout toolbarCustom;
 
@@ -63,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
         mAdView.loadAd(adRequest);
         tvTitle = findViewById(R.id.tv_title);
         imgMenu = findViewById(R.id.btn_menu);
-        imgSearch = findViewById(R.id.btn_search);
         imgCreatePicture = findViewById(R.id.btn_create_picture);
         toolbarCustom = findViewById(R.id.toolbarCustom);
 
@@ -85,10 +82,6 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 case R.id.nav_gallery:
                     selectNavigation(GALLERY);
-                    drawer.closeDrawer(GravityCompat.START, true);
-                    return true;
-                case R.id.nav_saved:
-                    selectNavigation(SAVED);
                     drawer.closeDrawer(GravityCompat.START, true);
                     return true;
                 case R.id.nav_rate:
@@ -123,17 +116,6 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, EditCaptionActivity.class);
             startActivity(intent);
         });
-        imgSearch.setOnClickListener(view -> {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            ViManager.getInstance().setFragmentDefaultAnimation(MainActivity.this, fragmentTransaction);
-            SearchDialogFragment searchDialogFragment = new SearchDialogFragment(() -> {
-                if (currentFragment instanceof HomeFragment) {
-                    ((HomeFragment) currentFragment).updateData();
-                }
-            });
-            searchDialogFragment.show(fragmentTransaction, "dialog");
-        });
         selectNavigation(HOME);
     }
 
@@ -142,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
                 R.layout.fragment_home,
                 R.layout.fragment_dialog_search,
                 R.layout.fragment_gallery,
-                R.layout.fragment_saved
         };
         for (int asyncLayoutInflate : layoutList) {
             AsyncLayoutInflateManager.getInstance(this).doAsyncInflate(asyncLayoutInflate, null);
@@ -200,21 +181,12 @@ public class MainActivity extends AppCompatActivity {
                 currentFragment = new HomeFragment();
                 navigationView.setCheckedItem(R.id.nav_home);
                 tvTitle.setText(R.string.title_home);
-                imgSearch.setVisibility(View.VISIBLE);
             }
         } else if (type == GALLERY) { //giữ trạng thái khi chọn lại item
             if (!(currentFragment instanceof GalleryFragment)) {
                 currentFragment = new GalleryFragment();
                 navigationView.setCheckedItem(R.id.nav_gallery);
                 tvTitle.setText(R.string.menu_gallery);
-                imgSearch.setVisibility(View.GONE);
-            }
-        } else if (type == SAVED) { //giữ trạng thái khi chọn lại item
-            if (!(currentFragment instanceof SavedFragment)) {
-                currentFragment = new SavedFragment();
-                navigationView.setCheckedItem(R.id.nav_gallery);
-                tvTitle.setText(R.string.menu_saved);
-                imgSearch.setVisibility(View.GONE);
             }
         }
         replaceFragment(currentFragment);
@@ -223,7 +195,6 @@ public class MainActivity extends AppCompatActivity {
     public void showToolbarCustom(boolean isShow) {
         toolbarCustom.setVisibility(isShow ? View.INVISIBLE : View.INVISIBLE);
         toolbarGallerySecond.setVisibility(isShow ? View.VISIBLE : View.INVISIBLE);
-
     }
 
     @Override
@@ -236,8 +207,6 @@ public class MainActivity extends AppCompatActivity {
             imgCheckAll.setActivated(false);
             ((GalleryFragment) currentFragment).onBackPress();
         } else if (navigationView.getMenu().findItem(R.id.nav_gallery).isChecked()) {
-            selectNavigation(HOME);
-        } else if (navigationView.getMenu().findItem(R.id.nav_saved).isChecked()) {
             selectNavigation(HOME);
         } else {
             super.onBackPressed();

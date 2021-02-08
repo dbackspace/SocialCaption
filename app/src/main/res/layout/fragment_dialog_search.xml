@@ -62,7 +62,7 @@
         android:textSize="16dp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_caption"
+        android:id="@+id/rv_picture"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/tv_number_caption"
