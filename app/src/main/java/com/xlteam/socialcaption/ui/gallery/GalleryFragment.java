@@ -47,8 +47,6 @@ public class GalleryFragment extends Fragment
     private TextView mEmptyImage;
     private GalleryAdapter mGalleryAdapter;
     private List<String> mGalleryPaths;
-    private RelativeLayout layoutTop;
-    private ImageView imgCheckAll;
 
     private LinearLayout layoutBottom;
     private boolean showed = false;
@@ -56,7 +54,10 @@ public class GalleryFragment extends Fragment
     private ViewGroup viewGroup;
     private LinearLayout mBtnShareGallery;
     private LinearLayout mBtnDeleteGallery;
-    private TextView tvTotalChecked;
+
+    //    private RelativeLayout layoutTop;
+    //    private ImageView imgCheckAll;
+    //    private TextView tvTotalChecked;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -89,10 +90,18 @@ public class GalleryFragment extends Fragment
         final View root = AsyncLayoutInflateManager.getInstance(mContext).inflateView(inflater, container, R.layout.fragment_gallery);
         this.viewGroup = container;
         mEmptyImage = root.findViewById(R.id.tv_empty_image);
-        layoutTop = root.findViewById(R.id.layout_top);
-        layoutBottom = root.findViewById(R.id.bottom_sheet);
 
-        tvTotalChecked = root.findViewById(R.id.tv_number_image_checked);
+        layoutBottom = root.findViewById(R.id.bottom_sheet);
+        layoutBottom.setVisibility(View.INVISIBLE);
+
+//        layoutTop = root.findViewById(R.id.layout_top);
+//        tvTotalChecked = root.findViewById(R.id.tv_number_image_checked);
+//        imgCheckAll = root.findViewById(R.id.image_check_all);
+//        imgCheckAll.setOnClickListener(view -> {
+//            imgCheckAll.setActivated(!imgCheckAll.isActivated());
+//            mGalleryAdapter.onCheckBoxAllChecked(imgCheckAll.isActivated());
+//        });
+//
 
         mBtnDeleteGallery = root.findViewById(R.id.btn_delete_gallery);
         mBtnDeleteGallery.setOnClickListener(v -> {
@@ -102,12 +111,6 @@ public class GalleryFragment extends Fragment
         mBtnShareGallery = root.findViewById(R.id.btn_share_gallery);
         mBtnShareGallery.setOnClickListener(v -> {
             shareImages(mGalleryAdapter.getCheckedList());
-        });
-
-        imgCheckAll = root.findViewById(R.id.image_check_all);
-        imgCheckAll.setOnClickListener(view -> {
-            imgCheckAll.setActivated(!imgCheckAll.isActivated());
-            mGalleryAdapter.onCheckBoxAllChecked(imgCheckAll.isActivated());
         });
 
         // init recycler gallery by findViewById
@@ -135,17 +138,12 @@ public class GalleryFragment extends Fragment
 
     @Override
     public void showCheckBoxAll(boolean isCheckBoxChecked) {
-        if (isCheckBoxChecked) {
-            ((MainActivity) getActivity()).showToolbarCustom(false);
-            layoutTop.setVisibility(View.VISIBLE);
-        } else {
-            layoutTop.setVisibility(View.GONE);
-        }
+        ((MainActivity) getActivity()).showToolbarCustom(isCheckBoxChecked);
     }
 
     @Override
     public void setAllItemChecked(boolean isCheckBoxAllChecked) {
-        imgCheckAll.setActivated(isCheckBoxAllChecked);
+        ((MainActivity) getActivity()).imgCheckAll.setActivated(isCheckBoxAllChecked);
     }
 
     @Override
@@ -153,16 +151,17 @@ public class GalleryFragment extends Fragment
         Timber.e("numberImageChecked: " + numberImageChecked);
         boolean isShow = numberImageChecked != 0;
         TransitionManager.beginDelayedTransition(viewGroup, transition);
+
         if (isShow) {
-            tvTotalChecked.setText(mContext.getString(R.string.select_number_image, numberImageChecked));
+            ((MainActivity) getActivity()).tvTotalChecked.setText(mContext.getString(R.string.select_number_image, numberImageChecked));
         } else {
-            tvTotalChecked.setText(R.string.select_items);
+            ((MainActivity) getActivity()).tvTotalChecked.setText(R.string.select_items);
         }
         if (isShow && !showed) {
             layoutBottom.setVisibility(View.VISIBLE);
             showed = true;
         } else if (!isShow && showed) {
-            layoutBottom.setVisibility(View.GONE);
+            layoutBottom.setVisibility(View.INVISIBLE);
             showed = false;
         }
     }
@@ -215,9 +214,14 @@ public class GalleryFragment extends Fragment
     }
 
     public void onBackPress() { // cancel selecting image mode
-        imgCheckAll.setActivated(false);
+//        imgCheckAll.setActivated(false);
+//        layoutTop.setVisibility(View.GONE);
         mGalleryAdapter.onCheckBoxAllChecked(false);
         mGalleryAdapter.cancelMultipleMode();
-        layoutTop.setVisibility(View.GONE);
+
+    }
+
+    public void isImageCheckAllChecked(boolean activated) {
+        mGalleryAdapter.onCheckBoxAllChecked(activated);
     }
 }

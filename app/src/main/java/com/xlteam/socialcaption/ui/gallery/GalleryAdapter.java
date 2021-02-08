@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.logger.Log;
 import com.xlteam.socialcaption.external.utility.thread.BitmapLruCache;
+import com.xlteam.socialcaption.ui.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +76,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
                 mCallback.showCheckBoxAll(true);
             }
             holder.checkBox.setChecked(checkedList.contains(position));
+
         } else {
             holder.checkBox.setVisibility(View.GONE);
         }

@@ -47,6 +47,11 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvTitle;
     private RelativeLayout toolbarCustom;
 
+    // custom tool bar for gallery onItemLongClicked
+    private RelativeLayout toolbarGallerySecond;
+    public ImageView imgCheckAll;
+    public TextView tvTotalChecked;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +66,15 @@ public class MainActivity extends AppCompatActivity {
         imgSearch = findViewById(R.id.btn_search);
         imgCreatePicture = findViewById(R.id.btn_create_picture);
         toolbarCustom = findViewById(R.id.toolbarCustom);
+
+        toolbarGallerySecond = findViewById(R.id.toolbar_gallery_second);
+        tvTotalChecked = findViewById(R.id.tv_number_image_checked);
+        imgCheckAll = findViewById(R.id.image_check_all);
+        imgCheckAll.setOnClickListener(view -> {
+            imgCheckAll.setActivated(!imgCheckAll.isActivated());
+            ((GalleryFragment) currentFragment).isImageCheckAllChecked(imgCheckAll.isActivated());
+        });
+
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(item -> {
@@ -207,15 +221,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showToolbarCustom(boolean isShow) {
-        toolbarCustom.setVisibility(isShow ? View.VISIBLE : View.GONE);
+        toolbarCustom.setVisibility(isShow ? View.INVISIBLE : View.INVISIBLE);
+        toolbarGallerySecond.setVisibility(isShow ? View.VISIBLE : View.INVISIBLE);
+
     }
 
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START, true);
-        } else if (currentFragment instanceof GalleryFragment && toolbarCustom.getVisibility() == View.GONE) {
+        } else if (currentFragment instanceof GalleryFragment && toolbarCustom.getVisibility() == View.INVISIBLE) {
             toolbarCustom.setVisibility(View.VISIBLE);
+            toolbarGallerySecond.setVisibility(View.INVISIBLE);
+            imgCheckAll.setActivated(false);
             ((GalleryFragment) currentFragment).onBackPress();
         } else if (navigationView.getMenu().findItem(R.id.nav_gallery).isChecked()) {
             selectNavigation(HOME);
