@@ -43,7 +43,7 @@ public class HomeFragment extends Fragment {
         mAdapter.notifyDataSetChanged();
     }
 
-    public class SlidePagerAdapter extends FragmentStatePagerAdapter {
+    public static class SlidePagerAdapter extends FragmentStatePagerAdapter {
         private Context mContext;
 
         SlidePagerAdapter(FragmentManager fm, Context context) {
