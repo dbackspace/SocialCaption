@@ -4,15 +4,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.datasource.ColorDataSource;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
 import com.xlteam.socialcaption.model.Color;
 
 import java.util.ArrayList;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ViewHolder> {
     private ArrayList<Color> mColors;

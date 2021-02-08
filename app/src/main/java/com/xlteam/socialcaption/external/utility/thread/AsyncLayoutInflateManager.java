@@ -5,14 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.xlteam.socialcaption.external.utility.logger.Log;
-
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
 import androidx.annotation.Nullable;
 import androidx.asynclayoutinflater.view.AsyncLayoutInflater;
-
 import timber.log.Timber;
 
 public class AsyncLayoutInflateManager {

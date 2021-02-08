@@ -6,15 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.tabs.TabLayout;
+import com.xlteam.socialcaption.R;
+import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-
-import com.google.android.material.tabs.TabLayout;
-import com.xlteam.socialcaption.R;
-import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
 
 public class HomeFragment extends Fragment {
     private Context mContext;

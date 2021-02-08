@@ -21,7 +21,6 @@
             android:src="@drawable/ic_back_black" />
 
         <androidx.appcompat.widget.SearchView
-            android:id="@+id/search_view"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_centerInParent="true"
@@ -51,7 +50,6 @@
         android:textSize="14dp" />
 
     <TextView
-        android:id="@+id/tv_empty_caption"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/tv_number_caption"

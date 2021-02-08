@@ -25,12 +25,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -45,7 +39,6 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.datasource.ColorDataSource;
 import com.xlteam.socialcaption.external.datasource.FontDataSource;
-import com.xlteam.socialcaption.external.repository.UserCaptionRepository;
 import com.xlteam.socialcaption.external.utility.gesture.MultiTouchListener;
 import com.xlteam.socialcaption.external.utility.gesture.OnGestureControl;
 import com.xlteam.socialcaption.external.utility.gesture.OnMultiTouchListener;
@@ -58,7 +51,6 @@ import com.xlteam.socialcaption.external.utility.utils.MapViewUtils;
 import com.xlteam.socialcaption.external.utility.utils.PrefUtils;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
 import com.xlteam.socialcaption.model.Color;
-import com.xlteam.socialcaption.model.CommonCaption;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -69,6 +61,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import static com.xlteam.socialcaption.external.utility.utils.Constant.BACKGROUND_COLOR_0;
 import static com.xlteam.socialcaption.external.utility.utils.Constant.SAVE_DATE_TIME_FORMAT;
 
@@ -77,7 +75,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     private static final int RESULT_LOAD_IMG = 1;
     private ImageView imgBack, imgCancelText, imgDoneText;
     private TextView tvDone;
-    private CommonCaption mCommonCaption;
     private ImageView mImgBackground;
     private LinearLayout layoutMenu;
     private ConstraintLayout layoutMenuText;
@@ -90,7 +87,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     private int mColorTextDefault = 0;
     private int mAlignTextDefault = 0;
     private String mPathImg = "";
-    private UserCaptionRepository mRepository;
     private int flipCurrent = 0;
     private AdView mAdView;
     public static final int PICK_IMAGE = 1;
@@ -132,12 +128,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         mapViewUtils = MapViewUtils.getInstance();
         addedViews = new ArrayList<>();
         Intent intent = getIntent();
-        mCommonCaption = (CommonCaption) intent.getSerializableExtra(Constant.EXTRA_CAPTION);
-        if (mCommonCaption != null) {
-            //init old data
-        } else {
-            //show dialog
-        }
         findViewById();
         initTextEditor();
         tvDone.setOnClickListener(v -> {

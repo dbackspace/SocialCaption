@@ -22,8 +22,6 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
-import androidx.core.content.FileProvider;
-
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.logger.Log;
 
@@ -33,6 +31,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collection;
 
+import androidx.core.content.FileProvider;
 import de.cketti.mailto.EmailIntentBuilder;
 
 import static com.xlteam.socialcaption.external.utility.utils.Constant.FILE_PROVIDER_PATH;

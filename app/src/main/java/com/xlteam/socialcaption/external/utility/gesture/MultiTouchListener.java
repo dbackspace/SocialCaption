@@ -10,9 +10,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
-
 import com.xlteam.socialcaption.external.utility.utils.Utility;
+
+import androidx.annotation.Nullable;
 
 public class MultiTouchListener implements OnTouchListener {
 
