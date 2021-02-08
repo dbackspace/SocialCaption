@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">SocialCaption</string>
-    <string name="number_captions">%d captions</string>
     <string name="nav_header_title">XL team</string>
     <string name="nav_header_subtitle">developer-xlteam@gmail.com</string>
     <string name="nav_header_desc">Navigation header</string>
@@ -13,8 +12,6 @@
     <string name="title_home">Chọn ảnh</string>
     <string name="license">Giấy phép</string>
     <string name="term_of_use">Điều khoản sử dụng</string>
-    <string name="send_friend">Gửi cho bạn bè</string>
-    <string name="copied">Đã sao chép</string>
     <string name="all">Tất cả</string>
     <string name="mood">Tâm trạng</string>
     <string name="love">Tình yêu</string>
