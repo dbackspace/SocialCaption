@@ -4,20 +4,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-
-import com.xlteam.socialcaption.R;
-
-import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHolder> {
-    private List<String> mUrls;
+import com.squareup.picasso.Picasso;
+import com.xlteam.socialcaption.R;
+import com.xlteam.socialcaption.external.utility.utils.Utility;
 
-    public PictureAdapter(List<String> urls) {
-        mUrls = mUrls;
+public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHolder> {
+    private final int mNumberCategory;
+
+    public PictureAdapter(int numberCategory) {
+        mNumberCategory = numberCategory;
     }
 
     @NonNull
@@ -29,26 +28,20 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String url = mUrls.get(position);
-
-        holder.mLoading.setVisibility(View.VISIBLE);
-        //load url
-//        holder.imgPicture.setImageBitmap(BitmapLruCache.getInstance().retrieveBitmapFromCache(path));
+        Picasso.get().load(Utility.getUrlByCategoryIndex(mNumberCategory, position)).into(holder.imgPicture);
     }
 
     @Override
     public int getItemCount() {
-        return mUrls.size();
+        return 10;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final ImageView imgPicture;
-        private final LinearLayout mLoading;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             imgPicture = itemView.findViewById(R.id.img_picture);
-            mLoading = itemView.findViewById(R.id.loading_view);
         }
 
     }

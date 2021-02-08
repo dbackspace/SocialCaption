@@ -6,14 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.xlteam.socialcaption.R;
-import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.xlteam.socialcaption.R;
+import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
 
 public class PictureListFragment extends Fragment {
     private Context mContext;
@@ -41,7 +41,7 @@ public class PictureListFragment extends Fragment {
         View root = AsyncLayoutInflateManager.getInstance(mContext).inflateView(inflater, container, R.layout.fragment_caption_list);
         rvPicture = root.findViewById(R.id.rv_picture);
         rvPicture.setLayoutManager(new GridLayoutManager(mContext, 3));
-        getPictureList(mCategoryNumber);
+        rvPicture.setAdapter(new PictureAdapter(mCategoryNumber));
         return root;
     }
 

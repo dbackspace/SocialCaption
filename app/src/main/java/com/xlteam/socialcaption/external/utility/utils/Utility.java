@@ -22,6 +22,8 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
+import androidx.core.content.FileProvider;
+
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.logger.Log;
 
@@ -31,7 +33,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collection;
 
-import androidx.core.content.FileProvider;
 import de.cketti.mailto.EmailIntentBuilder;
 
 import static com.xlteam.socialcaption.external.utility.utils.Constant.FILE_PROVIDER_PATH;
@@ -242,4 +243,18 @@ public class Utility {
         return items == null || items.isEmpty();
     }
 
+    public static String getUrlByCategoryIndex(int category, int index) {
+        String first = "https://firebasestorage.googleapis.com/v0/b/socialcaption-xlteam.appspot.com/o/";
+        String last = ".jpg?alt=media";
+        switch (category) {
+            case 1:
+                return first + "tinh_yeu_" + index + last;
+            case 2:
+                return first + "thien_nhien_" + index + last;
+            case 3:
+                return first + "den_trang_" + index + last;
+            default:
+                return first + "tam_trang_" + index + last;
+        }
+    }
 }

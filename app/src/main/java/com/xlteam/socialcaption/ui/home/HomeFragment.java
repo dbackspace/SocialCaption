@@ -6,15 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.material.tabs.TabLayout;
-import com.xlteam.socialcaption.R;
-import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.tabs.TabLayout;
+import com.xlteam.socialcaption.R;
+import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
 
 public class HomeFragment extends Fragment {
     private Context mContext;
@@ -37,10 +37,6 @@ public class HomeFragment extends Fragment {
         viewPager.setAdapter(mAdapter);
         tabLayoutCategory.setupWithViewPager(viewPager);
         return root;
-    }
-
-    public void updateData() {
-        mAdapter.notifyDataSetChanged();
     }
 
     public static class SlidePagerAdapter extends FragmentStatePagerAdapter {
@@ -71,17 +67,15 @@ public class HomeFragment extends Fragment {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return mContext.getString(R.string.all);
-                case 1:
                     return mContext.getString(R.string.mood);
-                case 2:
+                case 1:
                     return mContext.getString(R.string.love);
-                case 3:
+                case 2:
                     return mContext.getString(R.string.nature);
-                case 4:
+                case 3:
                     return mContext.getString(R.string.black_white);
             }
-            return mContext.getString(R.string.all);
+            return mContext.getString(R.string.mood);
         }
     }
 }
