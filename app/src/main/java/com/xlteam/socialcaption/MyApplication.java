@@ -8,9 +8,8 @@ import android.os.Build;
 import com.xlteam.socialcaption.external.utility.logger.Log;
 import com.xlteam.socialcaption.external.utility.logger.LogcatLogWriter;
 import com.xlteam.socialcaption.external.utility.thread.BitmapLruCache;
-import com.xlteam.socialcaption.external.utility.thread.ThreadExecutor;
+import com.xlteam.socialcaption.external.utility.utils.FileUtils;
 import com.xlteam.socialcaption.external.utility.utils.MyCustomLogDebugTree;
-import com.xlteam.socialcaption.external.utility.utils.PrefUtils;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
 
 import java.io.File;
@@ -23,21 +22,22 @@ public class MyApplication extends Application {
 
     public MyApplication() {
         super();
-        ThreadExecutor.runOnMainThread(() -> saveImageToLruCache());
+        saveImageToLruCache();
         Log.init(new LogcatLogWriter());
         if (Timber.treeCount() == 0) {
             if(BuildConfig.DEBUG) Timber.plant(new MyCustomLogDebugTree());
         }
     }
 
+    // TODO: thiếu cấp quyền Storage ngay từ đầu nên sẽ Force close
     private void saveImageToLruCache() {
-        List<String> pathImage = PrefUtils.getListItemGallery(this);
-        if (!Utility.isEmpty(pathImage)) {
+        List<File> fileList = FileUtils.getListFilesIfFolderExist();
+        if (!Utility.isEmpty(fileList)) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 BitmapLruCache cacheBitmapLru = BitmapLruCache.getInstance();
-                for (String path : pathImage) {
-                    File imgFile = new File(path);
-                    Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                for (File file : fileList) {
+                    String path = file.getAbsolutePath();
+                    Bitmap bitmap = BitmapFactory.decodeFile(path);
                     cacheBitmapLru.saveBitmapToCache(path, bitmap);
                 }
             }

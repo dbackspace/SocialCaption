@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 
 import com.google.common.collect.Lists;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -82,7 +81,6 @@ public class PrefUtils {
         editor.apply();
     }
 
-
     public static List<String> getStringArrayList(Context context, String key, String keyWord) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(key, MODE_PRIVATE);
         if (sharedPreferences != null) {
@@ -92,20 +90,6 @@ public class PrefUtils {
             }
         }
         return Lists.newArrayList();
-    }
-
-    public static List<String> getListItemGallery(Context context) {
-        return getStringArrayList(context, Constant.PREF_GALLERY, Constant.GALLERY_PATH);
-    }
-
-    public static void setListItemGallery(Context context, String savePath) {
-        ArrayList<String> temp = Lists.newArrayList(getListItemGallery(context));
-        temp.add(savePath);
-        putStringArrayList(context, Constant.PREF_GALLERY, Constant.GALLERY_PATH, temp);
-    }
-
-    public static void setListItemGallery(Context context, List<String> savePaths) {
-        putStringArrayList(context, Constant.PREF_GALLERY, Constant.GALLERY_PATH, savePaths);
     }
 
     public static int getVersionLocalDatabase(Context context) {

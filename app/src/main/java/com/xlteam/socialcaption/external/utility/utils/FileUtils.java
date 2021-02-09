@@ -1,24 +1,25 @@
 package com.xlteam.socialcaption.external.utility.utils;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
-
-import com.xlteam.socialcaption.external.utility.logger.Log;
-
-import java.io.File;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 
-import static com.xlteam.socialcaption.external.utility.utils.Constant.CATEGORIES;
-import static com.xlteam.socialcaption.external.utility.utils.Constant.COLORS;
-import static com.xlteam.socialcaption.external.utility.utils.Constant.FONTS;
-import static com.xlteam.socialcaption.external.utility.utils.Constant.MUSICS;
-import static com.xlteam.socialcaption.external.utility.utils.Constant.PHOTOS;
+import com.xlteam.socialcaption.external.utility.logger.Log;
+import com.xlteam.socialcaption.external.utility.thread.ThreadExecutorWithPool;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import timber.log.Timber;
 
 public class FileUtils {
     private static final String TAG = "FileUtils";
@@ -38,36 +39,9 @@ public class FileUtils {
         public static final String DATA_INTERNAL_PATH = getInternalStoragePath() + DATA_FOLDER;
         public static final String CACHE_INTERNAL_PATH = "/Android/data/com.xlteam.socialcaption/cache";
         public static final String CACHE_FOLDER = getInternalStoragePath() + CACHE_INTERNAL_PATH;
-        public static final String EDITOR_PHOTOS = "/Editor Photos";
-        public static final String EDITOR_FONTS = "/Editor Fonts";
-        public static final String EDITOR_COLORS = "/Editor Colors";
-        public static final String EDITOR_MUSICS = "/Editor Musics";
-        public static final String EDITOR_CATEGORIES = "/Editor Categories";
 
         public static String getInternalStoragePath() {
             return Environment.getExternalStorageDirectory().getAbsolutePath();
-        }
-
-        public static String getEditorFolderPath(int type) {
-            String folderPath = "";
-            switch (type) {
-                case PHOTOS:
-                    folderPath += EDITOR_PHOTOS;
-                    break;
-                case FONTS:
-                    folderPath += EDITOR_FONTS;
-                    break;
-                case COLORS:
-                    folderPath += EDITOR_COLORS;
-                    break;
-                case MUSICS:
-                    folderPath += EDITOR_MUSICS;
-                    break;
-                case CATEGORIES:
-                    folderPath += EDITOR_CATEGORIES;
-                    break;
-            }
-            return folderPath;
         }
 
         public static String getCacheFolderPath(Context context) {
@@ -82,6 +56,36 @@ public class FileUtils {
 
         public static String getDataInternalPath() {
             return DATA_INTERNAL_PATH;
+        }
+    }
+
+    public static void deleteMultiImage(List<String> listPath, Context context) {
+        // TODO: Apply Thread pool for delete multi image
+        for (String path : listPath) {
+            ThreadExecutorWithPool.getInstance().execute(() -> deleteSingleImage(path, context));
+        }
+    }
+
+    public static void deleteSingleImage(String localPath, Context context) {
+        if(!TextUtils.isEmpty(localPath)){
+            Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+            ContentResolver contentResolver = context.getContentResolver();
+            String url = MediaStore.Images.Media.DATA + "=?";
+            int deleteRows = contentResolver.delete(uri, url, new String[]{localPath});
+            Timber.v("path = " + localPath);
+            Timber.v("deleteRows = " + deleteRows);
+            if (deleteRows == 0) {
+                /**
+                 * When the image is generated without notification (inserted into) the media database,
+                 * the image is not visible in the gallery, and the contentResolver.delete method will return 0.
+                 * In this case, use the file.delete method. Delete Files
+                 */
+                File file = new File(localPath);
+                if (file.exists()) {
+                    boolean isDeleted = file.delete();
+                    Timber.v("file local delete = " + isDeleted);
+                }
+            }
         }
     }
 
@@ -114,12 +118,28 @@ public class FileUtils {
         return null;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public static File getListFileIfFolderExist(Context context, String folderPath) {
-        File folder = findExistingFolderRoot(context, folderPath);
-        if (folder != null && folder.list() != null) {
-            if (folder.list().length > 0) {
-                return new File(folder.list()[0]);
+    public static List<String> getListPathsIfFolderExist() {
+        File folder = findExistingFolderSaveImage();
+        if (folder != null) {
+            String[] listFilePaths = folder.list();
+            if (listFilePaths != null && listFilePaths.length > 0) {
+                return Arrays.asList(listFilePaths);
+            }
+        }
+        return null;
+    }
+
+    public static List<File> getListFilesIfFolderExist() {
+        File folder = findExistingFolderSaveImage();
+        if (folder != null) {
+            String[] listFilePaths = folder.list();
+            if (listFilePaths != null && listFilePaths.length > 0) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    return Arrays.stream(listFilePaths)
+                            .filter(path -> !TextUtils.isEmpty(path))
+                            .map(path -> new File(path))
+                            .collect(Collectors.toList());
+                }
             }
         }
         return null;

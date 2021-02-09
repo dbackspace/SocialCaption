@@ -11,18 +11,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.xlteam.socialcaption.R;
-import com.xlteam.socialcaption.external.utility.logger.Log;
-import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
-import com.xlteam.socialcaption.external.utility.utils.PrefUtils;
-import com.xlteam.socialcaption.external.utility.utils.Utility;
-import com.xlteam.socialcaption.ui.MainActivity;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
@@ -32,6 +20,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.Slide;
 import androidx.transition.Transition;
 import androidx.transition.TransitionManager;
+
+import com.xlteam.socialcaption.R;
+import com.xlteam.socialcaption.external.utility.logger.Log;
+import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
+import com.xlteam.socialcaption.external.utility.utils.FileUtils;
+import com.xlteam.socialcaption.external.utility.utils.Utility;
+import com.xlteam.socialcaption.ui.MainActivity;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import timber.log.Timber;
 
 import static com.xlteam.socialcaption.external.utility.utils.Constant.FILE_PROVIDER_PATH;
@@ -65,7 +66,7 @@ public class GalleryFragment extends Fragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mGalleryPaths = PrefUtils.getListItemGallery(mContext);
+        mGalleryPaths = FileUtils.getListPathsIfFolderExist();
         mGalleryAdapter = new GalleryAdapter(mGalleryPaths, this);
 
         // set animation for bottom sheet (layout share and delete)
@@ -164,8 +165,8 @@ public class GalleryFragment extends Fragment
     }
 
     private void updateUI() {
-        mGalleryPaths = PrefUtils.getListItemGallery(mContext);
-        if (mGalleryPaths.size() > 0) {
+        mGalleryPaths = FileUtils.getListPathsIfFolderExist();
+        if (mGalleryPaths != null && mGalleryPaths.size() > 0) {
             Timber.e("updateUI, list path size = " + mGalleryPaths.size());
             mEmptyImage.setVisibility(View.GONE);
             rvGallery.setVisibility(View.VISIBLE);

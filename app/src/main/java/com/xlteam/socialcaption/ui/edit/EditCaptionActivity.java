@@ -25,6 +25,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -48,7 +54,6 @@ import com.xlteam.socialcaption.external.utility.thread.BitmapLruCache;
 import com.xlteam.socialcaption.external.utility.utils.Constant;
 import com.xlteam.socialcaption.external.utility.utils.FileUtils;
 import com.xlteam.socialcaption.external.utility.utils.MapViewUtils;
-import com.xlteam.socialcaption.external.utility.utils.PrefUtils;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
 import com.xlteam.socialcaption.model.Color;
 
@@ -60,12 +65,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import static com.xlteam.socialcaption.external.utility.utils.Constant.BACKGROUND_COLOR_0;
 import static com.xlteam.socialcaption.external.utility.utils.Constant.SAVE_DATE_TIME_FORMAT;
@@ -113,6 +112,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
     private FontAdapter mFontAdapter;
     private ColorAdapter mColorAdapter;
     private MapViewUtils mapViewUtils;
+    private boolean isHasText = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -180,6 +180,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
                     Uri resultUri = result.getUri();
                     mImgBackground.setImageURI(resultUri);
                     isCropped = true;
+                    isChangedListener();
                 } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                     Exception error = result.getError();
                 }
@@ -198,6 +199,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
                             // co su thay doi
                             isPickedPicture = true;
+                            isChangedListener();
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
                             Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
@@ -340,7 +342,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
                                 // save image path to sharePref
                                 Log.e(this, savePath);
                                 BitmapLruCache.getInstance().saveBitmapToCache(savePath, bitmap);
-                                PrefUtils.setListItemGallery(mContext, savePath);
                                 finish();
                             } else {
                                 Toast.makeText(mContext, getString(R.string.save_fail), Toast.LENGTH_SHORT).show();
@@ -368,8 +369,12 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
          * TODO: Xử lý trong textChange ở DialogAddText, có cho enable nút DONE hay không
          */
         if (TextUtils.isEmpty(text.trim())) {
+            isHasText = false;
             return;
         }
+        isHasText = true;
+        isChangedListener();
+
         final View textAddedView = getTextStickerLayout();
         final TextView textInputTv = textAddedView.findViewById(R.id.text_tv);
         final FrameLayout frameBorder = textAddedView.findViewById(R.id.text_border);
@@ -441,7 +446,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
     @Override
     public void onCancelAllTextDialog(boolean isNoText) {
-        Log.d("binh.ngk" , "  " + isNoText);
+        Log.d("binh.ngk", "  " + isNoText);
         layoutTop.setVisibility(View.VISIBLE);
         layoutBottom.setVisibility(View.VISIBLE);
         showTextMode(!isNoText);
@@ -619,6 +624,16 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
             showTextMode(false);
         } else {
             super.onBackPressed();
+        }
+    }
+
+    private void isChangedListener() {
+        if (isCropped || isPickedPicture || isHasText) {
+            tvDone.setClickable(true);
+            tvDone.setAlpha(1);
+        } else {
+            tvDone.setClickable(false);
+            tvDone.setAlpha(0.7f);
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.xlteam.socialcaption.ui.gallery;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,20 +10,20 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.xlteam.socialcaption.R;
-import com.xlteam.socialcaption.external.utility.logger.Log;
-import com.xlteam.socialcaption.external.utility.utils.PrefUtils;
-import com.xlteam.socialcaption.ui.commondialog.DialogSaveChangesBuilder;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.xlteam.socialcaption.R;
+import com.xlteam.socialcaption.external.utility.logger.Log;
+import com.xlteam.socialcaption.external.utility.utils.FileUtils;
+import com.xlteam.socialcaption.ui.commondialog.DialogSaveChangesBuilder;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 
 public class DialogPreviewGallery extends DialogFragment implements ItemPreviewGalleryAdapter.GallerySelectCallback {
     private static final String ARG_LIST_PATH = "ARG_LIST_PATH";
@@ -39,6 +40,7 @@ public class DialogPreviewGallery extends DialogFragment implements ItemPreviewG
     private Dialog saveDialog;
     private Boolean isDeleted = false;
     private int mCurrentPosition;
+    private Context mContext;
 
     interface DialogDismissListenerCallback extends Serializable {
         void onDialogPreviewDismissed(Boolean isImageDeleted);
@@ -66,6 +68,7 @@ public class DialogPreviewGallery extends DialogFragment implements ItemPreviewG
         mItemPreviewGalleryAdapter = new ItemPreviewGalleryAdapter(mGalleryPaths, this);
         mListener = getDialogDismissListenerCallback();
         mCurrentPosition = getPickedPosition();
+        mContext = getContext();
 
         saveDialog = DialogSaveChangesBuilder.create(getContext())
                 .setTitleMessage(getString(R.string.confirm_delete_or_not))
@@ -135,13 +138,14 @@ public class DialogPreviewGallery extends DialogFragment implements ItemPreviewG
         mCurrentPosition = mLinearLayoutManager.findLastCompletelyVisibleItemPosition();
         Log.e("deleteImage", "mCurrentPosition" + " " + mCurrentPosition);
         if (mGalleryPaths.size() == 1) {
-            PrefUtils.setListItemGallery(getContext(), new ArrayList<>());
+            FileUtils.deleteSingleImage(mGalleryPaths.get(0), mContext);
             mListener.onDialogPreviewDismissed(true);
             dismiss();
         }
         if (mCurrentPosition < mGalleryPaths.size()) {
+            String deleteImagePath = mGalleryPaths.get(mCurrentPosition);
+            FileUtils.deleteSingleImage(deleteImagePath, mContext);
             mGalleryPaths.remove(mCurrentPosition);
-            PrefUtils.setListItemGallery(getContext(), mGalleryPaths);
             mItemPreviewGalleryAdapter.updateList(mGalleryPaths);
             mItemPreviewGalleryAdapter.notifyDataSetChanged();
             isDeleted = true;
