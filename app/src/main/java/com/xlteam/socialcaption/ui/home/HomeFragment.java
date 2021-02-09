@@ -61,7 +61,7 @@ public class HomeFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return 5;
+            return 4;
         }
 
         @Override
