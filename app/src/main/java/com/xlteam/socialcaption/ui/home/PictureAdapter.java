@@ -33,7 +33,7 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return 10;
+        return 20;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

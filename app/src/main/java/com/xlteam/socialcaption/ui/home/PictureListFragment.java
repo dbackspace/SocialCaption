@@ -18,7 +18,6 @@ import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManage
 public class PictureListFragment extends Fragment {
     private Context mContext;
     private RecyclerView rvPicture;
-    private PictureAdapter mAdapter;
     private int mCategoryNumber;
 
     public PictureListFragment() {

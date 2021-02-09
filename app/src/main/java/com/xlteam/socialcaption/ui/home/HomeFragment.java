@@ -35,6 +35,7 @@ public class HomeFragment extends Fragment {
         viewPager = root.findViewById(R.id.viewPager);
         mAdapter = new SlidePagerAdapter(getChildFragmentManager(), mContext);
         viewPager.setAdapter(mAdapter);
+        viewPager.setOffscreenPageLimit(5);
         tabLayoutCategory.setupWithViewPager(viewPager);
         return root;
     }
