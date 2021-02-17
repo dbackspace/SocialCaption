@@ -24,6 +24,7 @@ import androidx.transition.TransitionManager;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.logger.Log;
 import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
+import com.xlteam.socialcaption.external.utility.thread.ThreadExecutorWithPool;
 import com.xlteam.socialcaption.external.utility.utils.FileUtils;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
 import com.xlteam.socialcaption.ui.MainActivity;
@@ -73,7 +74,6 @@ public class GalleryFragment extends Fragment
         transition = new Slide(Gravity.BOTTOM);
         transition.setDuration(200);
         transition.addTarget(R.id.bottom_sheet);
-
     }
 
     @Override
@@ -115,7 +115,7 @@ public class GalleryFragment extends Fragment
         rvGallery = root.findViewById(R.id.rv_gallery_caption);
         rvGallery.setLayoutManager(new GridLayoutManager(mContext, 3));
         rvGallery.setAdapter(mGalleryAdapter);
-        rvGallery.setHasFixedSize(true);
+//        rvGallery.setHasFixedSize(true);
 
         return root;
     }
@@ -188,7 +188,7 @@ public class GalleryFragment extends Fragment
         }
     }
 
-    private void shareImages(ArrayList<Integer> checkedList) {
+    private void shareImages(List<Integer> checkedList) {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND_MULTIPLE);
 //        intent.putExtra(Intent.EXTRA_SUBJECT, );
@@ -207,8 +207,14 @@ public class GalleryFragment extends Fragment
         startActivity(Intent.createChooser(intent, "Chia sẻ"));
     }
 
-    private void deleteImages(ArrayList<Integer> checkedList) {
-
+    private void deleteImages(List<Integer> checkedList) {
+        List<String> tempList = new ArrayList<>();
+        for (int i = 0; i < mGalleryPaths.size(); i++) {
+            if (checkedList.contains(i)) {
+                tempList.add(FileUtils.findExistingFolderSaveImage().getAbsolutePath() + "/" + mGalleryPaths.get(i));
+            }
+        }
+        FileUtils.deleteMultiImage(tempList, mContext);
     }
 
     public void onBackPress() { // cancel selecting image mode
@@ -216,7 +222,6 @@ public class GalleryFragment extends Fragment
 //        layoutTop.setVisibility(View.GONE);
         mGalleryAdapter.onCheckBoxAllChecked(false);
         mGalleryAdapter.cancelMultipleMode();
-
     }
 
     public void isImageCheckAllChecked(boolean activated) {

@@ -23,6 +23,7 @@ import timber.log.Timber;
 
 public class FileUtils {
     private static final String TAG = "FileUtils";
+
     public static class FileWrapper extends File {
 
         public static FileWrapper createFile(@NonNull String path) {
@@ -67,7 +68,7 @@ public class FileUtils {
     }
 
     public static void deleteSingleImage(String localPath, Context context) {
-        if(!TextUtils.isEmpty(localPath)){
+        if (!TextUtils.isEmpty(localPath)) {
             Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
             ContentResolver contentResolver = context.getContentResolver();
             String url = MediaStore.Images.Media.DATA + "=?";

@@ -66,6 +66,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import timber.log.Timber;
+
 import static com.xlteam.socialcaption.external.utility.utils.Constant.BACKGROUND_COLOR_0;
 import static com.xlteam.socialcaption.external.utility.utils.Constant.SAVE_DATE_TIME_FORMAT;
 
@@ -340,8 +342,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 //                                    if (mActivity != null) mActivity.checkAndShowAds(3);
 
                                 // save image path to sharePref
-                                Log.e(this, savePath);
-                                BitmapLruCache.getInstance().saveBitmapToCache(savePath, bitmap);
+                                Timber.e(savePath);
                                 finish();
                             } else {
                                 Toast.makeText(mContext, getString(R.string.save_fail), Toast.LENGTH_SHORT).show();

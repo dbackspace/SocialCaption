@@ -9,8 +9,7 @@
     <ImageView
         android:id="@+id/img_item_gallery"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleType="centerCrop" />
+        android:layout_height="wrap_content"/>
 
     <CheckBox
         android:id="@+id/checkbox_item_gallery"

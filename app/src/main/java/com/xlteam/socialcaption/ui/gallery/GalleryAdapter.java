@@ -8,20 +8,24 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.squareup.picasso.Picasso;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.logger.Log;
 import com.xlteam.socialcaption.external.utility.thread.BitmapLruCache;
+import com.xlteam.socialcaption.external.utility.utils.FileUtils;
+import com.xlteam.socialcaption.external.utility.utils.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import timber.log.Timber;
 
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
     private List<String> mGalleryPaths;
-    private ArrayList<Integer> checkedList = new ArrayList<>();
+    private List<Integer> checkedList = new ArrayList<>();
     private GallerySelectCallback mCallback;
 
     // = 1 -> all check box is not checked
@@ -57,10 +61,13 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String path = mGalleryPaths.get(position);
-        Log.e("onBindViewHolder", "file://" + path);
+        String path = FileUtils.findExistingFolderSaveImage().getAbsolutePath() + "/" + mGalleryPaths.get(position);
+//        String path = "file://" + FileUtils.findExistingFolderSaveImage().getAbsolutePath() + "/" + mGalleryPaths.get(position);
+        Log.e("onBindViewHolder", path);
 
-        holder.imgGallery.setImageBitmap(BitmapLruCache.getInstance().retrieveBitmapFromCache(path));
+        Picasso.get()
+                .load("file://" + path)
+                .into(holder.imgGallery);
         holder.imgGallery.setScaleType(ImageView.ScaleType.CENTER_CROP);
         holder.rlItemGallery.setBackgroundColor(Color.BLACK);
 
@@ -175,7 +182,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         isItemLongClicked = false;
     }
 
-    public ArrayList<Integer> getCheckedList() {
+    public List<Integer> getCheckedList() {
         return checkedList;
     }
 

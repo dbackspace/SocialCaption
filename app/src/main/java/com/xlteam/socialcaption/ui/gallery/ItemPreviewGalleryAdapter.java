@@ -19,26 +19,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class ItemPreviewGalleryAdapter extends RecyclerView.Adapter<ItemPreviewGalleryAdapter.ViewHolder> {
     private List<String> mGalleryPaths;
-    private ItemPreviewGalleryAdapter.GallerySelectCallback mCallback;
+    private GallerySelectCallback mCallback;
 
     public interface GallerySelectCallback {
         void onItemGallerySelected(int position, String path);
     }
 
-    public ItemPreviewGalleryAdapter(List<String> galleryPaths, ItemPreviewGalleryAdapter.GallerySelectCallback callBack) {
+    public ItemPreviewGalleryAdapter(List<String> galleryPaths, GallerySelectCallback callBack) {
         mGalleryPaths = galleryPaths;
         mCallback = callBack;
     }
 
     @NonNull
     @Override
-    public ItemPreviewGalleryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_preview_image, parent, false);
-            return new ItemPreviewGalleryAdapter.ViewHolder(v);
+            return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemPreviewGalleryAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String path = mGalleryPaths.get(position);
         Log.e("onBindViewHolder", "file://" + path);
         File imgFile = new File(path);
