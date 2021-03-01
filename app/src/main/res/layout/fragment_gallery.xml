@@ -86,6 +86,7 @@
     </LinearLayout>
 
     <include
+        android:id="@+id/loading_view"
         layout="@layout/loading_container"
         android:visibility="gone" />
 </RelativeLayout>

@@ -137,7 +137,8 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 //            mRepository.insertUserCaption(userCaption);
 //            Toast.makeText(this, "Đã lưu caption. Để xem lại, bạn có thể vào Menu -> Caption đã tạo!", Toast.LENGTH_LONG).show();
 //            this.finish();
-            saveImageCreatedToSdcard(relativeBackground);
+            if (Utility.isValidClick(v.getId()))
+                saveImageCreatedToSdcard(relativeBackground);
         });
         tvDone.setClickable(false);
         imgBack.setOnClickListener(v -> finish());

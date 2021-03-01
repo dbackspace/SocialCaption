@@ -63,7 +63,7 @@ public class FileUtils {
     public static void deleteMultiImage(List<String> listPath, Context context) {
         // TODO: Apply Thread pool for delete multi image
         for (String path : listPath) {
-            ThreadExecutorWithPool.getInstance().execute(() -> deleteSingleImage(path, context));
+            deleteSingleImage(path, context);
         }
     }
 

@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -85,7 +86,7 @@ public class GalleryFragment extends Fragment
                 .setCancelable(false)
                 .setSecondButton(v -> {
                 }, getString(R.string.close))
-                .setThirdButton(v -> deleteImages(mCheckedList), getString(R.string.delete))
+                .setThirdButton(v -> new DeleteOperatorTask(mCheckedList).execute(), getString(R.string.delete))
                 .build();
     }
 
@@ -222,14 +223,38 @@ public class GalleryFragment extends Fragment
         startActivity(Intent.createChooser(intent, "Chia sẻ"));
     }
 
-    private void deleteImages(List<Integer> checkedList) {
-        List<String> tempList = new ArrayList<>();
-        for (int i = 0; i < mGalleryPaths.size(); i++) {
-            if (checkedList.contains(i)) {
-                tempList.add(FileUtils.findExistingFolderSaveImage().getAbsolutePath() + "/" + mGalleryPaths.get(i));
+    // TODO: Using RxJava for check onError if delete image failed.
+    private final class DeleteOperatorTask extends AsyncTask<Void, Void, String> {
+        private final List<Integer> mCheckedList;
+        private final List<String> mPaths;
+
+        private DeleteOperatorTask(List<Integer> checkedList) {
+            mCheckedList = checkedList;
+            mPaths = new ArrayList<>();
+        }
+
+        @Override
+        protected void onPreExecute() {
+            mLoadingProgress.setVisibility(View.VISIBLE);
+            String folderImagePath = FileUtils.findExistingFolderSaveImage().getAbsolutePath();
+            for (int i = 0; i < mGalleryPaths.size(); i++) {
+                if (mCheckedList.contains(i)) {
+                    mPaths.add(folderImagePath + "/" + mGalleryPaths.get(i));
+                }
             }
         }
-        FileUtils.deleteMultiImage(tempList, mContext);
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            FileUtils.deleteMultiImage(mPaths, mContext);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            mLoadingProgress.setVisibility(View.GONE);
+            updateUI();
+        }
     }
 
     public void onBackPress() { // cancel selecting image mode
