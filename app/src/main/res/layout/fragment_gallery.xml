@@ -19,7 +19,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_gallery_caption"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:id="@+id/bottom_sheet"
@@ -84,4 +84,8 @@
 
         </LinearLayout>
     </LinearLayout>
+
+    <include
+        layout="@layout/loading_container"
+        android:visibility="gone" />
 </RelativeLayout>

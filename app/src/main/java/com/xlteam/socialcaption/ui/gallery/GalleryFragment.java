@@ -1,5 +1,6 @@
 package com.xlteam.socialcaption.ui.gallery;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -24,10 +25,10 @@ import androidx.transition.TransitionManager;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.logger.Log;
 import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
-import com.xlteam.socialcaption.external.utility.thread.ThreadExecutorWithPool;
 import com.xlteam.socialcaption.external.utility.utils.FileUtils;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
 import com.xlteam.socialcaption.ui.MainActivity;
+import com.xlteam.socialcaption.ui.commondialog.DialogSaveChangesBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -54,6 +55,10 @@ public class GalleryFragment extends Fragment
     private LinearLayout mBtnShareGallery;
     private LinearLayout mBtnDeleteGallery;
 
+    private LinearLayout mLoadingProgress;
+    private Dialog deleteDialog;
+    private List<Integer> mCheckedList;
+
     //    private RelativeLayout layoutTop;
     //    private ImageView imgCheckAll;
     //    private TextView tvTotalChecked;
@@ -74,6 +79,14 @@ public class GalleryFragment extends Fragment
         transition = new Slide(Gravity.BOTTOM);
         transition.setDuration(200);
         transition.addTarget(R.id.bottom_sheet);
+
+        deleteDialog = DialogSaveChangesBuilder.create(getContext())
+                .setTitleMessage(getString(R.string.confirm_delete_or_not))
+                .setCancelable(false)
+                .setSecondButton(v -> {
+                }, getString(R.string.close))
+                .setThirdButton(v -> deleteImages(mCheckedList), getString(R.string.delete))
+                .build();
     }
 
     @Override
@@ -88,6 +101,7 @@ public class GalleryFragment extends Fragment
         final View root = AsyncLayoutInflateManager.getInstance(mContext).inflateView(inflater, container, R.layout.fragment_gallery);
         this.viewGroup = container;
         mEmptyImage = root.findViewById(R.id.tv_empty_image);
+        mLoadingProgress = root.findViewById(R.id.loading_view);
 
         layoutBottom = root.findViewById(R.id.bottom_sheet);
         layoutBottom.setVisibility(View.INVISIBLE);
@@ -103,7 +117,8 @@ public class GalleryFragment extends Fragment
 
         mBtnDeleteGallery = root.findViewById(R.id.btn_delete_gallery);
         mBtnDeleteGallery.setOnClickListener(v -> {
-            deleteImages(mGalleryAdapter.getCheckedList());
+            mCheckedList = mGalleryAdapter.getCheckedList();
+            deleteDialog.show();
         });
 
         mBtnShareGallery = root.findViewById(R.id.btn_share_gallery);
