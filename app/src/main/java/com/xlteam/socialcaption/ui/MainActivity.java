@@ -16,6 +16,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.material.navigation.NavigationView;
+import com.squareup.okhttp.internal.http.OkHeaders;
 import com.xlteam.socialcaption.BuildConfig;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.animation.ViManager;
@@ -26,6 +27,7 @@ import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
 import com.xlteam.socialcaption.ui.gallery.GalleryFragment;
 import com.xlteam.socialcaption.ui.home.HomeFragment;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
@@ -34,8 +36,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import static com.xlteam.socialcaption.ui.edit.EditCaptionActivity.RESULT_CODE_NEW_IMAGE_WAS_CREATED;
+
 public class MainActivity extends AppCompatActivity {
 
+    private static final int REQUEST_CODE_EDIT_CAPTION_ACTIVITY = 1;
     private NavigationView navigationView;
     private final int HOME = 0, GALLERY = 1, SAVED = 2;
     private DrawerLayout drawer;
@@ -114,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         imgMenu.setOnClickListener(view -> drawer.openDrawer(GravityCompat.START, true));
         imgCreatePicture.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, EditCaptionActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, REQUEST_CODE_EDIT_CAPTION_ACTIVITY);
         });
         selectNavigation(HOME);
     }
@@ -193,8 +198,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showToolbarCustom(boolean isShow) {
-        toolbarCustom.setVisibility(isShow ? View.INVISIBLE : View.INVISIBLE);
-        toolbarGallerySecond.setVisibility(isShow ? View.VISIBLE : View.INVISIBLE);
+        toolbarCustom.setVisibility(isShow ? View.VISIBLE : View.INVISIBLE);
+        toolbarGallerySecond.setVisibility(isShow ? View.INVISIBLE : View.VISIBLE);
+        imgCheckAll.setActivated(!isShow);
     }
 
     @Override
@@ -202,9 +208,8 @@ public class MainActivity extends AppCompatActivity {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START, true);
         } else if (currentFragment instanceof GalleryFragment && toolbarCustom.getVisibility() == View.INVISIBLE) {
-            toolbarCustom.setVisibility(View.VISIBLE);
-            toolbarGallerySecond.setVisibility(View.INVISIBLE);
-            imgCheckAll.setActivated(false);
+            showToolbarCustom(true);
+
             ((GalleryFragment) currentFragment).onBackPress();
         } else if (navigationView.getMenu().findItem(R.id.nav_gallery).isChecked()) {
             selectNavigation(HOME);
@@ -226,6 +231,20 @@ public class MainActivity extends AppCompatActivity {
         ImageView imgBack = dialog.findViewById(R.id.imgBack);
         imgBack.setOnClickListener(v -> dialog.dismiss());
         dialog.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // check that it is the EditCaptionActivity with an OK result
+        if (requestCode == REQUEST_CODE_EDIT_CAPTION_ACTIVITY) {
+            if (resultCode == EditCaptionActivity.RESULT_CODE_NEW_IMAGE_WAS_CREATED) {
+                if (currentFragment instanceof GalleryFragment) {
+                    ((GalleryFragment) currentFragment).updateUI();
+                }
+            }
+        }
     }
 
     @Override

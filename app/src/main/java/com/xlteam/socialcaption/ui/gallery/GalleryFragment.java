@@ -90,13 +90,6 @@ public class GalleryFragment extends Fragment
                 .build();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.e(this, "onResume");
-        updateUI();
-    }
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         final View root = AsyncLayoutInflateManager.getInstance(mContext).inflateView(inflater, container, R.layout.fragment_gallery);
@@ -152,7 +145,7 @@ public class GalleryFragment extends Fragment
 
     @Override
     public void showCheckBoxAll(boolean isCheckBoxChecked) {
-        ((MainActivity) getActivity()).showToolbarCustom(isCheckBoxChecked);
+        ((MainActivity) getActivity()).showToolbarCustom(!isCheckBoxChecked);
     }
 
     @Override
@@ -180,7 +173,7 @@ public class GalleryFragment extends Fragment
         }
     }
 
-    private void updateUI() {
+    public void updateUI() {
         mGalleryPaths = FileUtils.getListPathsIfFolderExist();
         if (mGalleryPaths != null && mGalleryPaths.size() > 0) {
             Timber.e("updateUI, list path size = " + mGalleryPaths.size());
@@ -224,7 +217,7 @@ public class GalleryFragment extends Fragment
     }
 
     // TODO: Using RxJava for check onError if delete image failed.
-    private final class DeleteOperatorTask extends AsyncTask<Void, Void, String> {
+    private final class DeleteOperatorTask extends AsyncTask<Void, Void, Void> {
         private final List<Integer> mCheckedList;
         private final List<String> mPaths;
 
@@ -245,14 +238,16 @@ public class GalleryFragment extends Fragment
         }
 
         @Override
-        protected String doInBackground(Void... voids) {
+        protected Void doInBackground(Void... voids) {
             FileUtils.deleteMultiImage(mPaths, mContext);
             return null;
         }
 
         @Override
-        protected void onPostExecute(String s) {
+        protected void onPostExecute(Void s) {
             mLoadingProgress.setVisibility(View.GONE);
+            ((MainActivity) getActivity()).showToolbarCustom(true);
+            onBackPress();
             updateUI();
         }
     }

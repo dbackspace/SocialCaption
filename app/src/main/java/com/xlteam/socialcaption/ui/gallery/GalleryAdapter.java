@@ -47,7 +47,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         void showBottomSheetShareAndDelete(int numberImageChecked);
     }
 
-    public GalleryAdapter(List<String> galleryPaths, GalleryAdapter.GallerySelectCallback callBack) {
+    public GalleryAdapter(List<String> galleryPaths, GallerySelectCallback callBack) {
         mGalleryPaths = galleryPaths;
         mCallback = callBack;
     }

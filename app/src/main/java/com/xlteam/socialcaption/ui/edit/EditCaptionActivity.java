@@ -50,7 +50,6 @@ import com.xlteam.socialcaption.external.utility.gesture.OnGestureControl;
 import com.xlteam.socialcaption.external.utility.gesture.OnMultiTouchListener;
 import com.xlteam.socialcaption.external.utility.gesture.OnPhotoEditorListener;
 import com.xlteam.socialcaption.external.utility.logger.Log;
-import com.xlteam.socialcaption.external.utility.thread.BitmapLruCache;
 import com.xlteam.socialcaption.external.utility.utils.Constant;
 import com.xlteam.socialcaption.external.utility.utils.FileUtils;
 import com.xlteam.socialcaption.external.utility.utils.MapViewUtils;
@@ -74,6 +73,7 @@ import static com.xlteam.socialcaption.external.utility.utils.Constant.SAVE_DATE
 public class EditCaptionActivity extends AppCompatActivity implements DialogAddTextBuilder.Callback,
         OnPhotoEditorListener, OnMultiTouchListener {
     private static final int RESULT_LOAD_IMG = 1;
+    public static final int RESULT_CODE_NEW_IMAGE_WAS_CREATED = 19;
     private ImageView imgBack, imgCancelText, imgDoneText;
     private TextView tvDone;
     private ImageView mImgBackground;
@@ -336,6 +336,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
                             File saveFile = Utility.bitmapToFile(bitmap, savePath);
                             if (saveFile != null) {
                                 Toast.makeText(mContext, getString(R.string.save_success), Toast.LENGTH_LONG).show();
+
                                 MediaScannerConnection.scanFile(mContext,
                                         new String[]{savePath}, null,
                                         (path, uri) -> Log.i("SaveImage", "Finished scanning " + path));
@@ -344,7 +345,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
                                 // save image path to sharePref
                                 Timber.e(savePath);
-                                finish();
+                                responseResultToMainActivity();
                             } else {
                                 Toast.makeText(mContext, getString(R.string.save_fail), Toast.LENGTH_SHORT).show();
                             }
@@ -361,6 +362,12 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
                         permissionToken.continuePermissionRequest();
                     }
                 }).check();
+    }
+
+    private void responseResultToMainActivity() {
+        Intent intent = getIntent();
+        setResult(RESULT_CODE_NEW_IMAGE_WAS_CREATED, intent);
+        finish();
     }
 
     @SuppressLint("ResourceAsColor")
