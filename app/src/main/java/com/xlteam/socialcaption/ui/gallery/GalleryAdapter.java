@@ -34,6 +34,8 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     private int isCheckBoxAllChecked = -1;
     private boolean isItemLongClicked = false;
 
+    private final RequestOptions requestOptions;
+    private final String rootFolder;
 
     public interface GallerySelectCallback {
         void onItemGallerySelected(int position);
@@ -50,6 +52,9 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     public GalleryAdapter(List<String> galleryPaths, GallerySelectCallback callBack) {
         mGalleryPaths = galleryPaths;
         mCallback = callBack;
+
+        requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
+        rootFolder = FileUtils.findExistingFolderSaveImage().getAbsolutePath();
     }
 
     @NonNull
@@ -61,11 +66,10 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String path = FileUtils.findExistingFolderSaveImage().getAbsolutePath() + "/" + mGalleryPaths.get(position);
+        String path = rootFolder + "/" + mGalleryPaths.get(position);
 //        String path = "file://" + FileUtils.findExistingFolderSaveImage().getAbsolutePath() + "/" + mGalleryPaths.get(position);
         Log.e("onBindViewHolder", path);
 
-        RequestOptions requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
         Glide.with((GalleryFragment) mCallback)
                 .load("file://" + path)
                 .apply(requestOptions)

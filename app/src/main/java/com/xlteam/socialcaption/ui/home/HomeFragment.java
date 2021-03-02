@@ -30,7 +30,7 @@ public class HomeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        final View root = AsyncLayoutInflateManager.getInstance(mContext).inflateView(inflater, container, R.layout.fragment_home);
+        final View root = inflater.inflate(R.layout.fragment_home, container, false);
         tabLayoutCategory = root.findViewById(R.id.tab_layout_category);
         viewPager = root.findViewById(R.id.viewPager);
         mAdapter = new SlidePagerAdapter(getChildFragmentManager(), mContext);

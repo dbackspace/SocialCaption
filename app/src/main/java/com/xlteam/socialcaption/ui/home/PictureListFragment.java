@@ -37,7 +37,7 @@ public class PictureListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = AsyncLayoutInflateManager.getInstance(mContext).inflateView(inflater, container, R.layout.fragment_caption_list);
+        View root = inflater.inflate(R.layout.fragment_caption_list, container, false);
         rvPicture = root.findViewById(R.id.rv_picture);
         rvPicture.setLayoutManager(new GridLayoutManager(mContext, 3));
         rvPicture.setAdapter(new PictureAdapter(mCategoryNumber, mContext));

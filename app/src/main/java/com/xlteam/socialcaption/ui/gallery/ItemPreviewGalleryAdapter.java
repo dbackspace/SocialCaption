@@ -21,7 +21,10 @@ import timber.log.Timber;
 
 public class ItemPreviewGalleryAdapter extends RecyclerView.Adapter<ItemPreviewGalleryAdapter.ViewHolder> {
     private List<String> mGalleryPaths;
-    private GallerySelectCallback mCallback;
+    private final GallerySelectCallback mCallback;
+
+    private final RequestOptions requestOptions;
+    private final String rootFolder;
 
     public interface GallerySelectCallback {
         void onItemGallerySelected(int position, String path);
@@ -30,6 +33,9 @@ public class ItemPreviewGalleryAdapter extends RecyclerView.Adapter<ItemPreviewG
     public ItemPreviewGalleryAdapter(List<String> galleryPaths, GallerySelectCallback callBack) {
         mGalleryPaths = galleryPaths;
         mCallback = callBack;
+
+        requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
+        rootFolder = FileUtils.findExistingFolderSaveImage().getAbsolutePath();
     }
 
     @NonNull
@@ -41,20 +47,13 @@ public class ItemPreviewGalleryAdapter extends RecyclerView.Adapter<ItemPreviewG
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String path = FileUtils.findExistingFolderSaveImage().getAbsolutePath() + "/" + mGalleryPaths.get(position);
+        String path = rootFolder + "/" + mGalleryPaths.get(position);
         Timber.e("file://" + path);
-        Timber.e("currentPosition: " + position);
 
-        RequestOptions requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
         Glide.with((DialogPreviewGallery) mCallback)
                 .load("file://" + path)
                 .apply(requestOptions)
                 .into(holder.imgGallery);
-
-//        File imgFile = new File(path);
-//        Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-//        holder.imgGallery.setImageBitmap(bitmap);
-//        holder.imgGallery.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
         holder.imgGallery.setOnClickListener(v -> {
             mCallback.onItemGallerySelected(position, path);
@@ -75,9 +74,5 @@ public class ItemPreviewGalleryAdapter extends RecyclerView.Adapter<ItemPreviewG
             mItemView = itemView;
             imgGallery = itemView.findViewById(R.id.img_item_gallery);
         }
-    }
-
-    public void updateList(List<String> galleryPaths) {
-        mGalleryPaths = new ArrayList<>(galleryPaths);
     }
 }
