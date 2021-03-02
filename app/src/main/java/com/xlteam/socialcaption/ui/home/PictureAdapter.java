@@ -1,5 +1,6 @@
 package com.xlteam.socialcaption.ui.home;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,15 +9,19 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
 
 public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHolder> {
     private final int mNumberCategory;
+    private Context mContext;
 
-    public PictureAdapter(int numberCategory) {
+    public PictureAdapter(int numberCategory, Context context) {
         mNumberCategory = numberCategory;
+        mContext = context;
     }
 
     @NonNull
@@ -28,7 +33,12 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Picasso.get().load(Utility.getUrlByCategoryIndex(mNumberCategory, position)).into(holder.imgPicture);
+//        Picasso.get().load(Utility.getUrlByCategoryIndex(mNumberCategory, position)).into(holder.imgPicture);
+        RequestOptions requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+        Glide.with(mContext)
+                .load(Utility.getUrlByCategoryIndex(mNumberCategory, position))
+                .apply(requestOptions)
+                .into(holder.imgPicture);
     }
 
     @Override

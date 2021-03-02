@@ -18,12 +18,13 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.xlteam.socialcaption.R;
-import com.xlteam.socialcaption.external.utility.logger.Log;
 import com.xlteam.socialcaption.external.utility.utils.FileUtils;
 import com.xlteam.socialcaption.ui.commondialog.DialogSaveChangesBuilder;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import timber.log.Timber;
 
 public class DialogPreviewGallery extends DialogFragment implements ItemPreviewGalleryAdapter.GallerySelectCallback {
     private static final String ARG_LIST_PATH = "ARG_LIST_PATH";
@@ -68,12 +69,14 @@ public class DialogPreviewGallery extends DialogFragment implements ItemPreviewG
         mItemPreviewGalleryAdapter = new ItemPreviewGalleryAdapter(mGalleryPaths, this);
         mListener = getDialogDismissListenerCallback();
         mCurrentPosition = getPickedPosition();
+        Timber.e("currentPosition: " + mCurrentPosition);
         mContext = getContext();
 
         saveDialog = DialogSaveChangesBuilder.create(getContext())
                 .setTitleMessage(getString(R.string.confirm_delete_or_not))
                 .setCancelable(false)
-                .setSecondButton(v -> {}, getString(R.string.close))
+                .setSecondButton(v -> {
+                }, getString(R.string.close))
                 .setThirdButton(v -> deleteImage(), getString(R.string.delete))
                 .build();
     }
@@ -92,7 +95,7 @@ public class DialogPreviewGallery extends DialogFragment implements ItemPreviewG
         relativeTopBar = view.findViewById(R.id.relative_preview_top_bar);
 
         mRecyclerPreviewGallery = view.findViewById(R.id.rv_preview_gallery);
-        mLinearLayoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, true);
+        mLinearLayoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
         mRecyclerPreviewGallery.setLayoutManager(mLinearLayoutManager);
         mRecyclerPreviewGallery.setAdapter(mItemPreviewGalleryAdapter);
         mRecyclerPreviewGallery.scrollToPosition(mCurrentPosition);
@@ -136,18 +139,22 @@ public class DialogPreviewGallery extends DialogFragment implements ItemPreviewG
 
     private void deleteImage() {
         mCurrentPosition = mLinearLayoutManager.findLastCompletelyVisibleItemPosition();
-        Log.e("deleteImage", "mCurrentPosition" + " " + mCurrentPosition);
+        Timber.e("mCurrentPosition" + " " + mCurrentPosition);
+
+        String folderImagePath = FileUtils.findExistingFolderSaveImage().getAbsolutePath();
+
         if (mGalleryPaths.size() == 1) {
-            FileUtils.deleteSingleImage(mGalleryPaths.get(0), mContext);
+            FileUtils.deleteSingleImage(folderImagePath + "/" + mGalleryPaths.get(0), mContext);
             mListener.onDialogPreviewDismissed(true);
             dismiss();
         }
         if (mCurrentPosition < mGalleryPaths.size()) {
             String deleteImagePath = mGalleryPaths.get(mCurrentPosition);
-            FileUtils.deleteSingleImage(deleteImagePath, mContext);
+            FileUtils.deleteSingleImage(folderImagePath + "/" + deleteImagePath, mContext);
             mGalleryPaths.remove(mCurrentPosition);
-            mItemPreviewGalleryAdapter.updateList(mGalleryPaths);
-            mItemPreviewGalleryAdapter.notifyDataSetChanged();
+//            mItemPreviewGalleryAdapter.updateList(mGalleryPaths);
+//            mItemPreviewGalleryAdapter.notifyDataSetChanged();
+            mItemPreviewGalleryAdapter.notifyItemRemoved(mCurrentPosition);
             isDeleted = true;
         }
     }

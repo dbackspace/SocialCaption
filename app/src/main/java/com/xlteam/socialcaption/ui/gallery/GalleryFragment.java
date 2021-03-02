@@ -24,7 +24,6 @@ import androidx.transition.Transition;
 import androidx.transition.TransitionManager;
 
 import com.xlteam.socialcaption.R;
-import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
 import com.xlteam.socialcaption.external.utility.utils.FileUtils;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
 import com.xlteam.socialcaption.ui.MainActivity;
@@ -90,7 +89,7 @@ public class GalleryFragment extends Fragment
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        final View root = AsyncLayoutInflateManager.getInstance(mContext).inflateView(inflater, container, R.layout.fragment_gallery);
+        final View root = inflater.inflate(R.layout.fragment_gallery, container, false);
         this.viewGroup = container;
         mEmptyImage = root.findViewById(R.id.tv_empty_image);
         mLoadingProgress = root.findViewById(R.id.loading_view);

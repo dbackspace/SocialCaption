@@ -40,7 +40,7 @@ public class PictureListFragment extends Fragment {
         View root = AsyncLayoutInflateManager.getInstance(mContext).inflateView(inflater, container, R.layout.fragment_caption_list);
         rvPicture = root.findViewById(R.id.rv_picture);
         rvPicture.setLayoutManager(new GridLayoutManager(mContext, 3));
-        rvPicture.setAdapter(new PictureAdapter(mCategoryNumber));
+        rvPicture.setAdapter(new PictureAdapter(mCategoryNumber, mContext));
         return root;
     }
 

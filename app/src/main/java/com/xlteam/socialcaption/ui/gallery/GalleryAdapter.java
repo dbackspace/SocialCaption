@@ -8,18 +8,18 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.squareup.picasso.Picasso;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.logger.Log;
-import com.xlteam.socialcaption.external.utility.thread.BitmapLruCache;
 import com.xlteam.socialcaption.external.utility.utils.FileUtils;
-import com.xlteam.socialcaption.external.utility.utils.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 import timber.log.Timber;
 
@@ -65,10 +65,12 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 //        String path = "file://" + FileUtils.findExistingFolderSaveImage().getAbsolutePath() + "/" + mGalleryPaths.get(position);
         Log.e("onBindViewHolder", path);
 
-        Picasso.get()
+        RequestOptions requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+        Glide.with((GalleryFragment) mCallback)
                 .load("file://" + path)
+                .apply(requestOptions)
                 .into(holder.imgGallery);
-        holder.imgGallery.setScaleType(ImageView.ScaleType.CENTER_CROP);
+//        holder.imgGallery.setScaleType(ImageView.ScaleType.CENTER_CROP);
         holder.rlItemGallery.setBackgroundColor(Color.BLACK);
 
         // checkbox
