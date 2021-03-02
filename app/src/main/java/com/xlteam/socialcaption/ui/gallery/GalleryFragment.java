@@ -24,7 +24,6 @@ import androidx.transition.Transition;
 import androidx.transition.TransitionManager;
 
 import com.xlteam.socialcaption.R;
-import com.xlteam.socialcaption.external.utility.logger.Log;
 import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
 import com.xlteam.socialcaption.external.utility.utils.FileUtils;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
@@ -74,7 +73,6 @@ public class GalleryFragment extends Fragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mGalleryPaths = FileUtils.getListPathsIfFolderExist();
-        mGalleryAdapter = new GalleryAdapter(mGalleryPaths, this);
 
         // set animation for bottom sheet (layout share and delete)
         transition = new Slide(Gravity.BOTTOM);
@@ -123,7 +121,22 @@ public class GalleryFragment extends Fragment
         // init recycler gallery by findViewById
         rvGallery = root.findViewById(R.id.rv_gallery_caption);
         rvGallery.setLayoutManager(new GridLayoutManager(mContext, 3));
-        rvGallery.setAdapter(mGalleryAdapter);
+
+        if (mGalleryPaths != null && mGalleryPaths.size() > 0) {
+            Timber.e("updateUI, list path size = " + mGalleryPaths.size());
+            mEmptyImage.setVisibility(View.GONE);
+            rvGallery.setVisibility(View.VISIBLE);
+            Collections.sort(mGalleryPaths, (s1, s2) -> s1.substring(s1.lastIndexOf("/") + 1)
+                    .compareTo(s2.substring(s2.lastIndexOf("/") + 1)));
+            mGalleryAdapter = new GalleryAdapter(mGalleryPaths, this);
+            rvGallery.setAdapter(mGalleryAdapter);
+        } else {
+            mGalleryAdapter = new GalleryAdapter(new ArrayList<>(), this);
+            rvGallery.setVisibility(View.GONE);
+            mEmptyImage.setVisibility(View.VISIBLE);
+            Utility.vibrateAnimation(mContext, mEmptyImage);
+        }
+
 //        rvGallery.setHasFixedSize(true);
 
         return root;
@@ -249,6 +262,7 @@ public class GalleryFragment extends Fragment
             ((MainActivity) getActivity()).showToolbarCustom(true);
             clearSelectMode();
             updateUI();
+            showBottomSheetShareAndDelete(0);
         }
     }
 
