@@ -191,7 +191,7 @@ public class GalleryFragment extends Fragment
     }
 
     @Override
-    public void onDialogPreviewDismissed(Boolean isImageDeleted) {
+    public void onDialogPreviewDismissed(boolean isImageDeleted) {
         if (isImageDeleted) {
             updateUI();
         }
@@ -247,12 +247,12 @@ public class GalleryFragment extends Fragment
         protected void onPostExecute(Void s) {
             mLoadingProgress.setVisibility(View.GONE);
             ((MainActivity) getActivity()).showToolbarCustom(true);
-            onBackPress();
+            clearSelectMode();
             updateUI();
         }
     }
 
-    public void onBackPress() { // cancel selecting image mode
+    public void clearSelectMode() { // cancel selecting image mode
 //        imgCheckAll.setActivated(false);
 //        layoutTop.setVisibility(View.GONE);
         mGalleryAdapter.onCheckBoxAllChecked(false);

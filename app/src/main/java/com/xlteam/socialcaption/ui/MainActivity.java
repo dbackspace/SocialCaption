@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
         } else if (currentFragment instanceof GalleryFragment && toolbarCustom.getVisibility() == View.INVISIBLE) {
             showToolbarCustom(true);
 
-            ((GalleryFragment) currentFragment).onBackPress();
+            ((GalleryFragment) currentFragment).clearSelectMode();
         } else if (navigationView.getMenu().findItem(R.id.nav_gallery).isChecked()) {
             selectNavigation(HOME);
         } else {

@@ -43,7 +43,7 @@ public class DialogPreviewGallery extends DialogFragment implements ItemPreviewG
     private Context mContext;
 
     interface DialogDismissListenerCallback extends Serializable {
-        void onDialogPreviewDismissed(Boolean isImageDeleted);
+        void onDialogPreviewDismissed(boolean isImageDeleted);
     }
 
     private DialogDismissListenerCallback mListener;
