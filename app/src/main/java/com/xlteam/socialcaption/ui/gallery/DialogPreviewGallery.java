@@ -69,7 +69,7 @@ public class DialogPreviewGallery extends DialogFragment implements ItemPreviewG
         mItemPreviewGalleryAdapter = new ItemPreviewGalleryAdapter(mGalleryPaths, this);
         mListener = getDialogDismissListenerCallback();
         mCurrentPosition = getPickedPosition();
-        Timber.e("currentPosition: " + mCurrentPosition);
+        Timber.e("currentPosition: %s", mCurrentPosition);
         mContext = getContext();
 
         saveDialog = DialogSaveChangesBuilder.create(getContext())

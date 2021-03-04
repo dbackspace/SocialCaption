@@ -12,11 +12,19 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.material.navigation.NavigationView;
-import com.squareup.okhttp.internal.http.OkHeaders;
 import com.xlteam.socialcaption.BuildConfig;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.animation.ViManager;
@@ -27,19 +35,8 @@ import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
 import com.xlteam.socialcaption.ui.gallery.GalleryFragment;
 import com.xlteam.socialcaption.ui.home.HomeFragment;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
-import static com.xlteam.socialcaption.ui.edit.EditCaptionActivity.RESULT_CODE_NEW_IMAGE_WAS_CREATED;
-
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends AppCompatActivity implements
+        GalleryFragment.ToolbarCallback {
     private static final int REQUEST_CODE_EDIT_CAPTION_ACTIVITY = 1;
     private NavigationView navigationView;
     private final int HOME = 0, GALLERY = 1, SAVED = 2;
@@ -189,18 +186,12 @@ public class MainActivity extends AppCompatActivity {
             }
         } else if (type == GALLERY) { //giữ trạng thái khi chọn lại item
             if (!(currentFragment instanceof GalleryFragment)) {
-                currentFragment = new GalleryFragment();
+                currentFragment = GalleryFragment.newInstance(this);
                 navigationView.setCheckedItem(R.id.nav_gallery);
                 tvTitle.setText(R.string.menu_gallery);
             }
         }
         replaceFragment(currentFragment);
-    }
-
-    public void showToolbarCustom(boolean isShow) {
-        toolbarCustom.setVisibility(isShow ? View.VISIBLE : View.INVISIBLE);
-        toolbarGallerySecond.setVisibility(isShow ? View.INVISIBLE : View.VISIBLE);
-        imgCheckAll.setActivated(!isShow);
     }
 
     @Override
@@ -269,6 +260,27 @@ public class MainActivity extends AppCompatActivity {
         AsyncLayoutInflateManager.getInstance(this).onDestroy();
         if (mAdView != null) {
             mAdView.destroy();
+        }
+    }
+
+    @Override
+    public void showToolbarCustom(boolean isShowed) {
+        toolbarCustom.setVisibility(isShowed ? View.VISIBLE : View.INVISIBLE);
+        toolbarGallerySecond.setVisibility(isShowed ? View.INVISIBLE : View.VISIBLE);
+        imgCheckAll.setActivated(!isShowed);
+    }
+
+    @Override
+    public void isCheckBoxAllChecked(boolean isCheckBoxAllChecked) {
+        imgCheckAll.setActivated(isCheckBoxAllChecked);
+    }
+
+    @Override
+    public void setTextForTotalCheckedTextView(boolean isShow, int numberImageChecked) {
+        if (isShow) {
+            tvTotalChecked.setText(getString(R.string.select_number_image, numberImageChecked));
+        } else {
+            tvTotalChecked.setText(R.string.select_items);
         }
     }
 }

@@ -25,8 +25,8 @@ import timber.log.Timber;
 
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
     private List<String> mGalleryPaths;
-    private List<Integer> checkedList = new ArrayList<>();
-    private GallerySelectCallback mCallback;
+    private final List<Integer> checkedList = new ArrayList<>();
+    private final GallerySelectCallback mCallback;
 
     // = 1 -> all check box is not checked
     // = 0 -> all check box is checked
@@ -70,11 +70,12 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 //        String path = "file://" + FileUtils.findExistingFolderSaveImage().getAbsolutePath() + "/" + mGalleryPaths.get(position);
         Log.e("onBindViewHolder", path);
 
-        Glide.with((GalleryFragment) mCallback)
+        Glide.with(holder.itemView.getContext())
                 .load("file://" + path)
                 .apply(requestOptions)
+                .fitCenter()
                 .into(holder.imgGallery);
-//        holder.imgGallery.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
         holder.rlItemGallery.setBackgroundColor(Color.BLACK);
 
         // checkbox

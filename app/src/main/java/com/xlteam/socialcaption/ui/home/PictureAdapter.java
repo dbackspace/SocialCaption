@@ -1,7 +1,5 @@
 package com.xlteam.socialcaption.ui.home;
 
-import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,23 +7,19 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.ViewTarget;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
 
 public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHolder> {
     private final int mNumberCategory;
-    private final Context mContext;
     private final RequestOptions requestOptions;
 
-    public PictureAdapter(int numberCategory, Context context) {
+    public PictureAdapter(int numberCategory) {
         mNumberCategory = numberCategory;
-        mContext = context;
 
         // option luu cache
         requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
@@ -41,10 +35,11 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 //        Picasso.get().load(Utility.getUrlByCategoryIndex(mNumberCategory, position)).into(holder.imgPicture);
-        Glide.with(mContext)
+        Glide.with(holder.itemView.getContext())
                 .load(Utility.getUrlByCategoryIndex(mNumberCategory, position))
 //                .placeholder(circularProgressDrawable)
                 .apply(requestOptions)
+                .fitCenter()
                 .into(holder.imgPicture);
     }
 

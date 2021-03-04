@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.xlteam.socialcaption.R;
-import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
 
 public class PictureListFragment extends Fragment {
     private Context mContext;
@@ -39,8 +38,15 @@ public class PictureListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_caption_list, container, false);
         rvPicture = root.findViewById(R.id.rv_picture);
+
+        // cache recyclerview
+        rvPicture.setItemViewCacheSize(25);
+        rvPicture.setDrawingCacheEnabled(true);
+        rvPicture.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+
         rvPicture.setLayoutManager(new GridLayoutManager(mContext, 3));
-        rvPicture.setAdapter(new PictureAdapter(mCategoryNumber, mContext));
+        rvPicture.setAdapter(new PictureAdapter(mCategoryNumber));
+
         return root;
     }
 

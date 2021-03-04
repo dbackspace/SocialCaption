@@ -26,7 +26,6 @@ import androidx.transition.TransitionManager;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.utils.FileUtils;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
-import com.xlteam.socialcaption.ui.MainActivity;
 import com.xlteam.socialcaption.ui.commondialog.DialogSaveChangesBuilder;
 
 import java.io.File;
@@ -38,8 +37,8 @@ import timber.log.Timber;
 
 import static com.xlteam.socialcaption.external.utility.utils.Constant.FILE_PROVIDER_PATH;
 
-public class GalleryFragment extends Fragment
-        implements GalleryAdapter.GallerySelectCallback,
+public class GalleryFragment extends Fragment implements
+        GalleryAdapter.GallerySelectCallback,
         DialogPreviewGallery.DialogDismissListenerCallback {
     private RecyclerView rvGallery;
     private Context mContext;
@@ -51,12 +50,25 @@ public class GalleryFragment extends Fragment
     private boolean showed = false;
     private Transition transition;
     private ViewGroup viewGroup;
-    private LinearLayout mBtnShareGallery;
-    private LinearLayout mBtnDeleteGallery;
 
     private LinearLayout mLoadingProgress;
     private Dialog deleteDialog;
     private List<Integer> mCheckedList;
+
+    public interface ToolbarCallback {
+        void showToolbarCustom(boolean isShowed);
+
+        void isCheckBoxAllChecked(boolean isCheckBoxAllChecked);
+
+        void setTextForTotalCheckedTextView(boolean isShow, int numberImageChecked);
+    }
+
+    private static ToolbarCallback mCallback;
+
+    public static GalleryFragment newInstance(ToolbarCallback callback) {
+        mCallback = callback;
+        return new GalleryFragment();
+    }
 
     //    private RelativeLayout layoutTop;
     //    private ImageView imgCheckAll;
@@ -106,23 +118,25 @@ public class GalleryFragment extends Fragment
 //        });
 //
 
-        mBtnDeleteGallery = root.findViewById(R.id.btn_delete_gallery);
+        LinearLayout mBtnDeleteGallery = root.findViewById(R.id.btn_delete_gallery);
         mBtnDeleteGallery.setOnClickListener(v -> {
             mCheckedList = mGalleryAdapter.getCheckedList();
             deleteDialog.show();
         });
 
-        mBtnShareGallery = root.findViewById(R.id.btn_share_gallery);
-        mBtnShareGallery.setOnClickListener(v -> {
-            shareImages(mGalleryAdapter.getCheckedList());
-        });
+        LinearLayout mBtnShareGallery = root.findViewById(R.id.btn_share_gallery);
+        mBtnShareGallery.setOnClickListener(v -> shareImages(mGalleryAdapter.getCheckedList()));
 
         // init recycler gallery by findViewById
         rvGallery = root.findViewById(R.id.rv_gallery_caption);
         rvGallery.setLayoutManager(new GridLayoutManager(mContext, 3));
+        // cache recyclerview
+        rvGallery.setItemViewCacheSize(25);
+        rvGallery.setDrawingCacheEnabled(true);
+        rvGallery.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
         if (mGalleryPaths != null && mGalleryPaths.size() > 0) {
-            Timber.e("updateUI, list path size = " + mGalleryPaths.size());
+//            Timber.e("updateUI, list path size = " + mGalleryPaths.size());
             mEmptyImage.setVisibility(View.GONE);
             rvGallery.setVisibility(View.VISIBLE);
             Collections.sort(mGalleryPaths, (s1, s2) -> s1.substring(s1.lastIndexOf("/") + 1)
@@ -157,25 +171,22 @@ public class GalleryFragment extends Fragment
 
     @Override
     public void showCheckBoxAll(boolean isCheckBoxChecked) {
-        ((MainActivity) getActivity()).showToolbarCustom(!isCheckBoxChecked);
+        mCallback.showToolbarCustom(!isCheckBoxChecked);
     }
 
     @Override
     public void setAllItemChecked(boolean isCheckBoxAllChecked) {
-        ((MainActivity) getActivity()).imgCheckAll.setActivated(isCheckBoxAllChecked);
+        mCallback.isCheckBoxAllChecked(isCheckBoxAllChecked);
     }
 
     @Override
     public void showBottomSheetShareAndDelete(int numberImageChecked) {
-        Timber.e("numberImageChecked: " + numberImageChecked);
+        Timber.e("numberImageChecked: %s", numberImageChecked);
         boolean isShow = numberImageChecked != 0;
         TransitionManager.beginDelayedTransition(viewGroup, transition);
 
-        if (isShow) {
-            ((MainActivity) getActivity()).tvTotalChecked.setText(mContext.getString(R.string.select_number_image, numberImageChecked));
-        } else {
-            ((MainActivity) getActivity()).tvTotalChecked.setText(R.string.select_items);
-        }
+        mCallback.setTextForTotalCheckedTextView(isShow, numberImageChecked);
+
         if (isShow && !showed) {
             layoutBottom.setVisibility(View.VISIBLE);
             showed = true;
@@ -188,7 +199,7 @@ public class GalleryFragment extends Fragment
     public void updateUI() {
         mGalleryPaths = FileUtils.getListPathsIfFolderExist();
         if (mGalleryPaths != null && mGalleryPaths.size() > 0) {
-            Timber.e("updateUI, list path size = " + mGalleryPaths.size());
+            Timber.e("updateUI, list path size = %s", mGalleryPaths.size());
             mEmptyImage.setVisibility(View.GONE);
             rvGallery.setVisibility(View.VISIBLE);
             Collections.sort(mGalleryPaths, (s1, s2) -> s1.substring(s1.lastIndexOf("/") + 1)
@@ -214,14 +225,13 @@ public class GalleryFragment extends Fragment
         intent.setAction(Intent.ACTION_SEND_MULTIPLE);
 //        intent.putExtra(Intent.EXTRA_SUBJECT, );
         intent.setType("image/jpeg");
-        ArrayList<Uri> uriList = new ArrayList<Uri>();
+        ArrayList<Uri> uriList = new ArrayList<>();
         for (int i = 0; i < mGalleryPaths.size(); i++) {
             if (checkedList.contains(i)) {
                 uriList.add(
-                        FileProvider.getUriForFile(getContext(),
+                        FileProvider.getUriForFile(mContext,
                                 FILE_PROVIDER_PATH,
                                 new File(mGalleryPaths.get(i))));
-
             }
         }
         intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList);
@@ -258,7 +268,7 @@ public class GalleryFragment extends Fragment
         @Override
         protected void onPostExecute(Void s) {
             mLoadingProgress.setVisibility(View.GONE);
-            ((MainActivity) getActivity()).showToolbarCustom(true);
+            mCallback.showToolbarCustom(true);
             clearSelectMode();
             updateUI();
             showBottomSheetShareAndDelete(0);
