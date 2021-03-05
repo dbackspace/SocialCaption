@@ -14,6 +14,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
 
+import timber.log.Timber;
+
 public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHolder> {
     private final int mNumberCategory;
     private final RequestOptions requestOptions;
@@ -27,7 +29,7 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHold
 
     @NonNull
     @Override
-    public PictureAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_picture, parent, false);
         return new ViewHolder(v);
     }
@@ -35,11 +37,12 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 //        Picasso.get().load(Utility.getUrlByCategoryIndex(mNumberCategory, position)).into(holder.imgPicture);
+        Timber.e("loading position: %d", position);
         Glide.with(holder.itemView.getContext())
                 .load(Utility.getUrlByCategoryIndex(mNumberCategory, position))
+//                .error(R.drawable.img_load_failed)
 //                .placeholder(circularProgressDrawable)
-                .apply(requestOptions)
-                .fitCenter()
+                .apply(requestOptions.override(600, 600))
                 .into(holder.imgPicture);
     }
 

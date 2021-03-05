@@ -35,7 +35,7 @@ public class HomeFragment extends Fragment {
         viewPager = root.findViewById(R.id.viewPager);
         mAdapter = new SlidePagerAdapter(getChildFragmentManager(), mContext);
         viewPager.setAdapter(mAdapter);
-        viewPager.setOffscreenPageLimit(5);
+        viewPager.setOffscreenPageLimit(1);
         tabLayoutCategory.setupWithViewPager(viewPager);
         return root;
     }
@@ -78,5 +78,7 @@ public class HomeFragment extends Fragment {
             }
             return mContext.getString(R.string.mood);
         }
+
+
     }
 }

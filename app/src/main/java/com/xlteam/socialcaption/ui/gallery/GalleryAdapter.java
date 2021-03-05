@@ -35,7 +35,6 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     private boolean isItemLongClicked = false;
 
     private final RequestOptions requestOptions;
-    private final String rootFolder;
 
     public interface GallerySelectCallback {
         void onItemGallerySelected(int position);
@@ -54,7 +53,6 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         mCallback = callBack;
 
         requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
-        rootFolder = FileUtils.findExistingFolderSaveImage().getAbsolutePath();
     }
 
     @NonNull
@@ -66,6 +64,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        String rootFolder = FileUtils.findExistingFolderSaveImage().getAbsolutePath();
         String path = rootFolder + "/" + mGalleryPaths.get(position);
 //        String path = "file://" + FileUtils.findExistingFolderSaveImage().getAbsolutePath() + "/" + mGalleryPaths.get(position);
         Log.e("onBindViewHolder", path);
