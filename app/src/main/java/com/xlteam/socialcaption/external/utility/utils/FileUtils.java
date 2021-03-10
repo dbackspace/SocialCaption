@@ -121,10 +121,15 @@ public class FileUtils {
 
     public static List<String> getListPathsIfFolderExist() {
         File folder = findExistingFolderSaveImage();
+//        Timber.e("getListPathsIfFolderExist: %s", folder.getPath());
         if (folder != null) {
-            String[] listFilePaths = folder.list();
+            File[] listFilePaths = folder.listFiles();
             if (listFilePaths != null && listFilePaths.length > 0) {
-                return Arrays.asList(listFilePaths);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    return Arrays.stream(listFilePaths)
+                            .map(File::getPath)
+                            .collect(Collectors.toList());
+                }
             }
         }
         return null;

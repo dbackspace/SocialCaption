@@ -24,7 +24,6 @@ public class ItemPreviewGalleryAdapter extends RecyclerView.Adapter<ItemPreviewG
     private final GallerySelectCallback mCallback;
 
     private final RequestOptions requestOptions;
-    private final String rootFolder;
 
     public interface GallerySelectCallback {
         void onItemGallerySelected(int position, String path);
@@ -35,7 +34,6 @@ public class ItemPreviewGalleryAdapter extends RecyclerView.Adapter<ItemPreviewG
         mCallback = callBack;
 
         requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
-        rootFolder = FileUtils.findExistingFolderSaveImage().getAbsolutePath();
     }
 
     @NonNull
@@ -47,7 +45,7 @@ public class ItemPreviewGalleryAdapter extends RecyclerView.Adapter<ItemPreviewG
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String path = rootFolder + "/" + mGalleryPaths.get(position);
+        String path = mGalleryPaths.get(position);
         Timber.e("file://" + path);
 
         Glide.with((DialogPreviewGallery) mCallback)

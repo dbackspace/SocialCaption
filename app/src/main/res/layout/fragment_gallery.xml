@@ -19,18 +19,18 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_gallery_caption"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_above="@id/bottom_sheet" />
 
     <LinearLayout
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"
         android:animateLayoutChanges="true"
+        android:background="@color/color_E0"
+        android:gravity="center"
         android:orientation="horizontal"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
         android:visibility="gone">
 
         <LinearLayout
@@ -40,7 +40,7 @@
             android:layout_marginEnd="5dp"
             android:layout_weight="1"
             android:background="@drawable/bg_ripple_click_view_rectangle"
-            android:gravity="center"
+            android:gravity="center_horizontal"
             android:orientation="vertical">
 
             <ImageView

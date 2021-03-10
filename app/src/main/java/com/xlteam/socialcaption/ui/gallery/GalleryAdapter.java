@@ -43,6 +43,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         void showCheckBoxAll(boolean isCheckBoxChecked);
 
         // callback All items was checked to GalleryFragment
+        // checkBoxAll setIsActived
         void setAllItemChecked(boolean isCheckBoxAllChecked);
 
         void showBottomSheetShareAndDelete(int numberImageChecked);
@@ -64,14 +65,13 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String rootFolder = FileUtils.findExistingFolderSaveImage().getAbsolutePath();
-        String path = rootFolder + "/" + mGalleryPaths.get(position);
+        String path = mGalleryPaths.get(position);
 //        String path = "file://" + FileUtils.findExistingFolderSaveImage().getAbsolutePath() + "/" + mGalleryPaths.get(position);
         Log.e("onBindViewHolder", path);
 
         Glide.with(holder.itemView.getContext())
                 .load("file://" + path)
-                .apply(requestOptions)
+                .apply(requestOptions.override(600, 600))
                 .fitCenter()
                 .into(holder.imgGallery);
 

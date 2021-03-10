@@ -28,6 +28,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.xlteam.socialcaption.BuildConfig;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.animation.ViManager;
+import com.xlteam.socialcaption.external.utility.logger.Log;
 import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManager;
 import com.xlteam.socialcaption.external.utility.utils.Constant;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements
     private RelativeLayout toolbarGallerySecond;
     public ImageView imgCheckAll;
     public TextView tvTotalChecked;
+    private boolean isChecked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,9 +71,14 @@ public class MainActivity extends AppCompatActivity implements
         toolbarGallerySecond = findViewById(R.id.toolbar_gallery_second);
         tvTotalChecked = findViewById(R.id.tv_number_image_checked);
         imgCheckAll = findViewById(R.id.image_check_all);
+
+        isChecked = imgCheckAll.isActivated();
         imgCheckAll.setOnClickListener(view -> {
-            imgCheckAll.setActivated(!imgCheckAll.isActivated());
-            ((GalleryFragment) currentFragment).isImageCheckAllChecked(imgCheckAll.isActivated());
+            Log.e("TEST", "isChecked = " + isChecked);
+
+            imgCheckAll.setActivated(!isChecked);
+            ((GalleryFragment) currentFragment).isImageCheckAllChecked(!isChecked);
+            isChecked = !isChecked;
         });
 
         drawer = findViewById(R.id.drawer_layout);
@@ -141,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements
         } catch (ActivityNotFoundException e) {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Constant.LINK_GOOGLE_PLAY_APP + BuildConfig.APPLICATION_ID)));
         }
-        // TODO: phát triển thêm tính năng rate in app
+        // TODO: phÃ¡t triá»ƒn thÃªm tÃ­nh nÄƒng rate in app
     }
 
     private void recommendApp() {
@@ -153,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements
         } catch (ActivityNotFoundException e) {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Constant.LINK_GOOGLE_PLAY_DEVELOPER)));
         }
-        // TODO: phát triển thêm tính năng hiện dialog show các app gợi ý trực tiếp
+        // TODO: phÃ¡t triá»ƒn thÃªm tÃ­nh nÄƒng hiá»‡n dialog show cÃ¡c app gá»£i Ã½ trá»±c tiáº¿p
     }
 
     private void shareApp() {
@@ -178,13 +185,13 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void selectNavigation(int type) {
-        if (type == HOME) {//giữ trạng thái khi chọn lại item
+        if (type == HOME) {//giá»¯ tráº¡ng thÃ¡i khi chá»n láº¡i item
             if (!(currentFragment instanceof HomeFragment)) {
                 currentFragment = new HomeFragment();
                 navigationView.setCheckedItem(R.id.nav_home);
                 tvTitle.setText(R.string.title_home);
             }
-        } else if (type == GALLERY) { //giữ trạng thái khi chọn lại item
+        } else if (type == GALLERY) { //giá»¯ tráº¡ng thÃ¡i khi chá»n láº¡i item
             if (!(currentFragment instanceof GalleryFragment)) {
                 currentFragment = GalleryFragment.newInstance(this);
                 navigationView.setCheckedItem(R.id.nav_gallery);
@@ -267,7 +274,7 @@ public class MainActivity extends AppCompatActivity implements
     public void showToolbarCustom(boolean isShowed) {
         toolbarCustom.setVisibility(isShowed ? View.VISIBLE : View.INVISIBLE);
         toolbarGallerySecond.setVisibility(isShowed ? View.INVISIBLE : View.VISIBLE);
-        imgCheckAll.setActivated(!isShowed);
+        imgCheckAll.setVisibility(!isShowed ? View.VISIBLE : View.INVISIBLE);
     }
 
     @Override

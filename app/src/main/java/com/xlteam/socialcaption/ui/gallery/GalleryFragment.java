@@ -3,6 +3,8 @@ package com.xlteam.socialcaption.ui.gallery;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -84,6 +86,7 @@ public class GalleryFragment extends Fragment implements
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mGalleryPaths = FileUtils.getListPathsIfFolderExist();
+//        Timber.e("SizeListImageInSocialCaptionFolder: %s", mGalleryPaths.size());
 
         // set animation for bottom sheet (layout share and delete)
         transition = new Slide(Gravity.BOTTOM);
@@ -107,7 +110,7 @@ public class GalleryFragment extends Fragment implements
         mLoadingProgress = root.findViewById(R.id.loading_view);
 
         layoutBottom = root.findViewById(R.id.bottom_sheet);
-        layoutBottom.setVisibility(View.INVISIBLE);
+        layoutBottom.setVisibility(View.GONE);
 
 //        layoutTop = root.findViewById(R.id.layout_top);
 //        tvTotalChecked = root.findViewById(R.id.tv_number_image_checked);
@@ -191,7 +194,7 @@ public class GalleryFragment extends Fragment implements
             layoutBottom.setVisibility(View.VISIBLE);
             showed = true;
         } else if (!isShow && showed) {
-            layoutBottom.setVisibility(View.INVISIBLE);
+            layoutBottom.setVisibility(View.GONE);
             showed = false;
         }
     }
@@ -226,12 +229,13 @@ public class GalleryFragment extends Fragment implements
 //        intent.putExtra(Intent.EXTRA_SUBJECT, );
         intent.setType("image/jpeg");
         ArrayList<Uri> uriList = new ArrayList<>();
+        String folderImagePath = FileUtils.findExistingFolderSaveImage().getAbsolutePath();
         for (int i = 0; i < mGalleryPaths.size(); i++) {
             if (checkedList.contains(i)) {
                 uriList.add(
                         FileProvider.getUriForFile(mContext,
                                 FILE_PROVIDER_PATH,
-                                new File(mGalleryPaths.get(i))));
+                                new File(folderImagePath + "/" + mGalleryPaths.get(i))));
             }
         }
         intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList);
