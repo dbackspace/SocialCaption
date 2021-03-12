@@ -56,8 +56,9 @@
             </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_picture_gallery"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp" />
 
             <RelativeLayout
@@ -77,6 +78,7 @@
                     android:textSize="18dp" />
 
                 <TextView
+                    android:id="@+id/view_more_picture_url"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -89,8 +91,9 @@
             </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_picture_url"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp" />
 
             <RelativeLayout
@@ -110,6 +113,7 @@
                     android:textSize="18dp" />
 
                 <TextView
+                    android:id="@+id/view_more_picture_created"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -122,8 +126,9 @@
             </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_picture_created"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp" />
         </LinearLayout>
     </ScrollView>
