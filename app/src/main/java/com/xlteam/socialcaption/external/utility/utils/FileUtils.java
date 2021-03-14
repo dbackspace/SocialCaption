@@ -12,9 +12,9 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 
 import com.xlteam.socialcaption.external.utility.logger.Log;
-import com.xlteam.socialcaption.external.utility.thread.ThreadExecutorWithPool;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -132,7 +132,7 @@ public class FileUtils {
                 }
             }
         }
-        return null;
+        return new ArrayList<>();
     }
 
     public static List<File> getListFilesIfFolderExist() {

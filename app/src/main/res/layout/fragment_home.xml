@@ -6,18 +6,49 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
+    <RelativeLayout
+        android:id="@+id/layout_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <ImageView
+            android:id="@+id/image_back"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:padding="10dp"
+            android:src="@drawable/ic_back_black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/image_back"
+            android:fontFamily="sans-serif-medium"
+            android:text="Thư viện ảnh"
+            android:textColor="@color/color_25"
+            android:textSize="22dp" />
+
+    </RelativeLayout>
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout_category"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layout_below="@id/layout_title"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="10dp"
         android:textAlignment="center"
-        app:tabIndicatorColor="@color/color_3cc2f5_legend"
-        app:tabIndicatorGravity="bottom"
-        app:tabIndicatorHeight="3dp"
+        app:tabBackground="@drawable/bg_tab_layout"
+        app:tabIndicator="@null"
         app:tabInlineLabel="true"
         app:tabMode="scrollable"
         app:tabRippleColor="@color/color_E0"
-        app:tabSelectedTextColor="@color/color_3cc2f5_legend"
+        app:tabSelectedTextColor="@color/color_FA"
         app:tabTextColor="@color/color_25" />
 
     <androidx.viewpager.widget.ViewPager

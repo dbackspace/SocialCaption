@@ -49,28 +49,4 @@ public class PictureListFragment extends Fragment {
 
         return root;
     }
-
-    private void getPictureList(int categoryNumber) {
-        //lấy database rồi gọi mViewMvc.binCaptions(captions);
-//        switch (categoryNumber) {
-//            case 0: //ALL
-//                mRepository.getAllCaption();
-//                break;
-//            case 1:
-//                //get firebase caption đang hot
-//                break;
-//            case 2:
-//                mRepository.getCaptionByCategoryType(Constant.TYPE_THA_THINH);
-//                break;
-//            case 3:
-//                mRepository.getCaptionByCategoryType(Constant.TYPE_CUOC_SONG);
-//                break;
-//            case 4:
-//                mRepository.getCaptionByCategoryType(Constant.TYPE_BAN_BE);
-//                break;
-//            case 5:
-//                mRepository.getCaptionByCategoryType(Constant.TYPE_KHAC);
-//                break;
-//        }
-    }
 }

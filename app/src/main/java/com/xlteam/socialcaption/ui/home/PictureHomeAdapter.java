@@ -13,7 +13,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.xlteam.socialcaption.R;
-import com.xlteam.socialcaption.external.utility.utils.Utility;
 
 import java.util.List;
 
@@ -60,21 +59,24 @@ public class PictureHomeAdapter extends RecyclerView.Adapter {
             cameraViewHolder.itemView.setOnClickListener(view -> mCallback.pickPhoto());
         } else {
             ViewHolder viewHolder = (ViewHolder) holder;
+            String url = mUrls.get(position);
             if (mType == 1) {
                 Glide.with(holder.itemView.getContext())
-                        .load(BitmapFactory.decodeFile(mUrls.get(position)))
-//                        .apply(requestOptions.override(600, 600)) //dòng này không ổn đâu nhé
+                        .load(BitmapFactory.decodeFile(url))
+//                        .apply(requestOptions.override(600, 600))
+                        .error(R.drawable.ic_camera)
                         .fitCenter()
                         .into(viewHolder.imgPicture);
             } else if (mType == 2) {
                 Glide.with(holder.itemView.getContext())
-                        .load(Utility.getUrlByCategoryIndex(0, position))
-//                        .apply(requestOptions.override(600, 600)) //dòng này không ổn đâu nhé
+                        .load(url)
+                        .error(R.drawable.ic_camera)
+//                        .apply(requestOptions.override(600, 600))
                         .into(viewHolder.imgPicture);
             } else if (mType == 3) {
                 Glide.with(holder.itemView.getContext())
-                        .load("file://" + mUrls.get(position))
-//                        .apply(requestOptions.override(600, 600)) //dòng này không ổn đâu nhé
+                        .load("file://" + url)
+//                        .apply(requestOptions.override(600, 600))
                         .fitCenter()
                         .into(viewHolder.imgPicture);
             }
@@ -95,6 +97,7 @@ public class PictureHomeAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
+        if (mType == 1 && mUrls.size() == 0) return 1;
         return Math.min(mUrls.size(), 10);
     }
 

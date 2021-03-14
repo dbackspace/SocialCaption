@@ -31,6 +31,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import de.cketti.mailto.EmailIntentBuilder;
@@ -256,5 +257,20 @@ public class Utility {
             default:
                 return first + "tam_trang_" + index + last;
         }
+    }
+
+    public static ArrayList<String> getUrlPictureHome() {
+        String first = "https://firebasestorage.googleapis.com/v0/b/socialcaption-xlteam.appspot.com/o/";
+        String last = ".jpg?alt=media";
+        ArrayList<String> results = new ArrayList<>();
+        results.add(first + "tinh_yeu_" + 0 + last);
+        results.add(first + "tinh_yeu_" + 1 + last);
+        results.add(first + "thien_nhien_" + 0 + last);
+        results.add(first + "thien_nhien_" + 1 + last);
+        results.add(first + "den_trang_" + 0 + last);
+        results.add(first + "den_trang_" + 1 + last);
+        results.add(first + "tam_trang_" + 0 + last);
+        results.add(first + "tam_trang_" + 1 + last);
+        return results;
     }
 }

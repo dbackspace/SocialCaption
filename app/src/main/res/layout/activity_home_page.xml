@@ -44,6 +44,7 @@
                     android:textSize="18dp" />
 
                 <TextView
+                    android:id="@+id/view_more_picture_gallery"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -59,7 +60,8 @@
                 android:id="@+id/rv_picture_gallery"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp" />
+                android:layout_marginTop="5dp"
+                android:paddingStart="10dp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -94,7 +96,8 @@
                 android:id="@+id/rv_picture_url"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp" />
+                android:layout_marginTop="5dp"
+                android:paddingStart="10dp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -129,7 +132,20 @@
                 android:id="@+id/rv_picture_created"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp" />
+                android:layout_marginTop="5dp"
+                android:paddingStart="10dp" />
+
+            <TextView
+                android:id="@+id/tv_empty_picture_created"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:fontFamily="sans-serif"
+                android:text="Không có ảnh nào"
+                android:textColor="@color/color_25"
+                android:textSize="18dp"
+                android:visibility="gone" />
         </LinearLayout>
     </ScrollView>
 
