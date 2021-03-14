@@ -33,11 +33,11 @@ import com.xlteam.socialcaption.external.utility.thread.AsyncLayoutInflateManage
 import com.xlteam.socialcaption.external.utility.utils.Constant;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
 import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
-import com.xlteam.socialcaption.ui.gallery.GalleryFragment;
-import com.xlteam.socialcaption.ui.home.HomeFragment;
+import com.xlteam.socialcaption.ui.home.created.PictureCreatedDialogFragment;
+import com.xlteam.socialcaption.ui.home.firebase.PictureFirebaseDialogFragment;
 
 public class MainActivity extends AppCompatActivity implements
-        GalleryFragment.ToolbarCallback {
+        PictureCreatedDialogFragment.ToolbarCallback {
     private static final int REQUEST_CODE_EDIT_CAPTION_ACTIVITY = 1;
     private NavigationView navigationView;
     private final int HOME = 0, GALLERY = 1, SAVED = 2;
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements
             Log.e("TEST", "isChecked = " + isChecked);
 
             imgCheckAll.setActivated(!isChecked);
-            ((GalleryFragment) currentFragment).isImageCheckAllChecked(!isChecked);
+            ((PictureCreatedDialogFragment) currentFragment).isImageCheckAllChecked(!isChecked);
             isChecked = !isChecked;
         });
 
@@ -129,10 +129,10 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void asyncLayoutInflate() {
-        int[] layoutList = new int[]{R.layout.fragment_caption_list,
-                R.layout.fragment_home,
+        int[] layoutList = new int[]{R.layout.fragment_picture_list_firebase,
+                R.layout.fragment_dialog_firebase,
                 R.layout.fragment_dialog_search,
-                R.layout.fragment_gallery,
+                R.layout.fragment_dialog_created,
         };
         for (int asyncLayoutInflate : layoutList) {
             AsyncLayoutInflateManager.getInstance(this).doAsyncInflate(asyncLayoutInflate, null);
@@ -186,14 +186,14 @@ public class MainActivity extends AppCompatActivity implements
 
     private void selectNavigation(int type) {
         if (type == HOME) {//giá»¯ tráº¡ng thÃ¡i khi chá»n láº¡i item
-            if (!(currentFragment instanceof HomeFragment)) {
-                currentFragment = new HomeFragment();
+            if (!(currentFragment instanceof PictureFirebaseDialogFragment)) {
+                currentFragment = new PictureFirebaseDialogFragment();
                 navigationView.setCheckedItem(R.id.nav_home);
                 tvTitle.setText(R.string.title_home);
             }
         } else if (type == GALLERY) { //giá»¯ tráº¡ng thÃ¡i khi chá»n láº¡i item
-            if (!(currentFragment instanceof GalleryFragment)) {
-                currentFragment = GalleryFragment.newInstance(this);
+            if (!(currentFragment instanceof PictureCreatedDialogFragment)) {
+                currentFragment = PictureCreatedDialogFragment.newInstance(this);
                 navigationView.setCheckedItem(R.id.nav_gallery);
                 tvTitle.setText(R.string.menu_gallery);
             }
@@ -205,10 +205,10 @@ public class MainActivity extends AppCompatActivity implements
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START, true);
-        } else if (currentFragment instanceof GalleryFragment && toolbarCustom.getVisibility() == View.INVISIBLE) {
+        } else if (currentFragment instanceof PictureCreatedDialogFragment && toolbarCustom.getVisibility() == View.INVISIBLE) {
             showToolbarCustom(true);
 
-            ((GalleryFragment) currentFragment).clearSelectMode();
+            ((PictureCreatedDialogFragment) currentFragment).clearSelectMode();
         } else if (navigationView.getMenu().findItem(R.id.nav_gallery).isChecked()) {
             selectNavigation(HOME);
         } else {
@@ -238,8 +238,8 @@ public class MainActivity extends AppCompatActivity implements
         // check that it is the EditCaptionActivity with an OK result
         if (requestCode == REQUEST_CODE_EDIT_CAPTION_ACTIVITY) {
             if (resultCode == EditCaptionActivity.RESULT_CODE_NEW_IMAGE_WAS_CREATED) {
-                if (currentFragment instanceof GalleryFragment) {
-                    ((GalleryFragment) currentFragment).updateUI();
+                if (currentFragment instanceof PictureCreatedDialogFragment) {
+                    ((PictureCreatedDialogFragment) currentFragment).updateUI();
                 }
             }
         }
