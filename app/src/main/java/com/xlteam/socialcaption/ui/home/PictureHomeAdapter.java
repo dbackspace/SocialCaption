@@ -62,7 +62,7 @@ public class PictureHomeAdapter extends RecyclerView.Adapter {
             String url = mUrls.get(position);
             if (mType == 1) {
                 Glide.with(holder.itemView.getContext())
-                        .load(BitmapFactory.decodeFile(url))
+                        .load("file://" + url)
 //                        .apply(requestOptions.override(600, 600))
                         .error(R.drawable.ic_camera)
                         .fitCenter()
