@@ -31,6 +31,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -129,8 +130,27 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
         mapViewUtils = MapViewUtils.getInstance();
         addedViews = new ArrayList<>();
-        Intent intent = getIntent();
         findViewById();
+        Intent intent = getIntent();
+        int type = intent.getIntExtra("EXTRA_TYPE_PICTURE", 0);
+        String url = intent.getStringExtra("EXTRA_URL_PICTURE");
+        if (!TextUtils.isEmpty(url) && type != 0) {
+            if (type == 1) {
+                Glide.with(this)
+                        .load("file://" + url)
+                        .fitCenter()
+                        .into(mImgBackground);
+            } else if (type == 2) {
+                Glide.with(this)
+                        .load(url)
+                        .into(mImgBackground);
+            } else if (type == 3) {
+                Glide.with(this)
+                        .load("file://" + url)
+                        .fitCenter()
+                        .into(mImgBackground);
+            }
+        }
         initTextEditor();
         tvDone.setOnClickListener(v -> {
 //            UserCaption userCaption = new UserCaption(mEdtCaption.getText().toString(), mPathImg, mColorTextDefault, mFontDefault, mAlignTextDefault, true);

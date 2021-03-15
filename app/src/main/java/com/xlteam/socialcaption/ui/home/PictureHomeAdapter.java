@@ -1,6 +1,7 @@
 package com.xlteam.socialcaption.ui.home;
 
-import android.graphics.BitmapFactory;
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.xlteam.socialcaption.R;
+import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
 
 import java.util.List;
 
@@ -20,22 +22,16 @@ import timber.log.Timber;
 
 public class PictureHomeAdapter extends RecyclerView.Adapter {
     private final int mType;
+    private Context mContext;
     private final List<String> mUrls;
     private final RequestOptions requestOptions;
-    private PictureHomeCallback mCallback;
 
-    public PictureHomeAdapter(int type, List<String> urls, PictureHomeCallback callback) {
+    public PictureHomeAdapter(Context context, int type, List<String> urls) {
         mType = type;
         mUrls = urls;
-        mCallback = callback;
+        mContext = context;
         // option luu cache
         requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
-    }
-
-    public interface PictureHomeCallback {
-        void selectPhoto(int numberFont);
-
-        void pickPhoto();
     }
 
     @NonNull
@@ -56,7 +52,9 @@ public class PictureHomeAdapter extends RecyclerView.Adapter {
         Timber.e("loading position: %d", position);
         if (holder.getItemViewType() == 0) {
             CameraViewHolder cameraViewHolder = (CameraViewHolder) holder;
-            cameraViewHolder.itemView.setOnClickListener(view -> mCallback.pickPhoto());
+            cameraViewHolder.itemView.setOnClickListener(view -> {
+                //pick ảnh
+            });
         } else {
             ViewHolder viewHolder = (ViewHolder) holder;
             String url = mUrls.get(position);
@@ -80,11 +78,11 @@ public class PictureHomeAdapter extends RecyclerView.Adapter {
                         .fitCenter()
                         .into(viewHolder.imgPicture);
             }
-            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                }
+            viewHolder.itemView.setOnClickListener(view -> {
+                Intent intent = new Intent(mContext, EditCaptionActivity.class);
+                intent.putExtra("EXTRA_URL_PICTURE", url);
+                intent.putExtra("EXTRA_TYPE_PICTURE", mType);
+                mContext.startActivity(intent);
             });
         }
     }

@@ -22,7 +22,7 @@ import com.xlteam.socialcaption.ui.home.HomePageActivity;
 
 import java.util.Objects;
 
-public class PictureLocalDialogFragment extends DialogFragment implements PictureLocalAdapter.Callback {
+public class PictureLocalDialogFragment extends DialogFragment {
     private Context mContext;
     private Activity mActivity;
     private RecyclerView rvPicture;
@@ -59,22 +59,10 @@ public class PictureLocalDialogFragment extends DialogFragment implements Pictur
         rvPicture.setDrawingCacheEnabled(true);
         rvPicture.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         rvPicture.setLayoutManager(new GridLayoutManager(mContext, 3));
-        rvPicture.setAdapter(new PictureLocalAdapter(Utility.getAllShownImagesPath(mActivity), this));
+        rvPicture.setAdapter(new PictureLocalAdapter(mContext, Utility.getAllShownImagesPath(mActivity)));
 
         imgBack = root.findViewById(R.id.image_back);
         imgBack.setOnClickListener(v -> dismiss());
         return root;
-    }
-
-    @Override
-    public void selectPhoto(int number) {
-
-    }
-
-    @Override
-    public void pickPhoto() {
-        if (mActivity instanceof HomePageActivity) {
-            ((HomePageActivity) mActivity).pickPhoto();
-        }
     }
 }

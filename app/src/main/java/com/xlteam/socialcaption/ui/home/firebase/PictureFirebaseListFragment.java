@@ -45,7 +45,7 @@ public class PictureFirebaseListFragment extends Fragment {
         rvPicture.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
         rvPicture.setLayoutManager(new GridLayoutManager(mContext, 3));
-        rvPicture.setAdapter(new PictureFirebaseAdapter(mCategoryNumber));
+        rvPicture.setAdapter(new PictureFirebaseAdapter(mContext, mCategoryNumber));
 
         return root;
     }

@@ -1,5 +1,7 @@
 package com.xlteam.socialcaption.ui.home.local;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.xlteam.socialcaption.R;
+import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,19 +24,13 @@ import timber.log.Timber;
 public class PictureLocalAdapter extends RecyclerView.Adapter {
     private final List<String> mUrls;
     private final RequestOptions requestOptions;
-    private Callback mCallback;
+    private Context mContext;
 
-    public PictureLocalAdapter(ArrayList<String> url, Callback callback) {
+    public PictureLocalAdapter(Context context, ArrayList<String> url) {
         mUrls = url;
-        mCallback = callback;
+        mContext = context;
         // option luu cache
         requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
-    }
-
-    public interface Callback {
-        void selectPhoto(int number);
-
-        void pickPhoto();
     }
 
     @NonNull
@@ -54,16 +51,23 @@ public class PictureLocalAdapter extends RecyclerView.Adapter {
         Timber.e("loading position: %d", position);
         if (holder.getItemViewType() == 0) {
             PictureLocalAdapter.CameraViewHolder cameraViewHolder = (PictureLocalAdapter.CameraViewHolder) holder;
-            cameraViewHolder.itemView.setOnClickListener(view -> mCallback.pickPhoto());
+            cameraViewHolder.itemView.setOnClickListener(view -> {
+                //pick ảnh
+            });
         } else {
             PictureLocalAdapter.ViewHolder viewHolder = (PictureLocalAdapter.ViewHolder) holder;
             String url = mUrls.get(position);
             Glide.with(holder.itemView.getContext())
                     .load("file://" + url)
 //                        .apply(requestOptions.override(600, 600))
-                    .error(R.drawable.ic_camera)
                     .fitCenter()
                     .into(viewHolder.imgPicture);
+            holder.itemView.setOnClickListener(v -> {
+                Intent intent = new Intent(mContext, EditCaptionActivity.class);
+                intent.putExtra("EXTRA_URL_PICTURE", url);
+                intent.putExtra("EXTRA_TYPE_PICTURE", 1);
+                mContext.startActivity(intent);
+            });
         }
     }
 

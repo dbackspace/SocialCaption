@@ -38,7 +38,7 @@ import com.xlteam.socialcaption.ui.home.local.PictureLocalDialogFragment;
 
 import java.util.ArrayList;
 
-public class HomePageActivity extends AppCompatActivity implements PictureHomeAdapter.PictureHomeCallback {
+public class HomePageActivity extends AppCompatActivity {
     RecyclerView rvLocal, rvFirebase, rvCreated;
     TextView tvViewMoreFirebase, tvViewMoreCreated, tvViewMoreLocal;
     TextView tvEmptyCreated;
@@ -60,13 +60,13 @@ public class HomePageActivity extends AppCompatActivity implements PictureHomeAd
                 .withListener(new PermissionListener() {
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
-                        rvLocal.setAdapter(new PictureHomeAdapter(1, Utility.getAllShownImagesPath(HomePageActivity.this), HomePageActivity.this));
-                        rvCreated.setAdapter(new PictureHomeAdapter(3, FileUtils.getListPathsIfFolderExist(), HomePageActivity.this));
+                        rvLocal.setAdapter(new PictureHomeAdapter(HomePageActivity.this, 1, Utility.getAllShownImagesPath(HomePageActivity.this)));
+                        rvCreated.setAdapter(new PictureHomeAdapter(HomePageActivity.this, 3, FileUtils.getListPathsIfFolderExist()));
                     }
 
                     @Override
                     public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
-                        rvLocal.setAdapter(new PictureHomeAdapter(1, new ArrayList<>(), HomePageActivity.this));
+                        rvLocal.setAdapter(new PictureHomeAdapter(HomePageActivity.this, 1, new ArrayList<>()));
                     }
 
                     @Override
@@ -81,7 +81,7 @@ public class HomePageActivity extends AppCompatActivity implements PictureHomeAd
 //        rvUrl.setDrawingCacheEnabled(true);
 //        rvUrl.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         rvFirebase.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
-        rvFirebase.setAdapter(new PictureHomeAdapter(2, Utility.getUrlPictureHome(), this));
+        rvFirebase.setAdapter(new PictureHomeAdapter(this, 2, Utility.getUrlPictureHome()));
 
 //        rvCreated.setDrawingCacheEnabled(true);
 //        rvCreated.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
@@ -172,16 +172,6 @@ public class HomePageActivity extends AppCompatActivity implements PictureHomeAd
         ImageView imgBack = dialog.findViewById(R.id.imgBack);
         imgBack.setOnClickListener(v -> dialog.dismiss());
         dialog.show();
-    }
-
-    @Override
-    public void selectPhoto(int numberFont) {
-
-    }
-
-    @Override
-    public void pickPhoto() {
-
     }
 
 //    @Override
