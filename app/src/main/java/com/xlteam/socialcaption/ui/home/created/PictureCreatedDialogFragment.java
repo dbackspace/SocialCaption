@@ -11,7 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,9 +24,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.Slide;
 import androidx.transition.Transition;
-import androidx.transition.TransitionManager;
 
 import com.xlteam.socialcaption.R;
+import com.xlteam.socialcaption.external.utility.logger.Log;
 import com.xlteam.socialcaption.external.utility.utils.FileUtils;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
 import com.xlteam.socialcaption.ui.commondialog.DialogSaveChangesBuilder;
@@ -44,11 +46,12 @@ public class PictureCreatedDialogFragment extends DialogFragment implements
         DialogPreviewGallery.DialogDismissListenerCallback {
     private RecyclerView rvGallery;
     private Context mContext;
-    private TextView mEmptyImage;
+    private TextView mEmptyImage, tvTotalChecked;
     private GalleryAdapter mGalleryAdapter;
     private List<String> mGalleryPaths;
 
-    private LinearLayout layoutBottom;
+    private LinearLayout layoutBottom, layoutCheckAll;
+    private RelativeLayout layoutTitle;
     private boolean showed = false;
     private Transition transition;
     private ViewGroup viewGroup;
@@ -56,25 +59,7 @@ public class PictureCreatedDialogFragment extends DialogFragment implements
     private LinearLayout mLoadingProgress;
     private Dialog deleteDialog;
     private List<Integer> mCheckedList;
-
-    public interface ToolbarCallback {
-        void showToolbarCustom(boolean isShowed);
-
-        void isCheckBoxAllChecked(boolean isCheckBoxAllChecked);
-
-        void setTextForTotalCheckedTextView(boolean isShow, int numberImageChecked);
-    }
-
-    private static ToolbarCallback mCallback;
-
-    public static PictureCreatedDialogFragment newInstance(ToolbarCallback callback) {
-        mCallback = callback;
-        return new PictureCreatedDialogFragment();
-    }
-
-    //    private RelativeLayout layoutTop;
-    //    private ImageView imgCheckAll;
-    //    private TextView tvTotalChecked;
+    private ImageView imgCheckAll;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -85,7 +70,14 @@ public class PictureCreatedDialogFragment extends DialogFragment implements
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        Dialog dialog = new Dialog(mContext, getTheme()) {
+            @Override
+            public void onBackPressed() {
+                if (layoutCheckAll.getVisibility() == View.VISIBLE) {
+                    clearSelectMode();
+                } else super.onBackPressed();
+            }
+        };
         Objects.requireNonNull(dialog.getWindow()).requestFeature(Window.FEATURE_NO_TITLE);
         return dialog;
     }
@@ -117,9 +109,11 @@ public class PictureCreatedDialogFragment extends DialogFragment implements
         this.viewGroup = container;
         mEmptyImage = root.findViewById(R.id.tv_empty_image);
         mLoadingProgress = root.findViewById(R.id.loading_view);
-
+        imgCheckAll = root.findViewById(R.id.image_check_all);
+        tvTotalChecked = root.findViewById(R.id.tv_number_image_checked);
+        layoutCheckAll = root.findViewById(R.id.layout_check_all);
+        layoutTitle = root.findViewById(R.id.layout_title);
         layoutBottom = root.findViewById(R.id.bottom_sheet);
-        layoutBottom.setVisibility(View.GONE);
 
 //        layoutTop = root.findViewById(R.id.layout_top);
 //        tvTotalChecked = root.findViewById(R.id.tv_number_image_checked);
@@ -183,27 +177,35 @@ public class PictureCreatedDialogFragment extends DialogFragment implements
 
     @Override
     public void showCheckBoxAll(boolean isCheckBoxChecked) {
-        mCallback.showToolbarCustom(!isCheckBoxChecked);
+        imgCheckAll.setActivated(isCheckBoxChecked);
     }
 
     @Override
     public void setAllItemChecked(boolean isCheckBoxAllChecked) {
-        mCallback.isCheckBoxAllChecked(isCheckBoxAllChecked);
+        imgCheckAll.setActivated(isCheckBoxAllChecked);
     }
 
     @Override
     public void showBottomSheetShareAndDelete(int numberImageChecked) {
         Timber.e("numberImageChecked: %s", numberImageChecked);
         boolean isShow = numberImageChecked != 0;
-        TransitionManager.beginDelayedTransition(viewGroup, transition);
-
-        mCallback.setTextForTotalCheckedTextView(isShow, numberImageChecked);
+//        TransitionManager.beginDelayedTransition(viewGroup, transition);
+        Log.d("binh.ngk", " numberImageChecked" + numberImageChecked);
+        if (isShow) {
+            tvTotalChecked.setText(getString(R.string.select_number_image, numberImageChecked));
+            layoutTitle.setVisibility(View.GONE);
+            layoutCheckAll.setVisibility(View.VISIBLE);
+            layoutBottom.setVisibility(View.VISIBLE);
+        } else {
+            tvTotalChecked.setText(R.string.select_items);
+            layoutBottom.setVisibility(View.GONE);
+        }
 
         if (isShow && !showed) {
-            layoutBottom.setVisibility(View.VISIBLE);
+
             showed = true;
         } else if (!isShow && showed) {
-            layoutBottom.setVisibility(View.GONE);
+
             showed = false;
         }
     }
@@ -281,7 +283,8 @@ public class PictureCreatedDialogFragment extends DialogFragment implements
         @Override
         protected void onPostExecute(Void s) {
             mLoadingProgress.setVisibility(View.GONE);
-            mCallback.showToolbarCustom(true);
+            layoutTitle.setVisibility(View.GONE);
+            layoutCheckAll.setVisibility(View.VISIBLE);
             clearSelectMode();
             updateUI();
             showBottomSheetShareAndDelete(0);
@@ -289,8 +292,8 @@ public class PictureCreatedDialogFragment extends DialogFragment implements
     }
 
     public void clearSelectMode() { // cancel selecting image mode
-//        imgCheckAll.setActivated(false);
-//        layoutTop.setVisibility(View.GONE);
+        layoutCheckAll.setVisibility(View.GONE);
+        layoutTitle.setVisibility(View.VISIBLE);
         mGalleryAdapter.onCheckBoxAllChecked(false);
         mGalleryAdapter.cancelMultipleMode();
     }

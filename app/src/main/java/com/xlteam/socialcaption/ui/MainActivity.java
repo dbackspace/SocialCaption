@@ -36,8 +36,7 @@ import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
 import com.xlteam.socialcaption.ui.home.created.PictureCreatedDialogFragment;
 import com.xlteam.socialcaption.ui.home.firebase.PictureFirebaseDialogFragment;
 
-public class MainActivity extends AppCompatActivity implements
-        PictureCreatedDialogFragment.ToolbarCallback {
+public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_EDIT_CAPTION_ACTIVITY = 1;
     private NavigationView navigationView;
     private final int HOME = 0, GALLERY = 1, SAVED = 2;
@@ -193,9 +192,7 @@ public class MainActivity extends AppCompatActivity implements
             }
         } else if (type == GALLERY) { //giá»¯ tráº¡ng thÃ¡i khi chá»n láº¡i item
             if (!(currentFragment instanceof PictureCreatedDialogFragment)) {
-                currentFragment = PictureCreatedDialogFragment.newInstance(this);
-                navigationView.setCheckedItem(R.id.nav_gallery);
-                tvTitle.setText(R.string.menu_gallery);
+
             }
         }
         replaceFragment(currentFragment);
@@ -206,7 +203,6 @@ public class MainActivity extends AppCompatActivity implements
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START, true);
         } else if (currentFragment instanceof PictureCreatedDialogFragment && toolbarCustom.getVisibility() == View.INVISIBLE) {
-            showToolbarCustom(true);
 
             ((PictureCreatedDialogFragment) currentFragment).clearSelectMode();
         } else if (navigationView.getMenu().findItem(R.id.nav_gallery).isChecked()) {
@@ -267,27 +263,6 @@ public class MainActivity extends AppCompatActivity implements
         AsyncLayoutInflateManager.getInstance(this).onDestroy();
         if (mAdView != null) {
             mAdView.destroy();
-        }
-    }
-
-    @Override
-    public void showToolbarCustom(boolean isShowed) {
-        toolbarCustom.setVisibility(isShowed ? View.VISIBLE : View.INVISIBLE);
-        toolbarGallerySecond.setVisibility(isShowed ? View.INVISIBLE : View.VISIBLE);
-        imgCheckAll.setVisibility(!isShowed ? View.VISIBLE : View.INVISIBLE);
-    }
-
-    @Override
-    public void isCheckBoxAllChecked(boolean isCheckBoxAllChecked) {
-        imgCheckAll.setActivated(isCheckBoxAllChecked);
-    }
-
-    @Override
-    public void setTextForTotalCheckedTextView(boolean isShow, int numberImageChecked) {
-        if (isShow) {
-            tvTotalChecked.setText(getString(R.string.select_number_image, numberImageChecked));
-        } else {
-            tvTotalChecked.setText(R.string.select_items);
         }
     }
 }
