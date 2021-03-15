@@ -17,7 +17,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -174,14 +173,6 @@ public class HomePageActivity extends AppCompatActivity {
         } catch (Exception e) {
             //e.toString();
         }
-    }
-
-    private void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        ViManager.getInstance().setFragmentDefaultAnimation(this, fragmentTransaction);
-        fragmentTransaction.replace(R.id.frame, fragment);
-        fragmentTransaction.commit();
     }
 
     private void showDialogFullScreen(String assetName, int title) {

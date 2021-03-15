@@ -30,6 +30,7 @@ import com.xlteam.socialcaption.external.utility.logger.Log;
 import com.xlteam.socialcaption.external.utility.utils.FileUtils;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
 import com.xlteam.socialcaption.ui.commondialog.DialogSaveChangesBuilder;
+import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -41,13 +42,11 @@ import timber.log.Timber;
 
 import static com.xlteam.socialcaption.external.utility.utils.Constant.FILE_PROVIDER_PATH;
 
-public class PictureCreatedDialogFragment extends DialogFragment implements
-        GalleryAdapter.GallerySelectCallback,
-        DialogPreviewGallery.DialogDismissListenerCallback {
+public class PictureCreatedDialogFragment extends DialogFragment implements PictureCreatedAdapter.GallerySelectCallback {
     private RecyclerView rvGallery;
     private Context mContext;
     private TextView mEmptyImage, tvTotalChecked;
-    private GalleryAdapter mGalleryAdapter;
+    private PictureCreatedAdapter mPictureCreatedAdapter;
     private List<String> mGalleryPaths;
 
     private LinearLayout layoutBottom, layoutCheckAll;
@@ -120,18 +119,18 @@ public class PictureCreatedDialogFragment extends DialogFragment implements
 //        imgCheckAll = root.findViewById(R.id.image_check_all);
 //        imgCheckAll.setOnClickListener(view -> {
 //            imgCheckAll.setActivated(!imgCheckAll.isActivated());
-//            mGalleryAdapter.onCheckBoxAllChecked(imgCheckAll.isActivated());
+//            mPictureCreatedAdapter.onCheckBoxAllChecked(imgCheckAll.isActivated());
 //        });
 //
 
         LinearLayout mBtnDeleteGallery = root.findViewById(R.id.btn_delete_gallery);
         mBtnDeleteGallery.setOnClickListener(v -> {
-            mCheckedList = mGalleryAdapter.getCheckedList();
+            mCheckedList = mPictureCreatedAdapter.getCheckedList();
             deleteDialog.show();
         });
 
         LinearLayout mBtnShareGallery = root.findViewById(R.id.btn_share_gallery);
-        mBtnShareGallery.setOnClickListener(v -> shareImages(mGalleryAdapter.getCheckedList()));
+        mBtnShareGallery.setOnClickListener(v -> shareImages(mPictureCreatedAdapter.getCheckedList()));
 
         // init recycler gallery by findViewById
         rvGallery = root.findViewById(R.id.rv_gallery_caption);
@@ -147,10 +146,10 @@ public class PictureCreatedDialogFragment extends DialogFragment implements
             rvGallery.setVisibility(View.VISIBLE);
             Collections.sort(mGalleryPaths, (s1, s2) -> s1.substring(s1.lastIndexOf("/") + 1)
                     .compareTo(s2.substring(s2.lastIndexOf("/") + 1)));
-            mGalleryAdapter = new GalleryAdapter(mGalleryPaths, this);
-            rvGallery.setAdapter(mGalleryAdapter);
+            mPictureCreatedAdapter = new PictureCreatedAdapter(mGalleryPaths, this);
+            rvGallery.setAdapter(mPictureCreatedAdapter);
         } else {
-            mGalleryAdapter = new GalleryAdapter(new ArrayList<>(), this);
+            mPictureCreatedAdapter = new PictureCreatedAdapter(new ArrayList<>(), this);
             rvGallery.setVisibility(View.GONE);
             mEmptyImage.setVisibility(View.VISIBLE);
             Utility.vibrateAnimation(mContext, mEmptyImage);
@@ -168,11 +167,10 @@ public class PictureCreatedDialogFragment extends DialogFragment implements
 
     @Override
     public void onItemGallerySelected(int position) {
-        DialogPreviewGallery dialogPreview = DialogPreviewGallery.newInstance(
-                new ArrayList<>(mGalleryPaths),
-                position,
-                this);
-        dialogPreview.show(getChildFragmentManager(), "DialogPreviewGallery");
+        Intent intent = new Intent(mContext, EditCaptionActivity.class);
+        intent.putExtra("EXTRA_URL_PICTURE", mGalleryPaths.get(position));
+        intent.putExtra("EXTRA_TYPE_PICTURE", 3);
+        mContext.startActivity(intent);
     }
 
     @Override
@@ -216,19 +214,12 @@ public class PictureCreatedDialogFragment extends DialogFragment implements
             rvGallery.setVisibility(View.VISIBLE);
             Collections.sort(mGalleryPaths, (s1, s2) -> s1.substring(s1.lastIndexOf("/") + 1)
                     .compareTo(s2.substring(s2.lastIndexOf("/") + 1)));
-            mGalleryAdapter.updateList(mGalleryPaths);
-            mGalleryAdapter.notifyDataSetChanged();
+            mPictureCreatedAdapter.updateList(mGalleryPaths);
+            mPictureCreatedAdapter.notifyDataSetChanged();
         } else {
             rvGallery.setVisibility(View.GONE);
             mEmptyImage.setVisibility(View.VISIBLE);
             Utility.vibrateAnimation(mContext, mEmptyImage);
-        }
-    }
-
-    @Override
-    public void onDialogPreviewDismissed(boolean isImageDeleted) {
-        if (isImageDeleted) {
-            updateUI();
         }
     }
 
@@ -291,11 +282,11 @@ public class PictureCreatedDialogFragment extends DialogFragment implements
     public void clearSelectMode() { // cancel selecting image mode
         layoutCheckAll.setVisibility(View.GONE);
         layoutTitle.setVisibility(View.VISIBLE);
-        mGalleryAdapter.onCheckBoxAllChecked(false);
-        mGalleryAdapter.cancelMultipleMode();
+        mPictureCreatedAdapter.onCheckBoxAllChecked(false);
+        mPictureCreatedAdapter.cancelMultipleMode();
     }
 
     public void isImageCheckAllChecked(boolean activated) {
-        mGalleryAdapter.onCheckBoxAllChecked(activated);
+        mPictureCreatedAdapter.onCheckBoxAllChecked(activated);
     }
 }

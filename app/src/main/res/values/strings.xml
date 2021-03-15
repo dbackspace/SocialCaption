@@ -1,23 +1,15 @@
 <resources>
     <string name="app_name">SocialCaption</string>
-    <string name="nav_header_title">XL team</string>
-    <string name="nav_header_subtitle">developer-xlteam@gmail.com</string>
-    <string name="nav_header_desc">Navigation header</string>
 
-    <string name="menu_home">Trang chủ</string>
-    <string name="menu_gallery">Ảnh đã tạo</string>
     <string name="feedback_title">Phản hồi về ứng dụng</string>
     <string name="feedback_msg">Vui lòng mô tả vấn đề hoặc phản hồi của bạn khi dùng ứng dụng:\n</string>
     <string name="choose_one">Chọn một ứng dụng</string>
-    <string name="title_home">Chọn ảnh</string>
     <string name="license">Giấy phép</string>
-    <string name="term_of_use">Điều khoản sử dụng</string>
     <string name="all">Tất cả</string>
     <string name="mood">Tâm trạng</string>
     <string name="love">Tình yêu</string>
     <string name="nature">Thiên nhiên</string>
     <string name="black_white">Đen trắng</string>
-    <string name="no_caption">Không có caption</string>
     <string name="no_image">Không có ảnh</string>
     <string name="save_fail">Lưu ảnh thất bại</string>
     <string name="save_success">Lưu ảnh thành công</string>

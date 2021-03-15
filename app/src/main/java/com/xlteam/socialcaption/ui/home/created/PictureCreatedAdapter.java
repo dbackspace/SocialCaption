@@ -22,7 +22,7 @@ import java.util.List;
 
 import timber.log.Timber;
 
-public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
+public class PictureCreatedAdapter extends RecyclerView.Adapter<PictureCreatedAdapter.ViewHolder> {
     private List<String> mGalleryPaths;
     private final List<Integer> checkedList = new ArrayList<>();
     private final GallerySelectCallback mCallback;
@@ -48,7 +48,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         void showBottomSheetShareAndDelete(int numberImageChecked);
     }
 
-    public GalleryAdapter(List<String> galleryPaths, GallerySelectCallback callBack) {
+    public PictureCreatedAdapter(List<String> galleryPaths, GallerySelectCallback callBack) {
         mGalleryPaths = galleryPaths;
         mCallback = callBack;
 
@@ -57,9 +57,9 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 
     @NonNull
     @Override
-    public GalleryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public PictureCreatedAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_gallery, parent, false);
-        return new GalleryAdapter.ViewHolder(v);
+        return new PictureCreatedAdapter.ViewHolder(v);
     }
 
     @Override

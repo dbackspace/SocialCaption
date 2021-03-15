@@ -20,13 +20,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             resValue "string", "AD_APP_KEY", admob_id_app_release
-            resValue "string", "AD_BANNER_1", ad_banner_release_1
             resValue "string", "AD_BANNER_2", ad_banner_release_2
         }
         debug {
             debuggable true
             resValue "string", "AD_APP_KEY", admob_id_app_debug
-            resValue "string", "AD_BANNER_1", ad_banner_debug_1
             resValue "string", "AD_BANNER_2", ad_banner_debug_2
         }
     }
