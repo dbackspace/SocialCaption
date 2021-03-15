@@ -202,10 +202,8 @@ public class PictureCreatedDialogFragment extends DialogFragment implements
         }
 
         if (isShow && !showed) {
-
             showed = true;
         } else if (!isShow && showed) {
-
             showed = false;
         }
     }
@@ -266,10 +264,9 @@ public class PictureCreatedDialogFragment extends DialogFragment implements
         @Override
         protected void onPreExecute() {
             mLoadingProgress.setVisibility(View.VISIBLE);
-            String folderImagePath = FileUtils.findExistingFolderSaveImage().getAbsolutePath();
             for (int i = 0; i < mGalleryPaths.size(); i++) {
                 if (mCheckedList.contains(i)) {
-                    mPaths.add(folderImagePath + "/" + mGalleryPaths.get(i));
+                    mPaths.add(mGalleryPaths.get(i));
                 }
             }
         }
