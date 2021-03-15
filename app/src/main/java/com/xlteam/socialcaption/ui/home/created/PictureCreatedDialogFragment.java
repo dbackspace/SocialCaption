@@ -10,13 +10,14 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
-import androidx.fragment.app.Fragment;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.Slide;
@@ -32,12 +33,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import timber.log.Timber;
 
 import static com.xlteam.socialcaption.external.utility.utils.Constant.FILE_PROVIDER_PATH;
 
-public class PictureCreatedDialogFragment extends Fragment implements
+public class PictureCreatedDialogFragment extends DialogFragment implements
         GalleryAdapter.GallerySelectCallback,
         DialogPreviewGallery.DialogDismissListenerCallback {
     private RecyclerView rvGallery;
@@ -80,9 +82,18 @@ public class PictureCreatedDialogFragment extends Fragment implements
         mContext = context;
     }
 
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        Objects.requireNonNull(dialog.getWindow()).requestFeature(Window.FEATURE_NO_TITLE);
+        return dialog;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.Theme_SocialCaption);
         mGalleryPaths = FileUtils.getListPathsIfFolderExist();
 //        Timber.e("SizeListImageInSocialCaptionFolder: %s", mGalleryPaths.size());
 
