@@ -132,9 +132,9 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         addedViews = new ArrayList<>();
         findViewById();
         Intent intent = getIntent();
-        int type = intent.getIntExtra("EXTRA_TYPE_PICTURE", 0);
-        String url = intent.getStringExtra("EXTRA_URL_PICTURE");
-        if (!TextUtils.isEmpty(url) && type != 0) {
+        int type = intent.getIntExtra("EXTRA_TYPE_PICTURE", -1);
+        if (type != 0) {
+            String url = intent.getStringExtra("EXTRA_URL_PICTURE");
             if (type == 1) {
                 Glide.with(this)
                         .load("file://" + url)
@@ -149,6 +149,24 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
                         .load("file://" + url)
                         .fitCenter()
                         .into(mImgBackground);
+            } else if (type == 4) {
+                Glide.with(this)
+                        .load("file://" + url)
+                        .fitCenter()
+                        .into(mImgBackground);
+            }
+        } else {
+            Uri imageUri = (Uri) intent.getParcelableExtra("EXTRA_PICK_PHOTO_URL");
+            if (imageUri != null) {
+                mPathImg = imageUri.getPath();
+                final InputStream imageStream;
+                try {
+                    imageStream = getContentResolver().openInputStream(imageUri);
+                    final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                    mImgBackground.setImageBitmap(selectedImage);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         }
         initTextEditor();
@@ -206,15 +224,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
                     isChangedListener();
                 } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                     Exception error = result.getError();
-                }
-                break;
-            case 10:
-                String url = data.getStringExtra("EXTRA_PICK_PHOTO_URL");
-                if (!TextUtils.isEmpty(url)) {
-                    Glide.with(this)
-                            .load("file://" + url)
-                            .fitCenter()
-                            .into(mImgBackground);
                 }
                 break;
             case PICK_IMAGE:
@@ -484,7 +493,6 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
     @Override
     public void onCancelAllTextDialog(boolean isNoText) {
-        Log.d("binh.ngk", "  " + isNoText);
         layoutTop.setVisibility(View.VISIBLE);
         layoutBottom.setVisibility(View.VISIBLE);
         showTextMode(!isNoText);
