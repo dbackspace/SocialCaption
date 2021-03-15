@@ -1,5 +1,6 @@
 package com.xlteam.socialcaption.ui.home.local;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -21,14 +22,19 @@ import java.util.List;
 
 import timber.log.Timber;
 
+import static com.xlteam.socialcaption.ui.edit.EditCaptionActivity.PICK_IMAGE;
+
 public class PictureLocalAdapter extends RecyclerView.Adapter {
     private final List<String> mUrls;
     private final RequestOptions requestOptions;
     private Context mContext;
+    private Activity mActivity;
+    private static final int PICK_IMAGE_FROM_HOME = 5;
 
-    public PictureLocalAdapter(Context context, ArrayList<String> url) {
+    public PictureLocalAdapter(Activity activity, Context context, ArrayList<String> url) {
         mUrls = url;
         mContext = context;
+        mActivity = activity;
         // option luu cache
         requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
     }
@@ -52,7 +58,10 @@ public class PictureLocalAdapter extends RecyclerView.Adapter {
         if (holder.getItemViewType() == 0) {
             PictureLocalAdapter.CameraViewHolder cameraViewHolder = (PictureLocalAdapter.CameraViewHolder) holder;
             cameraViewHolder.itemView.setOnClickListener(view -> {
-                //pick ảnh
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                mActivity.startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_FROM_HOME);
             });
         } else {
             PictureLocalAdapter.ViewHolder viewHolder = (PictureLocalAdapter.ViewHolder) holder;

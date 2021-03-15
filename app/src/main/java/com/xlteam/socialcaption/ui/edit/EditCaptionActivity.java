@@ -208,6 +208,15 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
                     Exception error = result.getError();
                 }
                 break;
+            case 10:
+                String url = data.getStringExtra("EXTRA_PICK_PHOTO_URL");
+                if (!TextUtils.isEmpty(url)) {
+                    Glide.with(this)
+                            .load("file://" + url)
+                            .fitCenter()
+                            .into(mImgBackground);
+                }
+                break;
             case PICK_IMAGE:
                 if (resultCode == RESULT_OK) {
                     if (data == null) {

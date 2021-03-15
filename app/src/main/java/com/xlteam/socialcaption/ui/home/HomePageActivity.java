@@ -4,6 +4,8 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -11,7 +13,9 @@ import android.view.Window;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -32,16 +36,20 @@ import com.xlteam.socialcaption.external.utility.animation.ViManager;
 import com.xlteam.socialcaption.external.utility.utils.Constant;
 import com.xlteam.socialcaption.external.utility.utils.FileUtils;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
+import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
 import com.xlteam.socialcaption.ui.home.created.PictureCreatedDialogFragment;
 import com.xlteam.socialcaption.ui.home.firebase.PictureFirebaseDialogFragment;
 import com.xlteam.socialcaption.ui.home.local.PictureLocalDialogFragment;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class HomePageActivity extends AppCompatActivity {
     RecyclerView rvLocal, rvFirebase, rvCreated;
     TextView tvViewMoreFirebase, tvViewMoreCreated, tvViewMoreLocal;
     TextView tvEmptyCreated;
+    private static final int REQUEST_CODE_PICK_PHOTO_HOME = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +122,25 @@ public class HomePageActivity extends AppCompatActivity {
             PictureCreatedDialogFragment pictureCreatedDialogFragment = new PictureCreatedDialogFragment();
             pictureCreatedDialogFragment.show(fragmentTransaction, "dialog_created");
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 5:
+                if (resultCode == RESULT_OK) {
+                    if (data == null) {
+                        Toast.makeText(this, "Bạn chưa chọn ảnh.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        final String imageUriPath = data.getData().getPath();
+                        Intent intent = new Intent(this, EditCaptionActivity.class);
+                        intent.putExtra("EXTRA_PICK_PHOTO_URL", imageUriPath);
+                        startActivityForResult(intent, REQUEST_CODE_PICK_PHOTO_HOME);
+                    }
+                }
+                break;
+        }
     }
 
     private void rateApp() {

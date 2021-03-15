@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
-import com.xlteam.socialcaption.ui.home.HomePageActivity;
 
 import java.util.Objects;
 
@@ -59,7 +58,7 @@ public class PictureLocalDialogFragment extends DialogFragment {
         rvPicture.setDrawingCacheEnabled(true);
         rvPicture.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         rvPicture.setLayoutManager(new GridLayoutManager(mContext, 3));
-        rvPicture.setAdapter(new PictureLocalAdapter(mContext, Utility.getAllShownImagesPath(mActivity)));
+        rvPicture.setAdapter(new PictureLocalAdapter(getActivity(), mContext, Utility.getAllShownImagesPath(mActivity)));
 
         imgBack = root.findViewById(R.id.image_back);
         imgBack.setOnClickListener(v -> dismiss());
