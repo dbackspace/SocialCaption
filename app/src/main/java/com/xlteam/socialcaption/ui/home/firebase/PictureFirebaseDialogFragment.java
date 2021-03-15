@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +27,7 @@ public class PictureFirebaseDialogFragment extends DialogFragment {
     private TabLayout tabLayoutCategory;
     private ViewPager viewPager;
     private SlidePagerAdapter mAdapter;
+    private ImageView imgBack;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -62,6 +64,8 @@ public class PictureFirebaseDialogFragment extends DialogFragment {
             p.setMargins(10, 0, 10, 0);
             tab.requestLayout();
         }
+        imgBack = root.findViewById(R.id.image_back);
+        imgBack.setOnClickListener(v -> dismiss());
         return root;
     }
 
