@@ -4,10 +4,8 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.View;
 import android.view.Window;
 import android.webkit.WebView;
@@ -31,11 +29,12 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import com.xlteam.socialcaption.BuildConfig;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.animation.ViManager;
-import com.xlteam.socialcaption.external.utility.logger.Log;
 import com.xlteam.socialcaption.external.utility.utils.Constant;
 import com.xlteam.socialcaption.external.utility.utils.FileUtils;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
+import com.xlteam.socialcaption.ui.home.created.PictureCreatedDialogFragment;
 import com.xlteam.socialcaption.ui.home.firebase.PictureFirebaseDialogFragment;
+import com.xlteam.socialcaption.ui.home.local.PictureLocalDialogFragment;
 
 import java.util.ArrayList;
 
@@ -61,7 +60,7 @@ public class HomePageActivity extends AppCompatActivity implements PictureHomeAd
                 .withListener(new PermissionListener() {
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
-                        rvLocal.setAdapter(new PictureHomeAdapter(1, getAllShownImagesPath(), HomePageActivity.this));
+                        rvLocal.setAdapter(new PictureHomeAdapter(1, Utility.getAllShownImagesPath(HomePageActivity.this), HomePageActivity.this));
                         rvCreated.setAdapter(new PictureHomeAdapter(3, FileUtils.getListPathsIfFolderExist(), HomePageActivity.this));
                     }
 
@@ -92,37 +91,29 @@ public class HomePageActivity extends AppCompatActivity implements PictureHomeAd
             rvCreated.setVisibility(View.GONE);
         }
 //
+        tvViewMoreLocal.setOnClickListener(view -> {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            ViManager.getInstance().setFragmentDefaultAnimation(HomePageActivity.this, fragmentTransaction);
+            PictureLocalDialogFragment pictureLocalDialogFragment = new PictureLocalDialogFragment();
+            pictureLocalDialogFragment.show(fragmentTransaction, "dialog_local");
+        });
+
         tvViewMoreFirebase.setOnClickListener(view -> {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             ViManager.getInstance().setFragmentDefaultAnimation(HomePageActivity.this, fragmentTransaction);
             PictureFirebaseDialogFragment pictureFirebaseDialogFragment = new PictureFirebaseDialogFragment();
-            pictureFirebaseDialogFragment.show(fragmentTransaction, "dialog_home");
+            pictureFirebaseDialogFragment.show(fragmentTransaction, "dialog_firebase");
         });
-    }
 
-    public ArrayList<String> getAllShownImagesPath() {
-        Uri uri;
-        Cursor cursor;
-        int column_index_data, column_index_folder_name;
-        String absolutePathOfImage = null;
-        uri = android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-
-        String[] projection = {MediaStore.MediaColumns.DATA,
-                MediaStore.Images.Media.BUCKET_DISPLAY_NAME};
-
-        cursor = getContentResolver().query(uri, projection, null,
-                null, null);
-        ArrayList<String> listOfAllImages = new ArrayList<>();
-        column_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-        column_index_folder_name = cursor
-                .getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
-        while (cursor.moveToNext()) {
-            absolutePathOfImage = cursor.getString(column_index_data);
-            listOfAllImages.add(absolutePathOfImage);
-            Log.d("binh.ngk", "" + absolutePathOfImage);
-        }
-        return listOfAllImages;
+        tvViewMoreCreated.setOnClickListener(view -> {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            ViManager.getInstance().setFragmentDefaultAnimation(HomePageActivity.this, fragmentTransaction);
+            PictureCreatedDialogFragment pictureCreatedDialogFragment = new PictureCreatedDialogFragment();
+            pictureCreatedDialogFragment.show(fragmentTransaction, "dialog_created");
+        });
     }
 
     private void rateApp() {
