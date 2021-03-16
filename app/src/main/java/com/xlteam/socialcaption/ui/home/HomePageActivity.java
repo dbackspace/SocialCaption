@@ -43,6 +43,7 @@ public class HomePageActivity extends AppCompatActivity {
     TextView tvViewMoreFirebase, tvViewMoreCreated;
     TextView tvEmptyCreated;
     LinearLayout layoutTakePhoto, layoutGallery;
+    ImageView imgSettings;
 
     private static final int REQUEST_CODE_PICK_PHOTO_HOME = 10;
 
@@ -57,6 +58,7 @@ public class HomePageActivity extends AppCompatActivity {
         tvEmptyCreated = findViewById(R.id.tv_empty_picture_created);
         layoutTakePhoto = findViewById(R.id.layout_take_photo);
         layoutGallery = findViewById(R.id.layout_gallery);
+        imgSettings = findViewById(R.id.image_settings);
 
         Dexter.withContext(this)
                 .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -118,6 +120,14 @@ public class HomePageActivity extends AppCompatActivity {
             intent.setType("image/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(Intent.createChooser(intent, "Select Picture"), 5);
+        });
+
+        imgSettings.setOnClickListener(v -> {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            ViManager.getInstance().setFragmentDefaultAnimation(HomePageActivity.this, fragmentTransaction);
+            SettingsDialogFragment settingsDialogFragment = new SettingsDialogFragment();
+            settingsDialogFragment.show(fragmentTransaction, "dialog_settings");
         });
     }
 
