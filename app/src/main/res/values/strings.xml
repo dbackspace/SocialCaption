@@ -5,6 +5,7 @@
     <string name="feedback_msg">Vui lòng mô tả vấn đề hoặc phản hồi của bạn khi dùng ứng dụng:\n</string>
     <string name="choose_one">Chọn một ứng dụng</string>
     <string name="license">Giấy phép</string>
+    <string name="term_of_use">Điều khoản sử dụng</string>
     <string name="all">Tất cả</string>
     <string name="mood">Tâm trạng</string>
     <string name="love">Tình yêu</string>
@@ -18,7 +19,6 @@
     <string name="ban_can_cap_du_quyen">Bạn cần cấp đủ quyền để sử dụng tính năng này</string>
     <string name="ok">Đồng ý</string>
     <string name="huy_bo">Không</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="luu">Có</string>
     <string name="close">Thoát</string>
     <string name="save_or_cancel">Bạn có muốn lưu các thay đổi?</string>
@@ -28,4 +28,18 @@
     <string name="share">Chia sẻ</string>
     <string name="delete">Xóa</string>
     <string name="selected">Đã chọn</string>
+    <string name="phien_ban">Phiên bản: %s</string>
+    <string name="support_our">Hỗ trợ chúng tôi</string>
+    <string name="rating">Đánh giá</string>
+    <string name="feedback">Phản hồi</string>
+    <string name="share_app">Chia sẻ ứng dụng</string>
+    <string name="other_app">Ứng dụng khác</string>
+    <string name="app_info">Thông tin ứng dụng</string>
+    <string name="develop_team">Đội ngũ phát triển: XL team</string>
+    <string name="created_picture">Ảnh đã tạo</string>
+    <string name="firebase_picture">Thư viện ảnh</string>
+    <string name="settings">Cài đặt</string>
+    <string name="take_photo">Chụp ảnh</string>
+    <string name="gallery">Bộ sưu tập</string>
+    <string name="view_more">Xem thêm</string>
 </resources>
