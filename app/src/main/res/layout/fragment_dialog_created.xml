@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#EFEFEF"
     tools:context=".ui.home.created.PictureCreatedDialogFragment">
 
     <FrameLayout
@@ -63,6 +64,7 @@
                 android:layout_height="45dp"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="10dp"
+                android:background="@drawable/bg_ripple_click_view_circle"
                 android:padding="10dp"
                 android:src="@drawable/ic_back_black" />
 
@@ -73,7 +75,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_toEndOf="@id/image_back"
                 android:fontFamily="sans-serif-medium"
-                android:text="Ảnh đã tạo"
+                android:text="@string/created_picture"
                 android:textColor="@color/color_25"
                 android:textSize="22dp" />
 

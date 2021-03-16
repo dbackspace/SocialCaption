@@ -5,6 +5,7 @@
     android:orientation="vertical">
 
     <ImageView
+        android:id="@+id/image_settings"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_gravity="end"
@@ -58,7 +59,7 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="10dp"
                         android:fontFamily="sans-serif-medium"
-                        android:text="Chụp ảnh"
+                        android:text="@string/take_photo"
                         android:textColor="@color/color_25"
                         android:textSize="12dp" />
                 </LinearLayout>
@@ -85,7 +86,7 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="10dp"
                         android:fontFamily="sans-serif-medium"
-                        android:text="Bộ sưu tập"
+                        android:text="@string/gallery"
                         android:textColor="@color/color_25"
                         android:textSize="12dp" />
                 </LinearLayout>
@@ -103,7 +104,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:fontFamily="sans-serif-medium"
-                    android:text="Thư viện ảnh"
+                    android:text="@string/firebase_picture"
                     android:textColor="@color/color_25"
                     android:textSize="18dp" />
 
@@ -114,7 +115,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:fontFamily="sans-serif-medium"
-                    android:text="Xem thêm"
+                    android:text="@string/view_more"
                     android:textColor="@color/color_3cc2f5_legend"
                     android:textSize="14dp"
                     android:textStyle="bold" />
@@ -139,7 +140,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:fontFamily="sans-serif-medium"
-                    android:text="Ảnh đã tạo"
+                    android:text="@string/created_picture"
                     android:textColor="@color/color_25"
                     android:textSize="18dp" />
 
@@ -150,7 +151,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:fontFamily="sans-serif-medium"
-                    android:text="Xem thêm"
+                    android:text="@string/view_more"
                     android:textColor="@color/color_3cc2f5_legend"
                     android:textSize="14dp"
                     android:textStyle="bold" />

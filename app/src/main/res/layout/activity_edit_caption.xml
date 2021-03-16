@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="#E0E0E0"
     tools:context=".ui.edit.EditCaptionActivity">
 
     <RelativeLayout
         android:id="@+id/layout_top"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#121212">
+        android:background="#FCFCFC">
 
         <RelativeLayout
             android:id="@+id/layout_save_cancel"
@@ -27,7 +27,7 @@
                 android:layout_marginStart="5dp"
                 android:background="@drawable/bg_ripple_click_view_circle"
                 android:padding="5dp"
-                android:src="@drawable/ic_back_white" />
+                android:src="@drawable/ic_back_black" />
 
             <TextView
                 android:id="@+id/tv_edit_save"
@@ -42,7 +42,7 @@
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:text="Lưu"
-                android:textColor="@color/white"
+                android:textColor="@color/color_25"
                 android:textSize="20dp" />
         </RelativeLayout>
 
@@ -82,7 +82,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/layout_top"
-        android:layout_marginBottom="111dp">
+        android:layout_marginBottom="120dp">
 
         <RelativeLayout
             android:id="@+id/relative_background_save_img"
@@ -111,14 +111,13 @@
         android:id="@+id/layout_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="51dp">
+        android:layout_above="@id/adView">
 
         <LinearLayout
             android:id="@+id/layout_menu"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="#121212"
+            android:background="#FCFCFC"
             android:gravity="center"
             android:orientation="horizontal"
             android:paddingStart="10dp"
@@ -145,7 +144,7 @@
                     android:layout_marginTop="5dp"
                     android:fontFamily="sans-serif-medium"
                     android:text="Thêm chữ"
-                    android:textColor="@color/white"
+                    android:textColor="@color/color_25"
                     android:textSize="10dp" />
             </LinearLayout>
 
@@ -170,7 +169,7 @@
                     android:layout_marginTop="5dp"
                     android:fontFamily="sans-serif-medium"
                     android:text="Ảnh nền"
-                    android:textColor="@color/white"
+                    android:textColor="@color/color_25"
                     android:textSize="10dp" />
             </LinearLayout>
 
@@ -194,7 +193,7 @@
                     android:layout_marginTop="5dp"
                     android:fontFamily="sans-serif-medium"
                     android:text="Chỉnh sửa"
-                    android:textColor="@color/white"
+                    android:textColor="@color/color_25"
                     android:textSize="10dp" />
             </LinearLayout>
         </LinearLayout>
@@ -233,7 +232,7 @@
                 android:id="@+id/layout_1"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:background="#121212"
+                android:background="#FCFCFC"
                 android:gravity="center"
                 ads:layout_constraintBottom_toBottomOf="parent"
                 ads:layout_constraintEnd_toEndOf="parent"
@@ -263,7 +262,7 @@
                         android:layout_marginTop="5dp"
                         android:fontFamily="sans-serif-medium"
                         android:text="Văn bản"
-                        android:textColor="@color/white"
+                        android:textColor="@color/color_25"
                         android:textSize="10dp" />
                 </LinearLayout>
 
@@ -290,7 +289,7 @@
                         android:layout_marginTop="5dp"
                         android:fontFamily="sans-serif-medium"
                         android:text="Màu sắc"
-                        android:textColor="@color/white"
+                        android:textColor="@color/color_25"
                         android:textSize="10dp" />
                 </LinearLayout>
 
@@ -317,7 +316,7 @@
                         android:layout_marginTop="5dp"
                         android:fontFamily="sans-serif-medium"
                         android:text="Font"
-                        android:textColor="@color/white"
+                        android:textColor="@color/color_25"
                         android:textSize="10dp" />
                 </LinearLayout>
 
@@ -345,7 +344,7 @@
                         android:layout_marginTop="5dp"
                         android:fontFamily="sans-serif-medium"
                         android:text="Nền chữ"
-                        android:textColor="@color/white"
+                        android:textColor="@color/color_25"
                         android:textSize="10dp" />
                 </LinearLayout>
 
@@ -373,7 +372,7 @@
                         android:layout_marginTop="5dp"
                         android:fontFamily="sans-serif-medium"
                         android:text="Vị trí"
-                        android:textColor="@color/white"
+                        android:textColor="@color/color_25"
                         android:textSize="10dp" />
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
