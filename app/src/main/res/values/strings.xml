@@ -42,4 +42,6 @@
     <string name="take_photo">Chụp ảnh</string>
     <string name="gallery">Bộ sưu tập</string>
     <string name="view_more">Xem thêm</string>
+    <string name="select_picture">Select Picture</string>
+    <string name="not_selected_picture">Bạn chưa chọn ảnh.</string>
 </resources>
