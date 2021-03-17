@@ -78,6 +78,7 @@ public class PictureCreatedAdapter extends RecyclerView.Adapter<PictureCreatedAd
 
         // checkbox
         if (isItemLongClicked) {
+            Timber.e("RunAnywhere %s", isCheckBoxAllChecked);
             if (isCheckBoxAllChecked == -1) {
                 holder.checkBox.setVisibility(checkedList.size() > 0 ? View.VISIBLE : View.GONE);
                 mCallback.showCheckBoxAll(checkedList.size() > 0);
@@ -118,22 +119,27 @@ public class PictureCreatedAdapter extends RecyclerView.Adapter<PictureCreatedAd
             });
 
             imgGallery.setOnLongClickListener(v -> {
-                isItemLongClicked = true;
-                if (checkedList.contains(getAdapterPosition())) {
-                    checkedList.remove(Integer.valueOf(getAdapterPosition()));
-                    if (checkedList.size() == 0) {
-                        notifyDataSetChanged();
-                    } else {
-                        notifyItemChanged(getAdapterPosition());
-                    }
+                if (isItemLongClicked) {
+                    imgGallery.setSelected(true);
                 } else {
-                    checkedList.add(getAdapterPosition());
-                    if (checkedList.size() == 1) {
-                        notifyDataSetChanged();
+                    isItemLongClicked = true;
+                    if (checkedList.contains(getAdapterPosition())) {
+                        checkedList.remove(Integer.valueOf(getAdapterPosition()));
+                        if (checkedList.size() == 0) {
+                            notifyDataSetChanged();
+                        } else {
+                            notifyItemChanged(getAdapterPosition());
+                        }
                     } else {
-                        notifyItemChanged(getAdapterPosition());
+                        checkedList.add(getAdapterPosition());
+                        if (checkedList.size() == 1) {
+                            notifyDataSetChanged();
+                        } else {
+                            notifyItemChanged(getAdapterPosition());
+                        }
                     }
                 }
+
                 //the code at the line up just set visible the selected item but i want to set visible all items check boxs
                 return false;
             });

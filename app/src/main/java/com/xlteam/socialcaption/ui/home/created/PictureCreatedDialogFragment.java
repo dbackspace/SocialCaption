@@ -59,6 +59,7 @@ public class PictureCreatedDialogFragment extends DialogFragment implements Pict
     private Dialog deleteDialog;
     private List<Integer> mCheckedList;
     private ImageView imgCheckAll;
+    private boolean temp;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -88,11 +89,6 @@ public class PictureCreatedDialogFragment extends DialogFragment implements Pict
         mGalleryPaths = FileUtils.getListPathsIfFolderExist();
 //        Timber.e("SizeListImageInSocialCaptionFolder: %s", mGalleryPaths.size());
 
-        // set animation for bottom sheet (layout share and delete)
-        transition = new Slide(Gravity.BOTTOM);
-        transition.setDuration(200);
-        transition.addTarget(R.id.bottom_sheet);
-
         deleteDialog = DialogSaveChangesBuilder.create(getContext())
                 .setTitleMessage(getString(R.string.confirm_delete_or_not))
                 .setCancelable(false)
@@ -113,15 +109,23 @@ public class PictureCreatedDialogFragment extends DialogFragment implements Pict
         layoutCheckAll = root.findViewById(R.id.layout_check_all);
         layoutTitle = root.findViewById(R.id.layout_title);
         layoutBottom = root.findViewById(R.id.bottom_sheet);
+        layoutBottom.setVisibility(View.GONE);
+
+        // set animation for bottom sheet (layout share and delete)
+        transition = new Slide(Gravity.BOTTOM);
+        transition.setDuration(200);
+        transition.addTarget(R.id.bottom_sheet);
 
 //        layoutTop = root.findViewById(R.id.layout_top);
 //        tvTotalChecked = root.findViewById(R.id.tv_number_image_checked);
 //        imgCheckAll = root.findViewById(R.id.image_check_all);
-//        imgCheckAll.setOnClickListener(view -> {
-//            imgCheckAll.setActivated(!imgCheckAll.isActivated());
-//            mPictureCreatedAdapter.onCheckBoxAllChecked(imgCheckAll.isActivated());
-//        });
-//
+
+        temp = imgCheckAll.isActivated();
+        imgCheckAll.setOnClickListener(view -> {
+            imgCheckAll.setActivated(!temp);
+            mPictureCreatedAdapter.onCheckBoxAllChecked(!temp);
+            temp = !temp;
+        });
 
         LinearLayout mBtnDeleteGallery = root.findViewById(R.id.btn_delete_gallery);
         mBtnDeleteGallery.setOnClickListener(v -> {
@@ -175,7 +179,8 @@ public class PictureCreatedDialogFragment extends DialogFragment implements Pict
 
     @Override
     public void showCheckBoxAll(boolean isCheckBoxChecked) {
-        imgCheckAll.setActivated(isCheckBoxChecked);
+        layoutCheckAll.setVisibility(isCheckBoxChecked?View.VISIBLE:View.GONE);
+        layoutTitle.setVisibility(isCheckBoxChecked ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -187,22 +192,22 @@ public class PictureCreatedDialogFragment extends DialogFragment implements Pict
     public void showBottomSheetShareAndDelete(int numberImageChecked) {
         Timber.e("numberImageChecked: %s", numberImageChecked);
         boolean isShow = numberImageChecked != 0;
-//        TransitionManager.beginDelayedTransition(viewGroup, transition);
-        Log.d("binh.ngk", " numberImageChecked" + numberImageChecked);
+
         if (isShow) {
             tvTotalChecked.setText(getString(R.string.select_number_image, numberImageChecked));
             layoutTitle.setVisibility(View.GONE);
             layoutCheckAll.setVisibility(View.VISIBLE);
-            layoutBottom.setVisibility(View.VISIBLE);
         } else {
             tvTotalChecked.setText(R.string.select_items);
-            layoutBottom.setVisibility(View.GONE);
         }
 
         if (isShow && !showed) {
+//            TransitionManager.beginDelayedTransition(viewGroup, transition);
+            layoutBottom.setVisibility(View.VISIBLE);
             showed = true;
         } else if (!isShow && showed) {
             showed = false;
+            layoutBottom.setVisibility(View.GONE);
         }
     }
 
@@ -284,9 +289,5 @@ public class PictureCreatedDialogFragment extends DialogFragment implements Pict
         layoutTitle.setVisibility(View.VISIBLE);
         mPictureCreatedAdapter.onCheckBoxAllChecked(false);
         mPictureCreatedAdapter.cancelMultipleMode();
-    }
-
-    public void isImageCheckAllChecked(boolean activated) {
-        mPictureCreatedAdapter.onCheckBoxAllChecked(activated);
     }
 }
