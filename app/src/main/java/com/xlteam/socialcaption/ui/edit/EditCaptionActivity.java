@@ -2,6 +2,7 @@ package com.xlteam.socialcaption.ui.edit;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -73,8 +74,6 @@ import static com.xlteam.socialcaption.external.utility.utils.Constant.SAVE_DATE
 
 public class EditCaptionActivity extends AppCompatActivity implements DialogAddTextBuilder.Callback,
         OnPhotoEditorListener, OnMultiTouchListener {
-    private static final int RESULT_LOAD_IMG = 1;
-    public static final int RESULT_CODE_NEW_IMAGE_WAS_CREATED = 19;
     private ImageView imgBack, imgCancelText, imgDoneText;
     private TextView tvDone;
     private ImageView mImgBackground;
@@ -132,31 +131,9 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
         addedViews = new ArrayList<>();
         findViewById();
         Intent intent = getIntent();
-        int type = intent.getIntExtra("EXTRA_TYPE_PICTURE", -1);
-        if (type != 0) {
-            String url = intent.getStringExtra("EXTRA_URL_PICTURE");
-            if (type == 1) {
-                Glide.with(this)
-                        .load("file://" + url)
-                        .fitCenter()
-                        .into(mImgBackground);
-            } else if (type == 2) {
-                Glide.with(this)
-                        .load(url)
-                        .into(mImgBackground);
-            } else if (type == 3) {
-                Glide.with(this)
-                        .load("file://" + url)
-                        .fitCenter()
-                        .into(mImgBackground);
-            } else if (type == 4) {
-                Glide.with(this)
-                        .load("file://" + url)
-                        .fitCenter()
-                        .into(mImgBackground);
-            }
-        } else {
-            Uri imageUri = (Uri) intent.getParcelableExtra("EXTRA_PICK_PHOTO_URL");
+        int type = intent.getIntExtra(Constant.EXTRA_TYPE_PICTURE, -1);
+        if (type == Constant.TYPE_PICK_PHOTO) {
+            Uri imageUri = intent.getParcelableExtra(Constant.EXTRA_PICK_PHOTO_URL);
             if (imageUri != null) {
                 mPathImg = imageUri.getPath();
                 final InputStream imageStream;
@@ -167,6 +144,22 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
+            }
+        } else if (type == Constant.TYPE_TAKE_PHOTO) {
+            Bitmap photo = intent.getParcelableExtra(Constant.EXTRA_TAKE_PHOTO_BITMAP);
+            if (photo != null) mImgBackground.setImageBitmap(photo);
+        } else {
+            String url = intent.getStringExtra(Constant.EXTRA_URL_PICTURE);
+            if (type == Constant.TYPE_PICTURE_FIREBASE) {
+                Glide.with(this)
+                        .load(url)
+                        .fitCenter()
+                        .into(mImgBackground);
+            } else if (type == Constant.TYPE_PICTURE_CREATED) {
+                Glide.with(this)
+                        .load("file://" + url)
+                        .fitCenter()
+                        .into(mImgBackground);
             }
         }
         initTextEditor();
@@ -404,7 +397,7 @@ public class EditCaptionActivity extends AppCompatActivity implements DialogAddT
 
     private void responseResultToMainActivity() {
         Intent intent = getIntent();
-        setResult(RESULT_CODE_NEW_IMAGE_WAS_CREATED, intent);
+        setResult(Activity.RESULT_OK, intent);
         finish();
     }
 
