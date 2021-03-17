@@ -1,7 +1,9 @@
 package com.xlteam.socialcaption.ui.home.created;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -26,7 +28,7 @@ import androidx.transition.Slide;
 import androidx.transition.Transition;
 
 import com.xlteam.socialcaption.R;
-import com.xlteam.socialcaption.external.utility.logger.Log;
+import com.xlteam.socialcaption.external.utility.utils.Constant;
 import com.xlteam.socialcaption.external.utility.utils.FileUtils;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
 import com.xlteam.socialcaption.ui.commondialog.DialogSaveChangesBuilder;
@@ -53,12 +55,11 @@ public class PictureCreatedDialogFragment extends DialogFragment implements Pict
     private RelativeLayout layoutTitle;
     private boolean showed = false;
     private Transition transition;
-    private ViewGroup viewGroup;
 
     private LinearLayout mLoadingProgress;
     private Dialog deleteDialog;
     private List<Integer> mCheckedList;
-    private ImageView imgCheckAll;
+    private ImageView imgCheckAll, imgBack;
     private boolean temp;
 
     @Override
@@ -101,10 +102,10 @@ public class PictureCreatedDialogFragment extends DialogFragment implements Pict
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         final View root = inflater.inflate(R.layout.fragment_dialog_created, container, false);
-        this.viewGroup = container;
         mEmptyImage = root.findViewById(R.id.tv_empty_image);
         mLoadingProgress = root.findViewById(R.id.loading_view);
         imgCheckAll = root.findViewById(R.id.image_check_all);
+        imgBack = root.findViewById(R.id.image_back);
         tvTotalChecked = root.findViewById(R.id.tv_number_image_checked);
         layoutCheckAll = root.findViewById(R.id.layout_check_all);
         layoutTitle = root.findViewById(R.id.layout_title);
@@ -158,7 +159,7 @@ public class PictureCreatedDialogFragment extends DialogFragment implements Pict
             mEmptyImage.setVisibility(View.VISIBLE);
             Utility.vibrateAnimation(mContext, mEmptyImage);
         }
-
+        imgBack.setOnClickListener(v -> dismiss());
 //        rvGallery.setHasFixedSize(true);
 
         return root;
@@ -172,14 +173,14 @@ public class PictureCreatedDialogFragment extends DialogFragment implements Pict
     @Override
     public void onItemGallerySelected(int position) {
         Intent intent = new Intent(mContext, EditCaptionActivity.class);
-        intent.putExtra("EXTRA_URL_PICTURE", mGalleryPaths.get(position));
-        intent.putExtra("EXTRA_TYPE_PICTURE", 3);
-        mContext.startActivity(intent);
+        intent.putExtra(Constant.EXTRA_URL_PICTURE, mGalleryPaths.get(position));
+        intent.putExtra(Constant.EXTRA_TYPE_PICTURE, Constant.TYPE_PICTURE_CREATED);
+        ((Activity) mContext).startActivityForResult(intent, Constant.REQUEST_CODE_PHOTO_FROM_HOME);
     }
 
     @Override
     public void showCheckBoxAll(boolean isCheckBoxChecked) {
-        layoutCheckAll.setVisibility(isCheckBoxChecked?View.VISIBLE:View.GONE);
+        layoutCheckAll.setVisibility(isCheckBoxChecked ? View.VISIBLE : View.GONE);
         layoutTitle.setVisibility(isCheckBoxChecked ? View.VISIBLE : View.GONE);
     }
 
@@ -211,7 +212,7 @@ public class PictureCreatedDialogFragment extends DialogFragment implements Pict
         }
     }
 
-    public void updateUI() {
+    private void updateUI() {
         mGalleryPaths = FileUtils.getListPathsIfFolderExist();
         if (mGalleryPaths != null && mGalleryPaths.size() > 0) {
             Timber.e("updateUI, list path size = %s", mGalleryPaths.size());
@@ -284,10 +285,19 @@ public class PictureCreatedDialogFragment extends DialogFragment implements Pict
         }
     }
 
-    public void clearSelectMode() { // cancel selecting image mode
+    private void clearSelectMode() { // cancel selecting image mode
         layoutCheckAll.setVisibility(View.GONE);
         layoutTitle.setVisibility(View.VISIBLE);
         mPictureCreatedAdapter.onCheckBoxAllChecked(false);
         mPictureCreatedAdapter.cancelMultipleMode();
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        final Activity activity = getActivity();
+        if (activity instanceof DialogInterface.OnDismissListener) {
+            ((DialogInterface.OnDismissListener) activity).onDismiss(dialog);
+        }
     }
 }
