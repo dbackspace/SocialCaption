@@ -9,18 +9,16 @@ public class Constant {
     public static final String FILE_PROVIDER_PATH = "com.xlteam.socialcaption.external.utility.utils.fileprovider";
 
     public static final String SAVE_DATE_TIME_FORMAT = "yyyyMMddHHmmss";
-    public static final int PHOTOS = 1;
-    public static final int FONTS = 2;
-    public static final int COLORS = 3;
-    public static final int MUSICS = 4;
-    public static final int CATEGORIES = 5;
 
     public static final int TYPE_TAM_TRANG = 1;
     public static final int TYPE_TINH_YEU = 2;
     public static final int TYPE_THIEN_NHIEN = 3;
     public static final int TYPE_DEN_TRANG = 4;
 
-    public static final String EXTRA_CAPTION = "EXTRA_CAPTION";
+    public static final String EXTRA_URL_PICTURE = "EXTRA_URL_PICTURE";
+    public static final String EXTRA_TYPE_PICTURE = "EXTRA_TYPE_PICTURE";
+    public static final String EXTRA_PICK_PHOTO_URL = "EXTRA_PICK_PHOTO_URL";
+    public static final String EXTRA_TAKE_PHOTO_BITMAP = "EXTRA_PICK_PHOTO_URL";
 
     public static int ALIGN_CENTER = 0;
     public static int ALIGN_START = 1;
@@ -30,26 +28,13 @@ public class Constant {
     public static int BACKGROUND_COLOR_50 = 1;
     public static int BACKGROUND_COLOR_100 = 2;
 
-    public static String PREF_GALLERY = "PREF_GALLERY";
-    public static final String GALLERY_PATH = "GALLERY_PATH";
+    public static int TYPE_PICK_PHOTO = 0;
+    public static int TYPE_TAKE_PHOTO = 1;
+    public static int TYPE_PICTURE_FIREBASE = 2;
+    public static int TYPE_PICTURE_CREATED = 3;
 
-    public static class LoaderTaskType {
-        private LoaderTaskType() {
-        }
-
-        public static final int LOAD_ALL = 0;
-        public static final int LOAD_BY_SAVED = 1;
-        public static final int LOAD_BY_CATEGORY_TYPE = 2;
-        public static final int LOAD_BY_CATEGORY_TYPE_AND_SAVED = 3;
-        public static final int SEARCH_BY_CONTENT = 4;
-        public static final int LOAD_ALL_USER_CAPTION = 5;
-    }
-
-    public static class RepositoryType {
-        private RepositoryType() {
-        }
-
-        public static final int COMMON_REPOSITORY = 0;
-        public static final int USER_REPOSITORY = 1;
-    }
+    //request code
+    public static int REQUEST_CODE_TAKE_PHOTO = 10;
+    public static int REQUEST_CODE_PICK_PHOTO_GALLERY = 11;
+    public static int REQUEST_CODE_PHOTO_FROM_HOME = 12;
 }
