@@ -1,5 +1,6 @@
 package com.xlteam.socialcaption.ui.home.firebase;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.xlteam.socialcaption.R;
+import com.xlteam.socialcaption.external.utility.utils.Constant;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
 import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
 
@@ -24,7 +26,7 @@ public class PictureFirebaseAdapter extends RecyclerView.Adapter<PictureFirebase
     private final int mNumberCategory;
     private final RequestOptions requestOptions;
 
-    public PictureFirebaseAdapter(Context context, int numberCategory) {
+    PictureFirebaseAdapter(Context context, int numberCategory) {
         mContext = context;
         mNumberCategory = numberCategory;
         // option luu cache
@@ -40,7 +42,6 @@ public class PictureFirebaseAdapter extends RecyclerView.Adapter<PictureFirebase
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-//        Picasso.get().load(Utility.getUrlByCategoryIndex(mNumberCategory, position)).into(holder.imgPicture);
         Timber.e("loading position: %d", position);
         String url = Utility.getUrlByCategoryIndex(mNumberCategory, position);
         Glide.with(holder.itemView.getContext())
@@ -49,9 +50,9 @@ public class PictureFirebaseAdapter extends RecyclerView.Adapter<PictureFirebase
                 .into(holder.imgPicture);
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(mContext, EditCaptionActivity.class);
-            intent.putExtra("EXTRA_URL_PICTURE", url);
-            intent.putExtra("EXTRA_TYPE_PICTURE", 2);
-            mContext.startActivity(intent);
+            intent.putExtra(Constant.EXTRA_URL_PICTURE, url);
+            intent.putExtra(Constant.EXTRA_TYPE_PICTURE, Constant.TYPE_PICTURE_FIREBASE);
+            ((Activity) mContext).startActivityForResult(intent, Constant.REQUEST_CODE_PHOTO_FROM_HOME);
         });
     }
 
@@ -60,7 +61,7 @@ public class PictureFirebaseAdapter extends RecyclerView.Adapter<PictureFirebase
         return 21;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         private final ImageView imgPicture;
 
         ViewHolder(@NonNull View itemView) {
