@@ -4,9 +4,13 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Spannable;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,10 +25,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.animation.ViManager;
@@ -34,6 +40,8 @@ import com.xlteam.socialcaption.external.utility.utils.Utility;
 import com.xlteam.socialcaption.ui.edit.EditCaptionActivity;
 import com.xlteam.socialcaption.ui.home.created.PictureCreatedDialogFragment;
 import com.xlteam.socialcaption.ui.home.firebase.PictureFirebaseDialogFragment;
+
+import java.util.List;
 
 public class HomePageActivity extends AppCompatActivity implements DialogInterface.OnDismissListener {
     RecyclerView rvFirebase, rvCreated;
@@ -57,23 +65,7 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
         layoutGallery = findViewById(R.id.layout_gallery);
         imgSettings = findViewById(R.id.image_settings);
 
-        Dexter.withContext(this)
-                .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                .withListener(new PermissionListener() {
-                    @Override
-                    public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
-                        rvCreated.setAdapter(new PictureHomeAdapter(HomePageActivity.this, Constant.TYPE_PICTURE_CREATED, FileUtils.getListPathsIfFolderExist()));
-                    }
-
-                    @Override
-                    public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
-                    }
-
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
-                        permissionToken.continuePermissionRequest();
-                    }
-                }).check();
+        hasPermission();
         rvFirebase.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         rvFirebase.setAdapter(new PictureHomeAdapter(this, Constant.TYPE_PICTURE_FIREBASE, Utility.getUrlPictureHome()));
 
@@ -120,6 +112,63 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
             SettingsDialogFragment settingsDialogFragment = new SettingsDialogFragment();
             settingsDialogFragment.show(fragmentTransaction, "dialog_settings");
         });
+    }
+
+    private void hasPermission() {
+        Dexter.withContext(this)
+                .withPermissions(
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
+                        if (multiplePermissionsReport.areAllPermissionsGranted()) {
+                            List<String> listImagePaths = FileUtils.getListPathsIfFolderExist();
+                            if (listImagePaths.isEmpty()) {
+                                tvEmptyCreated.setText("Không có ảnh nào");
+                            } else {
+                                rvCreated.setAdapter(new PictureHomeAdapter(HomePageActivity.this, Constant.TYPE_PICTURE_CREATED, listImagePaths));
+                            }
+                        } else {
+                            Utility.showDialogRequestPermission(HomePageActivity.this);
+                            if (!isHasAllPermission()) {
+                                String noPermission = "Không có quyền. Cấp quyền";
+                                tvEmptyCreated.setMovementMethod(LinkMovementMethod.getInstance());
+                                tvEmptyCreated.setText(noPermission, TextView.BufferType.SPANNABLE);
+                                Spannable mySpannable = (Spannable) tvEmptyCreated.getText();
+                                ClickableSpan myClickableSpan = new ClickableSpan() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        hasPermission();
+                                    }
+                                };
+                                mySpannable.setSpan(myClickableSpan, 0, noPermission.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
+                        permissionToken.continuePermissionRequest();
+                    }
+                }).check();
+    }
+
+    private boolean isHasAllPermission() {
+        return checkReadExternalPermission()
+                && checkWriteExternalPermission();
+    }
+
+    private boolean checkReadExternalPermission() {
+        String permission = Manifest.permission.READ_EXTERNAL_STORAGE;
+        int res = this.checkCallingOrSelfPermission(permission);
+        return (res == PackageManager.PERMISSION_GRANTED);
+    }
+
+    private boolean checkWriteExternalPermission() {
+        String permission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+        int res = this.checkCallingOrSelfPermission(permission);
+        return (res == PackageManager.PERMISSION_GRANTED);
     }
 
     @Override

@@ -239,6 +239,7 @@ public class Utility {
             Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
             intent.setData(Uri.parse("package:" + context.getPackageName()));
             context.startActivity(intent);
+            dialog.dismiss();
         });
         dialog.show();
     }
