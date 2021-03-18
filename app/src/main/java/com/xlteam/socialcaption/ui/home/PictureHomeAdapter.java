@@ -50,7 +50,7 @@ public class PictureHomeAdapter extends RecyclerView.Adapter<PictureHomeAdapter.
         if (mType == Constant.TYPE_PICTURE_FIREBASE) {
             Glide.with(mContext)
                     .load(url)
-                    .error(R.drawable.ic_camera)
+                    .error(R.drawable.ic_image_error)
 //                        .apply(requestOptions.override(600, 600))
                     .into(viewHolder.imgPicture);
         } else if (mType == Constant.TYPE_PICTURE_CREATED) {
