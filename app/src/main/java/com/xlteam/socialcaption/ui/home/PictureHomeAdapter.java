@@ -31,7 +31,7 @@ import timber.log.Timber;
 public class PictureHomeAdapter extends RecyclerView.Adapter<PictureHomeAdapter.ViewHolder> {
     private final int mType;
     private Context mContext;
-    private final List<String> mUrls;
+    private List<String> mUrls;
     private final RequestOptions requestOptions;
 
     PictureHomeAdapter(Context context, int type, List<String> urls) {
@@ -111,5 +111,9 @@ public class PictureHomeAdapter extends RecyclerView.Adapter<PictureHomeAdapter.
             imgPicture = itemView.findViewById(R.id.img_picture);
         }
 
+    }
+
+    public void updateList(List<String> urls){
+        mUrls = urls;
     }
 }

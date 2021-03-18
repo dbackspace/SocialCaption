@@ -43,6 +43,8 @@ import com.xlteam.socialcaption.ui.home.firebase.PictureFirebaseDialogFragment;
 
 import java.util.List;
 
+import timber.log.Timber;
+
 public class HomePageActivity extends AppCompatActivity implements DialogInterface.OnDismissListener {
     RecyclerView rvFirebase, rvCreated;
     TextView tvViewMoreFirebase, tvViewMoreCreated;
@@ -51,6 +53,7 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
     ImageView imgSettings;
     PictureFirebaseDialogFragment pictureFirebaseDialogFragment;
     PictureCreatedDialogFragment pictureCreatedDialogFragment;
+    private PictureHomeAdapter createdAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,18 +68,22 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
         layoutGallery = findViewById(R.id.layout_gallery);
         imgSettings = findViewById(R.id.image_settings);
 
+        tvViewMoreCreated.setVisibility(View.GONE);
+
         hasPermission();
         rvFirebase.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         rvFirebase.setAdapter(new PictureHomeAdapter(this, Constant.TYPE_PICTURE_FIREBASE, Utility.getUrlPictureHome()));
 
 //        rvCreated.setDrawingCacheEnabled(true);
 //        rvCreated.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+//        createdAdapter = new PictureHomeAdapter(HomePageActivity.this, Constant.TYPE_PICTURE_CREATED, FileUtils.getListPathsIfFolderExist());
         rvCreated.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
-        rvCreated.setAdapter(new PictureHomeAdapter(HomePageActivity.this, Constant.TYPE_PICTURE_CREATED, FileUtils.getListPathsIfFolderExist()));
-        if (FileUtils.getListPathsIfFolderExist().isEmpty()) {
+//        rvCreated.setAdapter(createdAdapter);
+
+        /*if (FileUtils.getListPathsIfFolderExist().isEmpty()) {
             tvEmptyCreated.setVisibility(View.VISIBLE);
             rvCreated.setVisibility(View.GONE);
-        }
+        }*/
 
         tvViewMoreFirebase.setOnClickListener(view -> {
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -123,13 +130,24 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
                     @Override
                     public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
                         if (multiplePermissionsReport.areAllPermissionsGranted()) {
+                            Timber.e("bug");
                             List<String> listImagePaths = FileUtils.getListPathsIfFolderExist();
                             if (listImagePaths.isEmpty()) {
+                                tvEmptyCreated.setVisibility(View.VISIBLE);
+                                rvCreated.setVisibility(View.GONE);
                                 tvEmptyCreated.setText("Không có ảnh nào");
+                                tvViewMoreCreated.setVisibility(View.GONE);
                             } else {
-                                rvCreated.setAdapter(new PictureHomeAdapter(HomePageActivity.this, Constant.TYPE_PICTURE_CREATED, listImagePaths));
+                                tvEmptyCreated.setVisibility(View.GONE);
+                                rvCreated.setVisibility(View.VISIBLE);
+                                createdAdapter = new PictureHomeAdapter(HomePageActivity.this, Constant.TYPE_PICTURE_CREATED, FileUtils.getListPathsIfFolderExist());
+                                rvCreated.setAdapter(createdAdapter);
+                                tvViewMoreCreated.setVisibility(View.VISIBLE);
                             }
                         } else {
+                            tvEmptyCreated.setVisibility(View.VISIBLE);
+                            rvCreated.setVisibility(View.GONE);
+
                             Utility.showDialogRequestPermission(HomePageActivity.this);
                             if (!isHasAllPermission()) {
                                 String noPermission = "Không có quyền. Cấp quyền";
@@ -144,6 +162,10 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
                                 };
                                 mySpannable.setSpan(myClickableSpan, 0, noPermission.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                             }
+
+                            tvViewMoreCreated.setVisibility(View.GONE);
+                            createdAdapter = new PictureHomeAdapter(HomePageActivity.this, Constant.TYPE_PICTURE_CREATED, FileUtils.getListPathsIfFolderExist());
+                            rvCreated.setAdapter(createdAdapter);
                         }
                     }
 
@@ -205,14 +227,18 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
                 if (pictureFirebaseDialogFragment != null) {
                     pictureFirebaseDialogFragment.dismiss();
                 }
-                rvCreated.setAdapter(new PictureHomeAdapter(HomePageActivity.this, Constant.TYPE_PICTURE_CREATED, FileUtils.getListPathsIfFolderExist()));
+                createdAdapter.updateList(FileUtils.getListPathsIfFolderExist());
+                createdAdapter.notifyDataSetChanged();
+//                rvCreated.setAdapter(new PictureHomeAdapter(HomePageActivity.this, Constant.TYPE_PICTURE_CREATED, FileUtils.getListPathsIfFolderExist()));
             }
         }
     }
 
     @Override
     public void onDismiss(DialogInterface dialog) {
-        rvCreated.setAdapter(new PictureHomeAdapter(HomePageActivity.this, Constant.TYPE_PICTURE_CREATED, FileUtils.getListPathsIfFolderExist()));
+        createdAdapter.updateList(FileUtils.getListPathsIfFolderExist());
+        createdAdapter.notifyDataSetChanged();
+//        rvCreated.setAdapter(new PictureHomeAdapter(HomePageActivity.this, Constant.TYPE_PICTURE_CREATED, FileUtils.getListPathsIfFolderExist()));
     }
 
 //    @Override
