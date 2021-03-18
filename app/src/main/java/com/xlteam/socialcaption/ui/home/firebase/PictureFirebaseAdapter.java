@@ -36,7 +36,7 @@ public class PictureFirebaseAdapter extends RecyclerView.Adapter<PictureFirebase
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_picture, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_picture_firebase, parent, false);
         return new ViewHolder(v);
     }
 
