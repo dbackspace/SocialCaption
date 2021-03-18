@@ -1,12 +1,10 @@
 package com.xlteam.socialcaption.ui.home.created;
 
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -58,7 +56,7 @@ public class PictureCreatedAdapter extends RecyclerView.Adapter<PictureCreatedAd
     @NonNull
     @Override
     public PictureCreatedAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_gallery, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_picture_created, parent, false);
         return new PictureCreatedAdapter.ViewHolder(v);
     }
 
@@ -73,8 +71,6 @@ public class PictureCreatedAdapter extends RecyclerView.Adapter<PictureCreatedAd
                 .apply(requestOptions.override(600, 600))
                 .fitCenter()
                 .into(holder.imgGallery);
-
-        holder.rlItemGallery.setBackgroundColor(Color.BLACK);
 
         // checkbox
         if (isItemLongClicked) {
@@ -100,13 +96,11 @@ public class PictureCreatedAdapter extends RecyclerView.Adapter<PictureCreatedAd
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private final RelativeLayout rlItemGallery;
         private final ImageView imgGallery;
         private final CheckBox checkBox;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            rlItemGallery = itemView.findViewById(R.id.rl_item_gallery);
             imgGallery = itemView.findViewById(R.id.img_item_gallery);
             checkBox = itemView.findViewById(R.id.checkbox_item_gallery);
 
