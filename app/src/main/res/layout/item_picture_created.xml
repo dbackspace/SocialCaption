@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xlteam.socialcaption.external.utility.customview.SquareRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_item_gallery"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="3dp">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="0.5dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="0dp">
+
+        <ImageView
+            android:id="@+id/img_item_gallery"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
+
+        <CheckBox
+            android:id="@+id/checkbox_item_gallery"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignTop="@+id/img_item_gallery"
+            android:layout_alignEnd="@id/img_item_gallery"
+            android:layout_margin="2dp"
+            android:background="@drawable/checkbox_custom_2"
+            android:button="@null"
+            android:visibility="gone" />
+    </androidx.cardview.widget.CardView>
+</com.xlteam.socialcaption.external.utility.customview.SquareRelativeLayout>
