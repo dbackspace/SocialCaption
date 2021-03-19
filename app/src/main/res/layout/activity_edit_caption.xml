@@ -8,15 +8,14 @@
     tools:context=".ui.edit.EditCaptionActivity">
 
     <RelativeLayout
-        android:id="@+id/layout_top"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#FCFCFC">
+        android:layout_height="match_parent"
+        android:layout_above="@id/adView">
 
         <RelativeLayout
-            android:id="@+id/layout_save_cancel"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="50dp"
+            android:background="#FCFCFC">
 
             <ImageView
                 android:id="@+id/btn_edit_back_and_cancel"
@@ -46,77 +45,10 @@
                 android:textSize="20dp" />
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/layout_save_cancel_text"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone">
-
-            <ImageView
-                android:id="@+id/btn_cancel_edit_text"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentStart="true"
-                android:layout_centerInParent="true"
-                android:layout_marginStart="5dp"
-                android:background="@drawable/bg_ripple_click_view_circle"
-                android:padding="5dp"
-                android:src="@drawable/ic_close" />
-
-            <ImageView
-                android:id="@+id/image_save_text"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/bg_ripple_click_view_circle"
-                android:padding="5dp"
-                android:src="@drawable/ic_done" />
-        </RelativeLayout>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/container_background_image"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/layout_top"
-        android:layout_marginBottom="120dp">
-
-        <RelativeLayout
-            android:id="@+id/relative_background_save_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true" />
-
-            <ImageView
-                android:id="@+id/img_edit_background"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:src="@drawable/profile_image" />
-        </RelativeLayout>
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/layout_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/adView">
-
         <LinearLayout
-            android:id="@+id/layout_menu"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
             android:background="#FCFCFC"
             android:gravity="center"
             android:orientation="horizontal"
@@ -197,12 +129,49 @@
                     android:textSize="10dp" />
             </LinearLayout>
         </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/adView"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#FCFCFC">
+
+            <ImageView
+                android:id="@+id/btn_cancel_edit_text"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/bg_ripple_click_view_circle"
+                android:padding="5dp"
+                android:src="@drawable/ic_close" />
+
+            <ImageView
+                android:id="@+id/image_save_text"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/bg_ripple_click_view_circle"
+                android:padding="5dp"
+                android:src="@drawable/ic_done" />
+        </RelativeLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_menu_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone">
+            android:layout_alignParentBottom="true">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvFont"
@@ -377,6 +346,31 @@
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/container_background_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="120dp">
+
+        <RelativeLayout
+            android:id="@+id/relative_background_save_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <ImageView
+                android:id="@+id/img_edit_background"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/profile_image" />
+        </RelativeLayout>
+
     </RelativeLayout>
 
     <RelativeLayout
