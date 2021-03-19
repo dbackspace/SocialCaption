@@ -23,11 +23,9 @@ public class DialogAddTextBuilder {
 
     interface Callback {
         void onSaveClicked(String text);
-
-        void onCancelAllTextDialog(boolean isNoText);
     }
 
-    public DialogAddTextBuilder(Context context, Callback callback, String text, boolean isFirstText) {
+    public DialogAddTextBuilder(Context context, Callback callback, String text) {
         mContext = context;
         mDialog = new Dialog(mContext, R.style.Theme_SocialCaption);
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -56,8 +54,6 @@ public class DialogAddTextBuilder {
 //        mInputMethodManager.showSoftInput(edtText, 0);
 
         // khi dismiss thì callback onDismiss(), khi cancel callback cả onDismiss() và onCancel()
-
-        mDialog.setOnDismissListener(dialogInterface -> callback.onCancelAllTextDialog(isFirstText && TextUtils.isEmpty(edtText.getText().toString())));
     }
 
     public Dialog build() {
