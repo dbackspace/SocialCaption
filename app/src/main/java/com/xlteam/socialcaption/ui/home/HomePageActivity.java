@@ -27,11 +27,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionDeniedResponse;
-import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
-import com.karumi.dexter.listener.single.PermissionListener;
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.animation.ViManager;
 import com.xlteam.socialcaption.external.utility.utils.Constant;
@@ -54,6 +51,8 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
     PictureFirebaseDialogFragment pictureFirebaseDialogFragment;
     PictureCreatedDialogFragment pictureCreatedDialogFragment;
     private PictureHomeAdapter createdAdapter;
+
+    private boolean needCheckPermission = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,12 +77,6 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
 //        rvCreated.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 //        createdAdapter = new PictureHomeAdapter(HomePageActivity.this, Constant.TYPE_PICTURE_CREATED, FileUtils.getListPathsIfFolderExist());
         rvCreated.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
-//        rvCreated.setAdapter(createdAdapter);
-
-        /*if (FileUtils.getListPathsIfFolderExist().isEmpty()) {
-            tvEmptyCreated.setVisibility(View.VISIBLE);
-            rvCreated.setVisibility(View.GONE);
-        }*/
 
         tvViewMoreFirebase.setOnClickListener(view -> {
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -130,27 +123,26 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
                     @Override
                     public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
                         if (multiplePermissionsReport.areAllPermissionsGranted()) {
+                            needCheckPermission = false;
                             Timber.e("bug");
                             List<String> listImagePaths = FileUtils.getListPathsIfFolderExist();
                             if (listImagePaths.isEmpty()) {
-                                tvEmptyCreated.setVisibility(View.VISIBLE);
-                                rvCreated.setVisibility(View.GONE);
-                                tvEmptyCreated.setText("Không có ảnh nào");
-                                tvViewMoreCreated.setVisibility(View.GONE);
+                                showRvCreated(false);
+                                showAndSetTextViewEmpty(true, "Không có ảnh nào");
                             } else {
-                                tvEmptyCreated.setVisibility(View.GONE);
-                                rvCreated.setVisibility(View.VISIBLE);
+                                showRvCreated(true);
+                                showAndSetTextViewEmpty(false, null);
                                 createdAdapter = new PictureHomeAdapter(HomePageActivity.this, Constant.TYPE_PICTURE_CREATED, FileUtils.getListPathsIfFolderExist());
                                 rvCreated.setAdapter(createdAdapter);
-                                tvViewMoreCreated.setVisibility(View.VISIBLE);
                             }
                         } else {
-                            tvEmptyCreated.setVisibility(View.VISIBLE);
-                            rvCreated.setVisibility(View.GONE);
+                            showRvCreated(false);
 
                             Utility.showDialogRequestPermission(HomePageActivity.this);
+                            needCheckPermission = true;
                             if (!isHasAllPermission()) {
                                 String noPermission = "Không có quyền. Cấp quyền";
+                                tvEmptyCreated.setVisibility(View.VISIBLE);
                                 tvEmptyCreated.setMovementMethod(LinkMovementMethod.getInstance());
                                 tvEmptyCreated.setText(noPermission, TextView.BufferType.SPANNABLE);
                                 Spannable mySpannable = (Spannable) tvEmptyCreated.getText();
@@ -161,9 +153,10 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
                                     }
                                 };
                                 mySpannable.setSpan(myClickableSpan, 0, noPermission.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            } else {
+                                needCheckPermission = false;
                             }
 
-                            tvViewMoreCreated.setVisibility(View.GONE);
                             createdAdapter = new PictureHomeAdapter(HomePageActivity.this, Constant.TYPE_PICTURE_CREATED, FileUtils.getListPathsIfFolderExist());
                             rvCreated.setAdapter(createdAdapter);
                         }
@@ -227,21 +220,52 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
                 if (pictureFirebaseDialogFragment != null) {
                     pictureFirebaseDialogFragment.dismiss();
                 }
-                createdAdapter.updateList(FileUtils.getListPathsIfFolderExist());
-                createdAdapter.notifyDataSetChanged();
-//                rvCreated.setAdapter(new PictureHomeAdapter(HomePageActivity.this, Constant.TYPE_PICTURE_CREATED, FileUtils.getListPathsIfFolderExist()));
+                updateDataToRecyclerCreated(FileUtils.getListPathsIfFolderExist());
             }
         }
     }
 
     @Override
     public void onDismiss(DialogInterface dialog) {
-        createdAdapter.updateList(FileUtils.getListPathsIfFolderExist());
-        createdAdapter.notifyDataSetChanged();
-//        rvCreated.setAdapter(new PictureHomeAdapter(HomePageActivity.this, Constant.TYPE_PICTURE_CREATED, FileUtils.getListPathsIfFolderExist()));
+        updateDataToRecyclerCreated(FileUtils.getListPathsIfFolderExist());
     }
 
-//    @Override
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // update rvCreated if has change about permission
+        if (needCheckPermission && isHasAllPermission()) {
+            List<String> listImagePaths = FileUtils.getListPathsIfFolderExist();
+            if (listImagePaths.isEmpty()) {
+                showRvCreated(false);
+                showAndSetTextViewEmpty(true, "Không có ảnh nào");
+            } else {
+                showRvCreated(true);
+                showAndSetTextViewEmpty(false, null);
+                updateDataToRecyclerCreated(listImagePaths);
+            }
+        }
+    }
+
+    private void showRvCreated(boolean isShowed) {
+        rvCreated.setVisibility(isShowed ? View.VISIBLE : View.GONE);
+        tvViewMoreCreated.setVisibility(isShowed ? View.VISIBLE : View.GONE);
+    }
+
+    private void showAndSetTextViewEmpty(boolean isShowed, String textContent) {
+        tvEmptyCreated.setVisibility(isShowed ? View.VISIBLE : View.GONE);
+        if (isShowed) {
+            tvEmptyCreated.setText(textContent);
+        }
+    }
+
+    private void updateDataToRecyclerCreated(List<String> listPathsIfFolderExist) {
+        createdAdapter.updateList(listPathsIfFolderExist);
+        createdAdapter.notifyDataSetChanged();
+    }
+
+    //    @Override
 //    protected void onResume() {
 //        super.onResume();
 //        if (mAdView != null) {
