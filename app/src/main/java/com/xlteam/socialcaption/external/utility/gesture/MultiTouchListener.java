@@ -14,6 +14,8 @@ import com.xlteam.socialcaption.external.utility.utils.Utility;
 
 import androidx.annotation.Nullable;
 
+import timber.log.Timber;
+
 public class MultiTouchListener implements OnTouchListener {
 
     private static final int INVALID_POINTER_ID = -1;
@@ -34,7 +36,7 @@ public class MultiTouchListener implements OnTouchListener {
     private Rect outRect;
     private View deleteView;
     private ImageView photoEditImageView;
-    private RelativeLayout parentView;
+    private View parentView;
     private Context mContext;
     private boolean mIsInViewBounds;
 
@@ -42,6 +44,8 @@ public class MultiTouchListener implements OnTouchListener {
     private OnGestureControl onGestureControl;
     boolean isTextPinchZoomable;
     private OnPhotoEditorListener onPhotoEditorListener;
+
+    private View currentView;
 
     public MultiTouchListener(@Nullable View deleteView, RelativeLayout parentView,
                               ImageView photoEditImageView,
@@ -115,6 +119,7 @@ public class MultiTouchListener implements OnTouchListener {
 
     @Override
     public boolean onTouch(View view, MotionEvent event) {
+        currentView = view;
         scaleGestureDetector.onTouchEvent(view, event);
         gestureListener.onTouchEvent(event);
 
@@ -273,11 +278,10 @@ public class MultiTouchListener implements OnTouchListener {
     }
 
     private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
-
         @Override
-        public boolean onSingleTapConfirmed(MotionEvent e) {
+        public boolean onDoubleTap(MotionEvent e) {
             if (onGestureControl != null) {
-                onGestureControl.onClick();
+                onGestureControl.onDoubleClick(currentView);
             }
             return true;
         }
@@ -285,7 +289,7 @@ public class MultiTouchListener implements OnTouchListener {
         @Override
         public boolean onDown(MotionEvent e) {
             if (onGestureControl != null) {
-                onGestureControl.onDown();
+                onGestureControl.onDown(currentView);
             }
             return true;
         }

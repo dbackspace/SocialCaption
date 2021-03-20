@@ -1,9 +1,13 @@
 package com.xlteam.socialcaption.external.utility.gesture;
 
-public interface OnGestureControl {
-    void onClick();
+import android.view.View;
 
-    void onDown();
+import org.jetbrains.annotations.NotNull;
+
+public interface OnGestureControl {
+    void onDown(@NotNull View currentView);
 
     void onLongClick();
+
+    void onDoubleClick(@NotNull View currentView);
 }
