@@ -2,6 +2,7 @@ package com.xlteam.socialcaption.ui.edit;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
 import android.view.Window;
@@ -12,6 +13,7 @@ import android.widget.RelativeLayout;
 
 import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.customview.AutoFitEditText;
+import com.xlteam.socialcaption.external.utility.customview.BlurImageView;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
 
 public class DialogAddTextBuilder {
@@ -20,24 +22,28 @@ public class DialogAddTextBuilder {
     private AutoFitEditText edtText;
     private RelativeLayout rlEmptyClick; // cho phép click vào vùng trống khi edit để lưu text
     private Context mContext;
+    private BlurImageView blurBackgroundView;
 
     interface Callback {
         void onSaveClicked(String text);
     }
 
-    public DialogAddTextBuilder(Context context, Callback callback, String text) {
+    public DialogAddTextBuilder(Context context, Callback callback, String text, Bitmap background) {
         mContext = context;
         mDialog = new Dialog(mContext, R.style.Theme_SocialCaption);
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+//        mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         mDialog.setContentView(R.layout.dialog_add_text);
         mDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         imgBack = mDialog.findViewById(R.id.imgBack);
         edtText = mDialog.findViewById(R.id.edtText);
         imgDone = mDialog.findViewById(R.id.imgDone);
+        blurBackgroundView = mDialog.findViewById(R.id.blur_background_view);
         rlEmptyClick = mDialog.findViewById(R.id.rlEmptyClick);
 
         //init default
+        blurBackgroundView.setImageBitmap(background);
+        blurBackgroundView.setBlur(5);
         imgBack.setOnClickListener(v -> mDialog.dismiss());
         imgDone.setOnClickListener(v -> {
             callback.onSaveClicked(edtText.getText().toString());

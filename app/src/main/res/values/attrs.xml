@@ -5,4 +5,7 @@
         <attr name="textScale" format="float" />
         <attr name="animationDuration" format="integer" />
     </declare-styleable>
+    <declare-styleable name="BlurImageView">
+        <attr name="radius" format="integer" />
+    </declare-styleable>
 </resources>

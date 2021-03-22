@@ -246,12 +246,12 @@ public class EditCaptionActivity extends AppCompatActivity
     }
 
     public void onOpenTextEditorClicked(View view) {
-        Dialog addTextDialog = new DialogAddTextBuilder(this, this, null).build();
+        Dialog addTextDialog = new DialogAddTextBuilder(this, this, null, Utility.getBitmapFromView(relativeBackground)).build();
         addTextDialog.show();
     }
 
     public void onAddTextClicked(View view) {
-        Dialog addTextDialog = new DialogAddTextBuilder(this, this, null).build();
+        Dialog addTextDialog = new DialogAddTextBuilder(this, this, null, Utility.getBitmapFromView(relativeBackground)).build();
         addTextDialog.show();
     }
 

@@ -6,6 +6,14 @@
     android:orientation="vertical"
     android:paddingBottom="5dp">
 
+    <com.xlteam.socialcaption.external.utility.customview.BlurImageView
+        android:id="@+id/blur_background_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
     <RelativeLayout
         android:id="@+id/layout_top"
         android:layout_width="match_parent"
