@@ -259,6 +259,7 @@ public class EditCaptionActivity extends AppCompatActivity
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
+
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
     }
 
@@ -398,7 +399,7 @@ public class EditCaptionActivity extends AppCompatActivity
 
     @SuppressLint("ResourceAsColor")
     @Override
-    public void onSaveClicked(String text) {
+    public void onSaveClicked(String text, boolean isEditOldText) {
         /**
          * Không tạo empty text.
          * TODO: Xử lý trong textChange ở DialogAddText, có cho enable nút DONE hay không
@@ -409,6 +410,11 @@ public class EditCaptionActivity extends AppCompatActivity
         }
         isHasText = true;
         isChangedListener();
+
+        if (isEditOldText) {
+            currentText.setText(text);
+            return;
+        }
 
         if (currentViewOfText != null) {
             showToolAndBorderOfText(false);
@@ -429,20 +435,23 @@ public class EditCaptionActivity extends AppCompatActivity
             }
         });
 
+        imgEdit.setOnClickListener(v -> {
+            Dialog addTextDialog = new DialogAddTextBuilder(this, this, currentText.getText().toString(), Utility.getBitmapFromView(relativeBackground)).build();
+            addTextDialog.show();
+        });
+
         imgBalance.setOnClickListener(v -> {
             if (currentViewOfText != null) {
                 currentViewOfText.setRotation(0f);
             }
         });
 
-        showToolAndBorderOfText(true);
-
         currentText.setBackgroundResource(R.drawable.bg_text_view_edit);
         currentText.setText(text);
         currentText.setTextSize(TypedValue.COMPLEX_UNIT_SP,
                 getResources().getDimension(R.dimen.text_added_default_size));
 
-        MultiTouchListener multiTouchListener = new MultiTouchListener(mImgBackground,this, mContext);
+        MultiTouchListener multiTouchListener = new MultiTouchListener(mImgBackground, this, mContext);
         multiTouchListener.setOnGestureControl(new OnGestureControl() {
             @Override
             public void onDoubleClick(@NotNull View currentView) {
@@ -463,6 +472,7 @@ public class EditCaptionActivity extends AppCompatActivity
             }
         });
 
+        showTextMode(true);
         // Solution tạm thời cho việc put vào map
         ItemText itemText = new ItemText(text);
         addViewToParent(currentViewOfText, currentText, itemText);
@@ -513,7 +523,7 @@ public class EditCaptionActivity extends AppCompatActivity
     private void deleteViewFromParent(View view) {
         relativeBackground.removeView(view);
         relativeBackground.invalidate();
-        showToolAndBorderOfText(true);
+        showTextMode(false);
     }
 
     @Override

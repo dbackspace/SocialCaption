@@ -24,12 +24,17 @@ public class DialogAddTextBuilder {
     private Context mContext;
     private BlurImageView blurBackgroundView;
 
+    private boolean isEditOldText = false;
+
     interface Callback {
-        void onSaveClicked(String text);
+        void onSaveClicked(String text, boolean isEditOldText);
     }
 
     public DialogAddTextBuilder(Context context, Callback callback, String text, Bitmap background) {
         mContext = context;
+        if (text != null) {
+            isEditOldText = true;
+        }
         mDialog = new Dialog(mContext, R.style.Theme_SocialCaption);
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 //        mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -46,11 +51,11 @@ public class DialogAddTextBuilder {
         blurBackgroundView.setBlur(5);
         imgBack.setOnClickListener(v -> mDialog.dismiss());
         imgDone.setOnClickListener(v -> {
-            callback.onSaveClicked(edtText.getText().toString());
+            callback.onSaveClicked(edtText.getText().toString(), isEditOldText);
             mDialog.dismiss();
         });
         rlEmptyClick.setOnClickListener(v -> {
-            callback.onSaveClicked(edtText.getText().toString());
+            callback.onSaveClicked(edtText.getText().toString(), isEditOldText);
             mDialog.dismiss();
         });
         if (!TextUtils.isEmpty(text)) edtText.setText(text);
