@@ -14,4 +14,12 @@
         android:gravity="center|bottom"
         android:textColor="@color/white"
         android:textSize="18dp" />
+
+    <View
+        android:layout_width="0.5dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_toEndOf="@id/tvFont"
+        android:layout_centerVertical="true"
+        android:background="#c0c0c0" />
 </RelativeLayout>

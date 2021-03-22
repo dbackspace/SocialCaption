@@ -104,7 +104,6 @@ public class EditCaptionActivity extends AppCompatActivity
     private RecyclerView rvFont, rvColor;
     private int mGravityText, mNumberBg = BACKGROUND_COLOR_0, mNumberColor = 0, mNumberFont = 0;
     private ImageView imgGravity, imgBackground;
-    private TextView mTextViewClicked;
     private ItemText mItemTextViewClicked;
     private RelativeLayout containerBgImage;
     private FontAdapter mFontAdapter;
@@ -286,19 +285,19 @@ public class EditCaptionActivity extends AppCompatActivity
             mNumberBg = Constant.BACKGROUND_COLOR_50;
             imgBackground.setImageResource(R.drawable.ic_align_right);
             String colorBlur = "#80" + color.getColor().substring(3);
-            Utility.setColorForView(mTextViewClicked, colorBlur);
-            Utility.setColorForTextView(mTextViewClicked, color.getTextColor());
+            Utility.setColorForView(currentText, colorBlur);
+            Utility.setColorForTextView(currentText, color.getTextColor());
 
         } else if (mNumberBg == Constant.BACKGROUND_COLOR_50) {
             mNumberBg = Constant.BACKGROUND_COLOR_100;
             imgBackground.setImageResource(R.drawable.ic_align_left);
-            Utility.setColorForView(mTextViewClicked, color.getColor());
-            Utility.setColorForTextView(mTextViewClicked, color.getTextColor());
+            Utility.setColorForView(currentText, color.getColor());
+            Utility.setColorForTextView(currentText, color.getTextColor());
         } else {
             mNumberBg = Constant.BACKGROUND_COLOR_0;
             imgBackground.setImageResource(R.drawable.ic_align_center);
-            Utility.setColorForView(mTextViewClicked, "#00FFFFFF");
-            Utility.setColorForTextView(mTextViewClicked, color.getColor());
+            Utility.setColorForView(currentText, "#00FFFFFF");
+            Utility.setColorForTextView(currentText, color.getColor());
         }
         mItemTextViewClicked.setBg(mNumberBg);
     }
@@ -314,7 +313,7 @@ public class EditCaptionActivity extends AppCompatActivity
             mGravityText = Gravity.CENTER;
             imgGravity.setImageResource(R.drawable.ic_align_center);
         }
-        mTextViewClicked.setGravity(mGravityText);
+        currentText.setGravity(mGravityText);
         mItemTextViewClicked.setGravity(mGravityText);
     }
 
@@ -472,10 +471,10 @@ public class EditCaptionActivity extends AppCompatActivity
             }
         });
 
+        mItemTextViewClicked = new ItemText(currentText.getText().toString());
         showTextMode(true);
-        // Solution tạm thời cho việc put vào map
         ItemText itemText = new ItemText(text);
-        addViewToParent(currentViewOfText, currentText, itemText);
+        addViewToParent(currentViewOfText);
         currentViewOfText.setOnTouchListener(multiTouchListener);
     }
 
@@ -513,7 +512,7 @@ public class EditCaptionActivity extends AppCompatActivity
         showToolAndBorderOfText(false);
     }
 
-    private void addViewToParent(View viewOfText, TextView textInputView, ItemText itemText) {
+    private void addViewToParent(View viewOfText) {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
@@ -542,8 +541,9 @@ public class EditCaptionActivity extends AppCompatActivity
     private void initTextEditor() {
         rvFont.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         mFontAdapter = new FontAdapter(this, numberFont -> {
+            Timber.e("setFont");
             Typeface typeface = Typeface.createFromAsset(mContext.getAssets(), "font/" + FontDataSource.getInstance().getAllFonts().get(numberFont).getFont());
-            mTextViewClicked.setTypeface(typeface);
+            currentText.setTypeface(typeface);
             mItemTextViewClicked.setFont(numberFont);
         });
         rvFont.setAdapter(mFontAdapter);
@@ -553,15 +553,15 @@ public class EditCaptionActivity extends AppCompatActivity
             mNumberColor = colorPosition;
             Color color = ColorDataSource.getInstance().getAllData().get(colorPosition);
             if (mNumberBg == Constant.BACKGROUND_COLOR_0) {
-                Utility.setColorForView(mTextViewClicked, "#00FFFFFF");
-                Utility.setColorForTextView(mTextViewClicked, color.getColor());
+                Utility.setColorForView(currentText, "#00FFFFFF");
+                Utility.setColorForTextView(currentText, color.getColor());
             } else if (mNumberBg == Constant.BACKGROUND_COLOR_50) {
                 String colorBlur = "#80" + color.getColor().substring(3);//loại bỏ #FF, thay bằng #80
-                Utility.setColorForView(mTextViewClicked, colorBlur);
-                Utility.setColorForTextView(mTextViewClicked, color.getTextColor());
+                Utility.setColorForView(currentText, colorBlur);
+                Utility.setColorForTextView(currentText, color.getTextColor());
             } else {
-                Utility.setColorForView(mTextViewClicked, color.getColor());
-                Utility.setColorForTextView(mTextViewClicked, color.getTextColor());
+                Utility.setColorForView(currentText, color.getColor());
+                Utility.setColorForTextView(currentText, color.getTextColor());
             }
             mItemTextViewClicked.setColor(colorPosition);
         });

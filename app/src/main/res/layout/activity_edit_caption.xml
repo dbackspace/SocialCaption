@@ -132,6 +132,31 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/container_background_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="120dp">
+
+        <RelativeLayout
+            android:id="@+id/relative_background_save_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <ImageView
+                android:id="@+id/img_edit_background"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/profile_image" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/layout_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -345,32 +370,8 @@
                         android:textSize="10dp" />
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/container_background_image"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="120dp">
-
-        <RelativeLayout
-            android:id="@+id/relative_background_save_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
-
-            <ImageView
-                android:id="@+id/img_edit_background"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:src="@drawable/profile_image" />
-        </RelativeLayout>
-
     </RelativeLayout>
 
     <com.google.android.gms.ads.AdView

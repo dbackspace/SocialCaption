@@ -53,8 +53,8 @@ public class FontAdapter extends RecyclerView.Adapter<FontAdapter.ViewHolder> {
 
         holder.itemView.setOnClickListener(view -> {
             numberFont = position;
-            notifyDataSetChanged();
             mCallBack.selectFont(numberFont);
+            notifyDataSetChanged();
         });
     }
 
