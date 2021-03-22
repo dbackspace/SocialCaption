@@ -373,46 +373,6 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/container_trash"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="51dp"
-        android:visibility="gone">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/rlTrash"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="10dp"
-            android:text="Kéo vào đây để xóa"
-            android:textAlignment="center"
-            android:textColor="@color/white" />
-
-        <RelativeLayout
-            android:id="@+id/rlTrash"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerInParent="true"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/trash_round_style"
-            android:padding="5dp"
-            android:visibility="visible">
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_centerInParent="true"
-                android:background="@drawable/ic_trash"
-                android:textColor="#FFFFFF" />
-        </RelativeLayout>
-
-    </RelativeLayout>
-
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"
         android:layout_width="wrap_content"

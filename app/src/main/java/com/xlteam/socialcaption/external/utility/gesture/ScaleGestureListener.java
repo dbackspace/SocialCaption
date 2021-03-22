@@ -1,6 +1,9 @@
 package com.xlteam.socialcaption.external.utility.gesture;
 
 import android.view.View;
+import android.widget.ImageView;
+
+import com.xlteam.socialcaption.R;
 
 public class ScaleGestureListener implements OnScaleGestureListener {
 

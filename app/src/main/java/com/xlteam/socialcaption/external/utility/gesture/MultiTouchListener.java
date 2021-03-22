@@ -10,16 +10,17 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.xlteam.socialcaption.R;
 import com.xlteam.socialcaption.external.utility.utils.Utility;
 
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import timber.log.Timber;
 
 public class MultiTouchListener implements OnTouchListener {
 
     private static final int INVALID_POINTER_ID = -1;
-    private static final int DIFF_IN_BOUND_AREA = 40;
     private final GestureDetector gestureListener;
     boolean isRotateEnabled = true;
     boolean isTranslateEnabled = true;
@@ -34,11 +35,8 @@ public class MultiTouchListener implements OnTouchListener {
 
     private int[] location = new int[2];
     private Rect outRect;
-    private View deleteView;
     private ImageView photoEditImageView;
-    private View parentView;
     private Context mContext;
-    private boolean mIsInViewBounds;
 
     private OnMultiTouchListener onMultiTouchListener;
     private OnGestureControl onGestureControl;
@@ -47,22 +45,13 @@ public class MultiTouchListener implements OnTouchListener {
 
     private View currentView;
 
-    public MultiTouchListener(@Nullable View deleteView, RelativeLayout parentView,
-                              ImageView photoEditImageView,
-                              OnPhotoEditorListener onPhotoEditorListener, Context context) {
+    public MultiTouchListener(ImageView photoEditImageView, OnPhotoEditorListener onPhotoEditorListener, Context context) {
         isTextPinchZoomable = true;
         scaleGestureDetector = new ScaleGestureDetector(new ScaleGestureListener(this));
         gestureListener = new GestureDetector(context, new GestureListener());
-        this.deleteView = deleteView;
-        this.parentView = parentView;
         this.photoEditImageView = photoEditImageView;
         this.onPhotoEditorListener = onPhotoEditorListener;
-        if (deleteView != null) {
-            outRect = new Rect(deleteView.getLeft(), deleteView.getTop(),
-                    deleteView.getRight(), deleteView.getBottom());
-        } else {
-            outRect = new Rect(0, 0, 0, 0);
-        }
+        outRect = new Rect(0, 0, 0, 0);
         mContext = context;
     }
 
@@ -85,8 +74,27 @@ public class MultiTouchListener implements OnTouchListener {
         view.setScaleX(scale);
         view.setScaleY(scale);
 
+        keepScaleForFuncButton(view, scale);
         float rotation = adjustAngle(view.getRotation() + info.deltaAngle);
         view.setRotation(rotation);
+    }
+
+    void keepScaleForFuncButton(View view, float scale) {
+        ImageView deleteButton = view.findViewById(R.id.image_text_remove);
+        deleteButton.setScaleX(1.0f/scale);
+        deleteButton.setScaleY(1.0f/scale);
+
+        ImageView balanceButton = view.findViewById(R.id.image_text_balance);
+        balanceButton.setScaleX(1.0f/scale);
+        balanceButton.setScaleY(1.0f/scale);
+
+        ImageView editButton = view.findViewById(R.id.image_text_edit);
+        editButton.setScaleX(1.0f/scale);
+        editButton.setScaleY(1.0f/scale);
+
+        ImageView zoomButton = view.findViewById(R.id.image_text_zoom);
+        zoomButton.setScaleX(1.0f/scale);
+        zoomButton.setScaleY(1.0f/scale);
     }
 
     private void adjustTranslation(View view, float deltaX, float deltaY) {
@@ -140,8 +148,7 @@ public class MultiTouchListener implements OnTouchListener {
                 prevRawY = event.getRawY();
                 activePointerId = event.getPointerId(0);
                 view.bringToFront();
-                firePhotoEditorSDKListener(view, EventType.ON_DOWN);
-                mIsInViewBounds = false;
+                notifyWhenEventChangeListener(view, EventType.ON_DOWN);
                 break;
             case MotionEvent.ACTION_MOVE:
                 int pointerIndexMove = event.findPointerIndex(activePointerId);
@@ -151,28 +158,9 @@ public class MultiTouchListener implements OnTouchListener {
                     if (!scaleGestureDetector.isInProgress()) {
                         adjustTranslation(view, currX - prevX, currY - prevY);
                     }
-                    boolean checkViewInBound = isViewInBounds(deleteView, x, y, DIFF_IN_BOUND_AREA);
                     long duration = event.getEventTime() - event.getDownTime();
                     if (!(duration < CLICK_THRESHOLD_DURATION && isSingleTapEvent(prevRawX, x, prevRawY, y))) {
-                        firePhotoEditorSDKListener(view, EventType.ON_MOVE);
-                        if (!mIsInViewBounds) {
-                            if (deleteView != null && checkViewInBound) {
-                                mIsInViewBounds = true;
-                                Utility.vibratorNotify(mContext, 50);
-                                deleteView.setScaleX(1.2f);
-                                deleteView.setScaleY(1.2f);
-                            } else {
-                                mIsInViewBounds = false;
-                                deleteView.setScaleX(1f);
-                                deleteView.setScaleY(1f);
-                            }
-                        } else {
-                            if (deleteView != null && !checkViewInBound) {
-                                mIsInViewBounds = false;
-                                deleteView.setScaleX(1f);
-                                deleteView.setScaleY(1f);
-                            }
-                        }
+                        notifyWhenEventChangeListener(view, EventType.ON_MOVE);
                     }
                 }
                 break;
@@ -181,18 +169,12 @@ public class MultiTouchListener implements OnTouchListener {
                 break;
             case MotionEvent.ACTION_UP:
                 activePointerId = INVALID_POINTER_ID;
-                if (deleteView != null && isViewInBounds(deleteView, x, y, DIFF_IN_BOUND_AREA)) {
-                    if (onMultiTouchListener != null)
-                        onMultiTouchListener.onRemoveViewListener(view);
-                } else if (!isViewInBounds(photoEditImageView, x, y)) {
+                if (!isViewInBounds(photoEditImageView, x, y)) {
                     view.animate().translationY(0).translationY(0);
                 }
-                mIsInViewBounds = false;
-                deleteView.setScaleX(1f);
-                deleteView.setScaleY(1f);
                 long duration = event.getEventTime() - event.getDownTime();
                 if (!(duration < CLICK_THRESHOLD_DURATION && isSingleTapEvent(prevRawX, x, prevRawY, y))) {
-                    firePhotoEditorSDKListener(view, EventType.ON_UP);
+                    notifyWhenEventChangeListener(view, EventType.ON_UP);
                 }
                 break;
             case MotionEvent.ACTION_POINTER_UP:
@@ -221,18 +203,6 @@ public class MultiTouchListener implements OnTouchListener {
         return (CLICK_THRESHOLD_DISTANCE > differenceX) || (CLICK_THRESHOLD_DISTANCE > differenceY);
     }
 
-    private void firePhotoEditorSDKListener(View view, EventType eventType) {
-        if (view instanceof TextView) {
-            if (onMultiTouchListener != null) {
-                notifyWhenEventChangeListener(view, eventType);
-            } else {
-                notifyWhenEventChangeListener(view, eventType);
-            }
-        } else {
-            notifyWhenEventChangeListener(view, eventType);
-        }
-    }
-
     private void notifyWhenEventChangeListener(View view, EventType eventType) {
         if (onPhotoEditorListener != null) {
             switch (eventType) {
@@ -254,19 +224,6 @@ public class MultiTouchListener implements OnTouchListener {
         view.getLocationOnScreen(location);
         outRect.offset(location[0], location[1]);
         return outRect.contains(x, y);
-    }
-
-    private boolean isViewInBounds(View view, int x, int y, int diff) {
-        view.getDrawingRect(outRect);
-        view.getLocationOnScreen(location);
-        outRect.offset(location[0], location[1]);
-        return checkInAreaBounds(outRect, x, y, Utility.getDp(mContext, diff));
-    }
-
-    private boolean checkInAreaBounds(Rect outRect, int x, int y, int diff) {
-        return outRect.left < outRect.right && outRect.top < outRect.bottom  // check for empty first
-                && (x >= outRect.left - diff) && (x <= outRect.right + diff)
-                && (y >= outRect.top - diff) && (y <= outRect.bottom + diff);
     }
 
     private void setOnMultiTouchListener(OnMultiTouchListener onMultiTouchListener) {

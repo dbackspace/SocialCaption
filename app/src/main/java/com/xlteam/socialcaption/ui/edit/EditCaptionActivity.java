@@ -100,11 +100,6 @@ public class EditCaptionActivity extends AppCompatActivity
     // relative background
     private RelativeLayout relativeBackground;
 
-//    private List<View> addedViews;
-//    private MapViewUtils mapViewUtils;
-    private RelativeLayout rlTrash;
-    private RelativeLayout containerTrash;
-
     //text editor
     private RecyclerView rvFont, rvColor;
     private int mGravityText, mNumberBg = BACKGROUND_COLOR_0, mNumberColor = 0, mNumberFont = 0;
@@ -114,7 +109,6 @@ public class EditCaptionActivity extends AppCompatActivity
     private RelativeLayout containerBgImage;
     private FontAdapter mFontAdapter;
     private ColorAdapter mColorAdapter;
-//    private MapViewUtils mapViewUtils;
     private boolean isHasText = false;
 
     // text current
@@ -136,9 +130,6 @@ public class EditCaptionActivity extends AppCompatActivity
         mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
-
-//        mapViewUtils = MapViewUtils.getInstance();
-//        addedViews = new ArrayList<>();
 
         findViewById();
         relativeBackground.setOnClickListener(new View.OnClickListener() {
@@ -184,10 +175,6 @@ public class EditCaptionActivity extends AppCompatActivity
         }
         initTextEditor();
         tvDone.setOnClickListener(v -> {
-//            UserCaption userCaption = new UserCaption(mEdtCaption.getText().toString(), mPathImg, mColorTextDefault, mFontDefault, mAlignTextDefault, true);
-//            mRepository.insertUserCaption(userCaption);
-//            Toast.makeText(this, "Đã lưu caption. Để xem lại, bạn có thể vào Menu -> Caption đã tạo!", Toast.LENGTH_LONG).show();
-//            this.finish();
             if (Utility.isValidClick(v.getId()))
                 saveImageCreatedToSdcard(relativeBackground);
         });
@@ -206,8 +193,6 @@ public class EditCaptionActivity extends AppCompatActivity
         mImgBackground = findViewById(R.id.img_edit_background);
 
         relativeBackground = findViewById(R.id.relative_background_save_img);
-        rlTrash = findViewById(R.id.rlTrash);
-        containerTrash = findViewById(R.id.container_trash);
         containerBgImage = findViewById(R.id.container_background_image);
 
         //text editor
@@ -315,7 +300,6 @@ public class EditCaptionActivity extends AppCompatActivity
             Utility.setColorForTextView(mTextViewClicked, color.getColor());
         }
         mItemTextViewClicked.setBg(mNumberBg);
-//        mapViewUtils.put(mTextViewClicked, (Integer) mTextViewClicked.getTag(), mItemTextViewClicked);
     }
 
     public void onTextAlignClicked(View view) {
@@ -331,7 +315,6 @@ public class EditCaptionActivity extends AppCompatActivity
         }
         mTextViewClicked.setGravity(mGravityText);
         mItemTextViewClicked.setGravity(mGravityText);
-//        mapViewUtils.put(mTextViewClicked, (Integer) mTextViewClicked.getTag(), mItemTextViewClicked);
     }
 
     public Bitmap getBitmapFromImageView(ImageView imageView) {
@@ -446,29 +429,21 @@ public class EditCaptionActivity extends AppCompatActivity
             }
         });
 
+        imgBalance.setOnClickListener(v -> {
+            if (currentViewOfText != null) {
+                currentViewOfText.setRotation(0f);
+            }
+        });
+
         showToolAndBorderOfText(true);
 
-//        currentText.setTag(addedViews.size());
         currentText.setBackgroundResource(R.drawable.bg_text_view_edit);
         currentText.setText(text);
         currentText.setTextSize(TypedValue.COMPLEX_UNIT_SP,
                 getResources().getDimension(R.dimen.text_added_default_size));
 
-        MultiTouchListener multiTouchListener = new MultiTouchListener(
-                rlTrash,
-                relativeBackground,
-                mImgBackground,
-                this, mContext);
+        MultiTouchListener multiTouchListener = new MultiTouchListener(mImgBackground,this, mContext);
         multiTouchListener.setOnGestureControl(new OnGestureControl() {
-            boolean isDownAlready = false;
-
-          /*
-          // Cai nay khong can dau, vi lam gi thi no cung vao onDown thoi.
-            @Override
-            public void onClick(@NotNull View currentView) {
-
-            }*/
-
             @Override
             public void onDoubleClick(@NotNull View currentView) {
                 previousViewOfText = currentViewOfText;
@@ -481,15 +456,6 @@ public class EditCaptionActivity extends AppCompatActivity
                 previousViewOfText = currentViewOfText;
                 currentViewOfText = currentView;
                 showTextMode(true);
-//                boolean isBackgroundVisible = borderOfText.getTag() != null && (boolean) borderOfText.getTag();
-//                if (!isBackgroundVisible) {
-////                    showToolAndBorderOfText(true);
-//
-////                    updateViewsBordersVisibilityExcept(currentViewOfText);
-//                    isDownAlready = true;
-//                } else {
-//                    isDownAlready = false;
-//                }
             }
 
             @Override
@@ -523,17 +489,6 @@ public class EditCaptionActivity extends AppCompatActivity
 
     }
 
-   /* private void editText(View view, String inputText, int colorCode) {
-        TextView inputTextView = view.findViewById(R.id.text_tv);
-        if (inputTextView != null && addedViews.contains(view) && !TextUtils.isEmpty(inputText)) {
-            inputTextView.setText(inputText);
-            inputTextView.setTextColor(colorCode);
-            relativeBackground.updateViewLayout(view, view.getLayoutParams());
-            int i = addedViews.indexOf(view);
-            if (i > -1) addedViews.set(i, view);
-        }
-    }*/
-
     private View getTextStickerLayout() {
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         View rootView = layoutInflater.inflate(R.layout.item_text_added, null);
@@ -545,10 +500,6 @@ public class EditCaptionActivity extends AppCompatActivity
     }
 
     private void clearAllViewBordersVisibility() {
-        // disable all border and delete button in all text added
-//        for (View view : addedViews) {
-//            showToolAndBorderOfText(false);
-//        }
         showToolAndBorderOfText(false);
     }
 
@@ -557,16 +508,12 @@ public class EditCaptionActivity extends AppCompatActivity
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         relativeBackground.addView(viewOfText, params);
-//        addedViews.add(viewOfText);
-//        mapViewUtils.put(textInputView, (Integer) textInputView.getTag(), itemText);
     }
 
     private void deleteViewFromParent(View view) {
         relativeBackground.removeView(view);
-//        addedViews.remove(view);
-//        mapViewUtils.remove(view);
         relativeBackground.invalidate();
-        showToolAndBorderOfText(false);
+        showToolAndBorderOfText(true);
     }
 
     @Override
@@ -576,17 +523,10 @@ public class EditCaptionActivity extends AppCompatActivity
 
     @Override
     public void onEventMoveChangeListener(View view) {
-        containerTrash.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onEventUpChangeListener(View view) {
-        containerTrash.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void onRemoveViewListener(View removedView) {
-        deleteViewFromParent(removedView);
     }
 
     private void initTextEditor() {
@@ -595,7 +535,6 @@ public class EditCaptionActivity extends AppCompatActivity
             Typeface typeface = Typeface.createFromAsset(mContext.getAssets(), "font/" + FontDataSource.getInstance().getAllFonts().get(numberFont).getFont());
             mTextViewClicked.setTypeface(typeface);
             mItemTextViewClicked.setFont(numberFont);
-//            mapViewUtils.put(mTextViewClicked, (Integer) mTextViewClicked.getTag(), mItemTextViewClicked);
         });
         rvFont.setAdapter(mFontAdapter);
 
@@ -615,7 +554,6 @@ public class EditCaptionActivity extends AppCompatActivity
                 Utility.setColorForTextView(mTextViewClicked, color.getTextColor());
             }
             mItemTextViewClicked.setColor(colorPosition);
-//            mapViewUtils.put(mTextViewClicked, (Integer) mTextViewClicked.getTag(), mItemTextViewClicked);
         });
         rvColor.setAdapter(mColorAdapter);
 
