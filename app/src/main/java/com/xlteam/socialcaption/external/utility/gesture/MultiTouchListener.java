@@ -44,15 +44,33 @@ public class MultiTouchListener implements OnTouchListener {
     private OnPhotoEditorListener onPhotoEditorListener;
 
     private View currentView;
+    private ImageView zoomRotateBtn;
 
-    public MultiTouchListener(ImageView photoEditImageView, OnPhotoEditorListener onPhotoEditorListener, Context context) {
+    public static MultiTouchListener create(Context context) {
+        return new MultiTouchListener(context);
+    }
+
+    private MultiTouchListener(Context context) {
         isTextPinchZoomable = true;
         scaleGestureDetector = new ScaleGestureDetector(new ScaleGestureListener(this));
         gestureListener = new GestureDetector(context, new GestureListener());
-        this.photoEditImageView = photoEditImageView;
-        this.onPhotoEditorListener = onPhotoEditorListener;
         outRect = new Rect(0, 0, 0, 0);
         mContext = context;
+    }
+
+    public MultiTouchListener setBackgroundImage(ImageView photoEditImageView) {
+        this.photoEditImageView = photoEditImageView;
+        return this;
+    }
+
+    public MultiTouchListener setPhotoEditorListener(OnPhotoEditorListener onPhotoEditorListener) {
+        this.onPhotoEditorListener = onPhotoEditorListener;
+        return this;
+    }
+
+    public MultiTouchListener setZoomRotateBtn(ImageView zoomRotateBtn) {
+        this.zoomRotateBtn = zoomRotateBtn;
+        return this;
     }
 
     private float adjustAngle(float degrees) {
@@ -81,20 +99,20 @@ public class MultiTouchListener implements OnTouchListener {
 
     void keepScaleForFuncButton(View view, float scale) {
         ImageView deleteButton = view.findViewById(R.id.image_text_remove);
-        deleteButton.setScaleX(1.0f/scale);
-        deleteButton.setScaleY(1.0f/scale);
+        deleteButton.setScaleX(1.0f / scale);
+        deleteButton.setScaleY(1.0f / scale);
 
         ImageView balanceButton = view.findViewById(R.id.image_text_balance);
-        balanceButton.setScaleX(1.0f/scale);
-        balanceButton.setScaleY(1.0f/scale);
+        balanceButton.setScaleX(1.0f / scale);
+        balanceButton.setScaleY(1.0f / scale);
 
         ImageView editButton = view.findViewById(R.id.image_text_edit);
-        editButton.setScaleX(1.0f/scale);
-        editButton.setScaleY(1.0f/scale);
+        editButton.setScaleX(1.0f / scale);
+        editButton.setScaleY(1.0f / scale);
 
         ImageView zoomButton = view.findViewById(R.id.image_text_zoom);
-        zoomButton.setScaleX(1.0f/scale);
-        zoomButton.setScaleY(1.0f/scale);
+        zoomButton.setScaleX(1.0f / scale);
+        zoomButton.setScaleY(1.0f / scale);
     }
 
     private void adjustTranslation(View view, float deltaX, float deltaY) {
@@ -195,7 +213,9 @@ public class MultiTouchListener implements OnTouchListener {
         ON_DOWN,
         ON_MOVE,
         ON_UP
-    };
+    }
+
+    ;
 
     private boolean isSingleTapEvent(float startX, float endX, float startY, float endY) {
         float differenceX = Math.abs(startX - endX);

@@ -450,7 +450,13 @@ public class EditCaptionActivity extends AppCompatActivity
         currentText.setTextSize(TypedValue.COMPLEX_UNIT_SP,
                 getResources().getDimension(R.dimen.text_added_default_size));
 
-        MultiTouchListener multiTouchListener = new MultiTouchListener(mImgBackground, this, mContext);
+        MultiTouchListener multiTouchListener =
+                MultiTouchListener
+                        .create(mContext)
+                        .setBackgroundImage(mImgBackground)
+                        .setPhotoEditorListener(this)
+                        .setZoomRotateBtn(imgZoom);
+
         multiTouchListener.setOnGestureControl(new OnGestureControl() {
             @Override
             public void onDoubleClick(@NotNull View currentView) {
