@@ -82,13 +82,7 @@ public class EditCaptionActivity extends AppCompatActivity
     private ImageView mImgBackground;
     private RelativeLayout layoutText;
 
-    // set default for tool
-    private int mTextSizeDefault; // default = 1    [0 -> 4]
-    private int mFontDefault = 6;
-    private int mColorTextDefault = 0;
-    private int mAlignTextDefault = 0;
-    private String mPathImg = "";
-    private int flipCurrent = 0;
+
     private AdView mAdView;
     public static final int PICK_IMAGE = 1;
 
@@ -100,14 +94,14 @@ public class EditCaptionActivity extends AppCompatActivity
     // relative background
     private RelativeLayout relativeBackground;
 
-    //text editor
+    // Text editor
     private RecyclerView rvFont, rvColor;
-    private int mGravityText, mNumberBg = BACKGROUND_COLOR_0, mNumberColor = 0, mNumberFont = 0;
+    // Set default for tool
+    private int mGravityText, mNumberBg = BACKGROUND_COLOR_0, mNumberColor = 0;
+    // imgBackground: img background of align
     private ImageView imgGravity, imgBackground;
     private ItemText mItemTextViewClicked;
     private RelativeLayout containerBgImage;
-    private FontAdapter mFontAdapter;
-    private ColorAdapter mColorAdapter;
     private boolean isHasText = false;
 
     // text current
@@ -145,7 +139,6 @@ public class EditCaptionActivity extends AppCompatActivity
         if (type == Constant.TYPE_PICK_PHOTO) {
             Uri imageUri = intent.getParcelableExtra(Constant.EXTRA_PICK_PHOTO_URL);
             if (imageUri != null) {
-                mPathImg = imageUri.getPath();
                 final InputStream imageStream;
                 try {
                     imageStream = getContentResolver().openInputStream(imageUri);
@@ -182,7 +175,7 @@ public class EditCaptionActivity extends AppCompatActivity
         imgCancelText.setOnClickListener(view -> showTextMode(false));
         imgDoneText.setOnClickListener(view -> {
             showTextMode(false);
-            clearAllViewBordersVisibility();
+            showToolAndBorderOfText(false);
         });
     }
 
@@ -226,7 +219,6 @@ public class EditCaptionActivity extends AppCompatActivity
                     } else {
                         try {
                             final Uri imageUri = data.getData();
-                            mPathImg = imageUri.getPath();
                             final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                             final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
                             mImgBackground.setImageBitmap(selectedImage);
@@ -269,33 +261,36 @@ public class EditCaptionActivity extends AppCompatActivity
                 .start(this);
     }
 
+    // Thay đổi màu chữ (color)
     public void onTextColorClicked(View view) {
         rvColor.setVisibility(View.VISIBLE);
         rvFont.setVisibility(View.GONE);
     }
 
+    // Thay đổi font
     public void onTextFontClicked(View view) {
         rvFont.setVisibility(View.VISIBLE);
         rvColor.setVisibility(View.GONE);
     }
 
+    // Thay đổi nền chữ
     public void onTextBgClicked(View view) {
         Color color = ColorDataSource.getInstance().getAllData().get(mNumberColor);
         if (mNumberBg == Constant.BACKGROUND_COLOR_0) {
             mNumberBg = Constant.BACKGROUND_COLOR_50;
-            imgBackground.setImageResource(R.drawable.ic_align_right);
+//            imgBackground.setImageResource(R.drawable.ic_align_right);
             String colorBlur = "#80" + color.getColor().substring(3);
             Utility.setColorForView(currentText, colorBlur);
             Utility.setColorForTextView(currentText, color.getTextColor());
 
         } else if (mNumberBg == Constant.BACKGROUND_COLOR_50) {
             mNumberBg = Constant.BACKGROUND_COLOR_100;
-            imgBackground.setImageResource(R.drawable.ic_align_left);
+//            imgBackground.setImageResource(R.drawable.ic_align_left);
             Utility.setColorForView(currentText, color.getColor());
             Utility.setColorForTextView(currentText, color.getTextColor());
         } else {
             mNumberBg = Constant.BACKGROUND_COLOR_0;
-            imgBackground.setImageResource(R.drawable.ic_align_center);
+//            imgBackground.setImageResource(R.drawable.ic_align_center);
             Utility.setColorForView(currentText, "#00FFFFFF");
             Utility.setColorForTextView(currentText, color.getColor());
         }
@@ -408,6 +403,7 @@ public class EditCaptionActivity extends AppCompatActivity
             return;
         }
         isHasText = true;
+        // set button "Lưu" mờ hay hiện
         isChangedListener();
 
         if (isEditOldText) {
@@ -471,14 +467,18 @@ public class EditCaptionActivity extends AppCompatActivity
             }
         });
 
-        mItemTextViewClicked = new ItemText(currentText.getText().toString());
+        mNumberBg = BACKGROUND_COLOR_0;
+        mNumberColor = 0;
+        Utility.setColorForView(currentText, "#00FFFFFF");
+//        Utility.setColorForTextView(currentText, color.getColor());
+        mItemTextViewClicked = new ItemText(text);
+
         showTextMode(true);
-        ItemText itemText = new ItemText(text);
         addViewToParent(currentViewOfText);
         currentViewOfText.setOnTouchListener(multiTouchListener);
     }
 
-    public void editTextByClickTextView(View view, ItemText itemText) {
+/*    public void editTextByClickTextView(View view, ItemText itemText) {
         mColorAdapter.setNumberSelect(mNumberColor);
         mFontAdapter.setNumberFont(mNumberFont);
         if (mGravityText == Gravity.CENTER) {
@@ -496,7 +496,7 @@ public class EditCaptionActivity extends AppCompatActivity
             imgBackground.setImageResource(R.drawable.ic_align_left);
         }
 
-    }
+    }*/
 
     private View getTextStickerLayout() {
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
@@ -508,10 +508,6 @@ public class EditCaptionActivity extends AppCompatActivity
         return rootView;
     }
 
-    private void clearAllViewBordersVisibility() {
-        showToolAndBorderOfText(false);
-    }
-
     private void addViewToParent(View viewOfText) {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -519,15 +515,14 @@ public class EditCaptionActivity extends AppCompatActivity
         relativeBackground.addView(viewOfText, params);
     }
 
-    private void deleteViewFromParent(View view) {
-        relativeBackground.removeView(view);
+    private void deleteViewFromParent(View viewOfText) {
+        relativeBackground.removeView(viewOfText);
         relativeBackground.invalidate();
         showTextMode(false);
     }
 
     @Override
     public void onEventDownChangeListener(View view) {
-
     }
 
     @Override
@@ -540,7 +535,7 @@ public class EditCaptionActivity extends AppCompatActivity
 
     private void initTextEditor() {
         rvFont.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
-        mFontAdapter = new FontAdapter(this, numberFont -> {
+        FontAdapter mFontAdapter = new FontAdapter(this, numberFont -> {
             Timber.e("setFont");
             Typeface typeface = Typeface.createFromAsset(mContext.getAssets(), "font/" + FontDataSource.getInstance().getAllFonts().get(numberFont).getFont());
             currentText.setTypeface(typeface);
@@ -549,7 +544,8 @@ public class EditCaptionActivity extends AppCompatActivity
         rvFont.setAdapter(mFontAdapter);
 
         rvColor.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
-        mColorAdapter = new ColorAdapter(colorPosition -> {
+        //loại bỏ #FF, thay bằng #80
+        ColorAdapter mColorAdapter = new ColorAdapter(colorPosition -> {
             mNumberColor = colorPosition;
             Color color = ColorDataSource.getInstance().getAllData().get(colorPosition);
             if (mNumberBg == Constant.BACKGROUND_COLOR_0) {
