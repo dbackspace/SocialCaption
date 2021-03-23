@@ -3,8 +3,7 @@ package com.xlteam.textonpicture.external.utility.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.google.common.collect.Lists;
-
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -86,10 +85,10 @@ public class PrefUtils {
         if (sharedPreferences != null) {
             Set<String> set = sharedPreferences.getStringSet(keyWord, new HashSet<>());
             if (!Utility.isEmpty(set)) {
-                return Lists.newArrayList(set);
+                return new ArrayList<>(set);
             }
         }
-        return Lists.newArrayList();
+        return new ArrayList<>();
     }
 
     public static int getVersionLocalDatabase(Context context) {

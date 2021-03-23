@@ -69,7 +69,7 @@ import timber.log.Timber;
 import static com.xlteam.textonpicture.external.utility.utils.Constant.BACKGROUND_COLOR_0;
 import static com.xlteam.textonpicture.external.utility.utils.Constant.SAVE_DATE_TIME_FORMAT;
 
-public class EditCaptionActivity extends AppCompatActivity
+public class EditPictureActivity extends AppCompatActivity
         implements
         DialogAddTextBuilder.Callback,
         OnPhotoEditorListener,
@@ -114,7 +114,7 @@ public class EditCaptionActivity extends AppCompatActivity
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         // init view
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_caption);
+        setContentView(R.layout.activity_edit_picture);
         mContext = getBaseContext();
         MobileAds.initialize(this);
         mAdView = findViewById(R.id.adView);
