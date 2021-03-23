@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.xlteam.socialcaption.external.utility.customview.SquareRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.xlteam.textonpicture.external.utility.customview.SquareRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl_item_gallery"
     android:layout_width="match_parent"
@@ -30,4 +30,4 @@
             android:button="@null"
             android:visibility="gone" />
     </androidx.cardview.widget.CardView>
-</com.xlteam.socialcaption.external.utility.customview.SquareRelativeLayout>
+</com.xlteam.textonpicture.external.utility.customview.SquareRelativeLayout>

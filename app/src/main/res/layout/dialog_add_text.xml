@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:paddingBottom="5dp">
 
-    <com.xlteam.socialcaption.external.utility.customview.BlurImageView
+    <com.xlteam.textonpicture.external.utility.customview.BlurImageView
         android:id="@+id/blur_background_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -53,7 +53,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/layout_top">
 
-        <com.xlteam.socialcaption.external.utility.customview.AutoFitEditText
+        <com.xlteam.textonpicture.external.utility.customview.AutoFitEditText
             android:id="@+id/edtText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

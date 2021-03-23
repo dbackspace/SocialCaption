@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SocialCaption</string>
+    <string name="app_name">Text On Picture</string>
 
     <string name="feedback_title">Phản hồi về ứng dụng</string>
     <string name="feedback_msg">Vui lòng mô tả vấn đề hoặc phản hồi của bạn khi dùng ứng dụng:\n</string>

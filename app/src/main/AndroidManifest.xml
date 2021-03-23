@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.xlteam.socialcaption">
+    package="com.xlteam.textonpicture">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
-        android:name=".MyApplication"
+        android:name="com.xlteam.textonpicture.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -16,10 +16,10 @@
         android:resizeableActivity="false"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.SocialCaption"
+        android:theme="@style/Theme.TextOnPicture"
         android:windowSoftInputMode="adjustResize">
 
-        <activity android:name=".ui.SplashActivity">
+        <activity android:name="com.xlteam.textonpicture.ui.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,13 +27,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.home.HomePageActivity"
+            android:name="com.xlteam.textonpicture.ui.home.HomePageActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.SocialCaption.NoActionBar"
+            android:theme="@style/Theme.TextOnPicture.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui.edit.EditCaptionActivity"
+            android:name="com.xlteam.textonpicture.ui.edit.EditCaptionActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
@@ -44,7 +44,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.xlteam.socialcaption.external.utility.utils.fileprovider"
+            android:authorities="com.xlteam.textonpicture.external.utility.utils.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

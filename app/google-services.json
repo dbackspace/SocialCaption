@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "348959873751",
-    "project_id": "socialcaption-xlteam",
-    "storage_bucket": "socialcaption-xlteam.appspot.com"
+    "project_number": "646231048189",
+    "project_id": "text-on-picture",
+    "storage_bucket": "text-on-picture.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:348959873751:android:051214e3bc727270e76e92",
+        "mobilesdk_app_id": "1:646231048189:android:085365ff34a60cd9592394",
         "android_client_info": {
-          "package_name": "com.xlteam.socialcaption"
+          "package_name": "com.xlteam.textonpicture"
         }
       },
       "oauth_client": [
         {
-          "client_id": "348959873751-hjvddphi4dhlogu0p40u3fgruh3vakfi.apps.googleusercontent.com",
+          "client_id": "646231048189-ecq017qovfn342jrp77rko1i7qhdv0ba.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCRrv4sDJwn2dV7wJGcpU9Ut09wGrAHy14"
+          "current_key": "AIzaSyBTBy8i9YKcbgOWUcrH6g83QYrtpkmmzmQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "348959873751-hjvddphi4dhlogu0p40u3fgruh3vakfi.apps.googleusercontent.com",
+              "client_id": "646231048189-ecq017qovfn342jrp77rko1i7qhdv0ba.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
