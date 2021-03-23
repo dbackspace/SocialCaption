@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E0E0E0"
+    android:background="#000000"
     tools:context=".ui.edit.EditCaptionActivity">
 
     <RelativeLayout
@@ -15,7 +15,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="#FCFCFC">
+            android:background="#121212">
 
             <ImageView
                 android:id="@+id/btn_edit_back_and_cancel"
@@ -26,7 +26,7 @@
                 android:layout_marginStart="5dp"
                 android:background="@drawable/bg_ripple_click_view_circle"
                 android:padding="5dp"
-                android:src="@drawable/ic_back_black" />
+                android:src="@drawable/ic_back_white" />
 
             <TextView
                 android:id="@+id/tv_edit_save"
@@ -41,7 +41,7 @@
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:text="Lưu"
-                android:textColor="@color/color_25"
+                android:textColor="@color/white"
                 android:textSize="20dp" />
         </RelativeLayout>
 
@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_alignParentBottom="true"
-            android:background="#FCFCFC"
+            android:background="#121212"
             android:gravity="center"
             android:orientation="horizontal"
             android:paddingStart="10dp"
@@ -76,7 +76,7 @@
                     android:layout_marginTop="5dp"
                     android:fontFamily="sans-serif-medium"
                     android:text="Thêm chữ"
-                    android:textColor="@color/color_25"
+                    android:textColor="@color/white"
                     android:textSize="10dp" />
             </LinearLayout>
 
@@ -101,7 +101,7 @@
                     android:layout_marginTop="5dp"
                     android:fontFamily="sans-serif-medium"
                     android:text="Ảnh nền"
-                    android:textColor="@color/color_25"
+                    android:textColor="@color/white"
                     android:textSize="10dp" />
             </LinearLayout>
 
@@ -117,7 +117,8 @@
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/ic_text_edit" />
+                    android:src="@drawable/ic_text_edit"
+                    android:tint="@color/white" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -125,7 +126,7 @@
                     android:layout_marginTop="5dp"
                     android:fontFamily="sans-serif-medium"
                     android:text="Chỉnh sửa"
-                    android:textColor="@color/color_25"
+                    android:textColor="@color/white"
                     android:textSize="10dp" />
             </LinearLayout>
         </LinearLayout>
@@ -135,8 +136,9 @@
         android:id="@+id/container_background_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/adView"
         android:layout_marginTop="50dp"
-        android:layout_marginBottom="120dp">
+        android:layout_marginBottom="60dp">
 
         <RelativeLayout
             android:id="@+id/relative_background_save_img"
@@ -146,7 +148,7 @@
 
             <ImageView
                 android:id="@+id/img_edit_background"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:adjustViewBounds="true"
@@ -166,7 +168,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="#FCFCFC">
+            android:background="#121212">
 
             <ImageView
                 android:id="@+id/btn_cancel_edit_text"
@@ -177,7 +179,8 @@
                 android:layout_marginStart="5dp"
                 android:background="@drawable/bg_ripple_click_view_circle"
                 android:padding="5dp"
-                android:src="@drawable/ic_close" />
+                android:src="@drawable/ic_close"
+                android:tint="@color/white" />
 
             <ImageView
                 android:id="@+id/image_save_text"
@@ -189,7 +192,8 @@
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/bg_ripple_click_view_circle"
                 android:padding="5dp"
-                android:src="@drawable/ic_done" />
+                android:src="@drawable/ic_done"
+                android:tint="@color/white" />
         </RelativeLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -226,7 +230,7 @@
                 android:id="@+id/layout_1"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:background="#FCFCFC"
+                android:background="#121212"
                 android:gravity="center"
                 ads:layout_constraintBottom_toBottomOf="parent"
                 ads:layout_constraintEnd_toEndOf="parent"
@@ -256,7 +260,7 @@
                         android:layout_marginTop="5dp"
                         android:fontFamily="sans-serif-medium"
                         android:text="Văn bản"
-                        android:textColor="@color/color_25"
+                        android:textColor="@color/white"
                         android:textSize="10dp" />
                 </LinearLayout>
 
@@ -283,7 +287,7 @@
                         android:layout_marginTop="5dp"
                         android:fontFamily="sans-serif-medium"
                         android:text="Màu sắc"
-                        android:textColor="@color/color_25"
+                        android:textColor="@color/white"
                         android:textSize="10dp" />
                 </LinearLayout>
 
@@ -310,7 +314,7 @@
                         android:layout_marginTop="5dp"
                         android:fontFamily="sans-serif-medium"
                         android:text="Font"
-                        android:textColor="@color/color_25"
+                        android:textColor="@color/white"
                         android:textSize="10dp" />
                 </LinearLayout>
 
@@ -338,7 +342,7 @@
                         android:layout_marginTop="5dp"
                         android:fontFamily="sans-serif-medium"
                         android:text="Nền chữ"
-                        android:textColor="@color/color_25"
+                        android:textColor="@color/white"
                         android:textSize="10dp" />
                 </LinearLayout>
 
@@ -366,7 +370,7 @@
                         android:layout_marginTop="5dp"
                         android:fontFamily="sans-serif-medium"
                         android:text="Vị trí"
-                        android:textColor="@color/color_25"
+                        android:textColor="@color/white"
                         android:textSize="10dp" />
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
