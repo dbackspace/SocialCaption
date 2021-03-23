@@ -249,7 +249,7 @@ public class Utility {
     }
 
     public static String getUrlByCategoryIndex(int category, int index) {
-        String first = "https://firebasestorage.googleapis.com/v0/b/socialcaption-xlteam.appspot.com/o/";
+        String first = "https://firebasestorage.googleapis.com/v0/b/text-on-picture.appspot.com/o/";
         String last = ".jpg?alt=media";
         switch (category) {
             case 1:
@@ -264,7 +264,7 @@ public class Utility {
     }
 
     public static ArrayList<String> getUrlPictureHome() {
-        String first = "https://firebasestorage.googleapis.com/v0/b/socialcaption-xlteam.appspot.com/o/";
+        String first = "https://firebasestorage.googleapis.com/v0/b/text-on-picture.appspot.com/o/";
         String last = ".jpg?alt=media";
         ArrayList<String> results = new ArrayList<>();
         results.add(first + "tinh_yeu_" + 0 + last);

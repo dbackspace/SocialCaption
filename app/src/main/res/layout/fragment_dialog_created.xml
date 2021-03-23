@@ -159,7 +159,7 @@
         android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_gallery_caption"
+        android:id="@+id/rv_created_picture"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/bottom_sheet"

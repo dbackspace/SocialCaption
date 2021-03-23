@@ -45,7 +45,7 @@ import timber.log.Timber;
 import static com.xlteam.textonpicture.external.utility.utils.Constant.FILE_PROVIDER_PATH;
 
 public class PictureCreatedDialogFragment extends DialogFragment implements PictureCreatedAdapter.GallerySelectCallback {
-    private RecyclerView rvGallery;
+    private RecyclerView rvCreated;
     private Context mContext;
     private TextView mEmptyImage, tvTotalChecked;
     private PictureCreatedAdapter mPictureCreatedAdapter;
@@ -137,24 +137,24 @@ public class PictureCreatedDialogFragment extends DialogFragment implements Pict
         mBtnShareGallery.setOnClickListener(v -> shareImages(mPictureCreatedAdapter.getCheckedList()));
 
         // init recycler gallery by findViewById
-        rvGallery = root.findViewById(R.id.rv_gallery_caption);
-        rvGallery.setLayoutManager(new GridLayoutManager(mContext, 3));
+        rvCreated = root.findViewById(R.id.rv_created_picture);
+        rvCreated.setLayoutManager(new GridLayoutManager(mContext, 3));
         // cache recyclerview
-        rvGallery.setItemViewCacheSize(25);
-        rvGallery.setDrawingCacheEnabled(true);
-        rvGallery.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        rvCreated.setItemViewCacheSize(25);
+        rvCreated.setDrawingCacheEnabled(true);
+        rvCreated.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
         if (mGalleryPaths != null && mGalleryPaths.size() > 0) {
 //            Timber.e("updateUI, list path size = " + mGalleryPaths.size());
             mEmptyImage.setVisibility(View.GONE);
-            rvGallery.setVisibility(View.VISIBLE);
+            rvCreated.setVisibility(View.VISIBLE);
             Collections.sort(mGalleryPaths, (s1, s2) -> s1.substring(s1.lastIndexOf("/") + 1)
                     .compareTo(s2.substring(s2.lastIndexOf("/") + 1)));
             mPictureCreatedAdapter = new PictureCreatedAdapter(mGalleryPaths, this);
-            rvGallery.setAdapter(mPictureCreatedAdapter);
+            rvCreated.setAdapter(mPictureCreatedAdapter);
         } else {
             mPictureCreatedAdapter = new PictureCreatedAdapter(new ArrayList<>(), this);
-            rvGallery.setVisibility(View.GONE);
+            rvCreated.setVisibility(View.GONE);
             mEmptyImage.setVisibility(View.VISIBLE);
             Utility.vibrateAnimation(mContext, mEmptyImage);
         }
@@ -216,13 +216,13 @@ public class PictureCreatedDialogFragment extends DialogFragment implements Pict
         if (mGalleryPaths != null && mGalleryPaths.size() > 0) {
             Timber.e("updateUI, list path size = %s", mGalleryPaths.size());
             mEmptyImage.setVisibility(View.GONE);
-            rvGallery.setVisibility(View.VISIBLE);
+            rvCreated.setVisibility(View.VISIBLE);
             Collections.sort(mGalleryPaths, (s1, s2) -> s1.substring(s1.lastIndexOf("/") + 1)
                     .compareTo(s2.substring(s2.lastIndexOf("/") + 1)));
             mPictureCreatedAdapter.updateList(mGalleryPaths);
             mPictureCreatedAdapter.notifyDataSetChanged();
         } else {
-            rvGallery.setVisibility(View.GONE);
+            rvCreated.setVisibility(View.GONE);
             mEmptyImage.setVisibility(View.VISIBLE);
             Utility.vibrateAnimation(mContext, mEmptyImage);
         }
