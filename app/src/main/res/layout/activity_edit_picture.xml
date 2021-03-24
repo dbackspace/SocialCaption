@@ -206,9 +206,10 @@
                 android:id="@+id/rvFont"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="5dp"
+                android:background="#80000000"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="5dp"
                 android:visibility="gone"
                 ads:layout_constraintBottom_toTopOf="@id/layout_1"
                 ads:layout_constraintEnd_toEndOf="parent"
@@ -276,8 +277,50 @@
                     android:id="@+id/rvColor"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_below="@id/sb_opacity"
-                    android:layout_marginBottom="5dp" />
+                    android:layout_below="@id/sb_opacity" />
+
+                <RadioGroup
+                    android:id="@+id/radioGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rvColor"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rbColorText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:button="@null"
+                        android:checked="true"
+                        android:fontFamily="sans-serif-medium"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="Màu chữ"
+                        android:textColor="@drawable/radio_button_color" />
+
+                    <RadioButton
+                        android:id="@+id/rbColorBackground"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:button="@null"
+                        android:fontFamily="sans-serif-medium"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="Màu nền"
+                        android:textColor="@drawable/radio_button_color" />
+
+                    <RadioButton
+                        android:id="@+id/rbColorShadow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:button="@null"
+                        android:fontFamily="sans-serif-medium"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="Vùng tối"
+                        android:textColor="@drawable/radio_button_color" />
+                </RadioGroup>
             </RelativeLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -379,23 +422,23 @@
                     android:layout_weight="1"
                     android:background="@drawable/bg_ripple_click_view_rectangle"
                     android:gravity="center"
-                    android:onClick="onTextBgClicked"
+                    android:onClick="onTextBendClicked"
                     android:orientation="vertical"
                     ads:layout_constraintEnd_toStartOf="@id/layout_btn_text_align"
                     ads:layout_constraintStart_toEndOf="@id/layout_btn_text_font">
 
                     <ImageView
-                        android:id="@+id/image_background"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:src="@drawable/ic_align_center" />
+                        android:rotation="45"
+                        android:src="@drawable/ic_bend" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:fontFamily="sans-serif-medium"
-                        android:text="Nền chữ"
+                        android:text="Uốn cong"
                         android:textColor="@color/white"
                         android:textSize="10dp" />
                 </LinearLayout>

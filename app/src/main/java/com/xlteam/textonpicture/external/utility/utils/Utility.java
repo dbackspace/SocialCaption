@@ -300,4 +300,10 @@ public class Utility {
         }
         return listOfAllImages;
     }
+
+    public static String convertDecimalNumberToHexString(int number) {
+        String result = Integer.toHexString(number);
+        if (result.length() == 1) return "0" + result;
+        return result;
+    }
 }

@@ -104,7 +104,7 @@ public class EditPictureActivity extends AppCompatActivity
     // Set default for tool
     private int mGravityText, mNumberBg = BACKGROUND_COLOR_0, mNumberColor = 0;
     // imgBackground: img background of align
-    private ImageView imgGravity, imgBackground;
+    private ImageView imgGravity;
     private ItemText mItemTextViewClicked;
     private RelativeLayout containerBgImage;
     private boolean isHasText = false;
@@ -199,8 +199,6 @@ public class EditPictureActivity extends AppCompatActivity
 
         rvFont = findViewById(R.id.rvFont);
         imgGravity = findViewById(R.id.imgGravity);
-        imgBackground = findViewById(R.id.image_background);
-
         //color
         rvColor = findViewById(R.id.rvColor);
         layoutColor = findViewById(R.id.layout_color_editor);
@@ -287,7 +285,7 @@ public class EditPictureActivity extends AppCompatActivity
     }
 
     // Thay đổi nền chữ
-    public void onTextBgClicked(View view) {
+    public void onTextBendClicked(View view) {
 //        mItemTextViewClicked.setBg(mNumberBg);
     }
 
@@ -549,22 +547,22 @@ public class EditPictureActivity extends AppCompatActivity
         ColorAdapter mColorAdapter = new ColorAdapter(colorPosition -> {
             mNumberColor = colorPosition;
             String color = ColorDataSource.getInstance().getAllData().get(colorPosition);
-            Utility.setColorForTextView(currentText, color);
+            String opacity = Utility.convertDecimalNumberToHexString(sbOpacity.getProgress() * 255 / 100);
+            Utility.setColorForTextView(currentText, "#" + opacity + color.substring(3));
         });
         rvColor.setAdapter(mColorAdapter);
         sbOpacity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            String color;
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                String newColor = "#" + Integer.toHexString(progress) + color;
-                Log.d("binh.ngk ", newColor);
+                tvValueOpacity.setText(progress + "%");
+                String newColor = "#" + Utility.convertDecimalNumberToHexString(progress * 255 / 100)
+                        + String.format("%06X", (0xFFFFFF & currentText.getCurrentTextColor()));
                 Utility.setColorForTextView(currentText, newColor);
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                color = String.format("%06X", (0xFFFFFF & currentText.getCurrentTextColor()));
             }
 
             @Override
@@ -573,19 +571,8 @@ public class EditPictureActivity extends AppCompatActivity
             }
         });
 
-        imgUpOpacity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        imgDownOpacity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+        imgUpOpacity.setOnClickListener(v -> sbOpacity.setProgress(sbOpacity.getProgress() + 1));
+        imgDownOpacity.setOnClickListener(v -> sbOpacity.setProgress(sbOpacity.getProgress() - 1));
 
         containerBgImage.setOnClickListener(v -> {
             //cái này rất mua việc, xóa cho khỏe
