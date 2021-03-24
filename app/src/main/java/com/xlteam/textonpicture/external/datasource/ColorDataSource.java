@@ -1,11 +1,9 @@
 package com.xlteam.textonpicture.external.datasource;
 
-import com.xlteam.textonpicture.model.Color;
-
 import java.util.ArrayList;
 
 public class ColorDataSource {
-    private final ArrayList<Color> colors = new ArrayList<>();
+    private final ArrayList<String> colors = new ArrayList<>();
 
     private static class SingletonHelper {
         private static final ColorDataSource INSTANCE = new ColorDataSource();
@@ -20,19 +18,19 @@ public class ColorDataSource {
     }
 
     private void createData() {
-        colors.add(new Color("#FF000000", "#FFFFFFFF")); // black
-        colors.add(new Color("#FFFFFFFF", "#FF000000")); // white
-        colors.add(new Color("#FF0000FF", "#FFFFFFFF")); // blue
-        colors.add(new Color("#FF00FFFF", "#FF000000")); // cyan, aqua
-        colors.add(new Color("#FF00FF00", "#FFFFFFFF")); // green
-        colors.add(new Color("#FFFFFF00", "#FF000000")); // yellow
-        colors.add(new Color("#FFFF0000", "#FFFFFFFF")); // red
-        colors.add(new Color("#FFFF6633", "#FFFFFFFF")); // orange
-        colors.add(new Color("#FF800080", "#FFFFFFFF")); // purple
-        colors.add(new Color("#FFFF00FF", "#FFFFFFFF")); // magenta
+        colors.add("#FF000000"); // black
+        colors.add("#FFFFFFFF"); // white
+        colors.add("#FF0000FF"); // blue
+        colors.add("#FF00FFFF"); // cyan, aqua
+        colors.add("#FF00FF00"); // green
+        colors.add("#FFFFFF00"); // yellow
+        colors.add("#FFFF0000"); // red
+        colors.add("#FFFF6633"); // orange
+        colors.add("#FF800080"); // purple
+        colors.add("#FFFF00FF"); // magenta
     }
 
-    public ArrayList<Color> getAllData() {
+    public ArrayList<String> getAllData() {
         return colors;
     }
 
