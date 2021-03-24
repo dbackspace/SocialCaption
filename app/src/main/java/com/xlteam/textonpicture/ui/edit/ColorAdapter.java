@@ -4,18 +4,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.xlteam.textonpicture.R;
-import com.xlteam.textonpicture.external.datasource.ColorDataSource;
-import com.xlteam.textonpicture.external.utility.utils.Utility;
-import com.xlteam.textonpicture.model.Color;
-
-import java.util.ArrayList;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.xlteam.textonpicture.R;
+import com.xlteam.textonpicture.external.datasource.ColorDataSource;
+import com.xlteam.textonpicture.external.utility.utils.Utility;
+
+import java.util.ArrayList;
+
 public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ViewHolder> {
-    private ArrayList<Color> mColors;
+    private ArrayList<String> mColors;
     private ColorSelectCallback mCallback;
     private int mNumberSelect;
 
@@ -37,8 +36,8 @@ public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ColorAdapter.ViewHolder holder, int position) {
-        Color color = mColors.get(position);
-        Utility.setColorForView(holder.itemView, color.getColor());
+        String color = mColors.get(position);
+        Utility.setColorForView(holder.itemView, color);
         holder.itemView.setOnClickListener(v -> {
             mCallback.selectColor(position);
             mNumberSelect = position;

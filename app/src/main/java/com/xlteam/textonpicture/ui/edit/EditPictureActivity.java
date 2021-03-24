@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,7 +54,6 @@ import com.xlteam.textonpicture.external.utility.logger.Log;
 import com.xlteam.textonpicture.external.utility.utils.Constant;
 import com.xlteam.textonpicture.external.utility.utils.FileUtils;
 import com.xlteam.textonpicture.external.utility.utils.Utility;
-import com.xlteam.textonpicture.model.Color;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -92,7 +92,15 @@ public class EditPictureActivity extends AppCompatActivity
     private RelativeLayout relativeBackground;
 
     // Text editor
-    private RecyclerView rvFont, rvColor;
+    private RecyclerView rvFont;
+
+    //color
+    private RelativeLayout layoutColor;
+    private RecyclerView rvColor;
+    private SeekBar sbOpacity;
+    private ImageView imgUpOpacity, imgDownOpacity;
+    private TextView tvValueOpacity;
+
     // Set default for tool
     private int mGravityText, mNumberBg = BACKGROUND_COLOR_0, mNumberColor = 0;
     // imgBackground: img background of align
@@ -188,10 +196,18 @@ public class EditPictureActivity extends AppCompatActivity
         layoutText = findViewById(R.id.layout_text);
         imgCancelText = findViewById(R.id.btn_cancel_edit_text);
         imgDoneText = findViewById(R.id.image_save_text);
-        rvColor = findViewById(R.id.rvColor);
+
         rvFont = findViewById(R.id.rvFont);
         imgGravity = findViewById(R.id.imgGravity);
         imgBackground = findViewById(R.id.image_background);
+
+        //color
+        rvColor = findViewById(R.id.rvColor);
+        layoutColor = findViewById(R.id.layout_color_editor);
+        sbOpacity = findViewById(R.id.sb_opacity);
+        imgUpOpacity = findViewById(R.id.image_up_opacity);
+        imgDownOpacity = findViewById(R.id.image_down_opacity);
+        tvValueOpacity = findViewById(R.id.tv_value_opacity);
     }
 
     @Override
@@ -260,38 +276,19 @@ public class EditPictureActivity extends AppCompatActivity
 
     // Thay đổi màu chữ (color)
     public void onTextColorClicked(View view) {
-        rvColor.setVisibility(View.VISIBLE);
+        layoutColor.setVisibility(View.VISIBLE);
         rvFont.setVisibility(View.GONE);
     }
 
     // Thay đổi font
     public void onTextFontClicked(View view) {
         rvFont.setVisibility(View.VISIBLE);
-        rvColor.setVisibility(View.GONE);
+        layoutColor.setVisibility(View.GONE);
     }
 
     // Thay đổi nền chữ
     public void onTextBgClicked(View view) {
-        Color color = ColorDataSource.getInstance().getAllData().get(mNumberColor);
-        if (mNumberBg == Constant.BACKGROUND_COLOR_0) {
-            mNumberBg = Constant.BACKGROUND_COLOR_50;
-//            imgBackground.setImageResource(R.drawable.ic_align_right);
-            String colorBlur = "#80" + color.getColor().substring(3);
-            Utility.setColorForView(currentText, colorBlur);
-            Utility.setColorForTextView(currentText, color.getTextColor());
-
-        } else if (mNumberBg == Constant.BACKGROUND_COLOR_50) {
-            mNumberBg = Constant.BACKGROUND_COLOR_100;
-//            imgBackground.setImageResource(R.drawable.ic_align_left);
-            Utility.setColorForView(currentText, color.getColor());
-            Utility.setColorForTextView(currentText, color.getTextColor());
-        } else {
-            mNumberBg = Constant.BACKGROUND_COLOR_0;
-//            imgBackground.setImageResource(R.drawable.ic_align_center);
-            Utility.setColorForView(currentText, "#00FFFFFF");
-            Utility.setColorForTextView(currentText, color.getColor());
-        }
-        mItemTextViewClicked.setBg(mNumberBg);
+//        mItemTextViewClicked.setBg(mNumberBg);
     }
 
     public void onTextAlignClicked(View view) {
@@ -537,6 +534,7 @@ public class EditPictureActivity extends AppCompatActivity
     }
 
     private void initTextEditor() {
+        //font
         rvFont.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         FontAdapter mFontAdapter = new FontAdapter(this, numberFont -> {
             Timber.e("setFont");
@@ -546,25 +544,48 @@ public class EditPictureActivity extends AppCompatActivity
         });
         rvFont.setAdapter(mFontAdapter);
 
+        //color
         rvColor.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
-        //loại bỏ #FF, thay bằng #80
         ColorAdapter mColorAdapter = new ColorAdapter(colorPosition -> {
             mNumberColor = colorPosition;
-            Color color = ColorDataSource.getInstance().getAllData().get(colorPosition);
-            if (mNumberBg == Constant.BACKGROUND_COLOR_0) {
-                Utility.setColorForView(currentText, "#00FFFFFF");
-                Utility.setColorForTextView(currentText, color.getColor());
-            } else if (mNumberBg == Constant.BACKGROUND_COLOR_50) {
-                String colorBlur = "#80" + color.getColor().substring(3);//loại bỏ #FF, thay bằng #80
-                Utility.setColorForView(currentText, colorBlur);
-                Utility.setColorForTextView(currentText, color.getTextColor());
-            } else {
-                Utility.setColorForView(currentText, color.getColor());
-                Utility.setColorForTextView(currentText, color.getTextColor());
-            }
-            mItemTextViewClicked.setColor(colorPosition);
+            String color = ColorDataSource.getInstance().getAllData().get(colorPosition);
+            Utility.setColorForTextView(currentText, color);
         });
         rvColor.setAdapter(mColorAdapter);
+        sbOpacity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            String color;
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                String newColor = "#" + Integer.toHexString(progress) + color;
+                Log.d("binh.ngk ", newColor);
+                Utility.setColorForTextView(currentText, newColor);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                color = String.format("%06X", (0xFFFFFF & currentText.getCurrentTextColor()));
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        imgUpOpacity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        imgDownOpacity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         containerBgImage.setOnClickListener(v -> {
             //cái này rất mua việc, xóa cho khỏe
