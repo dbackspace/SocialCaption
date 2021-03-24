@@ -214,17 +214,71 @@
                 ads:layout_constraintEnd_toEndOf="parent"
                 ads:layout_constraintStart_toStartOf="parent" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvColor"
+            <RelativeLayout
+                android:id="@+id/layout_color_editor"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="5dp"
+                android:layout_height="wrap_content"
+                android:background="#80000000"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
                 android:visibility="gone"
                 ads:layout_constraintBottom_toTopOf="@id/layout_1"
                 ads:layout_constraintEnd_toEndOf="parent"
-                ads:layout_constraintStart_toStartOf="parent" />
+                ads:layout_constraintStart_toStartOf="parent">
+
+                <ImageView
+                    android:id="@+id/image_down_opacity"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_below="@id/tv_value_opacity"
+                    android:src="@drawable/ic_down" />
+
+                <ImageView
+                    android:id="@+id/image_up_opacity"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_below="@id/tv_value_opacity"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/ic_up" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_toEndOf="@id/image_down_opacity"
+                    android:text="Độ trong"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/tv_value_opacity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:layout_toStartOf="@id/image_up_opacity"
+                    android:text="100%"
+                    android:textColor="@color/white" />
+
+                <SeekBar
+                    android:id="@+id/sb_opacity"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_below="@id/tv_value_opacity"
+                    android:layout_toStartOf="@id/image_up_opacity"
+                    android:layout_toEndOf="@id/image_down_opacity"
+                    android:max="100"
+                    android:progress="100"
+                    android:progressBackgroundTint="@color/color_FC"
+                    android:progressTint="@color/color_3cc2f5_legend"
+                    android:thumbTint="@color/white" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvColor"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_below="@id/sb_opacity"
+                    android:layout_marginBottom="5dp" />
+            </RelativeLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_1"
