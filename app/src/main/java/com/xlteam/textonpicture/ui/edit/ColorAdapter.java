@@ -37,7 +37,7 @@ public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ColorAdapter.ViewHolder holder, int position) {
         String color = mColors.get(position);
-        Utility.setColorForView(holder.itemView, color);
+        Utility.setColorForView(holder.itemView, "#FF" + color);
         holder.itemView.setOnClickListener(v -> {
             mCallback.selectColor(position);
             mNumberSelect = position;

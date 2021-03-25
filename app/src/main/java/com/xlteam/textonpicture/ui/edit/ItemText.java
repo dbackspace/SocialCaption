@@ -12,6 +12,7 @@ public class ItemText {
     private static final int DEFAULT_GRAVITY = Gravity.CENTER;
     private static final int DEFAULT_FONT = 3;
     private static final int DEFAULT_BG = Constant.BACKGROUND_COLOR_0;
+    private static final int DEFAULT_OPACITY_PROGRESS = 100;
 
     private String text;
     private int color;
@@ -19,6 +20,7 @@ public class ItemText {
     private int gravity;
     private int font;
     private int bg;
+    private int opacityProgress;
 
     // Khởi tạo giá trị default
     public ItemText(String text) {
@@ -28,13 +30,15 @@ public class ItemText {
         this.gravity = DEFAULT_GRAVITY;
         this.font = DEFAULT_FONT;
         this.bg = DEFAULT_BG;
+        this.opacityProgress = DEFAULT_OPACITY_PROGRESS;
     }
 
-    public ItemText(String text, int color, float size, int alignment) {
+    public ItemText(String text, int color, float size, int alignment, int opacityProgress) {
         this.text = text;
         this.color = color;
         this.size = size;
         this.gravity = alignment;
+        this.opacityProgress = opacityProgress;
     }
 
     public String getText() {
@@ -83,5 +87,13 @@ public class ItemText {
 
     public void setBg(int bg) {
         this.bg = bg;
+    }
+
+    public int getOpacityProgress() {
+        return opacityProgress;
+    }
+
+    public void setOpacityProgress(int opacityProgress) {
+        this.opacityProgress = opacityProgress;
     }
 }

@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -79,7 +80,6 @@ public class EditPictureActivity extends AppCompatActivity
     private ImageView mImgBackground;
     private RelativeLayout layoutText;
 
-
     private AdView mAdView;
     public static final int PICK_IMAGE = 1;
 
@@ -100,9 +100,10 @@ public class EditPictureActivity extends AppCompatActivity
     private SeekBar sbOpacity;
     private ImageView imgUpOpacity, imgDownOpacity;
     private TextView tvValueOpacity;
+    private RadioGroup radioGroup;
+    private String currentColorText = "000000", currentColorBackground = "000000";
+    private String currentOpacityText = "FF", currentOpacityBackground = "00";
 
-    // Set default for tool
-    private int mGravityText, mNumberBg = BACKGROUND_COLOR_0, mNumberColor = 0;
     // imgBackground: img background of align
     private ImageView imgGravity;
     private ItemText mItemTextViewClicked;
@@ -206,6 +207,7 @@ public class EditPictureActivity extends AppCompatActivity
         imgUpOpacity = findViewById(R.id.image_up_opacity);
         imgDownOpacity = findViewById(R.id.image_down_opacity);
         tvValueOpacity = findViewById(R.id.tv_value_opacity);
+        radioGroup = findViewById(R.id.radioGroup);
     }
 
     @Override
@@ -290,6 +292,8 @@ public class EditPictureActivity extends AppCompatActivity
     }
 
     public void onTextAlignClicked(View view) {
+        int mGravityText = ((ItemText) currentText.getTag()).getGravity();
+        Timber.e("previous: " + currentText.getText().toString() + " " + mGravityText);
         if (mGravityText == Gravity.CENTER) {
             mGravityText = Gravity.END;
             imgGravity.setImageResource(R.drawable.ic_align_right);
@@ -301,7 +305,10 @@ public class EditPictureActivity extends AppCompatActivity
             imgGravity.setImageResource(R.drawable.ic_align_center);
         }
         currentText.setGravity(mGravityText);
+        mItemTextViewClicked.setText(currentText.getText().toString());
         mItemTextViewClicked.setGravity(mGravityText);
+        Timber.e("after: " + currentText.getText().toString() + " " + mItemTextViewClicked.getGravity());
+        currentText.setTag(mItemTextViewClicked);
     }
 
     public Bitmap getBitmapFromImageView(ImageView imageView) {
@@ -465,12 +472,13 @@ public class EditPictureActivity extends AppCompatActivity
             }
         });
 
-        mNumberBg = BACKGROUND_COLOR_0;
-        mNumberColor = 0;
+//        imgGravity.setImageResource(R.drawable.ic_align_center);
+
         Utility.setColorForView(currentText, "#00FFFFFF");
 //        Utility.setColorForTextView(currentText, color.getColor());
-        mItemTextViewClicked = new ItemText(text);
-
+        mItemTextViewClicked = new ItemText(currentText.getText().toString());
+        Timber.e("setTag: " + currentText.getText().toString());
+        currentText.setTag(mItemTextViewClicked);
         showTextMode(true);
         addViewToParent(currentViewOfText);
         currentViewOfText.setOnTouchListener(multiTouchListener);
@@ -535,20 +543,32 @@ public class EditPictureActivity extends AppCompatActivity
         //font
         rvFont.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         FontAdapter mFontAdapter = new FontAdapter(this, numberFont -> {
-            Timber.e("setFont");
             Typeface typeface = Typeface.createFromAsset(mContext.getAssets(), "font/" + FontDataSource.getInstance().getAllFonts().get(numberFont).getFont());
             currentText.setTypeface(typeface);
-            mItemTextViewClicked.setFont(numberFont);
+
+//            mItemTextViewClicked.setFont(numberFont);
+//            Timber.e("select font " + numberFont);
+//            currentText.setTag(mItemTextViewClicked);
         });
         rvFont.setAdapter(mFontAdapter);
 
         //color
         rvColor.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         ColorAdapter mColorAdapter = new ColorAdapter(colorPosition -> {
-            mNumberColor = colorPosition;
             String color = ColorDataSource.getInstance().getAllData().get(colorPosition);
-            String opacity = Utility.convertDecimalNumberToHexString(sbOpacity.getProgress() * 255 / 100);
-            Utility.setColorForTextView(currentText, "#" + opacity + color.substring(3));
+            switch (radioGroup.getCheckedRadioButtonId()) {
+                case R.id.rbColorText:
+                    Utility.setColorForTextView(currentText, "#" + currentOpacityText + color);
+                    currentColorText = color;
+                    break;
+                case R.id.rbColorBackground:
+                    Utility.setColorForView(currentText, "#" + currentOpacityBackground + color);
+                    currentColorBackground = color;
+                    break;
+            }
+
+//            mItemTextViewClicked.setColor(mNumberColor);
+//            currentText.setTag(mItemTextViewClicked);
         });
         rvColor.setAdapter(mColorAdapter);
         sbOpacity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -556,9 +576,18 @@ public class EditPictureActivity extends AppCompatActivity
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 tvValueOpacity.setText(progress + "%");
-                String newColor = "#" + Utility.convertDecimalNumberToHexString(progress * 255 / 100)
-                        + String.format("%06X", (0xFFFFFF & currentText.getCurrentTextColor()));
-                Utility.setColorForTextView(currentText, newColor);
+                switch (radioGroup.getCheckedRadioButtonId()) {
+                    case R.id.rbColorText:
+                        currentOpacityText = Utility.convertDecimalNumberToHexString(progress * 255 / 100);
+                        Utility.setColorForTextView(currentText, "#" + currentOpacityText + currentColorText);
+                        break;
+                    case R.id.rbColorBackground:
+                        currentOpacityBackground = Utility.convertDecimalNumberToHexString(progress * 255 / 100);
+                        Utility.setColorForView(currentText, "#" + currentOpacityBackground + currentColorBackground);
+                        break;
+                }
+//                mItemTextViewClicked.setOpacityProgress(progress);
+//                currentText.setTag(mItemTextViewClicked);
             }
 
             @Override
@@ -574,8 +603,15 @@ public class EditPictureActivity extends AppCompatActivity
         imgUpOpacity.setOnClickListener(v -> sbOpacity.setProgress(sbOpacity.getProgress() + 1));
         imgDownOpacity.setOnClickListener(v -> sbOpacity.setProgress(sbOpacity.getProgress() - 1));
 
-        containerBgImage.setOnClickListener(v -> {
-            //cái này rất mua việc, xóa cho khỏe
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            switch (checkedId) {
+                case R.id.rbColorText:
+                    sbOpacity.setProgress(Utility.convertHexStringToDecimalNumber(currentOpacityText));
+                    break;
+                case R.id.rbColorBackground:
+                    sbOpacity.setProgress(Utility.convertHexStringToDecimalNumber(currentOpacityBackground));
+                    break;
+            }
         });
     }
 
@@ -640,5 +676,26 @@ public class EditPictureActivity extends AppCompatActivity
         imgEdit = currentViewOfText.findViewById(R.id.image_text_edit);
         imgBalance = currentViewOfText.findViewById(R.id.image_text_balance);
         imgZoom = currentViewOfText.findViewById(R.id.image_text_zoom);
+
+        Timber.e("current Text: " + currentText.getText().toString());
+        ItemText itemText = (ItemText) currentText.getTag();
+        scrollToCurrentFontOfText(itemText.getFont(), currentText.getGravity());
+    }
+
+    private void scrollToCurrentFontOfText(int positionFont, int gravity) {
+        Timber.e(positionFont + " " + gravity);
+        rvFont.smoothScrollToPosition(positionFont);
+        setIconGravity(gravity);
+    }
+
+    private void setIconGravity(int gravity) {
+//        mGravityText = gravity;
+        if (gravity == Gravity.END) {
+            imgGravity.setImageResource(R.drawable.ic_align_right);
+        } else if (gravity == Gravity.START) {
+            imgGravity.setImageResource(R.drawable.ic_align_left);
+        } else {
+            imgGravity.setImageResource(R.drawable.ic_align_center);
+        }
     }
 }
