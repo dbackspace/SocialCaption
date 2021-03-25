@@ -18,16 +18,16 @@ public class ColorDataSource {
     }
 
     private void createData() {
-        colors.add("#FF000000"); // black
-        colors.add("#FFFFFFFF"); // white
-        colors.add("#FF0000FF"); // blue
-        colors.add("#FF00FFFF"); // cyan, aqua
-        colors.add("#FF00FF00"); // green
-        colors.add("#FFFFFF00"); // yellow
-        colors.add("#FFFF0000"); // red
-        colors.add("#FFFF6633"); // orange
-        colors.add("#FF800080"); // purple
-        colors.add("#FFFF00FF"); // magenta
+        colors.add("000000"); // black
+        colors.add("FFFFFF"); // white
+        colors.add("0000FF"); // blue
+        colors.add("00FFFF"); // cyan, aqua
+        colors.add("00FF00"); // green
+        colors.add("FFFF00"); // yellow
+        colors.add("FF0000"); // red
+        colors.add("FF6633"); // orange
+        colors.add("800080"); // purple
+        colors.add("FF00FF"); // magenta
     }
 
     public ArrayList<String> getAllData() {
