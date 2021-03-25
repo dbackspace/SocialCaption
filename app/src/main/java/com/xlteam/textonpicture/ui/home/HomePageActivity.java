@@ -132,8 +132,6 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
                             } else {
                                 showRvCreated(true);
                                 showAndSetTextViewEmpty(false, null);
-                                createdAdapter = new PictureHomeAdapter(HomePageActivity.this, Constant.TYPE_PICTURE_CREATED, FileUtils.getListPathsIfFolderExist());
-                                rvCreated.setAdapter(createdAdapter);
                             }
                         } else {
                             showRvCreated(false);
@@ -156,10 +154,9 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
                             } else {
                                 needCheckPermission = false;
                             }
-
-                            createdAdapter = new PictureHomeAdapter(HomePageActivity.this, Constant.TYPE_PICTURE_CREATED, FileUtils.getListPathsIfFolderExist());
-                            rvCreated.setAdapter(createdAdapter);
                         }
+                        createdAdapter = new PictureHomeAdapter(HomePageActivity.this, Constant.TYPE_PICTURE_CREATED, FileUtils.getListPathsIfFolderExist());
+                        rvCreated.setAdapter(createdAdapter);
                     }
 
                     @Override
@@ -261,8 +258,12 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
     }
 
     private void updateDataToRecyclerCreated(List<String> listPathsIfFolderExist) {
-        createdAdapter.updateList(listPathsIfFolderExist);
-        createdAdapter.notifyDataSetChanged();
+        if (listPathsIfFolderExist.size() > 0) {
+            showRvCreated(true);
+            showAndSetTextViewEmpty(false, null);
+            createdAdapter.updateList(listPathsIfFolderExist);
+            createdAdapter.notifyDataSetChanged();
+        }
     }
 
     //    @Override
