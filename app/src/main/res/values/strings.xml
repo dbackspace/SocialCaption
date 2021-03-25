@@ -44,4 +44,11 @@
     <string name="view_more">Xem thêm</string>
     <string name="select_picture">Select Picture</string>
     <string name="not_selected_picture">Bạn chưa chọn ảnh.</string>
+    <string name="add_text">Văn bản</string>
+    <string name="color_text">Màu chữ</string>
+    <string name="color_background">Màu nền</string>
+    <string name="shadow">Vùng tối</string>
+    <string name="font">Font</string>
+    <string name="bend">Uốn cong</string>
+    <string name="gravity">Bố cục</string>
 </resources>

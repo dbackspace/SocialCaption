@@ -21,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -67,7 +66,6 @@ import java.util.Locale;
 
 import timber.log.Timber;
 
-import static com.xlteam.textonpicture.external.utility.utils.Constant.BACKGROUND_COLOR_0;
 import static com.xlteam.textonpicture.external.utility.utils.Constant.SAVE_DATE_TIME_FORMAT;
 
 public class EditPictureActivity extends AppCompatActivity
@@ -98,22 +96,22 @@ public class EditPictureActivity extends AppCompatActivity
     private RelativeLayout layoutColor;
     private RecyclerView rvColor;
     private SeekBar sbOpacity;
-    private ImageView imgUpOpacity, imgDownOpacity;
     private TextView tvValueOpacity;
-    private RadioGroup radioGroup;
     private String currentColorText = "000000", currentColorBackground = "000000";
-    private String currentOpacityText = "FF", currentOpacityBackground = "00";
+    private int currentOpacityText = 100, currentOpacityBackground = 0;
+    //align
+    private RelativeLayout layoutAlign;
 
     // imgBackground: img background of align
-    private ImageView imgGravity;
     private ItemText mItemTextViewClicked;
-    private RelativeLayout containerBgImage;
     private boolean isHasText = false;
 
     // text current
     private TextView currentText;
     // tool for text
     private ImageView imgRemove, imgEdit, imgBalance, imgZoom;
+    private RecyclerView rvToolText;
+    private ToolTextAdapter mToolTextAdapter;
     // border for text
     private FrameLayout borderOfText;
     private View currentViewOfText;
@@ -191,23 +189,22 @@ public class EditPictureActivity extends AppCompatActivity
         mImgBackground = findViewById(R.id.img_edit_background);
 
         relativeBackground = findViewById(R.id.relative_background_save_img);
-        containerBgImage = findViewById(R.id.container_background_image);
 
         //text editor
+        rvToolText = findViewById(R.id.rv_tool_text);
         layoutText = findViewById(R.id.layout_text);
         imgCancelText = findViewById(R.id.btn_cancel_edit_text);
         imgDoneText = findViewById(R.id.image_save_text);
 
         rvFont = findViewById(R.id.rvFont);
-        imgGravity = findViewById(R.id.imgGravity);
         //color
         rvColor = findViewById(R.id.rvColor);
         layoutColor = findViewById(R.id.layout_color_editor);
         sbOpacity = findViewById(R.id.sb_opacity);
-        imgUpOpacity = findViewById(R.id.image_up_opacity);
-        imgDownOpacity = findViewById(R.id.image_down_opacity);
         tvValueOpacity = findViewById(R.id.tv_value_opacity);
-        radioGroup = findViewById(R.id.radioGroup);
+
+        //align
+        layoutAlign = findViewById(R.id.layout_align);
     }
 
     @Override
@@ -254,7 +251,7 @@ public class EditPictureActivity extends AppCompatActivity
         addTextDialog.show();
     }
 
-    public void onAddTextClicked(View view) {
+    public void onAddTextClicked() {
         Dialog addTextDialog = new DialogAddTextBuilder(this, this, null, Utility.getBitmapFromView(relativeBackground)).build();
         addTextDialog.show();
     }
@@ -275,40 +272,40 @@ public class EditPictureActivity extends AppCompatActivity
     }
 
     // Thay đổi màu chữ (color)
-    public void onTextColorClicked(View view) {
+    public void onTextColorClicked() {
         layoutColor.setVisibility(View.VISIBLE);
         rvFont.setVisibility(View.GONE);
+        layoutAlign.setVisibility(View.GONE);
+        sbOpacity.setProgress(currentOpacityText);
+
+    }
+
+    public void onTextBgColorClicked() {
+        layoutColor.setVisibility(View.VISIBLE);
+        rvFont.setVisibility(View.GONE);
+        layoutAlign.setVisibility(View.GONE);
+        sbOpacity.setProgress(currentOpacityBackground != 0 ? currentOpacityBackground : 20); //nếu màu nền trong suốt thì cho bằng 20 để user nhận biết sự thay đổi màu
+    }
+
+    public void onTextShadowClicked() {
+
     }
 
     // Thay đổi font
-    public void onTextFontClicked(View view) {
+    public void onTextFontClicked() {
         rvFont.setVisibility(View.VISIBLE);
         layoutColor.setVisibility(View.GONE);
+        layoutAlign.setVisibility(View.GONE);
     }
 
-    // Thay đổi nền chữ
-    public void onTextBendClicked(View view) {
+    public void onTextBendClicked() {
 //        mItemTextViewClicked.setBg(mNumberBg);
     }
 
-    public void onTextAlignClicked(View view) {
-        int mGravityText = ((ItemText) currentText.getTag()).getGravity();
-        Timber.e("previous: " + currentText.getText().toString() + " " + mGravityText);
-        if (mGravityText == Gravity.CENTER) {
-            mGravityText = Gravity.END;
-            imgGravity.setImageResource(R.drawable.ic_align_right);
-        } else if (mGravityText == Gravity.END) {
-            mGravityText = Gravity.START;
-            imgGravity.setImageResource(R.drawable.ic_align_left);
-        } else {
-            mGravityText = Gravity.CENTER;
-            imgGravity.setImageResource(R.drawable.ic_align_center);
-        }
-        currentText.setGravity(mGravityText);
-        mItemTextViewClicked.setText(currentText.getText().toString());
-        mItemTextViewClicked.setGravity(mGravityText);
-        Timber.e("after: " + currentText.getText().toString() + " " + mItemTextViewClicked.getGravity());
-        currentText.setTag(mItemTextViewClicked);
+    public void onTextAlignClicked() {
+        layoutAlign.setVisibility(View.VISIBLE);
+        rvFont.setVisibility(View.GONE);
+        layoutColor.setVisibility(View.GONE);
     }
 
     public Bitmap getBitmapFromImageView(ImageView imageView) {
@@ -540,7 +537,36 @@ public class EditPictureActivity extends AppCompatActivity
     }
 
     private void initTextEditor() {
-        //font
+        rvToolText.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        mToolTextAdapter = new ToolTextAdapter(this, number -> {
+            switch (number) {
+                case 0:
+                    onAddTextClicked();
+                    break;
+                case 1:
+                    onTextColorClicked();
+                    break;
+                case 2:
+                    onTextBgColorClicked();
+                    break;
+                case 3:
+                    onTextShadowClicked();
+                    break;
+                case 4:
+                    onTextFontClicked();
+                    break;
+                case 5:
+                    onTextBendClicked();
+                    break;
+                case 6:
+                    onTextAlignClicked();
+                    break;
+
+            }
+        });
+        rvToolText.setAdapter(mToolTextAdapter);
+
+        /* init font*/
         rvFont.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         FontAdapter mFontAdapter = new FontAdapter(this, numberFont -> {
             Typeface typeface = Typeface.createFromAsset(mContext.getAssets(), "font/" + FontDataSource.getInstance().getAllFonts().get(numberFont).getFont());
@@ -552,17 +578,18 @@ public class EditPictureActivity extends AppCompatActivity
         });
         rvFont.setAdapter(mFontAdapter);
 
-        //color
+
+        /* init color*/
         rvColor.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         ColorAdapter mColorAdapter = new ColorAdapter(colorPosition -> {
             String color = ColorDataSource.getInstance().getAllData().get(colorPosition);
-            switch (radioGroup.getCheckedRadioButtonId()) {
-                case R.id.rbColorText:
-                    Utility.setColorForTextView(currentText, "#" + currentOpacityText + color);
+            switch (mToolTextAdapter.getCurrentNumberTool()) {
+                case 1:
+                    Utility.setColorForTextView(currentText, "#" + Utility.convertOpacityToHexString(currentOpacityText) + color);
                     currentColorText = color;
                     break;
-                case R.id.rbColorBackground:
-                    Utility.setColorForView(currentText, "#" + currentOpacityBackground + color);
+                case 2:
+                    Utility.setColorForView(currentText, "#" + Utility.convertOpacityToHexString(currentOpacityBackground) + color);
                     currentColorBackground = color;
                     break;
             }
@@ -576,16 +603,17 @@ public class EditPictureActivity extends AppCompatActivity
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 tvValueOpacity.setText(progress + "%");
-                switch (radioGroup.getCheckedRadioButtonId()) {
-                    case R.id.rbColorText:
-                        currentOpacityText = Utility.convertDecimalNumberToHexString(progress * 255 / 100);
-                        Utility.setColorForTextView(currentText, "#" + currentOpacityText + currentColorText);
+                switch (mToolTextAdapter.getCurrentNumberTool()) {
+                    case 1:
+                        currentOpacityText = progress;
+                        Utility.setColorForTextView(currentText, "#" + Utility.convertOpacityToHexString(currentOpacityText) + currentColorText);
                         break;
-                    case R.id.rbColorBackground:
-                        currentOpacityBackground = Utility.convertDecimalNumberToHexString(progress * 255 / 100);
-                        Utility.setColorForView(currentText, "#" + currentOpacityBackground + currentColorBackground);
+                    case 2:
+                        currentOpacityBackground = progress;
+                        Utility.setColorForView(currentText, "#" + Utility.convertOpacityToHexString(currentOpacityBackground) + currentColorBackground);
                         break;
                 }
+
 //                mItemTextViewClicked.setOpacityProgress(progress);
 //                currentText.setTag(mItemTextViewClicked);
             }
@@ -597,20 +625,6 @@ public class EditPictureActivity extends AppCompatActivity
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
 
-            }
-        });
-
-        imgUpOpacity.setOnClickListener(v -> sbOpacity.setProgress(sbOpacity.getProgress() + 1));
-        imgDownOpacity.setOnClickListener(v -> sbOpacity.setProgress(sbOpacity.getProgress() - 1));
-
-        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            switch (checkedId) {
-                case R.id.rbColorText:
-                    sbOpacity.setProgress(Utility.convertHexStringToDecimalNumber(currentOpacityText));
-                    break;
-                case R.id.rbColorBackground:
-                    sbOpacity.setProgress(Utility.convertHexStringToDecimalNumber(currentOpacityBackground));
-                    break;
             }
         });
     }
@@ -690,12 +704,12 @@ public class EditPictureActivity extends AppCompatActivity
 
     private void setIconGravity(int gravity) {
 //        mGravityText = gravity;
-        if (gravity == Gravity.END) {
-            imgGravity.setImageResource(R.drawable.ic_align_right);
-        } else if (gravity == Gravity.START) {
-            imgGravity.setImageResource(R.drawable.ic_align_left);
-        } else {
-            imgGravity.setImageResource(R.drawable.ic_align_center);
-        }
+//        if (gravity == Gravity.END) {
+//            imgGravity.setImageResource(R.drawable.ic_align_right);
+//        } else if (gravity == Gravity.START) {
+//            imgGravity.setImageResource(R.drawable.ic_align_left);
+//        } else {
+//            imgGravity.setImageResource(R.drawable.ic_align_center);
+//        }
     }
 }

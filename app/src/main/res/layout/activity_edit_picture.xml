@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -68,7 +69,7 @@
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/ic_edit_add_text" />
+                    android:src="@drawable/ic_text_add" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -93,7 +94,7 @@
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/ic_edit_image" />
+                    android:src="@drawable/ic_photo_change" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -117,7 +118,7 @@
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/ic_text_edit"
+                    android:src="@drawable/ic_photo_edit"
                     android:tint="@color/white" />
 
                 <TextView
@@ -211,61 +212,46 @@
                 android:paddingEnd="20dp"
                 android:paddingBottom="5dp"
                 android:visibility="gone"
-                ads:layout_constraintBottom_toTopOf="@id/layout_1"
-                ads:layout_constraintEnd_toEndOf="parent"
-                ads:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintBottom_toTopOf="@id/rv_tool_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <RelativeLayout
                 android:id="@+id/layout_color_editor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#80000000"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
                 android:visibility="gone"
-                ads:layout_constraintBottom_toTopOf="@id/layout_1"
-                ads:layout_constraintEnd_toEndOf="parent"
-                ads:layout_constraintStart_toStartOf="parent">
-
-                <ImageView
-                    android:id="@+id/image_down_opacity"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_below="@id/tv_value_opacity"
-                    android:src="@drawable/ic_down" />
-
-                <ImageView
-                    android:id="@+id/image_up_opacity"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_below="@id/tv_value_opacity"
-                    android:layout_alignParentEnd="true"
-                    android:src="@drawable/ic_up" />
+                app:layout_constraintBottom_toTopOf="@id/rv_tool_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:layout_toEndOf="@id/image_down_opacity"
+                    android:id="@+id/tv_opacity"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_above="@id/rvColor"
+                    android:layout_toStartOf="@id/sb_opacity"
+                    android:gravity="center"
                     android:text="Độ trong"
                     android:textColor="@color/white" />
 
                 <TextView
                     android:id="@+id/tv_value_opacity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="15dp"
-                    android:layout_toStartOf="@id/image_up_opacity"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_above="@id/rvColor"
+                    android:layout_alignParentEnd="true"
+                    android:layout_toEndOf="@id/sb_opacity"
+                    android:gravity="center"
                     android:text="100%"
                     android:textColor="@color/white" />
 
                 <SeekBar
                     android:id="@+id/sb_opacity"
-                    android:layout_width="match_parent"
+                    android:layout_width="200dp"
                     android:layout_height="25dp"
-                    android:layout_below="@id/tv_value_opacity"
-                    android:layout_toStartOf="@id/image_up_opacity"
-                    android:layout_toEndOf="@id/image_down_opacity"
+                    android:layout_centerHorizontal="true"
                     android:max="100"
                     android:progress="100"
                     android:progressBackgroundTint="@color/color_FC"
@@ -277,200 +263,60 @@
                     android:id="@+id/rvColor"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_below="@id/sb_opacity" />
+                    android:layout_below="@id/sb_opacity"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp" />
 
-                <RadioGroup
-                    android:id="@+id/radioGroup"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/rvColor"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <RadioButton
-                        android:id="@+id/rbColorText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:button="@null"
-                        android:checked="true"
-                        android:fontFamily="sans-serif-medium"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="10dp"
-                        android:text="Màu chữ"
-                        android:textColor="@drawable/radio_button_color" />
-
-                    <RadioButton
-                        android:id="@+id/rbColorBackground"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:button="@null"
-                        android:fontFamily="sans-serif-medium"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="10dp"
-                        android:text="Màu nền"
-                        android:textColor="@drawable/radio_button_color" />
-
-                    <RadioButton
-                        android:id="@+id/rbColorShadow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:button="@null"
-                        android:fontFamily="sans-serif-medium"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="10dp"
-                        android:text="Vùng tối"
-                        android:textColor="@drawable/radio_button_color" />
-                </RadioGroup>
             </RelativeLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/layout_1"
+            <RelativeLayout
+                android:id="@+id/layout_align"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#80000000"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@id/rv_tool_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <ImageView
+                    android:id="@+id/image_align_center"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_centerInParent="true"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_align_center"
+                    android:tint="@color/color_3cc2f5_legend" />
+
+                <ImageView
+                    android:id="@+id/image_align_left"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginEnd="20dp"
+                    android:layout_toStartOf="@id/image_align_center"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_align_left" />
+
+                <ImageView
+                    android:id="@+id/image_align_right"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="20dp"
+                    android:layout_toEndOf="@id/image_align_center"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_align_right" />
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_tool_text"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:background="#121212"
-                android:gravity="center"
-                ads:layout_constraintBottom_toBottomOf="parent"
-                ads:layout_constraintEnd_toEndOf="parent"
-                ads:layout_constraintStart_toStartOf="parent">
-
-                <LinearLayout
-                    android:id="@+id/layout_btn_text_edit"
-                    android:layout_width="60dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_ripple_click_view_rectangle"
-                    android:gravity="center"
-                    android:onClick="onAddTextClicked"
-                    android:orientation="vertical"
-                    ads:layout_constraintEnd_toStartOf="@id/layout_btn_text_color"
-                    ads:layout_constraintHorizontal_chainStyle="spread"
-                    ads:layout_constraintStart_toStartOf="@id/layout_1">
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/ic_add_text" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:fontFamily="sans-serif-medium"
-                        android:text="Văn bản"
-                        android:textColor="@color/white"
-                        android:textSize="10dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/layout_btn_text_color"
-                    android:layout_width="60dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_ripple_click_view_rectangle"
-                    android:gravity="center"
-                    android:onClick="onTextColorClicked"
-                    android:orientation="vertical"
-                    ads:layout_constraintEnd_toStartOf="@id/layout_btn_text_font"
-                    ads:layout_constraintStart_toEndOf="@id/layout_btn_text_edit">
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/ic_text_color" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:fontFamily="sans-serif-medium"
-                        android:text="Màu sắc"
-                        android:textColor="@color/white"
-                        android:textSize="10dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/layout_btn_text_font"
-                    android:layout_width="60dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_ripple_click_view_rectangle"
-                    android:gravity="center"
-                    android:onClick="onTextFontClicked"
-                    android:orientation="vertical"
-                    ads:layout_constraintEnd_toStartOf="@id/layout_btn_text_span"
-                    ads:layout_constraintStart_toEndOf="@id/layout_btn_text_color">
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/ic_text_font" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:fontFamily="sans-serif-medium"
-                        android:text="Font"
-                        android:textColor="@color/white"
-                        android:textSize="10dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/layout_btn_text_span"
-                    android:layout_width="60dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_ripple_click_view_rectangle"
-                    android:gravity="center"
-                    android:onClick="onTextBendClicked"
-                    android:orientation="vertical"
-                    ads:layout_constraintEnd_toStartOf="@id/layout_btn_text_align"
-                    ads:layout_constraintStart_toEndOf="@id/layout_btn_text_font">
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:rotation="45"
-                        android:src="@drawable/ic_bend" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:fontFamily="sans-serif-medium"
-                        android:text="Uốn cong"
-                        android:textColor="@color/white"
-                        android:textSize="10dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/layout_btn_text_align"
-                    android:layout_width="60dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_ripple_click_view_rectangle"
-                    android:gravity="center"
-                    android:onClick="onTextAlignClicked"
-                    android:orientation="vertical"
-                    ads:layout_constraintEnd_toEndOf="@id/layout_1"
-                    ads:layout_constraintStart_toEndOf="@id/layout_btn_text_span">
-
-                    <ImageView
-                        android:id="@+id/imgGravity"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/ic_align_center" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:fontFamily="sans-serif-medium"
-                        android:text="Vị trí"
-                        android:textColor="@color/white"
-                        android:textSize="10dp" />
-                </LinearLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
