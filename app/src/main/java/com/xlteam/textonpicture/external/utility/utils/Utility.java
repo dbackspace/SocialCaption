@@ -301,9 +301,13 @@ public class Utility {
         return listOfAllImages;
     }
 
-    public static String convertDecimalNumberToHexString(int number) {
+    public static String convertDecimalNumberToHexString(int number) { // 0 -> 255 // 00 -> FF
         String result = Integer.toHexString(number);
         if (result.length() == 1) return "0" + result;
         return result;
+    }
+
+    public static int convertHexStringToDecimalNumber(String hexNumber) {
+        return Integer.parseInt(hexNumber, 16);
     }
 }
