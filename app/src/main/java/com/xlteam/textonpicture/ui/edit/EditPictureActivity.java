@@ -72,7 +72,7 @@ public class EditPictureActivity extends AppCompatActivity
         implements
         DialogAddTextBuilder.Callback,
         OnPhotoEditorListener,
-        OnMultiTouchListener {
+        OnMultiTouchListener, FontAdapter.FontSelectCallback {
     private ImageView imgBack, imgCancelText, imgDoneText;
     private TextView tvDone;
     private ImageView mImgBackground;
@@ -91,6 +91,7 @@ public class EditPictureActivity extends AppCompatActivity
 
     // Text editor
     private RecyclerView rvFont;
+    private FontAdapter fontAdapter;
 
     //color
     private RelativeLayout layoutColor;
@@ -102,8 +103,6 @@ public class EditPictureActivity extends AppCompatActivity
     //align
     private RelativeLayout layoutAlign;
 
-    // imgBackground: img background of align
-    private ItemText mItemTextViewClicked;
     private boolean isHasText = false;
 
     // text current
@@ -277,7 +276,6 @@ public class EditPictureActivity extends AppCompatActivity
         rvFont.setVisibility(View.GONE);
         layoutAlign.setVisibility(View.GONE);
         sbOpacity.setProgress(currentOpacityText);
-
     }
 
     public void onTextBgColorClicked() {
@@ -296,6 +294,13 @@ public class EditPictureActivity extends AppCompatActivity
         rvFont.setVisibility(View.VISIBLE);
         layoutColor.setVisibility(View.GONE);
         layoutAlign.setVisibility(View.GONE);
+        if (currentViewOfText != null) {
+            ItemText itemText = (ItemText) currentViewOfText.getTag();
+            Timber.e(itemText.getFont()+"");
+            rvFont.smoothScrollToPosition(itemText.getFont());
+            fontAdapter.setNumberFont(itemText.getFont());
+            fontAdapter.notifyDataSetChanged();
+        }
     }
 
     public void onTextBendClicked() {
@@ -441,6 +446,8 @@ public class EditPictureActivity extends AppCompatActivity
         currentText.setText(text);
         currentText.setTextSize(TypedValue.COMPLEX_UNIT_SP,
                 getResources().getDimension(R.dimen.text_added_default_size));
+        Typeface type = Typeface.createFromAsset(mContext.getAssets(), "font/" + "dancingscript_bold.ttf");
+        currentText.setTypeface(type);
 
         MultiTouchListener multiTouchListener =
                 MultiTouchListener
@@ -473,33 +480,14 @@ public class EditPictureActivity extends AppCompatActivity
 
         Utility.setColorForView(currentText, "#00FFFFFF");
 //        Utility.setColorForTextView(currentText, color.getColor());
-        mItemTextViewClicked = new ItemText(currentText.getText().toString());
-        Timber.e("setTag: " + currentText.getText().toString());
-        currentText.setTag(mItemTextViewClicked);
+
+        ItemText itemText = new ItemText(currentText.getText().toString());
+        currentViewOfText.setTag(itemText);
+
         showTextMode(true);
         addViewToParent(currentViewOfText);
         currentViewOfText.setOnTouchListener(multiTouchListener);
     }
-
-/*    public void editTextByClickTextView(View view, ItemText itemText) {
-        mColorAdapter.setNumberSelect(mNumberColor);
-        mFontAdapter.setNumberFont(mNumberFont);
-        if (mGravityText == Gravity.CENTER) {
-            imgGravity.setImageResource(R.drawable.ic_align_center);
-        } else if (mGravityText == Gravity.END) {
-            imgGravity.setImageResource(R.drawable.ic_align_right);
-        } else {
-            imgGravity.setImageResource(R.drawable.ic_align_left);
-        }
-        if (mNumberBg == Constant.BACKGROUND_COLOR_0) {
-            imgBackground.setImageResource(R.drawable.ic_align_center);
-        } else if (mNumberBg == Constant.BACKGROUND_COLOR_50) {
-            imgBackground.setImageResource(R.drawable.ic_align_right);
-        } else {
-            imgBackground.setImageResource(R.drawable.ic_align_left);
-        }
-
-    }*/
 
     private View getTextStickerLayout() {
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
@@ -567,17 +555,10 @@ public class EditPictureActivity extends AppCompatActivity
         rvToolText.setAdapter(mToolTextAdapter);
 
         /* init font*/
-        rvFont.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
-        FontAdapter mFontAdapter = new FontAdapter(this, numberFont -> {
-            Typeface typeface = Typeface.createFromAsset(mContext.getAssets(), "font/" + FontDataSource.getInstance().getAllFonts().get(numberFont).getFont());
-            currentText.setTypeface(typeface);
-
-//            mItemTextViewClicked.setFont(numberFont);
-//            Timber.e("select font " + numberFont);
-//            currentText.setTag(mItemTextViewClicked);
-        });
-        rvFont.setAdapter(mFontAdapter);
-
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
+        rvFont.setLayoutManager(linearLayoutManager);
+        fontAdapter = new FontAdapter(this);
+        rvFont.setAdapter(fontAdapter);
 
         /* init color*/
         rvColor.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
@@ -595,7 +576,7 @@ public class EditPictureActivity extends AppCompatActivity
             }
 
 //            mItemTextViewClicked.setColor(mNumberColor);
-//            currentText.setTag(mItemTextViewClicked);
+//            currentViewOfText.setTag(mItemTextViewClicked);
         });
         rvColor.setAdapter(mColorAdapter);
         sbOpacity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -615,7 +596,7 @@ public class EditPictureActivity extends AppCompatActivity
                 }
 
 //                mItemTextViewClicked.setOpacityProgress(progress);
-//                currentText.setTag(mItemTextViewClicked);
+//                currentViewOfText.setTag(mItemTextViewClicked);
             }
 
             @Override
@@ -691,14 +672,16 @@ public class EditPictureActivity extends AppCompatActivity
         imgBalance = currentViewOfText.findViewById(R.id.image_text_balance);
         imgZoom = currentViewOfText.findViewById(R.id.image_text_zoom);
 
-        Timber.e("current Text: " + currentText.getText().toString());
-        ItemText itemText = (ItemText) currentText.getTag();
+        ItemText itemText = (ItemText) currentViewOfText.getTag();
         scrollToCurrentFontOfText(itemText.getFont(), currentText.getGravity());
     }
 
     private void scrollToCurrentFontOfText(int positionFont, int gravity) {
         Timber.e(positionFont + " " + gravity);
         rvFont.smoothScrollToPosition(positionFont);
+        fontAdapter.setNumberFont(positionFont);
+        fontAdapter.notifyDataSetChanged();
+
         setIconGravity(gravity);
     }
 
@@ -711,5 +694,15 @@ public class EditPictureActivity extends AppCompatActivity
 //        } else {
 //            imgGravity.setImageResource(R.drawable.ic_align_center);
 //        }
+    }
+
+    @Override
+    public void selectFont(int numberFont) {
+        Typeface typeface = Typeface.createFromAsset(mContext.getAssets(), "font/" + FontDataSource.getInstance().getAllFonts().get(numberFont).getFont());
+        currentText.setTypeface(typeface);
+
+        ItemText itemText = (ItemText) currentViewOfText.getTag();
+        itemText.setFont(numberFont);
+        currentViewOfText.setTag(itemText);
     }
 }

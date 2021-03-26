@@ -7,14 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.xlteam.textonpicture.R;
 import com.xlteam.textonpicture.external.datasource.FontDataSource;
 import com.xlteam.textonpicture.model.Font;
 
 import java.util.ArrayList;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+import timber.log.Timber;
 
 public class FontAdapter extends RecyclerView.Adapter<FontAdapter.ViewHolder> {
     private Context mContext;
@@ -26,10 +28,10 @@ public class FontAdapter extends RecyclerView.Adapter<FontAdapter.ViewHolder> {
         void selectFont(int numberFont);
     }
 
-    FontAdapter(Context context, FontSelectCallback callBack) {
-        mContext = context;
+    FontAdapter(FontSelectCallback callback) {
+        mContext = (Context) callback;
         mFonts = FontDataSource.getInstance().getAllFonts();
-        mCallBack = callBack;
+        mCallBack = callback;
     }
 
     @NonNull
