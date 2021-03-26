@@ -217,12 +217,11 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <RelativeLayout
-                android:id="@+id/layout_color_editor"
+                android:id="@+id/layout_opacity_color"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#80000000"
                 android:visibility="gone"
-                app:layout_constraintBottom_toTopOf="@id/rv_tool_text"
+                app:layout_constraintBottom_toTopOf="@id/rvColor"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
@@ -230,7 +229,6 @@
                     android:id="@+id/tv_opacity"
                     android:layout_width="match_parent"
                     android:layout_height="25dp"
-                    android:layout_above="@id/rvColor"
                     android:layout_toStartOf="@id/sb_opacity"
                     android:gravity="center"
                     android:text="Độ trong"
@@ -240,7 +238,6 @@
                     android:id="@+id/tv_value_opacity"
                     android:layout_width="match_parent"
                     android:layout_height="25dp"
-                    android:layout_above="@id/rvColor"
                     android:layout_alignParentEnd="true"
                     android:layout_toEndOf="@id/sb_opacity"
                     android:gravity="center"
@@ -257,16 +254,141 @@
                     android:progressBackgroundTint="@color/color_FC"
                     android:progressTint="@color/color_3cc2f5_legend"
                     android:thumbTint="@color/white" />
+            </RelativeLayout>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvColor"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/layout_opacity_color"
+                android:background="#80000000"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@id/rv_tool_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvColor"
+            <RelativeLayout
+                android:id="@+id/layout_shadow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#80000000"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="10dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@id/rvColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <ImageView
+                    android:id="@+id/image_shadow_right"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_below="@id/image_shadow_top"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/bg_ripple_click_view_circle"
+                    android:rotation="180"
+                    android:src="@drawable/ic_back_white" />
+
+                <ImageView
+                    android:id="@+id/image_shadow_top"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_toStartOf="@id/image_shadow_right"
+                    android:background="@drawable/bg_ripple_click_view_circle"
+                    android:rotation="90"
+                    android:src="@drawable/ic_back_white" />
+
+                <ImageView
+                    android:id="@+id/image_shadow_bottom"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_below="@id/image_shadow_right"
+                    android:layout_toStartOf="@id/image_shadow_right"
+                    android:background="@drawable/bg_ripple_click_view_circle"
+                    android:rotation="270"
+                    android:src="@drawable/ic_back_white" />
+
+                <ImageView
+                    android:id="@+id/image_shadow_left"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_below="@id/image_shadow_top"
+                    android:layout_marginStart="10dp"
+                    android:layout_toStartOf="@id/image_shadow_top"
+                    android:background="@drawable/bg_ripple_click_view_circle"
+                    android:src="@drawable/ic_back_white" />
+
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_below="@id/sb_opacity"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp" />
+                    android:layout_height="wrap_content"
+                    android:layout_toStartOf="@id/image_shadow_left">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="15dp"
+                        android:gravity="center"
+                        android:text="Độ bão hòa"
+                        android:textColor="@color/white" />
+
+                    <TextView
+                        android:id="@+id/tv_value_saturation_shadow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="15dp"
+                        android:gravity="center"
+                        android:text="0%"
+                        android:textColor="@color/white" />
+
+                    <SeekBar
+                        android:id="@+id/sb_saturation_shadow"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_below="@id/tv_value_saturation_shadow"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="5dp"
+                        android:max="100"
+                        android:progress="100"
+                        android:progressBackgroundTint="@color/color_FC"
+                        android:progressTint="@color/color_3cc2f5_legend"
+                        android:thumbTint="@color/white" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_below="@id/sb_saturation_shadow"
+                        android:layout_marginStart="15dp"
+                        android:gravity="center"
+                        android:text="Độ trong"
+                        android:textColor="@color/white" />
+
+                    <TextView
+                        android:id="@+id/tv_value_opacity_shadow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_below="@id/sb_saturation_shadow"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="15dp"
+                        android:gravity="center"
+                        android:text="100%"
+                        android:textColor="@color/white" />
+
+                    <SeekBar
+                        android:id="@+id/sb_opacity_shadow"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_below="@id/tv_value_opacity_shadow"
+                        android:layout_centerHorizontal="true"
+                        android:max="100"
+                        android:progress="100"
+                        android:progressBackgroundTint="@color/color_FC"
+                        android:progressTint="@color/color_3cc2f5_legend"
+                        android:thumbTint="@color/white" />
+                </RelativeLayout>
             </RelativeLayout>
 
             <RelativeLayout
