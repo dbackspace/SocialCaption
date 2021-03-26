@@ -12,7 +12,7 @@ public class ItemText {
 
     private static final int DEFAULT_OPACITY_TEXT = 100;
     private static final int DEFAULT_OPACITY_BACKGROUND = 0;
-    private static final int DEFAULT_OPACITY_SHADOW = 100;
+    private static final int DEFAULT_OPACITY_SHADOW = 0;
     private static final int DEFAULT_SATURATION_SHADOW = 0;
     private static final float DEFAULT_DX_SHADOW = 2f;
     private static final float DEFAULT_DY_SHADOW = 2f;

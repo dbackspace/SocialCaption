@@ -314,8 +314,7 @@ public class EditPictureActivity extends AppCompatActivity
         layoutAlign.setVisibility(View.GONE);
         if (currentViewOfText != null) {
             //nếu màu nền trong suốt thì cho bằng 20 để user nhận biết sự thay đổi màu
-            int value = ((ItemText) currentViewOfText.getTag()).getOpacityBackground();
-            sbOpacity.setProgress(value != 0 ? value : 20);
+            sbOpacity.setProgress(((ItemText) currentViewOfText.getTag()).getOpacityBackground());
         }
     }
 
@@ -325,8 +324,7 @@ public class EditPictureActivity extends AppCompatActivity
         rvFont.setVisibility(View.GONE);
         layoutAlign.setVisibility(View.GONE);
         layoutOpacityColor.setVisibility(View.GONE);
-        int value = ((ItemText) currentViewOfText.getTag()).getOpacityShadow();
-        sbOpacityShadow.setProgress(value != 0 ? value : 20);
+        sbOpacityShadow.setProgress(((ItemText) currentViewOfText.getTag()).getOpacityShadow());
         sbSaturationShadow.setProgress(((ItemText) currentViewOfText.getTag()).getSaturationShadow());
     }
 
@@ -694,9 +692,8 @@ public class EditPictureActivity extends AppCompatActivity
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                itemText.setSaturationShadow(value);
+                itemText.setOpacityShadow(value);
                 currentViewOfText.setTag(itemText);
-
             }
         });
 
@@ -888,19 +885,44 @@ public class EditPictureActivity extends AppCompatActivity
         ItemText itemText = (ItemText) currentViewOfText.getTag();
         switch (mToolTextAdapter.getCurrentNumberTool()) {
             case 1:
-                Utility.setColorForTextView(currentText, "#" + Utility.convertOpacityToHexString(itemText.getOpacityText()) + colorCSS);
                 itemText.setColorText(colorCSS);
+                int opacityText = itemText.getOpacityText();
+                if (opacityText == 0) { // nếu màu trong suốt thì trả lại 100% màu
+                    itemText.setOpacityText(100);
+                    currentViewOfText.setTag(itemText);
+                    sbOpacity.setProgress(100);
+                } else {
+                    Utility.setColorForTextView(currentText, "#" + Utility.convertOpacityToHexString(opacityText) + colorCSS);
+                    currentViewOfText.setTag(itemText);
+                }
+
                 break;
             case 2:
-                Utility.setColorForView(currentText, "#" + Utility.convertOpacityToHexString(itemText.getOpacityBackground()) + colorCSS);
                 itemText.setColorBackground(colorCSS);
+                int opacityBackground = itemText.getOpacityBackground();
+                if (opacityBackground == 0) {
+                    itemText.setOpacityBackground(20);
+                    currentViewOfText.setTag(itemText);
+                    sbOpacity.setProgress(20);
+                } else {
+                    Utility.setColorForView(currentText, "#" + Utility.convertOpacityToHexString(opacityBackground) + colorCSS);
+
+                    currentViewOfText.setTag(itemText);
+                }
                 break;
             case 3:
-                currentText.setShadowLayer((itemText.getSaturationShadow() + 1) / 5f, itemText.getDxShadow(), itemText.getDyShadow(),
-                        Color.parseColor("#" + Utility.convertOpacityToHexString(itemText.getOpacityShadow()) + colorCSS));
                 itemText.setColorShadow(colorCSS);
+                int opacityShadow = itemText.getOpacityShadow();
+                if (opacityShadow == 0) {
+                    itemText.setOpacityShadow(100);
+                    currentViewOfText.setTag(itemText);
+                    sbOpacityShadow.setProgress(100);
+                } else {
+                    currentText.setShadowLayer((itemText.getSaturationShadow() + 1) / 5f, itemText.getDxShadow(), itemText.getDyShadow(),
+                            Color.parseColor("#" + Utility.convertOpacityToHexString(opacityShadow) + colorCSS));
+                    currentViewOfText.setTag(itemText);
+                }
                 break;
         }
-        currentViewOfText.setTag(itemText);
     }
 }
