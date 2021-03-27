@@ -504,6 +504,7 @@ public class EditPictureActivity extends AppCompatActivity
                         .create(mContext)
                         .setBackgroundImage(mImgBackground)
                         .setPhotoEditorListener(this)
+                        .setTextAddedView(currentViewOfText)
                         .setZoomRotateBtn(imgZoom);
 
         multiTouchListener.setOnGestureControl(new OnGestureControl() {

@@ -1,6 +1,8 @@
 package com.xlteam.textonpicture.external.utility.gesture;
 
 import android.content.Context;
+import android.graphics.Matrix;
+import android.graphics.PointF;
 import android.graphics.Rect;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -10,9 +12,12 @@ import android.widget.ImageView;
 
 import com.xlteam.textonpicture.R;
 
+import androidx.annotation.Nullable;
+
 public class MultiTouchListener implements OnTouchListener {
 
     private static final int INVALID_POINTER_ID = -1;
+    private static final float DEFAULT_ICON_RADIUS = 30f;
     private final GestureDetector gestureListener;
     boolean isRotateEnabled = true;
     boolean isTranslateEnabled = true;
@@ -38,6 +43,10 @@ public class MultiTouchListener implements OnTouchListener {
     private View currentView;
     private ImageView zoomRotateBtn;
 
+    private PointF midPoint = new PointF();
+    private float oldDistance, oldRotation;
+    private Matrix moveMatrix = new Matrix();
+
     public static MultiTouchListener create(Context context) {
         return new MultiTouchListener(context);
     }
@@ -62,6 +71,11 @@ public class MultiTouchListener implements OnTouchListener {
 
     public MultiTouchListener setZoomRotateBtn(ImageView zoomRotateBtn) {
         this.zoomRotateBtn = zoomRotateBtn;
+        return this;
+    }
+
+    public MultiTouchListener setTextAddedView(View textAddedView) {
+        this.currentView = textAddedView;
         return this;
     }
 
@@ -137,7 +151,6 @@ public class MultiTouchListener implements OnTouchListener {
 
     @Override
     public boolean onTouch(View view, MotionEvent event) {
-        currentView = view;
         scaleGestureDetector.onTouchEvent(view, event);
         gestureListener.onTouchEvent(event);
 
@@ -158,20 +171,37 @@ public class MultiTouchListener implements OnTouchListener {
                 prevRawY = event.getRawY();
                 activePointerId = event.getPointerId(0);
                 view.bringToFront();
+
+                midPoint = calculateMidPoint();
+                oldDistance = calculateDistance(midPoint.x, midPoint.y, prevX, prevY);
+                oldRotation = calculateRotation(midPoint.x, midPoint.y, prevX, prevY);
                 notifyWhenEventChangeListener(view, EventType.ON_DOWN);
                 break;
             case MotionEvent.ACTION_MOVE:
                 int pointerIndexMove = event.findPointerIndex(activePointerId);
                 if (pointerIndexMove != -1) {
-                    float currX = event.getX(pointerIndexMove);
-                    float currY = event.getY(pointerIndexMove);
-                    if (!scaleGestureDetector.isInProgress()) {
-                        adjustTranslation(view, currX - prevX, currY - prevY);
+                    float zoomX = event.getX(pointerIndexMove);
+                    float zoomY = event.getY(pointerIndexMove);
+                    if (isZoomIconTouched(zoomX, zoomY, event)) {
+                        float newDistance = calculateDistance(midPoint.x, midPoint.y, event.getX(), event.getY());
+                        float newRotation = calculateRotation(midPoint.x, midPoint.y, event.getX(), event.getY());
+                        currentView.setRotation((newRotation - oldRotation));
+                        currentView.setScaleX(newDistance / oldDistance);
+                        currentView.setScaleY(newDistance / oldDistance);
+                    } else {
+                        float currX = event.getX(pointerIndexMove);
+                        float currY = event.getY(pointerIndexMove);
+                        if (!scaleGestureDetector.isInProgress()) {
+                            adjustTranslation(view, currX - prevX, currY - prevY);
+                        }
+                        long duration = event.getEventTime() - event.getDownTime();
+                        if (!(duration < CLICK_THRESHOLD_DURATION && isSingleTapEvent(prevRawX, x, prevRawY, y))) {
+                            notifyWhenEventChangeListener(view, EventType.ON_MOVE);
+                        }
                     }
-                    long duration = event.getEventTime() - event.getDownTime();
-                    if (!(duration < CLICK_THRESHOLD_DURATION && isSingleTapEvent(prevRawX, x, prevRawY, y))) {
-                        notifyWhenEventChangeListener(view, EventType.ON_MOVE);
-                    }
+                    midPoint = calculateMidPoint();
+                    oldDistance = calculateDistance(midPoint.x, midPoint.y, prevX, prevY);
+                    oldRotation = calculateRotation(midPoint.x, midPoint.y, prevX, prevY);
                 }
                 break;
             case MotionEvent.ACTION_CANCEL:
@@ -199,6 +229,37 @@ public class MultiTouchListener implements OnTouchListener {
                 break;
         }
         return true;
+    }
+
+    private boolean isZoomIconTouched(float x, float y, MotionEvent event) {
+        if (x == zoomRotateBtn.getX() && y == zoomRotateBtn.getY())
+            return true;
+        return false;
+    }
+
+    private PointF calculateMidPoint() {
+        midPoint.set(currentView.getWidth() * 1f / 2, currentView.getHeight() * 1f / 2);
+        return midPoint;
+    }
+
+    protected float calculateDistance(@Nullable MotionEvent event) {
+        if (event == null || event.getPointerCount() < 2) {
+            return 0f;
+        }
+        return calculateDistance(event.getX(0), event.getY(0), event.getX(1), event.getY(1));
+    }
+
+    protected float calculateDistance(float x1, float y1, float x2, float y2) {
+        double x = x1 - x2;
+        double y = y1 - y2;
+        return (float) Math.sqrt(x * x + y * y);
+    }
+
+    private float calculateRotation(float x1, float y1, float x2, float y2) {
+        double x = x1 - x2;
+        double y = y1 - y2;
+        double radians = Math.atan2(y, x);
+        return (float) Math.toDegrees(radians);
     }
 
     enum EventType {
