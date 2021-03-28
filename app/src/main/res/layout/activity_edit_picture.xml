@@ -27,7 +27,7 @@
                 android:layout_marginStart="5dp"
                 android:background="@drawable/bg_ripple_click_view_circle"
                 android:padding="5dp"
-                android:src="@drawable/ic_back_white" />
+                android:src="@drawable/ic_back" />
 
             <TextView
                 android:id="@+id/tv_edit_save"
@@ -41,7 +41,7 @@
                 android:gravity="center"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:text="Lưu"
+                android:text="@string/save"
                 android:textColor="@color/white"
                 android:textSize="20dp" />
         </RelativeLayout>
@@ -76,7 +76,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:fontFamily="sans-serif-medium"
-                    android:text="Thêm chữ"
+                    android:text="@string/add_text_"
                     android:textColor="@color/white"
                     android:textSize="10dp" />
             </LinearLayout>
@@ -101,7 +101,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:fontFamily="sans-serif-medium"
-                    android:text="Ảnh nền"
+                    android:text="@string/photo_background"
                     android:textColor="@color/white"
                     android:textSize="10dp" />
             </LinearLayout>
@@ -126,7 +126,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:fontFamily="sans-serif-medium"
-                    android:text="Chỉnh sửa"
+                    android:text="@string/edit"
                     android:textColor="@color/white"
                     android:textSize="10dp" />
             </LinearLayout>
@@ -220,6 +220,8 @@
                 android:id="@+id/layout_opacity_color"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@id/rvColor"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -231,7 +233,7 @@
                     android:layout_height="25dp"
                     android:layout_toStartOf="@id/sb_opacity"
                     android:gravity="center"
-                    android:text="Độ trong"
+                    android:text="@string/opacity"
                     android:textColor="@color/white" />
 
                 <TextView
@@ -259,11 +261,12 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvColor"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="45dp"
                 android:layout_below="@id/layout_opacity_color"
                 android:background="#80000000"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
+                android:paddingBottom="5dp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@id/rv_tool_text"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -289,8 +292,9 @@
                     android:layout_below="@id/image_shadow_top"
                     android:layout_alignParentEnd="true"
                     android:background="@drawable/bg_ripple_click_view_circle"
+                    android:padding="5dp"
                     android:rotation="180"
-                    android:src="@drawable/ic_back_white" />
+                    android:src="@drawable/ic_back" />
 
                 <ImageView
                     android:id="@+id/image_shadow_top"
@@ -298,8 +302,9 @@
                     android:layout_height="35dp"
                     android:layout_toStartOf="@id/image_shadow_right"
                     android:background="@drawable/bg_ripple_click_view_circle"
+                    android:padding="5dp"
                     android:rotation="90"
-                    android:src="@drawable/ic_back_white" />
+                    android:src="@drawable/ic_back" />
 
                 <ImageView
                     android:id="@+id/image_shadow_bottom"
@@ -308,8 +313,9 @@
                     android:layout_below="@id/image_shadow_right"
                     android:layout_toStartOf="@id/image_shadow_right"
                     android:background="@drawable/bg_ripple_click_view_circle"
+                    android:padding="5dp"
                     android:rotation="270"
-                    android:src="@drawable/ic_back_white" />
+                    android:src="@drawable/ic_back" />
 
                 <ImageView
                     android:id="@+id/image_shadow_left"
@@ -319,7 +325,17 @@
                     android:layout_marginStart="10dp"
                     android:layout_toStartOf="@id/image_shadow_top"
                     android:background="@drawable/bg_ripple_click_view_circle"
-                    android:src="@drawable/ic_back_white" />
+                    android:padding="5dp"
+                    android:src="@drawable/ic_back" />
+
+                <ImageView
+                    android:id="@+id/image_shadow_center"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_below="@id/image_shadow_top"
+                    android:layout_toStartOf="@id/image_shadow_right"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_dot" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -331,7 +347,7 @@
                         android:layout_height="25dp"
                         android:layout_marginStart="15dp"
                         android:gravity="center"
-                        android:text="Độ bão hòa"
+                        android:text="@string/saturation"
                         android:textColor="@color/white" />
 
                     <TextView
@@ -363,7 +379,7 @@
                         android:layout_below="@id/sb_saturation_shadow"
                         android:layout_marginStart="15dp"
                         android:gravity="center"
-                        android:text="Độ trong"
+                        android:text="@string/opacity"
                         android:textColor="@color/white" />
 
                     <TextView

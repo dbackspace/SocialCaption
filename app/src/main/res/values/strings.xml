@@ -51,4 +51,13 @@
     <string name="font">Font</string>
     <string name="bend">Uốn cong</string>
     <string name="gravity">Bố cục</string>
+    <string name="saturation">Độ bão hòa</string>
+    <string name="opacity">Độ trong</string>
+    <string name="edit">Chỉnh sửa</string>
+    <string name="photo_background">Ảnh nền</string>
+    <string name="add_text_">Thêm chữ</string>
+    <string name="save">Lưu</string>
+    <string name="no_picture">Không có ảnh nào</string>
+    <string name="no_permission">Không có quyền. Cấp quyền</string>
+    <string name="your_text">Your text</string>
 </resources>

@@ -9,8 +9,8 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_gravity="end"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
         android:src="@drawable/ic_settings" />
 
     <ImageView
@@ -95,7 +95,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="25dp"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp">
 
@@ -171,12 +171,10 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
                 android:fontFamily="sans-serif"
-                android:text="Không có ảnh nào"
+                android:text="@string/no_picture"
                 android:textColor="@color/color_25"
                 android:textSize="18dp"
                 android:visibility="gone" />
         </LinearLayout>
     </ScrollView>
-
-
 </LinearLayout>

@@ -151,7 +151,8 @@ public class SettingsDialogFragment extends DialogFragment {
 
     private StringBuilder preGetAppInfo() {
         StringBuilder info = new StringBuilder();
-        info.append("Thông tin ứng dụng:\n- PACKAGE NAME: ").append(pInfo.packageName)
+        info.append(getString(R.string.app_info))
+                .append(":\n- PACKAGE NAME: ").append(pInfo.packageName)
                 .append("\n- VERSION NAME: ").append(pInfo.versionName)
                 .append("\n- VERSION CODE: ").append(pInfo.versionCode)
                 .append("\n- VERSION OS: ").append(Build.VERSION.SDK_INT)

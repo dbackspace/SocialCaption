@@ -106,7 +106,7 @@ public class EditPictureActivity extends AppCompatActivity
     private RelativeLayout layoutShadow;
     private SeekBar sbSaturationShadow, sbOpacityShadow;
     private TextView tvValueSaturationShadow, tvValueOpacityShadow;
-    private ImageView imgShadowLeft, imgShadowRight, imgShadowTop, imgShadowBottom;
+    private ImageView imgShadowLeft, imgShadowRight, imgShadowTop, imgShadowBottom, imgShadowCenter;
     private int currentModeOfColor = -1;
 
     //align
@@ -222,6 +222,7 @@ public class EditPictureActivity extends AppCompatActivity
         imgShadowBottom = findViewById(R.id.image_shadow_bottom);
         imgShadowLeft = findViewById(R.id.image_shadow_left);
         imgShadowRight = findViewById(R.id.image_shadow_right);
+        imgShadowCenter = findViewById(R.id.image_shadow_center);
 
         //align
         layoutAlign = findViewById(R.id.layout_align);
@@ -718,6 +719,11 @@ public class EditPictureActivity extends AppCompatActivity
                     if (dy <= 10) itemText.setDyShadow(dy + 1f);
                     else return;
                     break;
+                case R.id.image_shadow_center:
+                    itemText.setDxShadow(0f);
+                    itemText.setDyShadow(0f);
+                    break;
+
             }
             currentText.setShadowLayer((itemText.getSaturationShadow() + 1) / 5f, itemText.getDxShadow(), itemText.getDyShadow(),
                     Color.parseColor("#" + Utility.convertOpacityToHexString(itemText.getOpacityShadow()) + itemText.getColorShadow()));
@@ -727,6 +733,7 @@ public class EditPictureActivity extends AppCompatActivity
         imgShadowRight.setOnClickListener(shadowArrowClick);
         imgShadowTop.setOnClickListener(shadowArrowClick);
         imgShadowBottom.setOnClickListener(shadowArrowClick);
+        imgShadowCenter.setOnClickListener(shadowArrowClick);
 
         // init align
         imgAlignRight.setOnClickListener(v -> {
