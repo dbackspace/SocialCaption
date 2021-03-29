@@ -128,7 +128,7 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
                             List<String> listImagePaths = FileUtils.getListPathsIfFolderExist();
                             if (listImagePaths.isEmpty()) {
                                 showRvCreated(false);
-                                showAndSetTextViewEmpty(true, "Không có ảnh nào");
+                                showAndSetTextViewEmpty(true, getString(R.string.no_picture));
                             } else {
                                 showRvCreated(true);
                                 showAndSetTextViewEmpty(false, null);
@@ -139,7 +139,7 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
                             Utility.showDialogRequestPermission(HomePageActivity.this);
                             needCheckPermission = true;
                             if (!isHasAllPermission()) {
-                                String noPermission = "Không có quyền. Cấp quyền";
+                                String noPermission = getString(R.string.no_permission);
                                 tvEmptyCreated.setVisibility(View.VISIBLE);
                                 tvEmptyCreated.setMovementMethod(LinkMovementMethod.getInstance());
                                 tvEmptyCreated.setText(noPermission, TextView.BufferType.SPANNABLE);
@@ -236,7 +236,7 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
             List<String> listImagePaths = FileUtils.getListPathsIfFolderExist();
             if (listImagePaths.isEmpty()) {
                 showRvCreated(false);
-                showAndSetTextViewEmpty(true, "Không có ảnh nào");
+                showAndSetTextViewEmpty(true, getString(R.string.no_picture));
             } else {
                 showRvCreated(true);
                 showAndSetTextViewEmpty(false, null);
