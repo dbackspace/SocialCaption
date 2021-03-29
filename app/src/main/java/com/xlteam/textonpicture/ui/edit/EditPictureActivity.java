@@ -15,6 +15,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Layout;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -28,6 +29,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -55,6 +57,13 @@ import com.xlteam.textonpicture.external.utility.gesture.OnGestureControl;
 import com.xlteam.textonpicture.external.utility.gesture.OnMultiTouchListener;
 import com.xlteam.textonpicture.external.utility.gesture.OnPhotoEditorListener;
 import com.xlteam.textonpicture.external.utility.logger.Log;
+import com.xlteam.textonpicture.external.utility.stickerview.BitmapStickerIcon;
+import com.xlteam.textonpicture.external.utility.stickerview.DeleteIconEvent;
+import com.xlteam.textonpicture.external.utility.stickerview.FlipHorizontallyEvent;
+import com.xlteam.textonpicture.external.utility.stickerview.Sticker;
+import com.xlteam.textonpicture.external.utility.stickerview.StickerView;
+import com.xlteam.textonpicture.external.utility.stickerview.TextSticker;
+import com.xlteam.textonpicture.external.utility.stickerview.ZoomIconEvent;
 import com.xlteam.textonpicture.external.utility.utils.Constant;
 import com.xlteam.textonpicture.external.utility.utils.FileUtils;
 import com.xlteam.textonpicture.external.utility.utils.Utility;
@@ -65,6 +74,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
@@ -128,6 +138,11 @@ public class EditPictureActivity extends AppCompatActivity
     private View currentViewOfText;
     private View previousViewOfText;
 
+    // sticker view
+    private StickerView stickerView;
+    private TextSticker currentTextSticker;
+    private String tempColor = "000000";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         // init view
@@ -140,6 +155,7 @@ public class EditPictureActivity extends AppCompatActivity
         mAdView.loadAd(adRequest);
 
         findViewById();
+        initStickerView();
         relativeBackground.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -194,6 +210,32 @@ public class EditPictureActivity extends AppCompatActivity
         });
     }
 
+    private void initStickerView() {
+        BitmapStickerIcon deleteIcon = new BitmapStickerIcon(ContextCompat.getDrawable(this,
+                R.drawable.sticker_ic_close_white_18dp),
+                BitmapStickerIcon.LEFT_TOP);
+        deleteIcon.setIconEvent(new DeleteIconEvent());
+
+        BitmapStickerIcon zoomIcon = new BitmapStickerIcon(ContextCompat.getDrawable(this,
+                R.drawable.sticker_ic_scale_white_18dp),
+                BitmapStickerIcon.RIGHT_BOTOM);
+        zoomIcon.setIconEvent(new ZoomIconEvent());
+
+        BitmapStickerIcon flipIcon = new BitmapStickerIcon(ContextCompat.getDrawable(this,
+                R.drawable.sticker_ic_flip_white_18dp),
+                BitmapStickerIcon.RIGHT_TOP);
+        flipIcon.setIconEvent(new FlipHorizontallyEvent());
+
+        stickerView.setIcons(Arrays.asList(deleteIcon, zoomIcon, flipIcon));
+
+        //default icon layout
+        //stickerView.configDefaultIcons();
+
+        stickerView.setBackgroundColor(Color.WHITE);
+        stickerView.setLocked(false);
+        stickerView.setConstrained(true);
+    }
+
     private void findViewById() {
         imgBack = findViewById(R.id.btn_edit_back_and_cancel);
         tvDone = findViewById(R.id.tv_edit_save);
@@ -229,6 +271,9 @@ public class EditPictureActivity extends AppCompatActivity
         imgAlignLeft = findViewById(R.id.image_align_left);
         imgAlignCenter = findViewById(R.id.image_align_center);
         imgAlignRight = findViewById(R.id.image_align_right);
+
+        //sticker view
+        stickerView = findViewById(R.id.sticker_view);
     }
 
     @Override
@@ -446,6 +491,65 @@ public class EditPictureActivity extends AppCompatActivity
     @SuppressLint("ResourceAsColor")
     @Override
     public void onSaveClicked(String text, boolean isEditOldText) {
+        // text sticker
+        TextSticker sticker = new TextSticker(this);
+        sticker.setDrawable(ContextCompat.getDrawable(getApplicationContext(),
+                R.drawable.sticker_transparent_background));
+        sticker.setText(text);
+        sticker.setTextColor(Color.BLACK);
+        sticker.setTextAlign(Layout.Alignment.ALIGN_CENTER);
+        sticker.resizeText();
+        currentTextSticker = sticker;
+        stickerView.setOnStickerOperationListener(new StickerView.OnStickerOperationListener() {
+            @Override
+            public void onStickerAdded(@NonNull Sticker sticker) {
+                Timber.d("onStickerAdded");
+            }
+
+            @Override
+            public void onStickerClicked(@NonNull Sticker sticker) {
+                //stickerView.removeAllSticker();
+//                if (sticker instanceof TextSticker) {
+//                    ((TextSticker) sticker).setTextColor(Color.RED);
+//                    stickerView.replace(sticker);
+//                    stickerView.invalidate();
+//                }
+//                showTextMode(true);
+                Timber.d("onStickerClicked");
+            }
+
+            @Override
+            public void onStickerDeleted(@NonNull Sticker sticker) {
+                Timber.d("onStickerDeleted");
+            }
+
+            @Override
+            public void onStickerDragFinished(@NonNull Sticker sticker) {
+                Timber.d("onStickerDragFinished");
+            }
+
+            @Override
+            public void onStickerTouchedDown(@NonNull Sticker sticker) {
+                Timber.d("onStickerTouchedDown");
+            }
+
+            @Override
+            public void onStickerZoomFinished(@NonNull Sticker sticker) {
+                Timber.d("onStickerZoomFinished");
+            }
+
+            @Override
+            public void onStickerFlipped(@NonNull Sticker sticker) {
+                Timber.d("onStickerFlipped");
+            }
+
+            @Override
+            public void onStickerDoubleTapped(@NonNull Sticker sticker) {
+                Timber.d("onDoubleTapped: double tap will be with two click");
+            }
+        });
+        stickerView.addSticker(sticker);
+
         /**
          * Không tạo empty text.
          * TODO: Xử lý trong textChange ở DialogAddText, có cho enable nút DONE hay không
@@ -629,6 +733,7 @@ public class EditPictureActivity extends AppCompatActivity
                     case 1:
                         itemText.setOpacityText(progress);
                         Utility.setColorForTextView(currentText, "#" + Utility.convertOpacityToHexString(progress) + itemText.getColorText());
+                        currentTextSticker.setTextColor(Color.parseColor("#" + Utility.convertOpacityToHexString(progress) + tempColor));
                         break;
                     case 2:
                         itemText.setOpacityBackground(progress);
@@ -895,6 +1000,7 @@ public class EditPictureActivity extends AppCompatActivity
             case 1:
                 itemText.setColorText(colorCSS);
                 int opacityText = itemText.getOpacityText();
+                currentTextSticker.setTextColor(Color.parseColor("#" + colorCSS));
                 if (opacityText == 0) { // nếu màu trong suốt thì trả lại 100% màu
                     itemText.setOpacityText(100);
                     currentViewOfText.setTag(itemText);

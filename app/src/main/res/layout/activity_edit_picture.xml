@@ -13,39 +13,6 @@
         android:layout_height="match_parent"
         android:layout_above="@id/adView">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="#121212">
-
-            <ImageView
-                android:id="@+id/btn_edit_back_and_cancel"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentStart="true"
-                android:layout_centerInParent="true"
-                android:layout_marginStart="5dp"
-                android:background="@drawable/bg_ripple_click_view_circle"
-                android:padding="5dp"
-                android:src="@drawable/ic_back" />
-
-            <TextView
-                android:id="@+id/tv_edit_save"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_alignParentEnd="true"
-                android:layout_margin="5dp"
-                android:alpha="0.7"
-                android:background="@drawable/bg_ripple_click_view_rectangle"
-                android:clickable="false"
-                android:gravity="center"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:text="@string/save"
-                android:textColor="@color/white"
-                android:textSize="20dp" />
-        </RelativeLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
@@ -131,6 +98,39 @@
                     android:textSize="10dp" />
             </LinearLayout>
         </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#121212">
+
+            <ImageView
+                android:id="@+id/btn_edit_back_and_cancel"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/bg_ripple_click_view_circle"
+                android:padding="5dp"
+                android:src="@drawable/ic_back" />
+
+            <TextView
+                android:id="@+id/tv_edit_save"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="5dp"
+                android:alpha="0.7"
+                android:background="@drawable/bg_ripple_click_view_rectangle"
+                android:clickable="false"
+                android:gravity="center"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="@string/save"
+                android:textColor="@color/white"
+                android:textSize="20dp" />
+        </RelativeLayout>
     </RelativeLayout>
 
     <RelativeLayout
@@ -147,14 +147,24 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true">
 
-            <ImageView
-                android:id="@+id/img_edit_background"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:src="@drawable/profile_image" />
+            <com.xlteam.textonpicture.external.utility.stickerview.StickerView
+                android:id="@+id/sticker_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                app:showBorder="true"
+                app:showIcons="true">
+
+                <com.github.chrisbanes.photoview.PhotoView
+                    android:id="@+id/img_edit_background"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/profile_image" />
+            </com.xlteam.textonpicture.external.utility.stickerview.StickerView>
         </RelativeLayout>
 
     </RelativeLayout>
@@ -203,19 +213,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvFont"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="#80000000"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:paddingBottom="5dp"
-                android:visibility="gone"
-                app:layout_constraintBottom_toTopOf="@id/rv_tool_text"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
             <RelativeLayout
                 android:id="@+id/layout_opacity_color"
                 android:layout_width="match_parent"
@@ -227,14 +224,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
-                <TextView
-                    android:id="@+id/tv_opacity"
-                    android:layout_width="match_parent"
+                <SeekBar
+                    android:id="@+id/sb_opacity"
+                    android:layout_width="200dp"
                     android:layout_height="25dp"
-                    android:layout_toStartOf="@id/sb_opacity"
-                    android:gravity="center"
-                    android:text="@string/opacity"
-                    android:textColor="@color/white" />
+                    android:layout_centerHorizontal="true"
+                    android:max="100"
+                    android:progress="100"
+                    android:progressBackgroundTint="@color/color_FC"
+                    android:progressTint="@color/color_3cc2f5_legend"
+                    android:thumbTint="@color/white" />
 
                 <TextView
                     android:id="@+id/tv_value_opacity"
@@ -246,31 +245,15 @@
                     android:text="100%"
                     android:textColor="@color/white" />
 
-                <SeekBar
-                    android:id="@+id/sb_opacity"
-                    android:layout_width="200dp"
+                <TextView
+                    android:id="@+id/tv_opacity"
+                    android:layout_width="match_parent"
                     android:layout_height="25dp"
-                    android:layout_centerHorizontal="true"
-                    android:max="100"
-                    android:progress="100"
-                    android:progressBackgroundTint="@color/color_FC"
-                    android:progressTint="@color/color_3cc2f5_legend"
-                    android:thumbTint="@color/white" />
+                    android:layout_toStartOf="@id/sb_opacity"
+                    android:gravity="center"
+                    android:text="@string/opacity"
+                    android:textColor="@color/white" />
             </RelativeLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvColor"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_below="@id/layout_opacity_color"
-                android:background="#80000000"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:paddingBottom="5dp"
-                android:visibility="gone"
-                app:layout_constraintBottom_toTopOf="@id/rv_tool_text"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
 
             <RelativeLayout
                 android:id="@+id/layout_shadow"
@@ -342,24 +325,6 @@
                     android:layout_height="wrap_content"
                     android:layout_toStartOf="@id/image_shadow_left">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="25dp"
-                        android:layout_marginStart="15dp"
-                        android:gravity="center"
-                        android:text="@string/saturation"
-                        android:textColor="@color/white" />
-
-                    <TextView
-                        android:id="@+id/tv_value_saturation_shadow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="25dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="15dp"
-                        android:gravity="center"
-                        android:text="0%"
-                        android:textColor="@color/white" />
-
                     <SeekBar
                         android:id="@+id/sb_saturation_shadow"
                         android:layout_width="match_parent"
@@ -372,6 +337,26 @@
                         android:progressBackgroundTint="@color/color_FC"
                         android:progressTint="@color/color_3cc2f5_legend"
                         android:thumbTint="@color/white" />
+
+                    <SeekBar
+                        android:id="@+id/sb_opacity_shadow"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_below="@id/tv_value_opacity_shadow"
+                        android:layout_centerHorizontal="true"
+                        android:max="100"
+                        android:progress="100"
+                        android:progressBackgroundTint="@color/color_FC"
+                        android:progressTint="@color/color_3cc2f5_legend"
+                        android:thumbTint="@color/white" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="15dp"
+                        android:gravity="center"
+                        android:text="@string/saturation"
+                        android:textColor="@color/white" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -393,17 +378,15 @@
                         android:text="100%"
                         android:textColor="@color/white" />
 
-                    <SeekBar
-                        android:id="@+id/sb_opacity_shadow"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/tv_value_saturation_shadow"
+                        android:layout_width="wrap_content"
                         android:layout_height="25dp"
-                        android:layout_below="@id/tv_value_opacity_shadow"
-                        android:layout_centerHorizontal="true"
-                        android:max="100"
-                        android:progress="100"
-                        android:progressBackgroundTint="@color/color_FC"
-                        android:progressTint="@color/color_3cc2f5_legend"
-                        android:thumbTint="@color/white" />
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="15dp"
+                        android:gravity="center"
+                        android:text="0%"
+                        android:textColor="@color/white" />
                 </RelativeLayout>
             </RelativeLayout>
 
@@ -446,6 +429,33 @@
                     android:padding="5dp"
                     android:src="@drawable/ic_align_right" />
             </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvFont"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="#80000000"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="5dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@id/rv_tool_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvColor"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_below="@id/layout_opacity_color"
+                android:background="#80000000"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="5dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@id/rv_tool_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_tool_text"

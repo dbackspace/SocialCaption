@@ -13,9 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TextOnPicture"
         android:windowSoftInputMode="adjustResize">
-<!--        <activity android:name=".ui.test.TestStickerActivity"></activity>-->
         <activity
-            android:name=".ui.test.TestStickerActivity"
+            android:name=".ui.SplashActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
