@@ -159,9 +159,9 @@ public class EditPictureActivity extends AppCompatActivity
         relativeBackground.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (layoutText.getVisibility() == View.VISIBLE) {
+//                if (layoutText.getVisibility() == View.VISIBLE) {
                     showTextMode(false);
-                }
+//                }
             }
         });
 
@@ -503,18 +503,14 @@ public class EditPictureActivity extends AppCompatActivity
         stickerView.setOnStickerOperationListener(new StickerView.OnStickerOperationListener() {
             @Override
             public void onStickerAdded(@NonNull Sticker sticker) {
-                Timber.d("onStickerAdded");
+                currentTextSticker = (TextSticker) sticker;
+                showTextMode(true);
             }
 
             @Override
             public void onStickerClicked(@NonNull Sticker sticker) {
-                //stickerView.removeAllSticker();
-//                if (sticker instanceof TextSticker) {
-//                    ((TextSticker) sticker).setTextColor(Color.RED);
-//                    stickerView.replace(sticker);
-//                    stickerView.invalidate();
-//                }
-//                showTextMode(true);
+                currentTextSticker = (TextSticker) sticker;
+                showTextMode(true);
                 Timber.d("onStickerClicked");
             }
 
@@ -526,11 +522,15 @@ public class EditPictureActivity extends AppCompatActivity
             @Override
             public void onStickerDragFinished(@NonNull Sticker sticker) {
                 Timber.d("onStickerDragFinished");
+                currentTextSticker = (TextSticker) sticker;
+                showTextMode(true);
             }
 
             @Override
             public void onStickerTouchedDown(@NonNull Sticker sticker) {
                 Timber.d("onStickerTouchedDown");
+                currentTextSticker = (TextSticker) sticker;
+                showTextMode(true);
             }
 
             @Override
@@ -639,6 +639,7 @@ public class EditPictureActivity extends AppCompatActivity
 
         ItemText itemText = new ItemText(currentText.getText().toString());
         currentViewOfText.setTag(itemText);
+        currentTextSticker.setItemText(itemText);
 
         showTextMode(true);
         addViewToParent(currentViewOfText);
@@ -728,19 +729,20 @@ public class EditPictureActivity extends AppCompatActivity
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 tvValueOpacity.setText(progress + "%");
-                ItemText itemText = (ItemText) currentViewOfText.getTag();
+                ItemText itemText = currentTextSticker.getItemText();
                 switch (mToolTextAdapter.getCurrentNumberTool()) {
                     case 1:
                         itemText.setOpacityText(progress);
                         Utility.setColorForTextView(currentText, "#" + Utility.convertOpacityToHexString(progress) + itemText.getColorText());
-                        currentTextSticker.setTextColor(Color.parseColor("#" + Utility.convertOpacityToHexString(progress) + tempColor));
+                        currentTextSticker.setTextColor(Color.parseColor("#" + Utility.convertOpacityToHexString(progress) + itemText.getColorText()));
                         break;
                     case 2:
                         itemText.setOpacityBackground(progress);
                         Utility.setColorForView(currentText, "#" + Utility.convertOpacityToHexString(progress) + itemText.getColorBackground());
                         break;
                 }
-                currentViewOfText.setTag(itemText);
+                currentTextSticker.setItemText(itemText);
+                stickerView.invalidate();
             }
 
             @Override
@@ -888,11 +890,15 @@ public class EditPictureActivity extends AppCompatActivity
 
     private void showTextMode(boolean isShow) {
         if (isShow) {
+            stickerView.setShowBorder(true);
+            stickerView.setShowIcons(true);
             layoutText.setVisibility(View.VISIBLE);
             if (currentViewOfText != null) {
                 showToolAndBorderOfText(true);
             }
         } else {
+            stickerView.setShowBorder(false);
+            stickerView.setShowIcons(false);
             layoutText.setVisibility(View.GONE);
             previousViewOfText = null;
             if (currentViewOfText != null) {
@@ -995,21 +1001,19 @@ public class EditPictureActivity extends AppCompatActivity
     @Override
     public void selectColor(int color) {
         String colorCSS = ColorDataSource.getInstance().getAllData().get(color);
-        ItemText itemText = (ItemText) currentViewOfText.getTag();
+        ItemText itemText= currentTextSticker.getItemText();
         switch (mToolTextAdapter.getCurrentNumberTool()) {
             case 1:
                 itemText.setColorText(colorCSS);
                 int opacityText = itemText.getOpacityText();
-                currentTextSticker.setTextColor(Color.parseColor("#" + colorCSS));
                 if (opacityText == 0) { // nếu màu trong suốt thì trả lại 100% màu
                     itemText.setOpacityText(100);
-                    currentViewOfText.setTag(itemText);
                     sbOpacity.setProgress(100);
                 } else {
-                    Utility.setColorForTextView(currentText, "#" + Utility.convertOpacityToHexString(opacityText) + colorCSS);
-                    currentViewOfText.setTag(itemText);
+                    currentTextSticker.setTextColor(Color.parseColor("#" + Utility.convertOpacityToHexString(opacityText) + colorCSS));
                 }
-
+                currentTextSticker.setItemText(itemText);
+                stickerView.invalidate();
                 break;
             case 2:
                 itemText.setColorBackground(colorCSS);
@@ -1020,7 +1024,6 @@ public class EditPictureActivity extends AppCompatActivity
                     sbOpacity.setProgress(20);
                 } else {
                     Utility.setColorForView(currentText, "#" + Utility.convertOpacityToHexString(opacityBackground) + colorCSS);
-
                     currentViewOfText.setTag(itemText);
                 }
                 break;
