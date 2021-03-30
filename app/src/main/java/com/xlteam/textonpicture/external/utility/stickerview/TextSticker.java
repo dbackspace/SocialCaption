@@ -2,16 +2,18 @@ package com.xlteam.textonpicture.external.utility.stickerview;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
-
-import com.xlteam.textonpicture.R;
-import com.xlteam.textonpicture.ui.edit.ItemText;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.Dimension;
@@ -19,6 +21,9 @@ import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+
+import com.xlteam.textonpicture.R;
+import com.xlteam.textonpicture.ui.edit.ItemText;
 
 public class TextSticker extends Sticker {
 
@@ -330,5 +335,22 @@ public class TextSticker extends Sticker {
      */
     private float convertSpToPx(float scaledPixels) {
         return scaledPixels * context.getResources().getDisplayMetrics().scaledDensity;
+    }
+
+    public TextSticker setBackgroundColor(String color) {
+        int intColor = Color.parseColor(color);
+        if (drawable instanceof ShapeDrawable) {
+            ((ShapeDrawable) drawable).getPaint().setColor(intColor);
+        } else if (drawable instanceof GradientDrawable) {
+            ((GradientDrawable) drawable).setColor(intColor);
+        } else if (drawable instanceof ColorDrawable) {
+            ((ColorDrawable) drawable).setColor(intColor);
+        }
+        return this;
+    }
+
+    public TextSticker setShadowLayer(float saturation, float dx, float dy, String color) {
+        textPaint.setShadowLayer(saturation, dx, dy, Color.parseColor(color));
+        return this;
     }
 }
