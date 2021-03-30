@@ -727,6 +727,7 @@ public class EditPictureActivity extends AppCompatActivity
         // init align
         imgAlignRight.setOnClickListener(v -> {
             currentTextSticker.setTextAlign(Layout.Alignment.ALIGN_OPPOSITE);
+            currentTextSticker.resizeText();
             stickerView.invalidate();
             ItemText itemText = currentTextSticker.getItemText();
             itemText.setGravity(2);
@@ -736,6 +737,7 @@ public class EditPictureActivity extends AppCompatActivity
 
         imgAlignLeft.setOnClickListener(v -> {
             currentTextSticker.setTextAlign(Layout.Alignment.ALIGN_NORMAL);
+            currentTextSticker.resizeText();
             stickerView.invalidate();
             ItemText itemText = currentTextSticker.getItemText();
             itemText.setGravity(0);
@@ -745,6 +747,7 @@ public class EditPictureActivity extends AppCompatActivity
 
         imgAlignCenter.setOnClickListener(v -> {
             currentTextSticker.setTextAlign(Layout.Alignment.ALIGN_CENTER);
+            currentTextSticker.resizeText();
             stickerView.invalidate();
             ItemText itemText = currentTextSticker.getItemText();
             itemText.setGravity(1);
