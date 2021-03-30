@@ -113,6 +113,10 @@ public class StickerView extends FrameLayout {
         this(context, attrs, 0);
     }
 
+    public void addIcon(BitmapStickerIcon icon) {
+        this.icons.add(icon);
+    }
+
     public StickerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         touchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
@@ -444,6 +448,19 @@ public class StickerView extends FrameLayout {
         }
     }
 
+    public void balanceCurrentSticker(@NonNull MotionEvent event) {
+        balanceSticker(handlingSticker, event);
+    }
+
+    public void balanceSticker(@Nullable Sticker sticker, @NonNull MotionEvent event) {
+        if (sticker != null) {
+            float newRotation = calculateRotation(midPoint.x, midPoint.y, event.getX(), event.getY());
+            moveMatrix.set(downMatrix);
+            moveMatrix.postRotate(newRotation - oldRotation, midPoint.x, midPoint.y);
+            handlingSticker.setMatrix(moveMatrix);
+        }
+    }
+
     public void zoomAndRotateCurrentSticker(@NonNull MotionEvent event) {
         zoomAndRotateSticker(handlingSticker, event);
     }
@@ -452,8 +469,8 @@ public class StickerView extends FrameLayout {
         if (sticker != null) {
             float newDistance = calculateDistance(midPoint.x, midPoint.y, event.getX(), event.getY());
             float newRotation = calculateRotation(midPoint.x, midPoint.y, event.getX(), event.getY());
-
             moveMatrix.set(downMatrix);
+            if (newDistance <= 100f) newDistance = 100f;
             moveMatrix.postScale(newDistance / oldDistance, newDistance / oldDistance, midPoint.x,
                     midPoint.y);
             moveMatrix.postRotate(newRotation - oldRotation, midPoint.x, midPoint.y);
@@ -726,7 +743,7 @@ public class StickerView extends FrameLayout {
     }
 
     public StickerView addSticker(@NonNull final Sticker sticker,
-                                                            final @Sticker.Position int position) {
+                                  final @Sticker.Position int position) {
         if (ViewCompat.isLaidOut(this)) {
             addStickerImmediately(sticker, position);
         } else {
@@ -901,5 +918,7 @@ public class StickerView extends FrameLayout {
         void onStickerFlipped(@NonNull Sticker sticker);
 
         void onStickerDoubleTapped(@NonNull Sticker sticker);
+
+        void onStickerBalanced(@NonNull Sticker sticker);
     }
 }
