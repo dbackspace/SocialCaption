@@ -149,16 +149,16 @@
 
             <com.xlteam.textonpicture.external.utility.stickerview.StickerView
                 android:id="@+id/sticker_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 app:showBorder="true"
                 app:showIcons="true">
 
                 <ImageView
                     android:id="@+id/img_edit_background"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
                     android:adjustViewBounds="true"
