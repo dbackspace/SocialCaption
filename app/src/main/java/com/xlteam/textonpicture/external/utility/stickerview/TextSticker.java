@@ -11,6 +11,7 @@ import android.text.StaticLayout;
 import android.text.TextPaint;
 
 import com.xlteam.textonpicture.R;
+import com.xlteam.textonpicture.ui.edit.ItemText;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.Dimension;
@@ -34,6 +35,7 @@ public class TextSticker extends Sticker {
     private StaticLayout staticLayout;
     private Layout.Alignment alignment;
     private String text;
+    private ItemText itemText;
 
     /**
      * Upper bounds for text size.
@@ -175,6 +177,14 @@ public class TextSticker extends Sticker {
         textPaint.setTextSize(convertSpToPx(size));
         maxTextSizePixels = textPaint.getTextSize();
         return this;
+    }
+
+    public ItemText getItemText() {
+        return itemText;
+    }
+
+    public void setItemText(ItemText itemText) {
+        this.itemText = itemText;
     }
 
     /**

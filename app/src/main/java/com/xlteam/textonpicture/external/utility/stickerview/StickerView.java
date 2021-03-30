@@ -35,8 +35,8 @@ import androidx.core.view.ViewCompat;
 
 public class StickerView extends FrameLayout {
 
-    private final boolean showIcons;
-    private final boolean showBorder;
+    private boolean showIcons;
+    private boolean showBorder;
     private final boolean bringToFrontCurrentSticker;
 
     @IntDef({
@@ -134,6 +134,14 @@ public class StickerView extends FrameLayout {
                 a.recycle();
             }
         }
+    }
+
+    public void setShowBorder(boolean needShowBorder) {
+        showBorder = needShowBorder;
+    }
+
+    public void setShowIcons(boolean needShowIcons) {
+        showIcons = needShowIcons;
     }
 
     public void configDefaultIcons() {
