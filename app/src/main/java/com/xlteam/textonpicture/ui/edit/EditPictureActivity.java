@@ -194,21 +194,26 @@ public class EditPictureActivity extends AppCompatActivity
 
     private void initStickerView() {
         BitmapStickerIcon deleteIcon = new BitmapStickerIcon(ContextCompat.getDrawable(this,
-                R.drawable.sticker_ic_close_white_18dp),
+                R.drawable.ic_close_text_sticker),
                 BitmapStickerIcon.LEFT_TOP);
         deleteIcon.setIconEvent(new DeleteIconEvent());
 
         BitmapStickerIcon zoomIcon = new BitmapStickerIcon(ContextCompat.getDrawable(this,
-                R.drawable.sticker_ic_scale_white_18dp),
+                R.drawable.ic_zoom_text_sticker),
                 BitmapStickerIcon.RIGHT_BOTOM);
         zoomIcon.setIconEvent(new ZoomIconEvent());
 
-        BitmapStickerIcon flipIcon = new BitmapStickerIcon(ContextCompat.getDrawable(this,
-                R.drawable.sticker_ic_flip_white_18dp),
+        BitmapStickerIcon editTextIcon = new BitmapStickerIcon(ContextCompat.getDrawable(this,
+                R.drawable.ic_edit_text_sticker),
                 BitmapStickerIcon.RIGHT_TOP);
-        flipIcon.setIconEvent(new FlipHorizontallyEvent());
+        editTextIcon.setIconEvent(new FlipHorizontallyEvent());
 
-        stickerView.setIcons(Arrays.asList(deleteIcon, zoomIcon, flipIcon));
+        BitmapStickerIcon balanceIcon = new BitmapStickerIcon(ContextCompat.getDrawable(this,
+                R.drawable.ic_balance_text_sticker),
+                BitmapStickerIcon.LEFT_BOTTOM);
+        balanceIcon.setIconEvent(new FlipHorizontallyEvent());
+
+        stickerView.setIcons(Arrays.asList(deleteIcon, zoomIcon, editTextIcon, balanceIcon));
 
         //default icon layout
         //stickerView.configDefaultIcons();
@@ -528,6 +533,11 @@ public class EditPictureActivity extends AppCompatActivity
             @Override
             public void onStickerDoubleTapped(@NonNull Sticker sticker) {
                 Timber.d("onDoubleTapped: double tap will be with two click");
+            }
+
+            @Override
+            public void onStickerBalanced(@NonNull Sticker sticker) {
+
             }
         });
         stickerView.addSticker(sticker);

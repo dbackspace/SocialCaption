@@ -16,6 +16,13 @@ import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 import android.widget.FrameLayout;
 
+import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.MotionEventCompat;
+import androidx.core.view.ViewCompat;
+
 import com.xlteam.textonpicture.R;
 
 import java.io.File;
@@ -25,13 +32,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import androidx.annotation.IntDef;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.MotionEventCompat;
-import androidx.core.view.ViewCompat;
 
 public class StickerView extends FrameLayout {
 
@@ -150,22 +150,27 @@ public class StickerView extends FrameLayout {
 
     public void configDefaultIcons() {
         BitmapStickerIcon deleteIcon = new BitmapStickerIcon(
-                ContextCompat.getDrawable(getContext(), R.drawable.sticker_ic_close_white_18dp),
+                ContextCompat.getDrawable(getContext(), R.drawable.ic_close_text_sticker),
                 BitmapStickerIcon.LEFT_TOP);
         deleteIcon.setIconEvent(new DeleteIconEvent());
         BitmapStickerIcon zoomIcon = new BitmapStickerIcon(
-                ContextCompat.getDrawable(getContext(), R.drawable.sticker_ic_scale_white_18dp),
+                ContextCompat.getDrawable(getContext(), R.drawable.ic_zoom_text_sticker),
                 BitmapStickerIcon.RIGHT_BOTOM);
         zoomIcon.setIconEvent(new ZoomIconEvent());
-        BitmapStickerIcon flipIcon = new BitmapStickerIcon(
-                ContextCompat.getDrawable(getContext(), R.drawable.sticker_ic_flip_white_18dp),
+        BitmapStickerIcon editTextIcon = new BitmapStickerIcon(
+                ContextCompat.getDrawable(getContext(), R.drawable.ic_edit_text_sticker),
                 BitmapStickerIcon.RIGHT_TOP);
-        flipIcon.setIconEvent(new FlipHorizontallyEvent());
+        editTextIcon.setIconEvent(new FlipHorizontallyEvent());
+        BitmapStickerIcon balanceIcon = new BitmapStickerIcon(
+                ContextCompat.getDrawable(getContext(), R.drawable.ic_balance_text_sticker),
+                BitmapStickerIcon.LEFT_BOTTOM);
+        balanceIcon.setIconEvent(new FlipHorizontallyEvent());
 
         icons.clear();
         icons.add(deleteIcon);
         icons.add(zoomIcon);
-        icons.add(flipIcon);
+        icons.add(editTextIcon);
+        icons.add(balanceIcon);
     }
 
     /**
