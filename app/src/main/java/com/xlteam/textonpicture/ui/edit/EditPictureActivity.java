@@ -48,11 +48,10 @@ import com.xlteam.textonpicture.R;
 import com.xlteam.textonpicture.external.datasource.ColorDataSource;
 import com.xlteam.textonpicture.external.datasource.FontDataSource;
 import com.xlteam.textonpicture.external.utility.logger.Log;
-import com.xlteam.textonpicture.external.utility.stickerview.BitmapStickerIcon;
 import com.xlteam.textonpicture.external.utility.stickerview.BalanceIconEvent;
+import com.xlteam.textonpicture.external.utility.stickerview.BitmapStickerIcon;
 import com.xlteam.textonpicture.external.utility.stickerview.DeleteIconEvent;
 import com.xlteam.textonpicture.external.utility.stickerview.EditIconEvent;
-import com.xlteam.textonpicture.external.utility.stickerview.FlipHorizontallyEvent;
 import com.xlteam.textonpicture.external.utility.stickerview.Sticker;
 import com.xlteam.textonpicture.external.utility.stickerview.StickerView;
 import com.xlteam.textonpicture.external.utility.stickerview.TextSticker;
@@ -108,6 +107,7 @@ public class EditPictureActivity extends AppCompatActivity
     private TextView tvValueSaturationShadow, tvValueOpacityShadow;
     private ImageView imgShadowLeft, imgShadowRight, imgShadowTop, imgShadowBottom, imgShadowCenter;
     private int currentModeOfColor = -1;
+    private ColorAdapter mColorAdapter;
 
     //align
     private RelativeLayout layoutAlign;
@@ -329,6 +329,7 @@ public class EditPictureActivity extends AppCompatActivity
     public void onTextColorClicked() {
         layoutOpacityColor.setVisibility(View.VISIBLE);
         rvColor.setVisibility(View.VISIBLE);
+        mColorAdapter.setNoColor(false);
         rvFont.setVisibility(View.GONE);
         layoutAlign.setVisibility(View.GONE);
         layoutShadow.setVisibility(View.GONE);
@@ -340,6 +341,7 @@ public class EditPictureActivity extends AppCompatActivity
     public void onTextBgColorClicked() {
         layoutOpacityColor.setVisibility(View.VISIBLE);
         rvColor.setVisibility(View.VISIBLE);
+        mColorAdapter.setNoColor(true);
         rvFont.setVisibility(View.GONE);
         layoutShadow.setVisibility(View.GONE);
         layoutAlign.setVisibility(View.GONE);
@@ -351,6 +353,7 @@ public class EditPictureActivity extends AppCompatActivity
 
     public void onTextShadowClicked() {
         rvColor.setVisibility(View.VISIBLE);
+        mColorAdapter.setNoColor(true);
         layoutShadow.setVisibility(View.VISIBLE);
         rvFont.setVisibility(View.GONE);
         layoutAlign.setVisibility(View.GONE);
@@ -614,7 +617,7 @@ public class EditPictureActivity extends AppCompatActivity
 
         /* init color*/
         rvColor.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
-        ColorAdapter mColorAdapter = new ColorAdapter(this);
+        mColorAdapter = new ColorAdapter(this);
         rvColor.setAdapter(mColorAdapter);
         sbOpacity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -919,5 +922,27 @@ public class EditPictureActivity extends AppCompatActivity
                 }
                 break;
         }
+    }
+
+    @Override
+    public void setNoColor() {
+        ItemText itemText = currentTextSticker.getItemText();
+        switch (mToolTextAdapter.getCurrentNumberTool()) {
+            case 2:
+                itemText.setOpacityBackground(0);
+                currentTextSticker.setItemText(itemText);
+                sbOpacity.setProgress(0);
+                break;
+            case 3:
+                itemText.setOpacityShadow(0);
+                currentTextSticker.setItemText(itemText);
+                sbOpacityShadow.setProgress(0);
+                break;
+        }
+    }
+
+
+    @Override
+    public void pickColor() {
     }
 }
