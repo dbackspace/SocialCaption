@@ -153,7 +153,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 app:showBorder="true"
-                app:showIcons="true">
+                app:showIcons="true"
+                ads:bringToFrontCurrentSticker="true"                >
 
                 <ImageView
                     android:id="@+id/img_edit_background"

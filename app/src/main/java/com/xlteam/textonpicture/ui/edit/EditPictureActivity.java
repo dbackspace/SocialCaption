@@ -521,6 +521,8 @@ public class EditPictureActivity extends AppCompatActivity
             @Override
             public void onStickerDeleted(@NonNull Sticker sticker) {
                 Timber.d("onStickerDeleted");
+                currentTextSticker = null;
+                showTextMode(false);
             }
 
             @Override
@@ -942,12 +944,15 @@ public class EditPictureActivity extends AppCompatActivity
             switch (position) {
                 case 1:
                     color = "#" + itemText.getColorText();
+                    sbOpacity.setProgress(100);
                     break;
                 case 2:
                     color = "#" + itemText.getColorBackground();
+                    sbOpacity.setProgress(100);
                     break;
                 case 3:
                     color = "#" + itemText.getColorShadow();
+                    sbOpacity.setProgress(100);
                     break;
             }
         }
