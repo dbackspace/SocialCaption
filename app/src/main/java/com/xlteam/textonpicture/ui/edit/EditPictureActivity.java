@@ -972,4 +972,14 @@ public class EditPictureActivity extends AppCompatActivity
                         break;
                     case 3:
                         currentTextSticker.setShadowLayer(itemText.getSaturationShadow(), itemText.getDxShadow(), itemText.getDyShadow(),
-                                "#" + Utility.convertOpacityToHexString(itemText.getOpacityText()) + 
+                                "#" + Utility.convertOpacityToHexString(itemText.getOpacityText()) + color);
+                        itemText.setColorShadow(color);
+                        break;
+                }
+                stickerView.invalidate();
+            }
+        });
+
+        dialog.show();
+    }
+}
