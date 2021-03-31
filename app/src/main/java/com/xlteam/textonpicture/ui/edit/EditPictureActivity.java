@@ -68,6 +68,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 import timber.log.Timber;
 
@@ -492,11 +493,15 @@ public class EditPictureActivity extends AppCompatActivity
         }
         // text sticker
         TextSticker newSticker = new TextSticker(this);
-        newSticker.setDrawable(ContextCompat.getDrawable(getApplicationContext(),
-                R.drawable.sticker_transparent_background));
+        ItemText itemText = new ItemText(text);
+        newSticker.setItemText(itemText);
+        newSticker.setDrawable(Objects.requireNonNull(getDrawable(R.drawable.sticker_transparent_background)));
         newSticker.setText(text);
-        newSticker.setTextColor(Color.BLACK);
+        newSticker.setBackgroundColor("#" + Utility.convertOpacityToHexString(itemText.getOpacityBackground()) + itemText.getColorBackground());
+        newSticker.setTextColor(Color.parseColor("#" + Utility.convertOpacityToHexString(itemText.getOpacityText()) + itemText.getColorText()));
         newSticker.setTextAlign(Layout.Alignment.ALIGN_CENTER);
+        Typeface typeface = Typeface.createFromAsset(mContext.getAssets(), "font/" + FontDataSource.getInstance().getAllFonts().get(itemText.getFont()).getFont());
+        newSticker.setTypeface(typeface);
         newSticker.resizeText();
         currentTextSticker = newSticker;
         stickerView.setOnStickerOperationListener(new StickerView.OnStickerOperationListener() {
@@ -570,11 +575,6 @@ public class EditPictureActivity extends AppCompatActivity
         isHasText = true;
         // set button "Lưu" mờ hay hiện
         isChangedListener();
-
-        ItemText itemText = new ItemText(text);
-        currentTextSticker.setItemText(itemText);
-        Typeface typeface = Typeface.createFromAsset(mContext.getAssets(), "font/" + FontDataSource.getInstance().getAllFonts().get(itemText.getFont()).getFont());
-        currentTextSticker.setTypeface(typeface);
         showTextMode(true);
     }
 
@@ -972,14 +972,4 @@ public class EditPictureActivity extends AppCompatActivity
                         break;
                     case 3:
                         currentTextSticker.setShadowLayer(itemText.getSaturationShadow(), itemText.getDxShadow(), itemText.getDyShadow(),
-                                "#" + Utility.convertOpacityToHexString(itemText.getOpacityText()) + color);
-                        itemText.setColorShadow(color);
-                        break;
-                }
-                stickerView.invalidate();
-            }
-        });
-
-        dialog.show();
-    }
-}
+                                "#" + Utility.convertOpacityToHexString(itemText.getOpacityText()) + 
