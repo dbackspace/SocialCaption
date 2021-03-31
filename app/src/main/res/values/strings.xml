@@ -21,6 +21,7 @@
     <string name="huy_bo">Không</string>
     <string name="luu">Có</string>
     <string name="close">Thoát</string>
+    <string name="apply">Áp dụng</string>
     <string name="save_or_cancel">Bạn có muốn lưu các thay đổi?</string>
     <string name="confirm_delete_or_not">Bạn có thực sự muốn xóa?</string>
     <string name="select_items">Chọn ảnh</string>
