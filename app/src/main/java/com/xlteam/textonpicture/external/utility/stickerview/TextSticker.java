@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -15,7 +14,6 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 
-import androidx.annotation.ColorInt;
 import androidx.annotation.Dimension;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
@@ -76,8 +74,8 @@ public class TextSticker extends Sticker {
         textPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
         realBounds = new Rect(0, 0, getWidth(), getHeight());
         textRect = new Rect(0, 0, getWidth(), getHeight());
-        minTextSizePixels = convertSpToPx(6);
-        maxTextSizePixels = convertSpToPx(32);
+        minTextSizePixels = convertSpToPx(3);
+        maxTextSizePixels = convertSpToPx(40);
         alignment = Layout.Alignment.ALIGN_CENTER;
         textPaint.setTextSize(maxTextSizePixels);
     }
@@ -166,8 +164,8 @@ public class TextSticker extends Sticker {
     }
 
     @NonNull
-    public TextSticker setTextColor(@ColorInt int color) {
-        textPaint.setColor(color);
+    public TextSticker setTextColor(String color) {
+        textPaint.setColor(Color.parseColor(color));
         return this;
     }
 

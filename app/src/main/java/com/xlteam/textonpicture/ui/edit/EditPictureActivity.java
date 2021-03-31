@@ -348,7 +348,6 @@ public class EditPictureActivity extends AppCompatActivity
         layoutShadow.setVisibility(View.GONE);
         layoutAlign.setVisibility(View.GONE);
         if (currentTextSticker != null) {
-            //nếu màu nền trong suốt thì cho bằng 20 để user nhận biết sự thay đổi màu
             sbOpacity.setProgress(currentTextSticker.getItemText().getOpacityBackground());
         }
     }
@@ -497,8 +496,8 @@ public class EditPictureActivity extends AppCompatActivity
         newSticker.setItemText(itemText);
         newSticker.setDrawable(Objects.requireNonNull(getDrawable(R.drawable.sticker_transparent_background)));
         newSticker.setText(text);
-        newSticker.setBackgroundColor("#" + Utility.convertOpacityToHexString(itemText.getOpacityBackground()) + itemText.getColorBackground());
-        newSticker.setTextColor(Color.parseColor("#" + Utility.convertOpacityToHexString(itemText.getOpacityText()) + itemText.getColorText()));
+        newSticker.setBackgroundColor(buildColorString(itemText.getOpacityBackground(), itemText.getColorBackground()));
+        newSticker.setTextColor(buildColorString(itemText.getOpacityText(), itemText.getColorText()));
         newSticker.setTextAlign(Layout.Alignment.ALIGN_CENTER);
         Typeface typeface = Typeface.createFromAsset(mContext.getAssets(), "font/" + FontDataSource.getInstance().getAllFonts().get(itemText.getFont()).getFont());
         newSticker.setTypeface(typeface);
@@ -632,11 +631,11 @@ public class EditPictureActivity extends AppCompatActivity
                 switch (mToolTextAdapter.getCurrentNumberTool()) {
                     case 1:
                         itemText.setOpacityText(progress);
-                        currentTextSticker.setTextColor(Color.parseColor("#" + Utility.convertOpacityToHexString(progress) + itemText.getColorText()));
+                        currentTextSticker.setTextColor(buildColorString(progress, itemText.getColorText()));
                         break;
                     case 2:
                         itemText.setOpacityBackground(progress);
-                        currentTextSticker.setBackgroundColor("#" + Utility.convertOpacityToHexString(progress) + itemText.getColorBackground());
+                        currentTextSticker.setBackgroundColor(buildColorString(progress, itemText.getColorBackground()));
                         break;
                 }
                 stickerView.invalidate();
@@ -662,7 +661,7 @@ public class EditPictureActivity extends AppCompatActivity
                 tvValueSaturationShadow.setText(progress + "%");
                 itemText = currentTextSticker.getItemText();
                 currentTextSticker.setShadowLayer((progress + 1) / 5f, itemText.getDxShadow(), itemText.getDyShadow(),
-                        "#" + Utility.convertOpacityToHexString(itemText.getOpacityShadow()) + itemText.getColorShadow());
+                        buildColorString(itemText.getOpacityShadow(), itemText.getColorShadow()));
                 stickerView.invalidate();
                 value = progress;
             }
@@ -687,7 +686,7 @@ public class EditPictureActivity extends AppCompatActivity
                 tvValueOpacityShadow.setText(progress + "%");
                 itemText = currentTextSticker.getItemText();
                 currentTextSticker.setShadowLayer((itemText.getSaturationShadow() + 1) / 5f, itemText.getDxShadow(), itemText.getDyShadow(),
-                        "#" + Utility.convertOpacityToHexString(progress) + itemText.getColorShadow());
+                        buildColorString(progress, itemText.getColorShadow()));
                 stickerView.invalidate();
                 value = progress;
             }
@@ -730,7 +729,7 @@ public class EditPictureActivity extends AppCompatActivity
 
             }
             currentTextSticker.setShadowLayer((itemText.getSaturationShadow() + 1) / 5f, itemText.getDxShadow(), itemText.getDyShadow(),
-                    "#" + Utility.convertOpacityToHexString(itemText.getOpacityShadow()) + itemText.getColorShadow());
+                    buildColorString(itemText.getOpacityShadow(), itemText.getColorShadow()));
             stickerView.invalidate();
         };
         imgShadowLeft.setOnClickListener(shadowArrowClick);
@@ -887,7 +886,7 @@ public class EditPictureActivity extends AppCompatActivity
                     itemText.setOpacityText(100);
                     sbOpacity.setProgress(100);
                 } else {
-                    currentTextSticker.setTextColor(Color.parseColor("#" + Utility.convertOpacityToHexString(opacityText) + colorCSS));
+                    currentTextSticker.setTextColor(buildColorString(opacityText, colorCSS));
                     stickerView.invalidate();
                 }
                 break;
@@ -898,7 +897,7 @@ public class EditPictureActivity extends AppCompatActivity
                     itemText.setOpacityBackground(20);
                     sbOpacity.setProgress(20);
                 } else {
-                    currentTextSticker.setBackgroundColor("#" + Utility.convertOpacityToHexString(opacityBackground) + colorCSS);
+                    currentTextSticker.setBackgroundColor(buildColorString(opacityBackground, colorCSS));
                     stickerView.invalidate();
                 }
 
@@ -911,7 +910,7 @@ public class EditPictureActivity extends AppCompatActivity
                     sbOpacityShadow.setProgress(100);
                 } else {
                     currentTextSticker.setShadowLayer((itemText.getSaturationShadow() + 1) / 5f, itemText.getDxShadow(), itemText.getDyShadow(),
-                            "#" + Utility.convertOpacityToHexString(opacityShadow) + colorCSS);
+                            buildColorString(opacityShadow, colorCSS));
                     stickerView.invalidate();
                 }
                 break;
@@ -944,15 +943,12 @@ public class EditPictureActivity extends AppCompatActivity
             switch (position) {
                 case 1:
                     color = "#" + itemText.getColorText();
-                    sbOpacity.setProgress(100);
                     break;
                 case 2:
                     color = "#" + itemText.getColorBackground();
-                    sbOpacity.setProgress(100);
                     break;
                 case 3:
                     color = "#" + itemText.getColorShadow();
-                    sbOpacity.setProgress(100);
                     break;
             }
         }
@@ -968,17 +964,38 @@ public class EditPictureActivity extends AppCompatActivity
                 if (itemText == null) return;
                 switch (position) {
                     case 1:
-                        currentTextSticker.setTextColor(Color.parseColor("#" + Utility.convertOpacityToHexString(itemText.getOpacityText()) + color));
                         itemText.setColorText(color);
+                        int opacityText = itemText.getOpacityText();
+                        if (opacityText == 0) { // nếu màu trong suốt thì trả lại 100% màu
+                            itemText.setOpacityText(100);
+                            sbOpacity.setProgress(100);
+                        } else {
+                            currentTextSticker.setTextColor(buildColorString(opacityText, color));
+                            stickerView.invalidate();
+                        }
                         break;
                     case 2:
-                        currentTextSticker.setBackgroundColor("#" + Utility.convertOpacityToHexString(itemText.getOpacityText()) + color);
                         itemText.setColorBackground(color);
+                        int opacityBackground = itemText.getOpacityBackground();
+                        if (opacityBackground == 0) {
+                            itemText.setOpacityBackground(20);
+                            sbOpacity.setProgress(20);
+                        } else {
+                            currentTextSticker.setBackgroundColor(buildColorString(opacityBackground, color));
+                            stickerView.invalidate();
+                        }
                         break;
                     case 3:
-                        currentTextSticker.setShadowLayer(itemText.getSaturationShadow(), itemText.getDxShadow(), itemText.getDyShadow(),
-                                "#" + Utility.convertOpacityToHexString(itemText.getOpacityText()) + color);
                         itemText.setColorShadow(color);
+                        int opacityShadow = itemText.getOpacityShadow();
+                        if (opacityShadow == 0) {
+                            itemText.setOpacityShadow(100);
+                            sbOpacityShadow.setProgress(100);
+                        } else {
+                            currentTextSticker.setShadowLayer((itemText.getSaturationShadow() + 1) / 5f, itemText.getDxShadow(), itemText.getDyShadow(),
+                                    buildColorString(opacityShadow, color));
+                            stickerView.invalidate();
+                        }
                         break;
                 }
                 stickerView.invalidate();
@@ -986,5 +1003,9 @@ public class EditPictureActivity extends AppCompatActivity
         });
 
         dialog.show();
+    }
+
+    private String buildColorString(int opacity, String color) {
+        return "#" + Utility.convertOpacityToHexString(opacity) + color;
     }
 }
