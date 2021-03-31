@@ -572,6 +572,8 @@ public class EditPictureActivity extends AppCompatActivity
 
         ItemText itemText = new ItemText(text);
         currentTextSticker.setItemText(itemText);
+        Typeface typeface = Typeface.createFromAsset(mContext.getAssets(), "font/" + FontDataSource.getInstance().getAllFonts().get(itemText.getFont()).getFont());
+        currentTextSticker.setTypeface(typeface);
         showTextMode(true);
     }
 
@@ -812,6 +814,9 @@ public class EditPictureActivity extends AppCompatActivity
 
     private void showToolAndBorderOfText(boolean isShow) {
         // show lại 4 icon góc
+        stickerView.setShowBorder(isShow);
+        stickerView.setShowIcons(isShow);
+        stickerView.invalidate();
     }
 
 
