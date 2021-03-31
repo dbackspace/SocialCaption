@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pickColorDialogView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center">
+
+    <RelativeLayout
+        android:id="@+id/viewContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:clipToPadding="false"
+        android:paddingLeft="8dp"
+        android:paddingTop="8dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="8dp">
+
+        <com.xlteam.textonpicture.external.utility.colorpicker.ColorPickerSquare
+            android:id="@+id/pickColorSquare"
+            android:layout_width="240dp"
+            android:layout_height="240dp"
+            android:layerType="software" />
+
+        <ImageView
+            android:id="@+id/imgHue"
+            android:layout_width="30dp"
+            android:layout_height="240dp"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@id/pickColorSquare"
+            android:scaleType="fitXY"
+            android:src="@drawable/image_color_picker_hue" />
+
+        <ImageView
+            android:id="@+id/imgAlphaColor"
+            android:layout_width="30dp"
+            android:layout_height="240dp"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@id/imgHue"
+            android:scaleType="fitXY"
+            android:src="@drawable/bg_transparent_color_picker" />
+
+        <View
+            android:id="@+id/view_overlay"
+            android:layout_width="30dp"
+            android:layout_height="240dp"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@id/imgHue" />
+
+        <ImageView
+            android:id="@+id/imgColorCursor"
+            android:layout_width="9dp"
+            android:layout_height="9dp"
+            android:src="@drawable/ic_color_picker_cursor" />
+
+        <ImageView
+            android:id="@+id/imgAlphaCursor"
+            android:layout_width="9dp"
+            android:layout_height="9dp"
+            android:src="@drawable/ic_color_picker_cursor" />
+
+        <ImageView
+            android:id="@+id/imgTarget"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@drawable/ic_color_picker_target" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pickColorSquare"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="60dp"
+                android:layout_height="30dp">
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/bg_transparent_color_picker" />
+
+                <View
+                    android:id="@+id/viewOldColor"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="#faa" />
+            </FrameLayout>
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_color_picker_transfer" />
+
+            <FrameLayout
+                android:layout_width="60dp"
+                android:layout_height="30dp">
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/bg_transparent_color_picker" />
+
+                <View
+                    android:id="@+id/viewNewColor"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="#aaf" />
+            </FrameLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+</FrameLayout>
