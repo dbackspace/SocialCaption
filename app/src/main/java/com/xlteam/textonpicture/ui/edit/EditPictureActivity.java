@@ -47,11 +47,11 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import com.xlteam.textonpicture.R;
 import com.xlteam.textonpicture.external.datasource.ColorDataSource;
 import com.xlteam.textonpicture.external.datasource.FontDataSource;
-import com.xlteam.textonpicture.external.utility.gesture.OnMultiTouchListener;
-import com.xlteam.textonpicture.external.utility.gesture.OnPhotoEditorListener;
 import com.xlteam.textonpicture.external.utility.logger.Log;
 import com.xlteam.textonpicture.external.utility.stickerview.BitmapStickerIcon;
+import com.xlteam.textonpicture.external.utility.stickerview.BalanceIconEvent;
 import com.xlteam.textonpicture.external.utility.stickerview.DeleteIconEvent;
+import com.xlteam.textonpicture.external.utility.stickerview.EditIconEvent;
 import com.xlteam.textonpicture.external.utility.stickerview.FlipHorizontallyEvent;
 import com.xlteam.textonpicture.external.utility.stickerview.Sticker;
 import com.xlteam.textonpicture.external.utility.stickerview.StickerView;
@@ -76,8 +76,7 @@ import static com.xlteam.textonpicture.external.utility.utils.Constant.SAVE_DATE
 public class EditPictureActivity extends AppCompatActivity
         implements
         DialogAddTextBuilder.Callback,
-        OnPhotoEditorListener,
-        OnMultiTouchListener, FontAdapter.FontSelectCallback, ColorAdapter.ColorSelectCallback {
+        FontAdapter.FontSelectCallback, ColorAdapter.ColorSelectCallback {
     private ImageView imgBack, imgCancelText, imgDoneText;
     private TextView tvDone;
     private ImageView mImgBackground;
@@ -206,19 +205,18 @@ public class EditPictureActivity extends AppCompatActivity
         BitmapStickerIcon editTextIcon = new BitmapStickerIcon(ContextCompat.getDrawable(this,
                 R.drawable.ic_edit_text_sticker),
                 BitmapStickerIcon.RIGHT_TOP);
-        editTextIcon.setIconEvent(new FlipHorizontallyEvent());
+        editTextIcon.setIconEvent(new EditIconEvent());
 
         BitmapStickerIcon balanceIcon = new BitmapStickerIcon(ContextCompat.getDrawable(this,
                 R.drawable.ic_balance_text_sticker),
                 BitmapStickerIcon.LEFT_BOTTOM);
-        balanceIcon.setIconEvent(new FlipHorizontallyEvent());
+        balanceIcon.setIconEvent(new BalanceIconEvent());
 
         stickerView.setIcons(Arrays.asList(deleteIcon, zoomIcon, editTextIcon, balanceIcon));
 
         //default icon layout
         //stickerView.configDefaultIcons();
 
-        stickerView.setBackgroundColor(Color.WHITE);
         stickerView.setLocked(false);
         stickerView.setConstrained(true);
     }
@@ -477,16 +475,26 @@ public class EditPictureActivity extends AppCompatActivity
 
     @SuppressLint("ResourceAsColor")
     @Override
-    public void onSaveClicked(String text, boolean isEditOldText) {
+    public void onSaveClicked(String text, TextSticker sticker, boolean isEditOldText) {
+        if (TextUtils.isEmpty(text)) {
+            return;
+        }
+        if (isEditOldText) {
+            sticker.setText(text);
+            sticker.getItemText().setText(text);
+            sticker.resizeText();
+            stickerView.invalidate();
+            return;
+        }
         // text sticker
-        TextSticker sticker = new TextSticker(this);
-        sticker.setDrawable(ContextCompat.getDrawable(getApplicationContext(),
+        TextSticker newSticker = new TextSticker(this);
+        newSticker.setDrawable(ContextCompat.getDrawable(getApplicationContext(),
                 R.drawable.sticker_transparent_background));
-        sticker.setText(text);
-        sticker.setTextColor(Color.BLACK);
-        sticker.setTextAlign(Layout.Alignment.ALIGN_CENTER);
-        sticker.resizeText();
-        currentTextSticker = sticker;
+        newSticker.setText(text);
+        newSticker.setTextColor(Color.BLACK);
+        newSticker.setTextAlign(Layout.Alignment.ALIGN_CENTER);
+        newSticker.resizeText();
+        currentTextSticker = newSticker;
         stickerView.setOnStickerOperationListener(new StickerView.OnStickerOperationListener() {
             @Override
             public void onStickerAdded(@NonNull Sticker sticker) {
@@ -536,11 +544,16 @@ public class EditPictureActivity extends AppCompatActivity
             }
 
             @Override
-            public void onStickerBalanced(@NonNull Sticker sticker) {
-
+            public void onStickerEdited(@NonNull Sticker sticker) {
+                currentTextSticker = (TextSticker) sticker;
+                Dialog addTextDialog = new DialogAddTextBuilder(EditPictureActivity.this,
+                        EditPictureActivity.this,
+                        currentTextSticker,
+                        Utility.getBitmapFromView(relativeBackground)).build();
+                addTextDialog.show();
             }
         });
-        stickerView.addSticker(sticker);
+        stickerView.addSticker(newSticker);
 
         /**
          * Không tạo empty text.
@@ -557,18 +570,6 @@ public class EditPictureActivity extends AppCompatActivity
         ItemText itemText = new ItemText(text);
         currentTextSticker.setItemText(itemText);
         showTextMode(true);
-    }
-
-    @Override
-    public void onEventDownChangeListener(View view) {
-    }
-
-    @Override
-    public void onEventMoveChangeListener(View view) {
-    }
-
-    @Override
-    public void onEventUpChangeListener(View view) {
     }
 
     private void initTextEditor() {

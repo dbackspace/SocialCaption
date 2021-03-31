@@ -160,11 +160,11 @@ public class StickerView extends FrameLayout {
         BitmapStickerIcon editTextIcon = new BitmapStickerIcon(
                 ContextCompat.getDrawable(getContext(), R.drawable.ic_edit_text_sticker),
                 BitmapStickerIcon.RIGHT_TOP);
-        editTextIcon.setIconEvent(new FlipHorizontallyEvent());
+        editTextIcon.setIconEvent(new EditIconEvent());
         BitmapStickerIcon balanceIcon = new BitmapStickerIcon(
                 ContextCompat.getDrawable(getContext(), R.drawable.ic_balance_text_sticker),
                 BitmapStickerIcon.LEFT_BOTTOM);
-        balanceIcon.setIconEvent(new FlipHorizontallyEvent());
+        balanceIcon.setIconEvent(new BalanceIconEvent());
 
         icons.clear();
         icons.add(deleteIcon);
@@ -459,9 +459,8 @@ public class StickerView extends FrameLayout {
 
     public void balanceSticker(@Nullable Sticker sticker, @NonNull MotionEvent event) {
         if (sticker != null) {
-            float newRotation = calculateRotation(midPoint.x, midPoint.y, event.getX(), event.getY());
             moveMatrix.set(downMatrix);
-            moveMatrix.postRotate(newRotation - oldRotation, midPoint.x, midPoint.y);
+            moveMatrix.postRotate(0f - sticker.getCurrentAngle(), midPoint.x, midPoint.y);
             handlingSticker.setMatrix(moveMatrix);
         }
     }
@@ -752,12 +751,7 @@ public class StickerView extends FrameLayout {
         if (ViewCompat.isLaidOut(this)) {
             addStickerImmediately(sticker, position);
         } else {
-            post(new Runnable() {
-                @Override
-                public void run() {
-                    addStickerImmediately(sticker, position);
-                }
-            });
+            post(() -> addStickerImmediately(sticker, position));
         }
         return this;
     }
@@ -924,6 +918,6 @@ public class StickerView extends FrameLayout {
 
         void onStickerDoubleTapped(@NonNull Sticker sticker);
 
-        void onStickerBalanced(@NonNull Sticker sticker);
+        void onStickerEdited(@NonNull Sticker sticker);
     }
 }
