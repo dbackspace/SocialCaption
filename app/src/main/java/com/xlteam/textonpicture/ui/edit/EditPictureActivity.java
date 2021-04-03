@@ -15,16 +15,19 @@ import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Layout;
 import android.text.TextUtils;
+import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -48,27 +51,23 @@ import com.xlteam.textonpicture.R;
 import com.xlteam.textonpicture.external.datasource.ColorDataSource;
 import com.xlteam.textonpicture.external.datasource.FontDataSource;
 import com.xlteam.textonpicture.external.utility.colorpicker.ColorPickerDialog;
+import com.xlteam.textonpicture.external.utility.gesture.MultiTouchListener;
+import com.xlteam.textonpicture.external.utility.gesture.OnGestureControl;
+import com.xlteam.textonpicture.external.utility.gesture.OnMultiTouchListener;
+import com.xlteam.textonpicture.external.utility.gesture.OnPhotoEditorListener;
 import com.xlteam.textonpicture.external.utility.logger.Log;
-import com.xlteam.textonpicture.external.utility.stickerview.BalanceIconEvent;
-import com.xlteam.textonpicture.external.utility.stickerview.BitmapStickerIcon;
-import com.xlteam.textonpicture.external.utility.stickerview.DeleteIconEvent;
-import com.xlteam.textonpicture.external.utility.stickerview.EditIconEvent;
-import com.xlteam.textonpicture.external.utility.stickerview.Sticker;
-import com.xlteam.textonpicture.external.utility.stickerview.StickerView;
-import com.xlteam.textonpicture.external.utility.stickerview.TextSticker;
-import com.xlteam.textonpicture.external.utility.stickerview.ZoomIconEvent;
 import com.xlteam.textonpicture.external.utility.utils.Constant;
 import com.xlteam.textonpicture.external.utility.utils.FileUtils;
 import com.xlteam.textonpicture.external.utility.utils.Utility;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Objects;
 
 import timber.log.Timber;
 
@@ -77,7 +76,8 @@ import static com.xlteam.textonpicture.external.utility.utils.Constant.SAVE_DATE
 public class EditPictureActivity extends AppCompatActivity
         implements
         DialogAddTextBuilder.Callback,
-        FontAdapter.FontSelectCallback, ColorAdapter.ColorSelectCallback {
+        OnPhotoEditorListener,
+        OnMultiTouchListener, FontAdapter.FontSelectCallback, ColorAdapter.ColorSelectCallback {
     private ImageView imgBack, imgCancelText, imgDoneText;
     private TextView tvDone;
     private ImageView mImgBackground;
@@ -119,12 +119,16 @@ public class EditPictureActivity extends AppCompatActivity
 
     private boolean isHasText = false;
 
+    // text current
+    private TextView currentText;
+    // tool for text
+    private ImageView imgRemove, imgEdit, imgBalance, imgZoom;
     private RecyclerView rvToolText;
     private ToolTextAdapter mToolTextAdapter;
-
-    // sticker view
-    private StickerView stickerView;
-    private TextSticker currentTextSticker;
+    // border for text
+    private FrameLayout borderOfText;
+    private View currentViewOfText;
+    private View previousViewOfText;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -138,13 +142,12 @@ public class EditPictureActivity extends AppCompatActivity
         mAdView.loadAd(adRequest);
 
         findViewById();
-        initStickerView();
         relativeBackground.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (layoutText.getVisibility() == View.VISIBLE) {
-                showTextMode(false);
-//                }
+                if (layoutText.getVisibility() == View.VISIBLE) {
+                    showTextMode(false);
+                }
             }
         });
 
@@ -193,36 +196,6 @@ public class EditPictureActivity extends AppCompatActivity
         });
     }
 
-    private void initStickerView() {
-        BitmapStickerIcon deleteIcon = new BitmapStickerIcon(ContextCompat.getDrawable(this,
-                R.drawable.ic_close_text_sticker),
-                BitmapStickerIcon.LEFT_TOP);
-        deleteIcon.setIconEvent(new DeleteIconEvent());
-
-        BitmapStickerIcon zoomIcon = new BitmapStickerIcon(ContextCompat.getDrawable(this,
-                R.drawable.ic_zoom_text_sticker),
-                BitmapStickerIcon.RIGHT_BOTOM);
-        zoomIcon.setIconEvent(new ZoomIconEvent());
-
-        BitmapStickerIcon editTextIcon = new BitmapStickerIcon(ContextCompat.getDrawable(this,
-                R.drawable.ic_edit_text_sticker),
-                BitmapStickerIcon.RIGHT_TOP);
-        editTextIcon.setIconEvent(new EditIconEvent());
-
-        BitmapStickerIcon balanceIcon = new BitmapStickerIcon(ContextCompat.getDrawable(this,
-                R.drawable.ic_balance_text_sticker),
-                BitmapStickerIcon.LEFT_BOTTOM);
-        balanceIcon.setIconEvent(new BalanceIconEvent());
-
-        stickerView.setIcons(Arrays.asList(deleteIcon, zoomIcon, editTextIcon, balanceIcon));
-
-        //default icon layout
-        //stickerView.configDefaultIcons();
-
-        stickerView.setLocked(false);
-        stickerView.setConstrained(true);
-    }
-
     private void findViewById() {
         imgBack = findViewById(R.id.btn_edit_back_and_cancel);
         tvDone = findViewById(R.id.tv_edit_save);
@@ -259,8 +232,6 @@ public class EditPictureActivity extends AppCompatActivity
         imgAlignCenter = findViewById(R.id.image_align_center);
         imgAlignRight = findViewById(R.id.image_align_right);
 
-        //sticker view
-        stickerView = findViewById(R.id.sticker_view);
     }
 
     @Override
@@ -335,8 +306,8 @@ public class EditPictureActivity extends AppCompatActivity
         rvFont.setVisibility(View.GONE);
         layoutAlign.setVisibility(View.GONE);
         layoutShadow.setVisibility(View.GONE);
-        if (currentTextSticker != null) {
-            sbOpacity.setProgress(currentTextSticker.getItemText().getOpacityText());
+        if (currentViewOfText != null) {
+            sbOpacity.setProgress(((ItemText) currentViewOfText.getTag()).getOpacityText());
         }
     }
 
@@ -347,8 +318,8 @@ public class EditPictureActivity extends AppCompatActivity
         rvFont.setVisibility(View.GONE);
         layoutShadow.setVisibility(View.GONE);
         layoutAlign.setVisibility(View.GONE);
-        if (currentTextSticker != null) {
-            sbOpacity.setProgress(currentTextSticker.getItemText().getOpacityBackground());
+        if (currentViewOfText != null) {
+            sbOpacity.setProgress(((ItemText) currentViewOfText.getTag()).getOpacityBackground());
         }
     }
 
@@ -359,8 +330,8 @@ public class EditPictureActivity extends AppCompatActivity
         rvFont.setVisibility(View.GONE);
         layoutAlign.setVisibility(View.GONE);
         layoutOpacityColor.setVisibility(View.GONE);
-        sbOpacityShadow.setProgress(currentTextSticker.getItemText().getOpacityShadow());
-        sbSaturationShadow.setProgress(currentTextSticker.getItemText().getSaturationShadow());
+        sbOpacityShadow.setProgress(((ItemText) currentViewOfText.getTag()).getOpacityShadow());
+        sbSaturationShadow.setProgress(((ItemText) currentViewOfText.getTag()).getSaturationShadow());
     }
 
     // Thay đổi font
@@ -370,8 +341,8 @@ public class EditPictureActivity extends AppCompatActivity
         rvColor.setVisibility(View.GONE);
         layoutShadow.setVisibility(View.GONE);
         layoutAlign.setVisibility(View.GONE);
-        if (currentTextSticker != null) {
-            ItemText itemText = currentTextSticker.getItemText();
+        if (currentViewOfText != null) {
+            ItemText itemText = (ItemText) currentViewOfText.getTag();
             fontAdapter.setNumberFont(itemText.getFont());
             fontAdapter.notifyDataSetChanged();
             rvFont.smoothScrollToPosition(itemText.getFont());
@@ -392,8 +363,8 @@ public class EditPictureActivity extends AppCompatActivity
         layoutOpacityColor.setVisibility(View.GONE);
         layoutShadow.setVisibility(View.GONE);
         rvColor.setVisibility(View.GONE);
-        if (currentTextSticker != null) {
-            ItemText itemText = currentTextSticker.getItemText();
+        if (currentViewOfText != null) {
+            ItemText itemText = (ItemText) currentViewOfText.getTag();
             setIconGravity(itemText.getGravity());
         }
     }
@@ -479,92 +450,7 @@ public class EditPictureActivity extends AppCompatActivity
 
     @SuppressLint("ResourceAsColor")
     @Override
-    public void onSaveClicked(String text, TextSticker sticker, boolean isEditOldText) {
-        if (TextUtils.isEmpty(text)) {
-            return;
-        }
-        if (isEditOldText) {
-            sticker.setText(text);
-            sticker.getItemText().setText(text);
-            sticker.resizeText();
-            stickerView.invalidate();
-            return;
-        }
-        // text sticker
-        TextSticker newSticker = new TextSticker(this);
-        ItemText itemText = new ItemText(text);
-        newSticker.setItemText(itemText);
-        newSticker.setDrawable(Objects.requireNonNull(getDrawable(R.drawable.sticker_transparent_background)));
-        newSticker.setText(text);
-        newSticker.setBackgroundColor(buildColorString(itemText.getOpacityBackground(), itemText.getColorBackground()));
-        newSticker.setTextColor(buildColorString(itemText.getOpacityText(), itemText.getColorText()));
-        newSticker.setTextAlign(Layout.Alignment.ALIGN_CENTER);
-        Typeface typeface = Typeface.createFromAsset(mContext.getAssets(), "font/" + FontDataSource.getInstance().getAllFonts().get(itemText.getFont()).getFont());
-        newSticker.setTypeface(typeface);
-        newSticker.resizeText();
-        currentTextSticker = newSticker;
-        stickerView.setOnStickerOperationListener(new StickerView.OnStickerOperationListener() {
-            @Override
-            public void onStickerAdded(@NonNull Sticker sticker) {
-                currentTextSticker = (TextSticker) sticker;
-                showTextMode(true);
-            }
-
-            @Override
-            public void onStickerClicked(@NonNull Sticker sticker) {
-                currentTextSticker = (TextSticker) sticker;
-                showTextMode(true);
-                Timber.d("onStickerClicked");
-            }
-
-            @Override
-            public void onStickerDeleted(@NonNull Sticker sticker) {
-                Timber.d("onStickerDeleted");
-                currentTextSticker = null;
-                showTextMode(false);
-            }
-
-            @Override
-            public void onStickerDragFinished(@NonNull Sticker sticker) {
-                Timber.d("onStickerDragFinished");
-                currentTextSticker = (TextSticker) sticker;
-                showTextMode(true);
-            }
-
-            @Override
-            public void onStickerTouchedDown(@NonNull Sticker sticker) {
-                Timber.d("onStickerTouchedDown");
-                currentTextSticker = (TextSticker) sticker;
-                showTextMode(true);
-            }
-
-            @Override
-            public void onStickerZoomFinished(@NonNull Sticker sticker) {
-                Timber.d("onStickerZoomFinished");
-            }
-
-            @Override
-            public void onStickerFlipped(@NonNull Sticker sticker) {
-                Timber.d("onStickerFlipped");
-            }
-
-            @Override
-            public void onStickerDoubleTapped(@NonNull Sticker sticker) {
-                Timber.d("onDoubleTapped: double tap will be with two click");
-            }
-
-            @Override
-            public void onStickerEdited(@NonNull Sticker sticker) {
-                currentTextSticker = (TextSticker) sticker;
-                Dialog addTextDialog = new DialogAddTextBuilder(EditPictureActivity.this,
-                        EditPictureActivity.this,
-                        currentTextSticker,
-                        Utility.getBitmapFromView(relativeBackground)).build();
-                addTextDialog.show();
-            }
-        });
-        stickerView.addSticker(newSticker);
-
+    public void onSaveClicked(String text, boolean isEditOldText) {
         /**
          * Không tạo empty text.
          * TODO: Xử lý trong textChange ở DialogAddText, có cho enable nút DONE hay không
@@ -576,7 +462,123 @@ public class EditPictureActivity extends AppCompatActivity
         isHasText = true;
         // set button "Lưu" mờ hay hiện
         isChangedListener();
+
+        if (isEditOldText) {
+            currentText.setText(text);
+            return;
+        }
+
+        if (currentViewOfText != null) {
+            showToolAndBorderOfText(false);
+            previousViewOfText = currentViewOfText;
+        }
+
+        currentViewOfText = getTextStickerLayout();
+        currentText = currentViewOfText.findViewById(R.id.text_tv);
+        borderOfText = currentViewOfText.findViewById(R.id.text_border);
+        imgRemove = currentViewOfText.findViewById(R.id.image_text_remove);
+        imgEdit = currentViewOfText.findViewById(R.id.image_text_edit);
+        imgBalance = currentViewOfText.findViewById(R.id.image_text_balance);
+        imgZoom = currentViewOfText.findViewById(R.id.image_text_zoom);
+
+        imgRemove.setOnClickListener(v -> {
+            if (currentViewOfText != null) {
+                deleteViewFromParent(currentViewOfText);
+            }
+        });
+
+        imgEdit.setOnClickListener(v -> {
+            Dialog addTextDialog = new DialogAddTextBuilder(this, this, currentText.getText().toString(), Utility.getBitmapFromView(relativeBackground)).build();
+            addTextDialog.show();
+        });
+
+        imgBalance.setOnClickListener(v -> {
+            if (currentViewOfText != null) {
+                currentViewOfText.setRotation(0f);
+            }
+        });
+
+        currentText.setBackgroundResource(R.drawable.bg_text_view_edit);
+        currentText.setText(text);
+        currentText.setTextSize(TypedValue.COMPLEX_UNIT_SP,
+                getResources().getDimension(R.dimen.text_added_default_size));
+        Typeface type = Typeface.createFromAsset(mContext.getAssets(), "font/" + "dancingscript_bold.ttf");
+        currentText.setTypeface(type);
+
+        MultiTouchListener multiTouchListener =
+                MultiTouchListener
+                        .create(mContext)
+                        .setBackgroundImage(mImgBackground)
+                        .setPhotoEditorListener(this)
+                        .setTextAddedView(currentViewOfText)
+                        .setZoomRotateBtn(imgZoom);
+
+        multiTouchListener.setOnGestureControl(new OnGestureControl() {
+            @Override
+            public void onDoubleClick(@NotNull View currentView) {
+                previousViewOfText = currentViewOfText;
+                currentViewOfText = currentView;
+                showTextMode(true);
+            }
+
+            @Override
+            public void onDown(@NotNull View currentView) {
+                previousViewOfText = currentViewOfText;
+                currentViewOfText = currentView;
+                showTextMode(true);
+            }
+
+            @Override
+            public void onLongClick() {
+            }
+        });
+
+//        imgGravity.setImageResource(R.drawable.ic_align_center);
+
+        Utility.setColorForView(currentText, "#00FFFFFF");
+//        Utility.setColorForTextView(currentText, color.getColor());
+
+        ItemText itemText = new ItemText(currentText.getText().toString());
+        currentViewOfText.setTag(itemText);
+
         showTextMode(true);
+        addViewToParent(currentViewOfText);
+        currentViewOfText.setOnTouchListener(multiTouchListener);
+    }
+
+    private View getTextStickerLayout() {
+        LayoutInflater layoutInflater = LayoutInflater.from(mContext);
+        View rootView = layoutInflater.inflate(R.layout.item_text_added, null);
+        TextView txtText = rootView.findViewById(R.id.text_tv);
+        if (txtText != null) {
+            txtText.setGravity(Gravity.CENTER);
+        }
+        return rootView;
+    }
+
+    private void addViewToParent(View viewOfText) {
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        relativeBackground.addView(viewOfText, params);
+    }
+
+    private void deleteViewFromParent(View viewOfText) {
+        relativeBackground.removeView(viewOfText);
+        relativeBackground.invalidate();
+        showTextMode(false);
+    }
+
+    @Override
+    public void onEventDownChangeListener(View view) {
+    }
+
+    @Override
+    public void onEventMoveChangeListener(View view) {
+    }
+
+    @Override
+    public void onEventUpChangeListener(View view) {
     }
 
     private void initTextEditor() {
@@ -627,18 +629,18 @@ public class EditPictureActivity extends AppCompatActivity
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 tvValueOpacity.setText(progress + "%");
-                ItemText itemText = currentTextSticker.getItemText();
+                ItemText itemText = (ItemText) currentViewOfText.getTag();
                 switch (mToolTextAdapter.getCurrentNumberTool()) {
                     case 1:
                         itemText.setOpacityText(progress);
-                        currentTextSticker.setTextColor(buildColorString(progress, itemText.getColorText()));
+                        Utility.setColorForTextView(currentText, buildColorString(progress, itemText.getColorText()));
                         break;
                     case 2:
                         itemText.setOpacityBackground(progress);
-                        currentTextSticker.setBackgroundColor(buildColorString(progress, itemText.getColorBackground()));
+                        Utility.setColorForView(currentText, buildColorString(progress, itemText.getColorBackground()));
                         break;
                 }
-                stickerView.invalidate();
+                currentViewOfText.setTag(itemText);
             }
 
             @Override
@@ -659,10 +661,9 @@ public class EditPictureActivity extends AppCompatActivity
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 tvValueSaturationShadow.setText(progress + "%");
-                itemText = currentTextSticker.getItemText();
-                currentTextSticker.setShadowLayer((progress + 1) / 5f, itemText.getDxShadow(), itemText.getDyShadow(),
-                        buildColorString(itemText.getOpacityShadow(), itemText.getColorShadow()));
-                stickerView.invalidate();
+                itemText = (ItemText) currentViewOfText.getTag();
+                currentText.setShadowLayer((progress + 1) / 5f, itemText.getDxShadow(), itemText.getDyShadow(),
+                        Color.parseColor(buildColorString(itemText.getOpacityShadow(), itemText.getColorShadow())));
                 value = progress;
             }
 
@@ -674,6 +675,7 @@ public class EditPictureActivity extends AppCompatActivity
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 itemText.setSaturationShadow(value);
+                currentViewOfText.setTag(itemText);
             }
         });
 
@@ -684,10 +686,9 @@ public class EditPictureActivity extends AppCompatActivity
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 tvValueOpacityShadow.setText(progress + "%");
-                itemText = currentTextSticker.getItemText();
-                currentTextSticker.setShadowLayer((itemText.getSaturationShadow() + 1) / 5f, itemText.getDxShadow(), itemText.getDyShadow(),
-                        buildColorString(progress, itemText.getColorShadow()));
-                stickerView.invalidate();
+                itemText = (ItemText) currentViewOfText.getTag();
+                currentText.setShadowLayer((itemText.getSaturationShadow() + 1) / 5f, itemText.getDxShadow(), itemText.getDyShadow(),
+                        Color.parseColor(buildColorString(progress, itemText.getColorShadow())));
                 value = progress;
             }
 
@@ -699,11 +700,12 @@ public class EditPictureActivity extends AppCompatActivity
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 itemText.setOpacityShadow(value);
+                currentViewOfText.setTag(itemText);
             }
         });
 
         View.OnClickListener shadowArrowClick = v -> {
-            ItemText itemText = currentTextSticker.getItemText();
+            ItemText itemText = (ItemText) currentViewOfText.getTag();
             float dx = itemText.getDxShadow(), dy = itemText.getDyShadow();
             switch (v.getId()) {
                 case R.id.image_shadow_left:
@@ -728,9 +730,9 @@ public class EditPictureActivity extends AppCompatActivity
                     break;
 
             }
-            currentTextSticker.setShadowLayer((itemText.getSaturationShadow() + 1) / 5f, itemText.getDxShadow(), itemText.getDyShadow(),
-                    buildColorString(itemText.getOpacityShadow(), itemText.getColorShadow()));
-            stickerView.invalidate();
+            currentText.setShadowLayer((itemText.getSaturationShadow() + 1) / 5f, itemText.getDxShadow(), itemText.getDyShadow(),
+                    Color.parseColor(buildColorString(itemText.getOpacityShadow(), itemText.getColorShadow())));
+            currentViewOfText.setTag(itemText);
         };
         imgShadowLeft.setOnClickListener(shadowArrowClick);
         imgShadowRight.setOnClickListener(shadowArrowClick);
@@ -740,30 +742,27 @@ public class EditPictureActivity extends AppCompatActivity
 
         // init align
         imgAlignRight.setOnClickListener(v -> {
-            currentTextSticker.setTextAlign(Layout.Alignment.ALIGN_OPPOSITE);
-            currentTextSticker.resizeText();
-            stickerView.invalidate();
-            ItemText itemText = currentTextSticker.getItemText();
+            currentText.setGravity(Gravity.END);
+            ItemText itemText = (ItemText) currentViewOfText.getTag();
             itemText.setGravity(2);
             setIconGravity(2);
+            currentViewOfText.setTag(itemText);
         });
 
         imgAlignLeft.setOnClickListener(v -> {
-            currentTextSticker.setTextAlign(Layout.Alignment.ALIGN_NORMAL);
-            currentTextSticker.resizeText();
-            stickerView.invalidate();
-            ItemText itemText = currentTextSticker.getItemText();
+            currentText.setGravity(Gravity.START);
+            ItemText itemText = (ItemText) currentViewOfText.getTag();
             itemText.setGravity(0);
             setIconGravity(0);
+            currentViewOfText.setTag(itemText);
         });
 
         imgAlignCenter.setOnClickListener(v -> {
-            currentTextSticker.setTextAlign(Layout.Alignment.ALIGN_CENTER);
-            currentTextSticker.resizeText();
-            stickerView.invalidate();
-            ItemText itemText = currentTextSticker.getItemText();
+            currentText.setGravity(Gravity.CENTER);
+            ItemText itemText = (ItemText) currentViewOfText.getTag();
             itemText.setGravity(1);
             setIconGravity(1);
+            currentViewOfText.setTag(itemText);
         });
     }
 
@@ -789,31 +788,49 @@ public class EditPictureActivity extends AppCompatActivity
 
     private void showTextMode(boolean isShow) {
         if (isShow) {
-            stickerView.setShowBorder(true);
-            stickerView.setShowIcons(true);
             layoutText.setVisibility(View.VISIBLE);
-            if (currentTextSticker != null) {
+            if (currentViewOfText != null) {
                 showToolAndBorderOfText(true);
-                updateOldStateTool(currentTextSticker.getItemText());
             }
         } else {
-            stickerView.setShowBorder(false);
-            stickerView.setShowIcons(false);
             layoutText.setVisibility(View.GONE);
-            if (currentTextSticker != null) {
+            previousViewOfText = null;
+            if (currentViewOfText != null) {
                 showToolAndBorderOfText(false);
-                currentTextSticker = null;
+                currentViewOfText = null;
             }
         }
     }
 
     private void showToolAndBorderOfText(boolean isShow) {
-        // show lại 4 icon góc
-        stickerView.setShowBorder(isShow);
-        stickerView.setShowIcons(isShow);
-        stickerView.invalidate();
+        if (isShow && previousViewOfText != null && previousViewOfText != currentViewOfText) {
+            borderOfText.setBackgroundResource(0);
+            imgRemove.setVisibility(View.GONE);
+            imgEdit.setVisibility(View.GONE);
+            imgBalance.setVisibility(View.GONE);
+            imgZoom.setVisibility(View.GONE);
+        }
+        if (isShow && currentViewOfText != null) {
+            updateToolAndBorderToNewCurrentText();
+        }
+        borderOfText.setBackgroundResource(isShow ? R.drawable.background_border_text_added : 0);
+        imgRemove.setVisibility(isShow ? View.VISIBLE : View.GONE);
+        imgEdit.setVisibility(isShow ? View.VISIBLE : View.GONE);
+        imgBalance.setVisibility(isShow ? View.VISIBLE : View.GONE);
+        imgZoom.setVisibility(isShow ? View.VISIBLE : View.GONE);
     }
 
+    private void updateToolAndBorderToNewCurrentText() {
+        currentText = currentViewOfText.findViewById(R.id.text_tv);
+        borderOfText = currentViewOfText.findViewById(R.id.text_border);
+        imgRemove = currentViewOfText.findViewById(R.id.image_text_remove);
+        imgEdit = currentViewOfText.findViewById(R.id.image_text_edit);
+        imgBalance = currentViewOfText.findViewById(R.id.image_text_balance);
+        imgZoom = currentViewOfText.findViewById(R.id.image_text_zoom);
+
+        ItemText itemText = (ItemText) currentViewOfText.getTag();
+        updateOldStateTool(itemText);
+    }
 
     private void updateOldStateTool(ItemText itemText) { // trả lại trạng thái cũ cho tool ứng với text
         if (itemText == null) return;
@@ -868,50 +885,53 @@ public class EditPictureActivity extends AppCompatActivity
     @Override
     public void selectFont(int numberFont) {
         Typeface typeface = Typeface.createFromAsset(mContext.getAssets(), "font/" + FontDataSource.getInstance().getAllFonts().get(numberFont).getFont());
-        currentTextSticker.setTypeface(typeface);
-        stickerView.invalidate();
-        ItemText itemText = currentTextSticker.getItemText();
+        currentText.setTypeface(typeface);
+        ItemText itemText = (ItemText) currentViewOfText.getTag();
         itemText.setFont(numberFont);
+        currentViewOfText.setTag(itemText);
     }
 
     @Override
     public void selectColor(int color) {
         String colorCSS = ColorDataSource.getInstance().getAllData().get(color);
-        ItemText itemText = currentTextSticker.getItemText();
+        ItemText itemText = (ItemText) currentViewOfText.getTag();
         switch (mToolTextAdapter.getCurrentNumberTool()) {
             case 1:
                 itemText.setColorText(colorCSS);
                 int opacityText = itemText.getOpacityText();
                 if (opacityText == 0) { // nếu màu trong suốt thì trả lại 100% màu
                     itemText.setOpacityText(100);
+                    currentViewOfText.setTag(itemText);
                     sbOpacity.setProgress(100);
                 } else {
-                    currentTextSticker.setTextColor(buildColorString(opacityText, colorCSS));
-                    stickerView.invalidate();
+                    Utility.setColorForTextView(currentText, buildColorString(opacityText, colorCSS));
+                    currentViewOfText.setTag(itemText);
                 }
+
                 break;
             case 2:
                 itemText.setColorBackground(colorCSS);
                 int opacityBackground = itemText.getOpacityBackground();
                 if (opacityBackground == 0) {
                     itemText.setOpacityBackground(20);
+                    currentViewOfText.setTag(itemText);
                     sbOpacity.setProgress(20);
                 } else {
-                    currentTextSticker.setBackgroundColor(buildColorString(opacityBackground, colorCSS));
-                    stickerView.invalidate();
+                    Utility.setColorForView(currentText, buildColorString(opacityBackground, colorCSS));
+                    currentViewOfText.setTag(itemText);
                 }
-
                 break;
             case 3:
                 itemText.setColorShadow(colorCSS);
                 int opacityShadow = itemText.getOpacityShadow();
                 if (opacityShadow == 0) {
                     itemText.setOpacityShadow(100);
+                    currentViewOfText.setTag(itemText);
                     sbOpacityShadow.setProgress(100);
                 } else {
-                    currentTextSticker.setShadowLayer((itemText.getSaturationShadow() + 1) / 5f, itemText.getDxShadow(), itemText.getDyShadow(),
-                            buildColorString(opacityShadow, colorCSS));
-                    stickerView.invalidate();
+                    currentText.setShadowLayer((itemText.getSaturationShadow() + 1) / 5f, itemText.getDxShadow(), itemText.getDyShadow(),
+                            Color.parseColor(buildColorString(opacityShadow, colorCSS)));
+                    currentViewOfText.setTag(itemText);
                 }
                 break;
         }
@@ -919,14 +939,16 @@ public class EditPictureActivity extends AppCompatActivity
 
     @Override
     public void setNoColor() {
-        ItemText itemText = currentTextSticker.getItemText();
+        ItemText itemText = (ItemText) currentViewOfText.getTag();
         switch (mToolTextAdapter.getCurrentNumberTool()) {
             case 2:
                 itemText.setOpacityBackground(0);
+                currentViewOfText.setTag(itemText);
                 sbOpacity.setProgress(0);
                 break;
             case 3:
                 itemText.setOpacityShadow(0);
+                currentViewOfText.setTag(itemText);
                 sbOpacityShadow.setProgress(0);
                 break;
         }
@@ -936,8 +958,7 @@ public class EditPictureActivity extends AppCompatActivity
     @Override
     public void pickColor() {
         String color = "#000000";
-        ItemText itemText = null;
-        if (currentTextSticker != null) itemText = currentTextSticker.getItemText();
+        ItemText itemText = (ItemText) currentViewOfText.getTag();
         int position = mToolTextAdapter.getCurrentNumberTool();
         if (itemText != null) {
             switch (position) {
@@ -960,7 +981,7 @@ public class EditPictureActivity extends AppCompatActivity
             @Override
             public void onApply(ColorPickerDialog dialog, String color) {
                 Log.d("binh.ngk ", " color = " + color);
-                ItemText itemText = currentTextSticker.getItemText();
+                ItemText itemText = (ItemText) currentViewOfText.getTag();
                 if (itemText == null) return;
                 switch (position) {
                     case 1:
@@ -968,10 +989,11 @@ public class EditPictureActivity extends AppCompatActivity
                         int opacityText = itemText.getOpacityText();
                         if (opacityText == 0) { // nếu màu trong suốt thì trả lại 100% màu
                             itemText.setOpacityText(100);
+                            currentViewOfText.setTag(itemText);
                             sbOpacity.setProgress(100);
                         } else {
-                            currentTextSticker.setTextColor(buildColorString(opacityText, color));
-                            stickerView.invalidate();
+                            Utility.setColorForTextView(currentText, buildColorString(opacityText, color));
+                            currentViewOfText.setTag(itemText);
                         }
                         break;
                     case 2:
@@ -979,10 +1001,11 @@ public class EditPictureActivity extends AppCompatActivity
                         int opacityBackground = itemText.getOpacityBackground();
                         if (opacityBackground == 0) {
                             itemText.setOpacityBackground(20);
+                            currentViewOfText.setTag(itemText);
                             sbOpacity.setProgress(20);
                         } else {
-                            currentTextSticker.setBackgroundColor(buildColorString(opacityBackground, color));
-                            stickerView.invalidate();
+                            Utility.setColorForView(currentText, buildColorString(opacityBackground, color));
+                            currentViewOfText.setTag(itemText);
                         }
                         break;
                     case 3:
@@ -990,15 +1013,15 @@ public class EditPictureActivity extends AppCompatActivity
                         int opacityShadow = itemText.getOpacityShadow();
                         if (opacityShadow == 0) {
                             itemText.setOpacityShadow(100);
+                            currentViewOfText.setTag(itemText);
                             sbOpacityShadow.setProgress(100);
                         } else {
-                            currentTextSticker.setShadowLayer((itemText.getSaturationShadow() + 1) / 5f, itemText.getDxShadow(), itemText.getDyShadow(),
-                                    buildColorString(opacityShadow, color));
-                            stickerView.invalidate();
+                            currentText.setShadowLayer((itemText.getSaturationShadow() + 1) / 5f, itemText.getDxShadow(), itemText.getDyShadow(),
+                                    Color.parseColor(buildColorString(opacityShadow, color)));
+                            currentViewOfText.setTag(itemText);
                         }
                         break;
                 }
-                stickerView.invalidate();
             }
         });
 

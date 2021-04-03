@@ -147,27 +147,15 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true">
 
-            <com.xlteam.textonpicture.external.utility.stickerview.StickerView
-                android:id="@+id/sticker_view"
+            <ImageView
+                android:id="@+id/img_edit_background"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                app:showBorder="true"
-                app:showIcons="true"
-                ads:bringToFrontCurrentSticker="true"                >
-
-                <ImageView
-                    android:id="@+id/img_edit_background"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center"
-                    android:adjustViewBounds="true"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/profile_image" />
-            </com.xlteam.textonpicture.external.utility.stickerview.StickerView>
+                android:layout_centerInParent="true"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/profile_image" />
         </RelativeLayout>
-
     </RelativeLayout>
 
     <RelativeLayout

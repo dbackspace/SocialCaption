@@ -13,8 +13,6 @@ import android.widget.RelativeLayout;
 import com.xlteam.textonpicture.R;
 import com.xlteam.textonpicture.external.utility.customview.AutoFitEditText;
 import com.xlteam.textonpicture.external.utility.customview.BlurImageView;
-import com.xlteam.textonpicture.external.utility.stickerview.Sticker;
-import com.xlteam.textonpicture.external.utility.stickerview.TextSticker;
 import com.xlteam.textonpicture.external.utility.utils.Utility;
 
 public class DialogAddTextBuilder {
@@ -28,12 +26,12 @@ public class DialogAddTextBuilder {
     private boolean isEditOldText = false;
 
     interface Callback {
-        void onSaveClicked(String text, TextSticker sticker, boolean isEditOldText);
+        void onSaveClicked(String text, boolean isEditOldText);
     }
 
-    public DialogAddTextBuilder(Context context, Callback callback, TextSticker sticker, Bitmap background) {
+    public DialogAddTextBuilder(Context context, Callback callback, String text, Bitmap background) {
         mContext = context;
-        if (sticker != null && !TextUtils.isEmpty(sticker.getText())) {
+        if (text != null) {
             isEditOldText = true;
         }
         mDialog = new Dialog(mContext, R.style.Theme_TextOnPicture);
@@ -52,14 +50,14 @@ public class DialogAddTextBuilder {
         blurBackgroundView.setBlur(5);
         imgBack.setOnClickListener(v -> mDialog.dismiss());
         imgDone.setOnClickListener(v -> {
-            callback.onSaveClicked(edtText.getText().toString(), sticker, isEditOldText);
+            callback.onSaveClicked(edtText.getText().toString(), isEditOldText);
             mDialog.dismiss();
         });
         rlEmptyClick.setOnClickListener(v -> {
-            callback.onSaveClicked(edtText.getText().toString(), sticker, isEditOldText);
+            callback.onSaveClicked(edtText.getText().toString(), isEditOldText);
             mDialog.dismiss();
         });
-        if (sticker != null && !TextUtils.isEmpty(sticker.getText())) edtText.setText(sticker.getText());
+        if (!TextUtils.isEmpty(text)) edtText.setText(text);
         edtText.requestFocus();
         edtText.setShowSoftInputOnFocus(true);
 //        InputMethodManager mInputMethodManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
