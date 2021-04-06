@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.ImageViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -55,6 +56,8 @@ import com.xlteam.textonpicture.external.utility.gesture.MultiTouchListener;
 import com.xlteam.textonpicture.external.utility.gesture.OnGestureControl;
 import com.xlteam.textonpicture.external.utility.gesture.OnMultiTouchListener;
 import com.xlteam.textonpicture.external.utility.gesture.OnPhotoEditorListener;
+import com.xlteam.textonpicture.external.utility.gesture.OnRotateListener;
+import com.xlteam.textonpicture.external.utility.gesture.OnZoomListener;
 import com.xlteam.textonpicture.external.utility.logger.Log;
 import com.xlteam.textonpicture.external.utility.utils.Constant;
 import com.xlteam.textonpicture.external.utility.utils.FileUtils;
@@ -487,10 +490,10 @@ public class EditPictureActivity extends AppCompatActivity
             }
         });
 
-        imgEdit.setOnClickListener(v -> {
-            Dialog addTextDialog = new DialogAddTextBuilder(this, this, currentText.getText().toString(), Utility.getBitmapFromView(relativeBackground)).build();
-            addTextDialog.show();
-        });
+//        imgEdit.setOnClickListener(v -> {
+//            Dialog addTextDialog = new DialogAddTextBuilder(this, this, currentText.getText().toString(), Utility.getBitmapFromView(relativeBackground)).build();
+//            addTextDialog.show();
+//        });
 
         imgBalance.setOnClickListener(v -> {
             if (currentViewOfText != null) {
@@ -498,6 +501,8 @@ public class EditPictureActivity extends AppCompatActivity
             }
         });
 
+        imgEdit.setOnTouchListener(new OnRotateListener((ConstraintLayout) currentViewOfText, relativeBackground));
+        imgZoom.setOnTouchListener(new OnZoomListener((ConstraintLayout) currentViewOfText, relativeBackground, currentText));
         currentText.setBackgroundResource(R.drawable.bg_text_view_edit);
         currentText.setText(text);
         currentText.setTextSize(TypedValue.COMPLEX_UNIT_SP,
