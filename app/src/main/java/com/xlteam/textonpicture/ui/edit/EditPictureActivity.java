@@ -20,7 +20,6 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -123,7 +122,7 @@ public class EditPictureActivity extends AppCompatActivity
     // text current
     private TextView currentText;
     // tool for text
-    private ImageView imgRemove, imgEdit, imgBalance, imgZoom;
+    private ImageView imgRemove, imgRotate, imgBalance, imgZoom;
     private RecyclerView rvToolText;
     private ToolTextAdapter mToolTextAdapter;
     // border for text
@@ -354,10 +353,6 @@ public class EditPictureActivity extends AppCompatActivity
         }
     }
 
-    public void onTextBendClicked() {
-//        mItemTextViewClicked.setBg(mNumberBg);
-    }
-
     public void onTextAlignClicked() {
         layoutAlign.setVisibility(View.VISIBLE);
         rvFont.setVisibility(View.GONE);
@@ -480,7 +475,7 @@ public class EditPictureActivity extends AppCompatActivity
         currentText = currentViewOfText.findViewById(R.id.text_tv);
         borderOfText = currentViewOfText.findViewById(R.id.text_border);
         imgRemove = currentViewOfText.findViewById(R.id.image_text_remove);
-        imgEdit = currentViewOfText.findViewById(R.id.image_text_edit);
+        imgRotate = currentViewOfText.findViewById(R.id.image_text_edit);
         imgBalance = currentViewOfText.findViewById(R.id.image_text_balance);
         imgZoom = currentViewOfText.findViewById(R.id.image_text_zoom);
 
@@ -501,7 +496,7 @@ public class EditPictureActivity extends AppCompatActivity
             }
         });
 
-        imgEdit.setOnTouchListener(new OnRotateListener((RelativeLayout) currentViewOfText, relativeBackground));
+        imgRotate.setOnTouchListener(new OnRotateListener((RelativeLayout) currentViewOfText));
         imgZoom.setOnTouchListener(new OnZoomListener((RelativeLayout) currentViewOfText, relativeBackground, currentText));
 
         currentText.measure(0, 0);
@@ -609,9 +604,6 @@ public class EditPictureActivity extends AppCompatActivity
                     onTextFontClicked();
                     break;
                 case 5:
-                    onTextBendClicked();
-                    break;
-                case 6:
                     onTextAlignClicked();
                     break;
 
@@ -813,7 +805,7 @@ public class EditPictureActivity extends AppCompatActivity
         if (isShow && previousViewOfText != null && previousViewOfText != currentViewOfText) {
             borderOfText.setBackgroundResource(0);
             imgRemove.setVisibility(View.GONE);
-            imgEdit.setVisibility(View.GONE);
+            imgRotate.setVisibility(View.GONE);
             imgBalance.setVisibility(View.GONE);
             imgZoom.setVisibility(View.GONE);
         }
@@ -822,7 +814,7 @@ public class EditPictureActivity extends AppCompatActivity
         }
         borderOfText.setBackgroundResource(isShow ? R.drawable.background_border_text_added : 0);
         imgRemove.setVisibility(isShow ? View.VISIBLE : View.GONE);
-        imgEdit.setVisibility(isShow ? View.VISIBLE : View.GONE);
+        imgRotate.setVisibility(isShow ? View.VISIBLE : View.GONE);
         imgBalance.setVisibility(isShow ? View.VISIBLE : View.GONE);
         imgZoom.setVisibility(isShow ? View.VISIBLE : View.GONE);
     }
@@ -831,7 +823,7 @@ public class EditPictureActivity extends AppCompatActivity
         currentText = currentViewOfText.findViewById(R.id.text_tv);
         borderOfText = currentViewOfText.findViewById(R.id.text_border);
         imgRemove = currentViewOfText.findViewById(R.id.image_text_remove);
-        imgEdit = currentViewOfText.findViewById(R.id.image_text_edit);
+        imgRotate = currentViewOfText.findViewById(R.id.image_text_edit);
         imgBalance = currentViewOfText.findViewById(R.id.image_text_balance);
         imgZoom = currentViewOfText.findViewById(R.id.image_text_zoom);
 

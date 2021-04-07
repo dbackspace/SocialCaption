@@ -26,8 +26,8 @@ public class ToolTextAdapter extends RecyclerView.Adapter<ToolTextAdapter.ViewHo
     ToolTextAdapter(Context context, Callback callback) {
         mContext = context;
         mCallback = callback;
-        mIcons = new int[]{R.drawable.ic_add_text, R.drawable.ic_text_color, R.drawable.ic_text_bg_color, R.drawable.ic_text_shadow, R.drawable.ic_text_font, R.drawable.ic_bend, R.drawable.ic_align_center};
-        mNameTools = new int[]{R.string.add_text, R.string.color_text, R.string.color_background, R.string.shadow, R.string.font, R.string.bend, R.string.gravity};
+        mIcons = new int[]{R.drawable.ic_add_text, R.drawable.ic_text_color, R.drawable.ic_text_bg_color, R.drawable.ic_text_shadow, R.drawable.ic_text_font, R.drawable.ic_align_center};
+        mNameTools = new int[]{R.string.add_text, R.string.color_text, R.string.color_background, R.string.shadow, R.string.font, R.string.gravity};
     }
 
     @NonNull
