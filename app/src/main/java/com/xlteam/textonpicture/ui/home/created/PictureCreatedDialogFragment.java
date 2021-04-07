@@ -32,7 +32,7 @@ import com.xlteam.textonpicture.external.utility.utils.Constant;
 import com.xlteam.textonpicture.external.utility.utils.FileUtils;
 import com.xlteam.textonpicture.external.utility.utils.Utility;
 import com.xlteam.textonpicture.ui.commondialog.DialogSaveChangesBuilder;
-import com.xlteam.textonpicture.ui.edit.EditPictureActivity;
+import com.xlteam.textonpicture.ui.edit.EditPictureActivityNew;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -171,7 +171,7 @@ public class PictureCreatedDialogFragment extends DialogFragment implements Pict
 
     @Override
     public void onItemGallerySelected(int position) {
-        Intent intent = new Intent(mContext, EditPictureActivity.class);
+        Intent intent = new Intent(mContext, EditPictureActivityNew.class);
         intent.putExtra(Constant.EXTRA_URL_PICTURE, mGalleryPaths.get(position));
         intent.putExtra(Constant.EXTRA_TYPE_PICTURE, Constant.TYPE_PICTURE_CREATED);
         ((Activity) mContext).startActivityForResult(intent, Constant.REQUEST_CODE_PHOTO_FROM_HOME);

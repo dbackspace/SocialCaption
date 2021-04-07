@@ -49,6 +49,7 @@ import com.xlteam.textonpicture.R;
 import com.xlteam.textonpicture.external.datasource.ColorDataSource;
 import com.xlteam.textonpicture.external.datasource.FontDataSource;
 import com.xlteam.textonpicture.external.utility.colorpicker.ColorPickerDialog;
+import com.xlteam.textonpicture.external.utility.customview.ClipArt;
 import com.xlteam.textonpicture.external.utility.gesture.MultiTouchListener;
 import com.xlteam.textonpicture.external.utility.gesture.OnGestureControl;
 import com.xlteam.textonpicture.external.utility.gesture.OnMultiTouchListener;
@@ -512,11 +513,26 @@ public class EditPictureActivity extends AppCompatActivity
                         .create(mContext)
                         .setBackgroundImage(mImgBackground)
                         .setPhotoEditorListener(this)
-                        .setTextAddedView(currentViewOfText)
+                        // sua tam de ko loi
+                        .setTextAddedView((ClipArt) currentViewOfText)
                         .setZoomRotateBtn(imgZoom);
 
         multiTouchListener.setOnGestureControl(new OnGestureControl() {
             @Override
+            public void onDown(@NotNull ClipArt currentView) {
+
+            }
+
+            @Override
+            public void onLongClick() {
+
+            }
+
+            @Override
+            public void onDoubleClick(@NotNull ClipArt currentView) {
+
+            }
+          /*  @Override
             public void onDoubleClick(@NotNull View currentView) {
                 previousViewOfText = currentViewOfText;
                 currentViewOfText = currentView;
@@ -532,7 +548,7 @@ public class EditPictureActivity extends AppCompatActivity
 
             @Override
             public void onLongClick() {
-            }
+            }*/
         });
 
 //        imgGravity.setImageResource(R.drawable.ic_align_center);

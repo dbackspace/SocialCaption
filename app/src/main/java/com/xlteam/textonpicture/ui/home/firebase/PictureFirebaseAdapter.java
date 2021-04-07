@@ -17,7 +17,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.xlteam.textonpicture.R;
 import com.xlteam.textonpicture.external.utility.utils.Constant;
 import com.xlteam.textonpicture.external.utility.utils.Utility;
-import com.xlteam.textonpicture.ui.edit.EditPictureActivity;
+import com.xlteam.textonpicture.ui.edit.EditPictureActivityNew;
 
 import timber.log.Timber;
 
@@ -49,7 +49,7 @@ public class PictureFirebaseAdapter extends RecyclerView.Adapter<PictureFirebase
                 .apply(requestOptions.override(600, 600))
                 .into(holder.imgPicture);
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(mContext, EditPictureActivity.class);
+            Intent intent = new Intent(mContext, EditPictureActivityNew.class);
             intent.putExtra(Constant.EXTRA_URL_PICTURE, url);
             intent.putExtra(Constant.EXTRA_TYPE_PICTURE, Constant.TYPE_PICTURE_FIREBASE);
             ((Activity) mContext).startActivityForResult(intent, Constant.REQUEST_CODE_PHOTO_FROM_HOME);

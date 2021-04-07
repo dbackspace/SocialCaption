@@ -34,7 +34,7 @@ import com.xlteam.textonpicture.external.utility.animation.ViManager;
 import com.xlteam.textonpicture.external.utility.utils.Constant;
 import com.xlteam.textonpicture.external.utility.utils.FileUtils;
 import com.xlteam.textonpicture.external.utility.utils.Utility;
-import com.xlteam.textonpicture.ui.edit.EditPictureActivity;
+import com.xlteam.textonpicture.ui.edit.EditPictureActivityNew;
 import com.xlteam.textonpicture.ui.home.created.PictureCreatedDialogFragment;
 import com.xlteam.textonpicture.ui.home.firebase.PictureFirebaseDialogFragment;
 
@@ -191,7 +191,7 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
                 if (data == null) {
                     Toast.makeText(this, R.string.not_selected_picture, Toast.LENGTH_SHORT).show();
                 } else {
-                    Intent intent = new Intent(this, EditPictureActivity.class);
+                    Intent intent = new Intent(this, EditPictureActivityNew.class);
                     intent.putExtra(Constant.EXTRA_PICK_PHOTO_URL, data.getData());
                     intent.putExtra(Constant.EXTRA_TYPE_PICTURE, Constant.TYPE_PICK_PHOTO);
                     startActivityForResult(intent, Constant.REQUEST_CODE_PHOTO_FROM_HOME);
@@ -204,7 +204,7 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
                     photo = (Bitmap) data.getExtras().get("data");
             }
             if (photo != null) {
-                Intent intent = new Intent(this, EditPictureActivity.class);
+                Intent intent = new Intent(this, EditPictureActivityNew.class);
                 intent.putExtra(Constant.EXTRA_PICK_PHOTO_URL, photo);
                 intent.putExtra(Constant.EXTRA_TYPE_PICTURE, Constant.TYPE_TAKE_PHOTO);
                 startActivityForResult(intent, Constant.REQUEST_CODE_PHOTO_FROM_HOME);

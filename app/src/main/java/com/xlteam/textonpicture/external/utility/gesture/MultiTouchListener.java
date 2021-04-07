@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import androidx.annotation.Nullable;
 
 import com.xlteam.textonpicture.R;
+import com.xlteam.textonpicture.external.utility.customview.ClipArt;
 
 public class MultiTouchListener implements OnTouchListener {
 
@@ -40,7 +41,7 @@ public class MultiTouchListener implements OnTouchListener {
     boolean isTextPinchZoomable;
     private OnPhotoEditorListener onPhotoEditorListener;
 
-    private View currentView;
+    private ClipArt currentView;
     private ImageView zoomRotateBtn;
 
     private PointF midPoint = new PointF();
@@ -74,7 +75,7 @@ public class MultiTouchListener implements OnTouchListener {
         return this;
     }
 
-    public MultiTouchListener setTextAddedView(View textAddedView) {
+    public MultiTouchListener setTextAddedView(ClipArt textAddedView) {
         this.currentView = textAddedView;
         return this;
     }

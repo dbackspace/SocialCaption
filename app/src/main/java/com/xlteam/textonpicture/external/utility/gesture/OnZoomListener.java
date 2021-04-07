@@ -9,14 +9,14 @@ import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import timber.log.Timber;
+
 public class OnZoomListener implements View.OnTouchListener {
     boolean freeze = false;
     int baseh;
     int basew;
     int basex;
     int basey;
-    int pivx;
-    int pivy;
     int margl;
     int margt;
     private final float sizeTextDefault;
@@ -37,6 +37,9 @@ public class OnZoomListener implements View.OnTouchListener {
         heightDefault = currentTextView.getMeasuredHeight() + 150;
         widthDefault = currentTextView.getMeasuredWidth() + 150;
         canhHuyenDefault = (float) Math.sqrt(heightDefault * heightDefault + widthDefault * widthDefault);
+        basex= 0;
+        basey = 0;
+
     }
 
     @Override
@@ -83,11 +86,16 @@ public class OnZoomListener implements View.OnTouchListener {
                         layoutParams.topMargin = (margt - j);
                     }
 
-                    if (k != 1 || m != 1) {
-                        mScaleFactor = (float) Math.sqrt(k * k + m * m);
-                    }
-                    float scaleCurrent = mScaleFactor / canhHuyenDefault;
+                    float scaleCurrent;
 
+                    if (k != 150 || m != 150) {
+                        mScaleFactor = (float) Math.sqrt(k * k + m * m);
+                        scaleCurrent = mScaleFactor / canhHuyenDefault;
+                    } else {
+                        scaleCurrent = mScaleFactor;
+                    }
+                    Timber.e("widthDefault: " + widthDefault + ", 'heightDefault: " + heightDefault);
+                    Timber.e("k: " + k + ", m: " + m + " ,width: " + layoutParams.width + " ,height: " + layoutParams.height + " , scaleCurrent: " + scaleCurrent);
                     if ((k > 0 || m > 0) && (k > -widthDefault && m > -heightDefault)) {
                         scaleCurrent = Math.max(1.0f, scaleCurrent);
                         currentTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, sizeTextDefault * scaleCurrent);

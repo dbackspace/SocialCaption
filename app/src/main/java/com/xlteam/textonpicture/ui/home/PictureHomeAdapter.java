@@ -22,7 +22,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.xlteam.textonpicture.R;
 import com.xlteam.textonpicture.external.utility.utils.Constant;
-import com.xlteam.textonpicture.ui.edit.EditPictureActivity;
+import com.xlteam.textonpicture.ui.edit.EditPictureActivityNew;
 
 import java.util.List;
 
@@ -91,7 +91,7 @@ public class PictureHomeAdapter extends RecyclerView.Adapter<PictureHomeAdapter.
                     .into(viewHolder.imgPicture);
         }
         viewHolder.itemView.setOnClickListener(view -> {
-            Intent intent = new Intent(mContext, EditPictureActivity.class);
+            Intent intent = new Intent(mContext, EditPictureActivityNew.class);
             intent.putExtra(Constant.EXTRA_URL_PICTURE, url);
             intent.putExtra(Constant.EXTRA_TYPE_PICTURE, mType);
             ((Activity) mContext).startActivityForResult(intent, Constant.REQUEST_CODE_PHOTO_FROM_HOME);
