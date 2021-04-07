@@ -20,7 +20,6 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -30,7 +29,6 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.ImageViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -129,7 +127,7 @@ public class EditPictureActivity extends AppCompatActivity
     private RecyclerView rvToolText;
     private ToolTextAdapter mToolTextAdapter;
     // border for text
-    private FrameLayout borderOfText;
+    private ImageView borderOfText;
     private View currentViewOfText;
     private View previousViewOfText;
 
@@ -477,6 +475,8 @@ public class EditPictureActivity extends AppCompatActivity
         }
 
         currentViewOfText = getTextStickerLayout();
+
+
         currentText = currentViewOfText.findViewById(R.id.text_tv);
         borderOfText = currentViewOfText.findViewById(R.id.text_border);
         imgRemove = currentViewOfText.findViewById(R.id.image_text_remove);
@@ -501,8 +501,10 @@ public class EditPictureActivity extends AppCompatActivity
             }
         });
 
-        imgEdit.setOnTouchListener(new OnRotateListener((ConstraintLayout) currentViewOfText, relativeBackground));
-        imgZoom.setOnTouchListener(new OnZoomListener((ConstraintLayout) currentViewOfText, relativeBackground, currentText));
+        imgEdit.setOnTouchListener(new OnRotateListener((RelativeLayout) currentViewOfText, relativeBackground));
+        imgZoom.setOnTouchListener(new OnZoomListener((RelativeLayout) currentViewOfText, relativeBackground, currentText));
+
+        currentText.measure(0, 0);
         currentText.setBackgroundResource(R.drawable.bg_text_view_edit);
         currentText.setText(text);
         currentText.setTextSize(TypedValue.COMPLEX_UNIT_SP,
@@ -563,7 +565,7 @@ public class EditPictureActivity extends AppCompatActivity
 
     private void addViewToParent(View viewOfText) {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                currentText.getMeasuredWidth() + 150, currentText.getMeasuredHeight() + 150);
         params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         relativeBackground.addView(viewOfText, params);
     }

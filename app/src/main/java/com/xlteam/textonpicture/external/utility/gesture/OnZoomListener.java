@@ -3,6 +3,7 @@ package com.xlteam.textonpicture.external.utility.gesture;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,23 +19,24 @@ public class OnZoomListener implements View.OnTouchListener {
     int pivy;
     int margl;
     int margt;
-    private float mScaleFactor = 1.f;
-    private float sizeTextDefault;
-    private float canhHuyenDefault;
+    private final float sizeTextDefault;
+    private final float canhHuyenDefault;
     private final int heightDefault;
     private final int widthDefault;
     float startDegree;
-    ConstraintLayout layGroup;
+    RelativeLayout layGroup;
     RelativeLayout layBg;
     RelativeLayout.LayoutParams layoutParams;
     TextView currentTextView;
 
-    public OnZoomListener(ConstraintLayout layoutGroup, RelativeLayout relativeLayout, TextView tv) {
+    public OnZoomListener(RelativeLayout layoutGroup, RelativeLayout relativeLayout, TextView tv) {
         layGroup = layoutGroup;
         layBg = relativeLayout;
         currentTextView = tv;
-        heightDefault = (int) (currentTextView.getMeasuredHeight() + 150);
-        widthDefault = (int) (currentTextView.getMeasuredWidth() + 150);
+        sizeTextDefault = currentTextView.getTextSize();
+        heightDefault = currentTextView.getMeasuredHeight() + 150;
+        widthDefault = currentTextView.getMeasuredWidth() + 150;
+        canhHuyenDefault = (float) Math.sqrt(heightDefault * heightDefault + widthDefault * widthDefault);
     }
 
     @Override
@@ -43,6 +45,7 @@ public class OnZoomListener implements View.OnTouchListener {
             int j = (int) event.getRawX();
             int i = (int) event.getRawY();
             layoutParams = (RelativeLayout.LayoutParams) layGroup.getLayoutParams();
+            float mScaleFactor = 1.f;
             switch (event.getAction()) {
 
                 case MotionEvent.ACTION_DOWN:
@@ -80,18 +83,18 @@ public class OnZoomListener implements View.OnTouchListener {
                         layoutParams.topMargin = (margt - j);
                     }
 
-                    if (k == 1 && m == 1) {
-                        mScaleFactor = 1;
-                    } else {
+                    if (k != 1 || m != 1) {
                         mScaleFactor = (float) Math.sqrt(k * k + m * m);
                     }
                     float scaleCurrent = mScaleFactor / canhHuyenDefault;
 
-                    scaleCurrent = Math.max(1.0f, scaleCurrent);
-                    currentTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, sizeTextDefault * scaleCurrent);
+                    if ((k > 0 || m > 0) && (k > -widthDefault && m > -heightDefault)) {
+                        scaleCurrent = Math.max(1.0f, scaleCurrent);
+                        currentTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, sizeTextDefault * scaleCurrent);
+                    }
+
                     layGroup.setLayoutParams(layoutParams);
                     layGroup.performLongClick();
-
                     break;
             }
             return true;

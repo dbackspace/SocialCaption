@@ -2,6 +2,7 @@ package com.xlteam.textonpicture.external.utility.gesture;
 
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -15,11 +16,11 @@ public class OnRotateListener implements View.OnTouchListener {
     int pivx;
     int pivy;
     float startDegree;
-    ConstraintLayout layGroup;
+    RelativeLayout layGroup;
     RelativeLayout layBg;
     RelativeLayout.LayoutParams layoutParams;
 
-    public OnRotateListener(ConstraintLayout layoutGroup, RelativeLayout relativeLayout) {
+    public OnRotateListener(RelativeLayout layoutGroup, RelativeLayout relativeLayout) {
         layGroup = layoutGroup;
         layBg = relativeLayout;
     }
