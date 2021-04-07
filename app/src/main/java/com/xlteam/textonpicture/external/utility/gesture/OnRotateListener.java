@@ -2,12 +2,7 @@ package com.xlteam.textonpicture.external.utility.gesture;
 
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-
-import androidx.constraintlayout.widget.ConstraintLayout;
-
-import com.xlteam.textonpicture.external.utility.logger.Log;
 
 public class OnRotateListener implements View.OnTouchListener {
     boolean freeze = false;
@@ -20,16 +15,15 @@ public class OnRotateListener implements View.OnTouchListener {
     RelativeLayout layBg;
     RelativeLayout.LayoutParams layoutParams;
 
-    public OnRotateListener(RelativeLayout layoutGroup, RelativeLayout relativeLayout) {
+    public OnRotateListener(RelativeLayout layoutGroup) {
         layGroup = layoutGroup;
-        layBg = relativeLayout;
     }
 
     @Override
     public boolean onTouch(View view, MotionEvent event) {
-        Log.d("binh.ngk", "as d ds");
         if (!freeze) {
             layoutParams = (RelativeLayout.LayoutParams) layGroup.getLayoutParams();
+            layBg = (RelativeLayout) layGroup.getParent();
             int[] arrayOfInt = new int[2];
             layBg.getLocationOnScreen(arrayOfInt);
             int i = (int) event.getRawX() - arrayOfInt[0];
