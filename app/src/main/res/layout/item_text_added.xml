@@ -40,7 +40,7 @@
         android:layout_alignParentEnd="true"
         android:background="@drawable/bg_item_text"
         android:padding="4dp"
-        android:src="@drawable/ic_text_edit" />
+        android:src="@drawable/ic_text_rotate" />
 
     <ImageView
         android:id="@+id/image_text_balance"
