@@ -63,10 +63,17 @@ public class ClipArt extends RelativeLayout {
     private float sizeTextDefault;
     private float canhHuyenDefault;
 
+    public interface CallbackListener {
+        void onClipArtTouched(ClipArt currentView);
+    }
+
+    private CallbackListener mCallback;
+
     @SuppressLint("ClickableViewAccessibility")
     public ClipArt(Context paramContext, String text) {
         super(paramContext);
         mContext = paramContext;
+        mCallback = (CallbackListener) paramContext;
         layGroup = this;
         // this.clip = paramRelativeLayout;
         basex = 0;
@@ -117,8 +124,15 @@ public class ClipArt extends RelativeLayout {
         setOnTouchListener(new OnTouchListener() {
             final GestureDetector gestureDetector = new GestureDetector(mContext,
                     new GestureDetector.SimpleOnGestureListener() {
+                        @Override
                         public boolean onDoubleTap(MotionEvent paramAnonymous2MotionEvent) {
                             return false;
+                        }
+
+                        @Override
+                        public boolean onDown(MotionEvent e) {
+                            mCallback.onClipArtTouched(ClipArt.this);
+                            return super.onDown(e);
                         }
                     });
 
