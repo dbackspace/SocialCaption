@@ -303,6 +303,12 @@ public class ClipArt extends RelativeLayout {
                 }
             }
         });
+        this.imgBalance.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layGroup.setRotation(0f);
+            }
+        });
     }
 
     public void disableAll() {

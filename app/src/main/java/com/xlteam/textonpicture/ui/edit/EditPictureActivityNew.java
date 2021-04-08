@@ -455,21 +455,11 @@ public class EditPictureActivityNew extends AppCompatActivity
 //        currentClipArt.setOnTouchListener(multiTouchListener);
     }
 
-//    private View getTextStickerLayout() {
-//        LayoutInflater layoutInflater = LayoutInflater.from(mContext);
-//        View rootView = layoutInflater.inflate(R.layout.item_text_added, null);
-//        TextView txtText = rootView.findViewById(R.id.text_tv);
-//        if (txtText != null) {
-//            txtText.setGravity(Gravity.CENTER);
-//        }
-//        return rootView;
-//    }
-
     private void addViewToParent(ClipArt viewOfText) {
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-        viewOfText.setLayoutParams(params);
+//        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+//                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//        params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+//        viewOfText.setLayoutParams(params);
         relativeBackground.addView(viewOfText);
     }
 
