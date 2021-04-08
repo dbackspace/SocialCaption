@@ -70,8 +70,6 @@ import static com.xlteam.textonpicture.external.utility.utils.Constant.SAVE_DATE
 public class EditPictureActivityNew extends AppCompatActivity
         implements
         DialogAddTextBuilder.Callback,
-        OnPhotoEditorListener,
-        OnMultiTouchListener,
         ClipArt.CallbackListener {
     private ImageView imgBack, imgCancelText, imgDoneText;
     private TextView tvDone;
@@ -389,70 +387,16 @@ public class EditPictureActivityNew extends AppCompatActivity
         }
 
         if (currentClipArt != null) {
-//            showToolAndBorderOfText(false);
             previousViewClipArt = currentClipArt;
         }
 
         currentClipArt = new ClipArt(this, text);
-
-//        imgRemove.setOnClickListener(v -> {
-//            if (currentViewOfText != null) {
-//                deleteViewFromParent(currentViewOfText);
-//            }
-//        });
-
-//        imgEdit.setOnClickListener(v -> {
-//            Dialog addTextDialog = new DialogAddTextBuilder(this, this, currentText.getText().toString(), Utility.getBitmapFromView(relativeBackground)).build();
-//            addTextDialog.show();
-//        });
-
-//        imgBalance.setOnClickListener(v -> {
-//            if (currentViewOfText != null) {
-//                currentViewOfText.setRotation(0f);
-//            }
-//        });
-
-//        imgRotate.setOnTouchListener(new OnRotateListener((RelativeLayout) currentViewOfText));
-//        imgZoom.setOnTouchListener(new OnZoomListener((RelativeLayout) currentViewOfText, relativeBackground, currentText));
-//        currentText.setTextSize(TypedValue.COMPLEX_UNIT_PX,
-//                getResources().getDimension(R.dimen.text_added_default_size));
-//        Typeface type = Typeface.createFromAsset(mContext.getAssets(), "font/" + "dancingscript_bold.ttf");
-//        currentText.setTypeface(type);
-
-       /* MultiTouchListener multiTouchListener =
-                MultiTouchListener
-                        .create(mContext)
-                        .setBackgroundImage(mImgBackground)
-                        .setPhotoEditorListener(this)
-                        .setTextAddedView(currentClipArt)
-                        .setZoomRotateBtn(currentClipArt.getImgZoom());
-
-        multiTouchListener.setOnGestureControl(new OnGestureControl() {
-            @Override
-            public void onDoubleClick(@NotNull ClipArt currentView) {
-                previousViewClipArt = currentClipArt;
-                currentClipArt = currentView;
-                showTextMode(true);
-            }
-
-            @Override
-            public void onDown(@NotNull ClipArt currentView) {
-                previousViewClipArt = currentClipArt;
-                currentClipArt = currentView;
-                showTextMode(true);
-            }
-
-            @Override
-            public void onLongClick() {
-            }
-        });*/
 
 //        ItemText itemText = new ItemText(currentText.getText().toString());
 //        currentViewOfText.setTag(itemText);
 
         showTextMode(true);
         addViewToParent(currentClipArt);
-//        currentClipArt.setOnTouchListener(multiTouchListener);
     }
 
     private void addViewToParent(ClipArt viewOfText) {
@@ -467,18 +411,6 @@ public class EditPictureActivityNew extends AppCompatActivity
         relativeBackground.removeView(viewOfText);
         relativeBackground.invalidate();
         showTextMode(false);
-    }
-
-    @Override
-    public void onEventDownChangeListener(View view) {
-    }
-
-    @Override
-    public void onEventMoveChangeListener(View view) {
-    }
-
-    @Override
-    public void onEventUpChangeListener(View view) {
     }
 
     @Override
@@ -532,44 +464,6 @@ public class EditPictureActivityNew extends AppCompatActivity
             }
         }
     }
-
-//    private void updateToolAndBorderToNewCurrentText() {
-//        currentText = currentViewOfText.findViewById(R.id.text_tv);
-//        borderOfText = currentViewOfText.findViewById(R.id.text_border);
-//        imgRemove = currentViewOfText.findViewById(R.id.image_text_remove);
-//        imgRotate = currentViewOfText.findViewById(R.id.image_text_edit);
-//        imgBalance = currentViewOfText.findViewById(R.id.image_text_balance);
-//        imgZoom = currentViewOfText.findViewById(R.id.image_text_zoom);
-//
-//        ItemText itemText = (ItemText) currentViewOfText.getTag();
-//        updateOldStateTool(itemText);
-//    }
-
-//    private void updateOldStateTool(ItemText itemText) { // trả lại trạng thái cũ cho tool ứng với text
-//        if (itemText == null) return;
-//        int opacityProgress = -1;
-//        if (currentModeOfColor == 1) {
-//            opacityProgress = itemText.getOpacityText();
-//        } else if (currentModeOfColor == 2) {
-//            opacityProgress = itemText.getOpacityBackground();
-//        }
-//        if (opacityProgress != -1) {
-//            sbOpacity.setProgress(opacityProgress);
-//        }
-//
-//        //font
-//        int positionFont = itemText.getFont();
-//        rvFont.smoothScrollToPosition(positionFont);
-//        fontAdapter.setNumberFont(positionFont);
-//        fontAdapter.notifyDataSetChanged();
-//
-//        //align
-//        setIconGravity(itemText.getGravity());
-//
-//        //shadow
-//        sbSaturationShadow.setProgress(itemText.getSaturationShadow());
-//        sbOpacityShadow.setProgress(itemText.getOpacityShadow());
-//    }
 
     private void setColorForImageView(ImageView img, int colorId) {
         ImageViewCompat.setImageTintList(img, ColorStateList.valueOf(ContextCompat.getColor(this, colorId)));
@@ -915,5 +809,11 @@ public class EditPictureActivityNew extends AppCompatActivity
         currentClipArt = currentView;
         showTextMode(true);
         //cần update lại trạng thái các seekbar sau khi chọn clip art
+    }
+
+    @Override
+    public void onClipArtDoubleTapped(ClipArt clipArt) {
+        Dialog addTextDialog = new DialogAddTextBuilder(this, this, clipArt.getText(), Utility.getBitmapFromView(relativeBackground)).build();
+        addTextDialog.show();
     }
 }

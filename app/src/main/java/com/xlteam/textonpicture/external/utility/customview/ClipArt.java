@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.os.SystemClock;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.GestureDetector;
@@ -21,7 +22,11 @@ import android.widget.TextView;
 
 import com.xlteam.textonpicture.R;
 import com.xlteam.textonpicture.external.datasource.FontDataSource;
+import com.xlteam.textonpicture.external.utility.gesture.MultiTouchListener;
+import com.xlteam.textonpicture.external.utility.gesture.OnGestureControl;
 import com.xlteam.textonpicture.external.utility.utils.Utility;
+
+import org.jetbrains.annotations.NotNull;
 
 public class ClipArt extends RelativeLayout {
 
@@ -67,6 +72,8 @@ public class ClipArt extends RelativeLayout {
 
     public interface CallbackListener {
         void onClipArtTouched(ClipArt currentView);
+
+        void onClipArtDoubleTapped(ClipArt clipArt);
     }
 
     private CallbackListener mCallback;
@@ -124,14 +131,10 @@ public class ClipArt extends RelativeLayout {
         // ImageLoader.getInstance().displayImage(this.imageUri, this.image,
         // paramDisplayImageOptions);
         currentTextView.setTag(Integer.valueOf(0));
+
         setOnTouchListener(new OnTouchListener() {
             final GestureDetector gestureDetector = new GestureDetector(mContext,
                     new GestureDetector.SimpleOnGestureListener() {
-                        @Override
-                        public boolean onDoubleTap(MotionEvent paramAnonymous2MotionEvent) {
-                            return false;
-                        }
-
                         @Override
                         public boolean onDown(MotionEvent e) {
                             mCallback.onClipArtTouched(ClipArt.this);
@@ -139,6 +142,7 @@ public class ClipArt extends RelativeLayout {
                         }
                     });
 
+            @Override
             public boolean onTouch(View paramAnonymousView, MotionEvent event) {
                 visiball();
                 if (!freeze) {
@@ -169,15 +173,23 @@ public class ClipArt extends RelativeLayout {
                             layoutParams.bottomMargin = -9999999;
                             layGroup.setLayoutParams(layoutParams);
                             break;
-
                     }
-
                     return true;
                 }
                 return true;
                 // freeze;
             }
         });
+
+        setOnClickListener(new DoubleClickListener() {
+            @Override
+            public void onDoubleClick() {
+                // double-click code that is executed if the user double-taps
+                // within a span of 200ms (default).
+                mCallback.onClipArtDoubleTapped(ClipArt.this);
+            }
+        });
+
 
         this.imgZoom.setOnTouchListener(new OnTouchListener() {
             public boolean onTouch(View paramAnonymousView, MotionEvent event) {
@@ -419,7 +431,7 @@ public class ClipArt extends RelativeLayout {
     private float dxShadow, dyShadow;
 
     public String getText() {
-        return text;
+        return currentTextView.getText().toString();
     }
 
     public void setText(String text) {
@@ -530,5 +542,35 @@ public class ClipArt extends RelativeLayout {
         this.dyShadow = dyShadow;
         currentTextView.setShadowLayer((saturationShadow + 1) / 5f, dxShadow, dyShadow,
                 Color.parseColor("#" + Utility.convertOpacityToHexString(opacityShadow) + colorShadow));
+    }
+
+    public abstract class DoubleClickListener implements OnClickListener {
+
+        // The time in which the second tap should be done in order to qualify as
+        // a double click
+        private static final long DEFAULT_QUALIFICATION_SPAN = 200;
+        private long doubleClickQualificationSpanInMillis;
+        private long timestampLastClick;
+
+        public DoubleClickListener() {
+            doubleClickQualificationSpanInMillis = DEFAULT_QUALIFICATION_SPAN;
+            timestampLastClick = 0;
+        }
+
+        public DoubleClickListener(long doubleClickQualificationSpanInMillis) {
+            this.doubleClickQualificationSpanInMillis = doubleClickQualificationSpanInMillis;
+            timestampLastClick = 0;
+        }
+
+        @Override
+        public void onClick(View v) {
+            if((SystemClock.elapsedRealtime() - timestampLastClick) < doubleClickQualificationSpanInMillis) {
+                onDoubleClick();
+            }
+            timestampLastClick = SystemClock.elapsedRealtime();
+        }
+
+        public abstract void onDoubleClick();
+
     }
 }
