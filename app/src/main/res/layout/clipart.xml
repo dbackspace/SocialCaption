@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
+        android:background="@drawable/bg_text_view_edit"
         android:gravity="center"
         android:includeFontPadding="false"
         android:padding="5dp" />

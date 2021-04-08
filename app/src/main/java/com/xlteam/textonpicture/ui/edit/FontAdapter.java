@@ -64,6 +64,10 @@ public class FontAdapter extends RecyclerView.Adapter<FontAdapter.ViewHolder> {
         this.numberFont = numberFont;
     }
 
+    int getNumberFont() {
+        return numberFont;
+    }
+
     @Override
     public int getItemCount() {
         return mFonts.size();

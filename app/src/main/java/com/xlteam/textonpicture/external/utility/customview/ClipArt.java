@@ -10,6 +10,7 @@ import android.graphics.Typeface;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xlteam.textonpicture.R;
+import com.xlteam.textonpicture.external.datasource.FontDataSource;
 import com.xlteam.textonpicture.external.utility.utils.Utility;
 
 public class ClipArt extends RelativeLayout {
@@ -72,6 +74,7 @@ public class ClipArt extends RelativeLayout {
     @SuppressLint("ClickableViewAccessibility")
     public ClipArt(Context paramContext, String text) {
         super(paramContext);
+        initDefault();
         mContext = paramContext;
         mCallback = (CallbackListener) paramContext;
         layGroup = this;
@@ -371,7 +374,155 @@ public class ClipArt extends RelativeLayout {
         return Math.min(maxSizeToFitWidth, height);
     }
 
+    private static final String DEFAULT_COLOR_TEXT = "000000";
+    private static final String DEFAULT_COLOR_BACKGROUND = "000000";
+    private static final String DEFAULT_COLOR_SHADOW = "FF0000";
+    private static final int DEFAULT_GRAVITY = Gravity.CENTER;
+    private static final int DEFAULT_FONT = 3;
+
+    private static final int DEFAULT_OPACITY_TEXT = 100;
+    private static final int DEFAULT_OPACITY_BACKGROUND = 0;
+    private static final int DEFAULT_OPACITY_SHADOW = 0;
+    private static final int DEFAULT_SATURATION_SHADOW = 0;
+    private static final float DEFAULT_DX_SHADOW = 2f;
+    private static final float DEFAULT_DY_SHADOW = 2f;
+
+    public void initDefault() {
+        this.colorText = DEFAULT_COLOR_TEXT;
+        this.colorBackground = DEFAULT_COLOR_BACKGROUND;
+        this.colorShadow = DEFAULT_COLOR_SHADOW;
+        this.gravity = DEFAULT_GRAVITY;
+        this.font = DEFAULT_FONT;
+        this.opacityText = DEFAULT_OPACITY_TEXT;
+        this.opacityBackground = DEFAULT_OPACITY_BACKGROUND;
+        this.saturationShadow = DEFAULT_SATURATION_SHADOW;
+        this.opacityShadow = DEFAULT_OPACITY_SHADOW;
+        this.dxShadow = DEFAULT_DX_SHADOW;
+        this.dyShadow = DEFAULT_DY_SHADOW;
+    }
+
+    private String text;
+    private String colorText;
+    private String colorBackground;
+    private String colorShadow;
+    private int gravity;
+    private int font;
+    private int opacityText;
+    private int opacityBackground;
+    private int saturationShadow, opacityShadow;
+    private float dxShadow, dyShadow;
+
+    public String getText() {
+        return text;
+    }
+
     public void setText(String text) {
+        this.text = text;
         currentTextView.setText(text);
+    }
+
+    public int getGravity() {
+        return gravity;
+    }
+
+    public void setGravity(int gravity) {
+        this.gravity = gravity;
+        currentTextView.setGravity(gravity);
+    }
+
+    public int getFont() {
+        return font;
+    }
+
+    public void setFont(int font) {
+        this.font = font;
+        Typeface typeface = Typeface.createFromAsset(mContext.getAssets(), "font/" + FontDataSource.getInstance().getAllFonts().get(font).getFont());
+        currentTextView.setTypeface(typeface);
+    }
+
+    public String getColorText() {
+        return colorText;
+    }
+
+    public void setColorText(String colorText) {
+        this.colorText = colorText;
+        Utility.setColorForTextView(currentTextView, "#" + Utility.convertOpacityToHexString(opacityText) + colorText);
+    }
+
+    public String getColorBackground() {
+        return colorBackground;
+    }
+
+    public void setColorBackground(String colorBackground) {
+        this.colorBackground = colorBackground;
+        Utility.setColorForView(currentTextView, "#" + Utility.convertOpacityToHexString(opacityBackground) + colorBackground);
+    }
+
+    public String getColorShadow() {
+        return colorShadow;
+    }
+
+    public void setColorShadow(String colorShadow) {
+        this.colorShadow = colorShadow;
+        currentTextView.setShadowLayer((saturationShadow + 1) / 5f, dxShadow, dyShadow,
+                Color.parseColor("#" + Utility.convertOpacityToHexString(opacityShadow) + colorShadow));
+    }
+
+    public int getOpacityText() {
+        return opacityText;
+    }
+
+    public void setOpacityText(int opacityText) {
+        this.opacityText = opacityText;
+        Utility.setColorForTextView(currentTextView, "#" + Utility.convertOpacityToHexString(opacityText) + colorText);
+    }
+
+    public int getOpacityBackground() {
+        return opacityBackground;
+    }
+
+    public void setOpacityBackground(int opacityBackground) {
+        this.opacityBackground = opacityBackground;
+        Utility.setColorForView(currentTextView, "#" + Utility.convertOpacityToHexString(opacityBackground) + colorBackground);
+    }
+
+    public int getSaturationShadow() {
+        return saturationShadow;
+    }
+
+    public void setSaturationShadow(int saturationShadow) {
+        this.saturationShadow = saturationShadow;
+        currentTextView.setShadowLayer((saturationShadow + 1) / 5f, dxShadow, dyShadow,
+                Color.parseColor("#" + Utility.convertOpacityToHexString(opacityShadow) + colorShadow));
+    }
+
+    public int getOpacityShadow() {
+        return opacityShadow;
+    }
+
+    public void setOpacityShadow(int opacityShadow) {
+        this.opacityShadow = opacityShadow;
+        currentTextView.setShadowLayer((saturationShadow + 1) / 5f, dxShadow, dyShadow,
+                Color.parseColor("#" + Utility.convertOpacityToHexString(opacityShadow) + colorShadow));
+    }
+
+    public float getDxShadow() {
+        return dxShadow;
+    }
+
+    public void setDxShadow(float dxShadow) {
+        this.dxShadow = dxShadow;
+        currentTextView.setShadowLayer((saturationShadow + 1) / 5f, dxShadow, dyShadow,
+                Color.parseColor("#" + Utility.convertOpacityToHexString(opacityShadow) + colorShadow));
+    }
+
+    public float getDyShadow() {
+        return dyShadow;
+    }
+
+    public void setDyShadow(float dyShadow) {
+        this.dyShadow = dyShadow;
+        currentTextView.setShadowLayer((saturationShadow + 1) / 5f, dxShadow, dyShadow,
+                Color.parseColor("#" + Utility.convertOpacityToHexString(opacityShadow) + colorShadow));
     }
 }
