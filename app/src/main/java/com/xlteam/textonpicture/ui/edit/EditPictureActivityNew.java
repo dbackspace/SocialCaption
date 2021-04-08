@@ -10,7 +10,6 @@ import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
@@ -18,7 +17,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -46,11 +44,8 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.xlteam.textonpicture.R;
 import com.xlteam.textonpicture.external.datasource.ColorDataSource;
-import com.xlteam.textonpicture.external.datasource.FontDataSource;
 import com.xlteam.textonpicture.external.utility.colorpicker.ColorPickerDialog;
 import com.xlteam.textonpicture.external.utility.customview.ClipArt;
-import com.xlteam.textonpicture.external.utility.gesture.OnMultiTouchListener;
-import com.xlteam.textonpicture.external.utility.gesture.OnPhotoEditorListener;
 import com.xlteam.textonpicture.external.utility.logger.Log;
 import com.xlteam.textonpicture.external.utility.utils.Constant;
 import com.xlteam.textonpicture.external.utility.utils.FileUtils;
@@ -385,15 +380,10 @@ public class EditPictureActivityNew extends AppCompatActivity
             currentClipArt.setText(text);
             return;
         }
-
         if (currentClipArt != null) {
             previousViewClipArt = currentClipArt;
         }
-
         currentClipArt = new ClipArt(this, text);
-
-//        ItemText itemText = new ItemText(currentText.getText().toString());
-//        currentViewOfText.setTag(itemText);
 
         showTextMode(true);
         addViewToParent(currentClipArt);
@@ -405,12 +395,6 @@ public class EditPictureActivityNew extends AppCompatActivity
 //        params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
 //        viewOfText.setLayoutParams(params);
         relativeBackground.addView(viewOfText);
-    }
-
-    private void deleteViewFromParent(View viewOfText) {
-        relativeBackground.removeView(viewOfText);
-        relativeBackground.invalidate();
-        showTextMode(false);
     }
 
     @Override
@@ -688,7 +672,7 @@ public class EditPictureActivityNew extends AppCompatActivity
         int DEFAULT_FONT_NUMBER = 3;
         linearLayoutManager.scrollToPositionWithOffset(DEFAULT_FONT_NUMBER, 20);
         rvFont.setLayoutManager(linearLayoutManager);
-        mFontAdapter = new FontAdapter(numberFont -> currentClipArt.setFont(numberFont));
+        mFontAdapter = new FontAdapter(this, numberFont -> currentClipArt.setFont(numberFont));
         mFontAdapter.setNumberFont(DEFAULT_FONT_NUMBER);
         rvFont.setAdapter(mFontAdapter);
     }
@@ -808,7 +792,28 @@ public class EditPictureActivityNew extends AppCompatActivity
         previousViewClipArt = currentClipArt;
         currentClipArt = currentView;
         showTextMode(true);
-        //cần update lại trạng thái các seekbar sau khi chọn clip art
+
+        //update current status of tool
+        switch (mToolTextAdapter.getCurrentNumberTool()) {
+            case 1:
+                sbOpacity.setProgress(currentClipArt.getOpacityText());
+                break;
+            case 2:
+                sbOpacity.setProgress(currentClipArt.getOpacityBackground());
+                break;
+            case 3:
+                sbSaturationShadow.setProgress(currentClipArt.getSaturationShadow());
+                sbOpacityShadow.setProgress(currentClipArt.getOpacityShadow());
+                break;
+            case 4:
+                mFontAdapter.setNumberFont(currentClipArt.getFont());
+                mFontAdapter.notifyDataSetChanged();
+                rvFont.smoothScrollToPosition(currentClipArt.getFont());
+                break;
+            case 5:
+                setIconGravity(currentClipArt.getGravity());
+                break;
+        }
     }
 
     @Override

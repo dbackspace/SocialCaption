@@ -632,7 +632,7 @@ public class EditPictureActivity extends AppCompatActivity
         int DEFAULT_FONT_NUMBER = 3;
         linearLayoutManager.scrollToPositionWithOffset(DEFAULT_FONT_NUMBER, 20);
         rvFont.setLayoutManager(linearLayoutManager);
-        fontAdapter = new FontAdapter(this);
+        fontAdapter = new FontAdapter(this, this);
         fontAdapter.setNumberFont(DEFAULT_FONT_NUMBER);
         rvFont.setAdapter(fontAdapter);
 

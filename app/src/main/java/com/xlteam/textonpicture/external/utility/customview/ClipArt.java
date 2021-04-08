@@ -22,11 +22,7 @@ import android.widget.TextView;
 
 import com.xlteam.textonpicture.R;
 import com.xlteam.textonpicture.external.datasource.FontDataSource;
-import com.xlteam.textonpicture.external.utility.gesture.MultiTouchListener;
-import com.xlteam.textonpicture.external.utility.gesture.OnGestureControl;
 import com.xlteam.textonpicture.external.utility.utils.Utility;
-
-import org.jetbrains.annotations.NotNull;
 
 public class ClipArt extends RelativeLayout {
 
@@ -445,7 +441,7 @@ public class ClipArt extends RelativeLayout {
 
     public void setGravity(int gravity) {
         this.gravity = gravity;
-        currentTextView.setGravity(gravity);
+        currentTextView.setGravity(gravity | Gravity.CENTER);
     }
 
     public int getFont() {
@@ -564,7 +560,7 @@ public class ClipArt extends RelativeLayout {
 
         @Override
         public void onClick(View v) {
-            if((SystemClock.elapsedRealtime() - timestampLastClick) < doubleClickQualificationSpanInMillis) {
+            if ((SystemClock.elapsedRealtime() - timestampLastClick) < doubleClickQualificationSpanInMillis) {
                 onDoubleClick();
             }
             timestampLastClick = SystemClock.elapsedRealtime();

@@ -16,8 +16,6 @@ import com.xlteam.textonpicture.model.Font;
 
 import java.util.ArrayList;
 
-import timber.log.Timber;
-
 public class FontAdapter extends RecyclerView.Adapter<FontAdapter.ViewHolder> {
     private Context mContext;
     private ArrayList<Font> mFonts;
@@ -28,10 +26,10 @@ public class FontAdapter extends RecyclerView.Adapter<FontAdapter.ViewHolder> {
         void selectFont(int numberFont);
     }
 
-    FontAdapter(FontSelectCallback callback) {
-        mContext = (Context) callback;
-        mFonts = FontDataSource.getInstance().getAllFonts();
+    FontAdapter(Context context, FontSelectCallback callback) {
+        mContext = context;
         mCallBack = callback;
+        mFonts = FontDataSource.getInstance().getAllFonts();
     }
 
     @NonNull
@@ -73,13 +71,11 @@ public class FontAdapter extends RecyclerView.Adapter<FontAdapter.ViewHolder> {
         return mFonts.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvFont;
-        View itemView;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.itemView = itemView;
             tvFont = itemView.findViewById(R.id.tvFont);
         }
     }
