@@ -9,17 +9,13 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageButton;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -30,7 +26,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.ImageViewCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -46,22 +41,13 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.xlteam.textonpicture.R;
-import com.xlteam.textonpicture.external.datasource.ColorDataSource;
-import com.xlteam.textonpicture.external.datasource.FontDataSource;
-import com.xlteam.textonpicture.external.utility.colorpicker.ColorPickerDialog;
 import com.xlteam.textonpicture.external.utility.customview.ClipArt;
-import com.xlteam.textonpicture.external.utility.gesture.MultiTouchListener;
-import com.xlteam.textonpicture.external.utility.gesture.OnGestureControl;
 import com.xlteam.textonpicture.external.utility.gesture.OnMultiTouchListener;
 import com.xlteam.textonpicture.external.utility.gesture.OnPhotoEditorListener;
-import com.xlteam.textonpicture.external.utility.gesture.OnRotateListener;
-import com.xlteam.textonpicture.external.utility.gesture.OnZoomListener;
 import com.xlteam.textonpicture.external.utility.logger.Log;
 import com.xlteam.textonpicture.external.utility.utils.Constant;
 import com.xlteam.textonpicture.external.utility.utils.FileUtils;
 import com.xlteam.textonpicture.external.utility.utils.Utility;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -78,7 +64,10 @@ public class EditPictureActivityNew extends AppCompatActivity
         implements
         DialogAddTextBuilder.Callback,
         OnPhotoEditorListener,
-        OnMultiTouchListener, FontAdapter.FontSelectCallback, ColorAdapter.ColorSelectCallback {
+        OnMultiTouchListener,
+        FontAdapter.FontSelectCallback,
+        ColorAdapter.ColorSelectCallback,
+        ClipArt.CallbackListener {
     private ImageView imgBack, imgCancelText, imgDoneText;
     private TextView tvDone;
     private ImageView mImgBackground;
@@ -493,7 +482,7 @@ public class EditPictureActivityNew extends AppCompatActivity
 //        Typeface type = Typeface.createFromAsset(mContext.getAssets(), "font/" + "dancingscript_bold.ttf");
 //        currentText.setTypeface(type);
 
-        MultiTouchListener multiTouchListener =
+       /* MultiTouchListener multiTouchListener =
                 MultiTouchListener
                         .create(mContext)
                         .setBackgroundImage(mImgBackground)
@@ -519,14 +508,14 @@ public class EditPictureActivityNew extends AppCompatActivity
             @Override
             public void onLongClick() {
             }
-        });
+        });*/
 
 //        ItemText itemText = new ItemText(currentText.getText().toString());
 //        currentViewOfText.setTag(itemText);
 
         showTextMode(true);
         addViewToParent(currentClipArt);
-        currentClipArt.setOnTouchListener(multiTouchListener);
+//        currentClipArt.setOnTouchListener(multiTouchListener);
     }
 
 //    private View getTextStickerLayout() {
@@ -540,10 +529,10 @@ public class EditPictureActivityNew extends AppCompatActivity
 //    }
 
     private void addViewToParent(ClipArt viewOfText) {
-//        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-//                currentText.getMeasuredWidth() + 150, currentText.getMeasuredHeight() + 150);
-//        params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-        relativeBackground.addView(viewOfText);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        relativeBackground.addView(viewOfText, params);
     }
 
     private void deleteViewFromParent(View viewOfText) {
@@ -862,151 +851,158 @@ public class EditPictureActivityNew extends AppCompatActivity
 
     @Override
     public void selectFont(int numberFont) {
-//        Typeface typeface = Typeface.createFromAsset(mContext.getAssets(), "font/" + FontDataSource.getInstance().getAllFonts().get(numberFont).getFont());
-//        currentText.setTypeface(typeface);
-//        ItemText itemText = (ItemText) currentViewOfText.getTag();
-//        itemText.setFont(numberFont);
-//        currentViewOfText.setTag(itemText);
+/*        Typeface typeface = Typeface.createFromAsset(mContext.getAssets(), "font/" + FontDataSource.getInstance().getAllFonts().get(numberFont).getFont());
+        currentText.setTypeface(typeface);
+        ItemText itemText = (ItemText) currentViewOfText.getTag();
+        itemText.setFont(numberFont);
+        currentViewOfText.setTag(itemText);*/
     }
 
     @Override
     public void selectColor(int color) {
-//        String colorCSS = ColorDataSource.getInstance().getAllData().get(color);
-//        ItemText itemText = (ItemText) currentViewOfText.getTag();
-//        switch (mToolTextAdapter.getCurrentNumberTool()) {
-//            case 1:
-//                itemText.setColorText(colorCSS);
-//                int opacityText = itemText.getOpacityText();
-//                if (opacityText == 0) { // nếu màu trong suốt thì trả lại 100% màu
-//                    itemText.setOpacityText(100);
-//                    currentViewOfText.setTag(itemText);
-//                    sbOpacity.setProgress(100);
-//                } else {
-//                    Utility.setColorForTextView(currentText, buildColorString(opacityText, colorCSS));
-//                    currentViewOfText.setTag(itemText);
-//                }
-//
-//                break;
-//            case 2:
-//                itemText.setColorBackground(colorCSS);
-//                int opacityBackground = itemText.getOpacityBackground();
-//                if (opacityBackground == 0) {
-//                    itemText.setOpacityBackground(20);
-//                    currentViewOfText.setTag(itemText);
-//                    sbOpacity.setProgress(20);
-//                } else {
-//                    Utility.setColorForView(currentText, buildColorString(opacityBackground, colorCSS));
-//                    currentViewOfText.setTag(itemText);
-//                }
-//                break;
-//            case 3:
-//                itemText.setColorShadow(colorCSS);
-//                int opacityShadow = itemText.getOpacityShadow();
-//                if (opacityShadow == 0) {
-//                    itemText.setOpacityShadow(100);
-//                    currentViewOfText.setTag(itemText);
-//                    sbOpacityShadow.setProgress(100);
-//                } else {
-//                    currentText.setShadowLayer((itemText.getSaturationShadow() + 1) / 5f, itemText.getDxShadow(), itemText.getDyShadow(),
-//                            Color.parseColor(buildColorString(opacityShadow, colorCSS)));
-//                    currentViewOfText.setTag(itemText);
-//                }
-//                break;
-//        }
+/*        String colorCSS = ColorDataSource.getInstance().getAllData().get(color);
+        ItemText itemText = (ItemText) currentViewOfText.getTag();
+        switch (mToolTextAdapter.getCurrentNumberTool()) {
+            case 1:
+                itemText.setColorText(colorCSS);
+                int opacityText = itemText.getOpacityText();
+                if (opacityText == 0) { // nếu màu trong suốt thì trả lại 100% màu
+                    itemText.setOpacityText(100);
+                    currentViewOfText.setTag(itemText);
+                    sbOpacity.setProgress(100);
+                } else {
+                    Utility.setColorForTextView(currentText, buildColorString(opacityText, colorCSS));
+                    currentViewOfText.setTag(itemText);
+                }
+
+                break;
+            case 2:
+                itemText.setColorBackground(colorCSS);
+                int opacityBackground = itemText.getOpacityBackground();
+                if (opacityBackground == 0) {
+                    itemText.setOpacityBackground(20);
+                    currentViewOfText.setTag(itemText);
+                    sbOpacity.setProgress(20);
+                } else {
+                    Utility.setColorForView(currentText, buildColorString(opacityBackground, colorCSS));
+                    currentViewOfText.setTag(itemText);
+                }
+                break;
+            case 3:
+                itemText.setColorShadow(colorCSS);
+                int opacityShadow = itemText.getOpacityShadow();
+                if (opacityShadow == 0) {
+                    itemText.setOpacityShadow(100);
+                    currentViewOfText.setTag(itemText);
+                    sbOpacityShadow.setProgress(100);
+                } else {
+                    currentText.setShadowLayer((itemText.getSaturationShadow() + 1) / 5f, itemText.getDxShadow(), itemText.getDyShadow(),
+                            Color.parseColor(buildColorString(opacityShadow, colorCSS)));
+                    currentViewOfText.setTag(itemText);
+                }
+                break;
+        }*/
     }
 
     @Override
     public void setNoColor() {
-//        ItemText itemText = (ItemText) currentViewOfText.getTag();
-//        switch (mToolTextAdapter.getCurrentNumberTool()) {
-//            case 2:
-//                itemText.setOpacityBackground(0);
-//                currentViewOfText.setTag(itemText);
-//                sbOpacity.setProgress(0);
-//                break;
-//            case 3:
-//                itemText.setOpacityShadow(0);
-//                currentViewOfText.setTag(itemText);
-//                sbOpacityShadow.setProgress(0);
-//                break;
-//        }
+/*        ItemText itemText = (ItemText) currentViewOfText.getTag();
+        switch (mToolTextAdapter.getCurrentNumberTool()) {
+            case 2:
+                itemText.setOpacityBackground(0);
+                currentViewOfText.setTag(itemText);
+                sbOpacity.setProgress(0);
+                break;
+            case 3:
+                itemText.setOpacityShadow(0);
+                currentViewOfText.setTag(itemText);
+                sbOpacityShadow.setProgress(0);
+                break;
+        }*/
     }
 
 
     @Override
     public void pickColor() {
-//        String color = "#000000";
-//        ItemText itemText = (ItemText) currentViewOfText.getTag();
-//        int position = mToolTextAdapter.getCurrentNumberTool();
-//        if (itemText != null) {
-//            switch (position) {
-//                case 1:
-//                    color = "#" + itemText.getColorText();
-//                    break;
-//                case 2:
-//                    color = "#" + itemText.getColorBackground();
-//                    break;
-//                case 3:
-//                    color = "#" + itemText.getColorShadow();
-//                    break;
-//            }
-//        }
-//        ColorPickerDialog dialog = new ColorPickerDialog(this, Color.parseColor(color), false, new ColorPickerDialog.OnColorPickerListener() {
-//            @Override
-//            public void onCancel(ColorPickerDialog dialog) {
-//            }
-//
-//            @Override
-//            public void onApply(ColorPickerDialog dialog, String color) {
-//                Log.d("binh.ngk ", " color = " + color);
-//                ItemText itemText = (ItemText) currentViewOfText.getTag();
-//                if (itemText == null) return;
-//                switch (position) {
-//                    case 1:
-//                        itemText.setColorText(color);
-//                        int opacityText = itemText.getOpacityText();
-//                        if (opacityText == 0) { // nếu màu trong suốt thì trả lại 100% màu
-//                            itemText.setOpacityText(100);
-//                            currentViewOfText.setTag(itemText);
-//                            sbOpacity.setProgress(100);
-//                        } else {
-//                            Utility.setColorForTextView(currentText, buildColorString(opacityText, color));
-//                            currentViewOfText.setTag(itemText);
-//                        }
-//                        break;
-//                    case 2:
-//                        itemText.setColorBackground(color);
-//                        int opacityBackground = itemText.getOpacityBackground();
-//                        if (opacityBackground == 0) {
-//                            itemText.setOpacityBackground(20);
-//                            currentViewOfText.setTag(itemText);
-//                            sbOpacity.setProgress(20);
-//                        } else {
-//                            Utility.setColorForView(currentText, buildColorString(opacityBackground, color));
-//                            currentViewOfText.setTag(itemText);
-//                        }
-//                        break;
-//                    case 3:
-//                        itemText.setColorShadow(color);
-//                        int opacityShadow = itemText.getOpacityShadow();
-//                        if (opacityShadow == 0) {
-//                            itemText.setOpacityShadow(100);
-//                            currentViewOfText.setTag(itemText);
-//                            sbOpacityShadow.setProgress(100);
-//                        } else {
-//                            currentText.setShadowLayer((itemText.getSaturationShadow() + 1) / 5f, itemText.getDxShadow(), itemText.getDyShadow(),
-//                                    Color.parseColor(buildColorString(opacityShadow, color)));
-//                            currentViewOfText.setTag(itemText);
-//                        }
-//                        break;
-//                }
-//            }
-//        });
-//
-//        dialog.show();
+     /*   String color = "#000000";
+        ItemText itemText = (ItemText) currentViewOfText.getTag();
+        int position = mToolTextAdapter.getCurrentNumberTool();
+        if (itemText != null) {
+            switch (position) {
+                case 1:
+                    color = "#" + itemText.getColorText();
+                    break;
+                case 2:
+                    color = "#" + itemText.getColorBackground();
+                    break;
+                case 3:
+                    color = "#" + itemText.getColorShadow();
+                    break;
+            }
+        }
+        ColorPickerDialog dialog = new ColorPickerDialog(this, Color.parseColor(color), false, new ColorPickerDialog.OnColorPickerListener() {
+            @Override
+            public void onCancel(ColorPickerDialog dialog) {
+            }
+
+            @Override
+            public void onApply(ColorPickerDialog dialog, String color) {
+                Log.d("binh.ngk ", " color = " + color);
+                ItemText itemText = (ItemText) currentViewOfText.getTag();
+                if (itemText == null) return;
+                switch (position) {
+                    case 1:
+                        itemText.setColorText(color);
+                        int opacityText = itemText.getOpacityText();
+                        if (opacityText == 0) { // nếu màu trong suốt thì trả lại 100% màu
+                            itemText.setOpacityText(100);
+                            currentViewOfText.setTag(itemText);
+                            sbOpacity.setProgress(100);
+                        } else {
+                            Utility.setColorForTextView(currentText, buildColorString(opacityText, color));
+                            currentViewOfText.setTag(itemText);
+                        }
+                        break;
+                    case 2:
+                        itemText.setColorBackground(color);
+                        int opacityBackground = itemText.getOpacityBackground();
+                        if (opacityBackground == 0) {
+                            itemText.setOpacityBackground(20);
+                            currentViewOfText.setTag(itemText);
+                            sbOpacity.setProgress(20);
+                        } else {
+                            Utility.setColorForView(currentText, buildColorString(opacityBackground, color));
+                            currentViewOfText.setTag(itemText);
+                        }
+                        break;
+                    case 3:
+                        itemText.setColorShadow(color);
+                        int opacityShadow = itemText.getOpacityShadow();
+                        if (opacityShadow == 0) {
+                            itemText.setOpacityShadow(100);
+                            currentViewOfText.setTag(itemText);
+                            sbOpacityShadow.setProgress(100);
+                        } else {
+                            currentText.setShadowLayer((itemText.getSaturationShadow() + 1) / 5f, itemText.getDxShadow(), itemText.getDyShadow(),
+                                    Color.parseColor(buildColorString(opacityShadow, color)));
+                            currentViewOfText.setTag(itemText);
+                        }
+                        break;
+                }
+            }
+        });
+
+        dialog.show();*/
     }
 
     private String buildColorString(int opacity, String color) {
         return "#" + Utility.convertOpacityToHexString(opacity) + color;
+    }
+
+    @Override
+    public void onClipArtTouched(ClipArt currentView) {
+        previousViewClipArt = currentClipArt;
+        currentClipArt = currentView;
+        showTextMode(true);
     }
 }
