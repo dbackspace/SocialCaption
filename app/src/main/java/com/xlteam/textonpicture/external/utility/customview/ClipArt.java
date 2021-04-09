@@ -62,8 +62,8 @@ public class ClipArt extends RelativeLayout {
     private final int heightDefault;
     private final int widthDefault;
     private float mScaleFactor = 1.f;
-    private final float sizeTextDefault;
-    private final float canhHuyenDefault;
+    private float sizeTextDefault;
+    private float canhHuyenDefault;
 
     public interface CallbackListener {
         void onClipArtTouched(ClipArt currentView);
@@ -221,14 +221,14 @@ public class ClipArt extends RelativeLayout {
                                 - layGroup.getRotation())));
                         k = i * 2 + basew;
                         int m = j * 2 + baseh;
-                        if (k > widthDefault) {
+                        if (k > widthDefault - 75) {
                             layoutParams.width = k;
                             layoutParams.leftMargin = (margl - i);
                         }
 //                        Log.e("TEST", "-------------------------------------------");
 //                        Log.e("TEST", "k: " + k + " ,width: " + (layoutParams.width));
 
-                        if (m > heightDefault) {
+                        if (m > heightDefault - 50) {
                             layoutParams.height = m;
                             layoutParams.topMargin = (margt - j);
                         }
@@ -242,18 +242,19 @@ public class ClipArt extends RelativeLayout {
 
                         float scaleCurrent = mScaleFactor / canhHuyenDefault;
 
-                        scaleCurrent = Math.max(1.0f, scaleCurrent);
+                        scaleCurrent = Math.max(0.5f, scaleCurrent);
 //                        if (scaleCurrent < 1) {
 //                            layoutParams.width = (int) (k * scaleCurrent);
 //                            layoutParams.height = (int) (m * scaleCurrent);
 //                            Timber.e(scaleCurrent + " " + layoutParams.width + " " + layoutParams.height);
 //                        }
-                        currentTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, sizeTextDefault * scaleCurrent);
+                        currentTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Math.min(sizeTextDefault * scaleCurrent, 350);
 //                            currentTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getFitTextSize(new Paint(), layoutParams.width, layoutParams.height, currentTextView.getText().toString()));
 
 //                        Log.e("DEBUG", "textW: " + currentTextView.getMeasuredWidth() + " textH: " + currentTextView.getMeasuredHeight());
 //                        Log.e("TEST", "-------------------------------------------");
-
+                        canhHuyenDefault = (float) Math.sqrt(layoutParams.width * layoutParams.width + layoutParams.height * layoutParams.height);
+                        sizeTextDefault = Math.max(50.0f, currentTextView.getTextSize());
                         layGroup.setLayoutParams(layoutParams);
                         layGroup.performLongClick();
 
