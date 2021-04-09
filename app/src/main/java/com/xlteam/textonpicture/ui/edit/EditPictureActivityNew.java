@@ -422,7 +422,7 @@ public class EditPictureActivityNew extends AppCompatActivity
             layoutText.setVisibility(View.VISIBLE);
             if (currentClipArt != null) {
                 showToolAndBorderOfText(true);
-                currentClipArt.visiball();
+                currentClipArt.visibleAll();
             }
         } else {
             layoutText.setVisibility(View.GONE);
@@ -441,7 +441,9 @@ public class EditPictureActivityNew extends AppCompatActivity
         }
 
         if (isShow && currentClipArt != null) {
-            currentClipArt.visiball();
+            currentClipArt.visibleAll();
+            //update current status of tool
+            updateCurrentStatusForTool();
         } else {
             if (currentClipArt != null) {
                 currentClipArt.disableAll();
@@ -533,11 +535,12 @@ public class EditPictureActivityNew extends AppCompatActivity
         layoutShadow.setVisibility(View.GONE);
         layoutAlign.setVisibility(View.GONE);
         int fontClipArt = currentClipArt.getFont();
+        Timber.e(mFontAdapter.getNumberFont() + " " + fontClipArt);
         if (currentClipArt != null && mFontAdapter.getNumberFont() != fontClipArt) {
             mFontAdapter.setNumberFont(fontClipArt);
             mFontAdapter.notifyDataSetChanged();
-            rvFont.smoothScrollToPosition(fontClipArt);
         }
+        rvFont.smoothScrollToPosition(fontClipArt);
     }
 
     public void onTextAlignClicked() {
@@ -793,7 +796,12 @@ public class EditPictureActivityNew extends AppCompatActivity
         currentClipArt = currentView;
         showTextMode(true);
 
-        //update current status of tool
+        updateCurrentStatusForTool();
+    }
+
+
+    //update current status of tool
+    private void updateCurrentStatusForTool(){
         switch (mToolTextAdapter.getCurrentNumberTool()) {
             case 1:
                 sbOpacity.setProgress(currentClipArt.getOpacityText());
@@ -806,9 +814,10 @@ public class EditPictureActivityNew extends AppCompatActivity
                 sbOpacityShadow.setProgress(currentClipArt.getOpacityShadow());
                 break;
             case 4:
+                rvFont.smoothScrollToPosition(currentClipArt.getFont());
                 mFontAdapter.setNumberFont(currentClipArt.getFont());
                 mFontAdapter.notifyDataSetChanged();
-                rvFont.smoothScrollToPosition(currentClipArt.getFont());
+                Timber.e(currentClipArt.getFont() + "");
                 break;
             case 5:
                 setIconGravity(currentClipArt.getGravity());
