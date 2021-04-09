@@ -6,11 +6,15 @@
         android:id="@+id/clipart"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="12dp"
+        android:layout_margin="10dp"
+        android:autoSizeMaxTextSize="100sp"
+        android:autoSizeMinTextSize="12sp"
+        android:autoSizeStepGranularity="2sp"
+        android:autoSizeTextType="uniform"
         android:background="@drawable/bg_text_view_edit"
         android:gravity="center"
-        android:includeFontPadding="false"
-        android:padding="5dp" />
+        android:padding="5dp"
+        android:includeFontPadding="false" />
 
     <ImageView
         android:id="@+id/image_border"
