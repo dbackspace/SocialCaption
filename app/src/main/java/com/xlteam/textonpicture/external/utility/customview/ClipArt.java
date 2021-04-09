@@ -257,7 +257,6 @@ public class ClipArt extends RelativeLayout {
                         sizeTextDefault = Math.max(50.0f, currentTextView.getTextSize());
                         layGroup.setLayoutParams(layoutParams);
                         layGroup.performLongClick();
-
                         break;
                 }
                 return true;
