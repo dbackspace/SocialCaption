@@ -248,7 +248,7 @@ public class ClipArt extends RelativeLayout {
 //                            layoutParams.height = (int) (m * scaleCurrent);
 //                            Timber.e(scaleCurrent + " " + layoutParams.width + " " + layoutParams.height);
 //                        }
-                        currentTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Math.min(sizeTextDefault * scaleCurrent, 350);
+                        currentTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Math.min(sizeTextDefault * scaleCurrent, 350));
 //                            currentTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getFitTextSize(new Paint(), layoutParams.width, layoutParams.height, currentTextView.getText().toString()));
 
 //                        Log.e("DEBUG", "textW: " + currentTextView.getMeasuredWidth() + " textH: " + currentTextView.getMeasuredHeight());
