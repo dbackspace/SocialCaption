@@ -5,7 +5,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Spannable;
@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -38,9 +39,13 @@ import com.xlteam.textonpicture.ui.edit.EditPictureActivityNew;
 import com.xlteam.textonpicture.ui.home.created.PictureCreatedDialogFragment;
 import com.xlteam.textonpicture.ui.home.firebase.PictureFirebaseDialogFragment;
 
+import java.io.File;
 import java.util.List;
 
 import timber.log.Timber;
+
+import static com.xlteam.textonpicture.external.utility.utils.Constant.FILE_PROVIDER_PATH;
+import static com.xlteam.textonpicture.external.utility.utils.Constant.REQUEST_CODE_TAKE_PHOTO;
 
 public class HomePageActivity extends AppCompatActivity implements DialogInterface.OnDismissListener {
     RecyclerView rvFirebase, rvCreated;
@@ -53,6 +58,7 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
     private PictureHomeAdapter createdAdapter;
 
     private boolean needCheckPermission = false;
+    private Uri tempUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,8 +100,11 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
             pictureCreatedDialogFragment.show(fragmentTransaction, "dialog_created");
         });
         layoutTakePhoto.setOnClickListener(v -> {
-            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(cameraIntent, Constant.REQUEST_CODE_TAKE_PHOTO);
+            File file = new File(getExternalCacheDir().getPath(), "tempImage.JPEG");
+            tempUri = FileProvider.getUriForFile(this, FILE_PROVIDER_PATH, file);
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, tempUri);
+            startActivityForResult(intent, REQUEST_CODE_TAKE_PHOTO);
         });
 
         layoutGallery.setOnClickListener(v -> {
@@ -188,6 +197,7 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constant.REQUEST_CODE_PICK_PHOTO_GALLERY) {
             if (resultCode == RESULT_OK) {
+
                 if (data == null) {
                     Toast.makeText(this, R.string.not_selected_picture, Toast.LENGTH_SHORT).show();
                 } else {
@@ -198,18 +208,16 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
                 }
             }
         } else if (requestCode == Constant.REQUEST_CODE_TAKE_PHOTO) {
-            Bitmap photo = null;
-            if (data != null) {
-                if (data.getExtras() != null)
-                    photo = (Bitmap) data.getExtras().get("data");
-
-            }
-            if (photo != null) {
+//            Bitmap photo = null;
+            if (tempUri != null) {
                 Intent intent = new Intent(this, EditPictureActivityNew.class);
-                intent.putExtra(Constant.EXTRA_PICK_PHOTO_URL, photo);
+                intent.putExtra(Constant.EXTRA_PICK_PHOTO_URL, tempUri);
                 intent.putExtra(Constant.EXTRA_TYPE_PICTURE, Constant.TYPE_TAKE_PHOTO);
                 startActivityForResult(intent, Constant.REQUEST_CODE_PHOTO_FROM_HOME);
+            } else {
+                Toast.makeText(this, "Xảy ra lỗi khi chụp ảnh", Toast.LENGTH_SHORT).show();
             }
+
         } else if (requestCode == Constant.REQUEST_CODE_PHOTO_FROM_HOME) {
             if (resultCode == Activity.RESULT_OK) {
                 if (pictureCreatedDialogFragment != null) {

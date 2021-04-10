@@ -131,39 +131,8 @@ public class EditPictureActivityNew extends AppCompatActivity
             }
         });
 
-        Intent intent = getIntent();
-        int type = intent.getIntExtra(Constant.EXTRA_TYPE_PICTURE, -1);
-        if (type == Constant.TYPE_PICK_PHOTO) {
-            Uri imageUri = intent.getParcelableExtra(Constant.EXTRA_PICK_PHOTO_URL);
-            if (imageUri != null) {
-                Glide.with(this)
-                        .load(imageUri)
-                        .fitCenter()
-                        .into(mImgBackground);
-            }
-        } else if (type == Constant.TYPE_TAKE_PHOTO) {
-            Bitmap photo = intent.getParcelableExtra(Constant.EXTRA_TAKE_PHOTO_BITMAP);
-            if (photo != null) {
-                Glide.with(this)
-                        .load(photo)
-                        .fitCenter()
-                        .into(mImgBackground);
-            }
-        } else {
-            String url = intent.getStringExtra(Constant.EXTRA_URL_PICTURE);
-            if (type == Constant.TYPE_PICTURE_FIREBASE) {
-                Glide.with(this)
-                        .load(url)
-                        .fitCenter()
-                        .into(mImgBackground);
-            } else if (type == Constant.TYPE_PICTURE_CREATED) {
-                Glide.with(this)
-                        .load("file://" + url)
-                        .fitCenter()
-                        .into(mImgBackground);
-            }
-        }
-//        initTextEditor();
+        loadImageIntoImageBackground();
+
         initToolText();
         tvDone.setOnClickListener(v -> {
             if (Utility.isValidClick(v.getId()))
@@ -174,8 +143,44 @@ public class EditPictureActivityNew extends AppCompatActivity
         imgCancelText.setOnClickListener(view -> showTextMode(false));
         imgDoneText.setOnClickListener(view -> {
             showTextMode(false);
-//            showToolAndBorderOfText(false);
         });
+    }
+
+    private void loadImageIntoImageBackground() {
+        Intent intent = getIntent();
+        int type = intent.getIntExtra(Constant.EXTRA_TYPE_PICTURE, -1);
+        if (type == Constant.TYPE_PICK_PHOTO) {
+            Uri imageUri = intent.getParcelableExtra(Constant.EXTRA_PICK_PHOTO_URL);
+            if (imageUri != null) {
+                loadImageFromUri(imageUri, mImgBackground);
+            }
+        } else if (type == Constant.TYPE_TAKE_PHOTO) {
+            Uri photo = intent.getParcelableExtra(Constant.EXTRA_TAKE_PHOTO_BITMAP);
+            if (photo != null) {
+                loadImageFromUri(photo, mImgBackground);
+            }
+        } else {
+            String url = intent.getStringExtra(Constant.EXTRA_URL_PICTURE);
+            if (type == Constant.TYPE_PICTURE_FIREBASE) {
+                loadImageFromString(url, mImgBackground);
+            } else if (type == Constant.TYPE_PICTURE_CREATED) {
+                loadImageFromString("file://" + url, mImgBackground);
+            }
+        }
+    }
+
+    private void loadImageFromString(String url, ImageView imageView) {
+        Glide.with(this)
+                .load(url)
+                .fitCenter()
+                .into(imageView);
+    }
+
+    private void loadImageFromUri(Uri photo, ImageView imageView) {
+        Glide.with(this)
+                .load(photo)
+                .fitCenter()
+                .into(imageView);
     }
 
     private void findViewById() {
@@ -236,10 +241,7 @@ public class EditPictureActivityNew extends AppCompatActivity
                     } else {
                         if (data.getData() != null) {
                             final Uri imageUri = data.getData();
-                            Glide.with(this)
-                                    .load(imageUri)
-                                    .fitCenter()
-                                    .into(mImgBackground);
+                            loadImageFromUri(imageUri, mImgBackground);
 
                             // co su thay doi
                             isPickedPicture = true;
