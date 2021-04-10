@@ -86,7 +86,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:src="@drawable/ic_photo_edit"
-                    android:tint="@color/white" />
+                    ads:tint="@color/white" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -144,13 +144,13 @@
 
         <RelativeLayout
             android:id="@+id/relative_background_save_img"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true">
 
             <ImageView
                 android:id="@+id/img_edit_background"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:adjustViewBounds="true"
@@ -181,7 +181,7 @@
                 android:background="@drawable/bg_ripple_click_view_circle"
                 android:padding="5dp"
                 android:src="@drawable/ic_close"
-                android:tint="@color/white" />
+                ads:tint="@color/white" />
 
             <ImageView
                 android:id="@+id/image_save_text"
@@ -194,7 +194,7 @@
                 android:background="@drawable/bg_ripple_click_view_circle"
                 android:padding="5dp"
                 android:src="@drawable/ic_done"
-                android:tint="@color/white" />
+                ads:tint="@color/white" />
         </RelativeLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -397,7 +397,7 @@
                     android:layout_centerInParent="true"
                     android:padding="5dp"
                     android:src="@drawable/ic_align_center"
-                    android:tint="@color/color_3cc2f5_legend" />
+                    ads:tint="@color/color_3cc2f5_legend" />
 
                 <ImageView
                     android:id="@+id/image_align_left"

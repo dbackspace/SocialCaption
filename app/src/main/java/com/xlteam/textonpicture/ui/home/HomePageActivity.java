@@ -202,6 +202,7 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
             if (data != null) {
                 if (data.getExtras() != null)
                     photo = (Bitmap) data.getExtras().get("data");
+
             }
             if (photo != null) {
                 Intent intent = new Intent(this, EditPictureActivityNew.class);

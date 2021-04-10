@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaScannerConnection;
@@ -52,8 +51,6 @@ import com.xlteam.textonpicture.external.utility.utils.FileUtils;
 import com.xlteam.textonpicture.external.utility.utils.Utility;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -139,18 +136,19 @@ public class EditPictureActivityNew extends AppCompatActivity
         if (type == Constant.TYPE_PICK_PHOTO) {
             Uri imageUri = intent.getParcelableExtra(Constant.EXTRA_PICK_PHOTO_URL);
             if (imageUri != null) {
-                final InputStream imageStream;
-                try {
-                    imageStream = getContentResolver().openInputStream(imageUri);
-                    final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                    mImgBackground.setImageBitmap(selectedImage);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+                Glide.with(this)
+                        .load(imageUri)
+                        .fitCenter()
+                        .into(mImgBackground);
             }
         } else if (type == Constant.TYPE_TAKE_PHOTO) {
             Bitmap photo = intent.getParcelableExtra(Constant.EXTRA_TAKE_PHOTO_BITMAP);
-            if (photo != null) mImgBackground.setImageBitmap(photo);
+            if (photo != null) {
+                Glide.with(this)
+                        .load(photo)
+                        .fitCenter()
+                        .into(mImgBackground);
+            }
         } else {
             String url = intent.getStringExtra(Constant.EXTRA_URL_PICTURE);
             if (type == Constant.TYPE_PICTURE_FIREBASE) {
@@ -229,8 +227,6 @@ public class EditPictureActivityNew extends AppCompatActivity
                     mImgBackground.setImageURI(resultUri);
                     isCropped = true;
                     isChangedListener();
-                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                    Exception error = result.getError();
                 }
                 break;
             case PICK_IMAGE:
@@ -238,17 +234,17 @@ public class EditPictureActivityNew extends AppCompatActivity
                     if (data == null) {
                         Toast.makeText(this, "Bạn chưa chọn ảnh.", Toast.LENGTH_SHORT).show();
                     } else {
-                        try {
+                        if (data.getData() != null) {
                             final Uri imageUri = data.getData();
-                            final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-                            final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                            mImgBackground.setImageBitmap(selectedImage);
+                            Glide.with(this)
+                                    .load(imageUri)
+                                    .fitCenter()
+                                    .into(mImgBackground);
 
                             // co su thay doi
                             isPickedPicture = true;
                             isChangedListener();
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
+                        } else {
                             Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
                         }
                     }
@@ -801,7 +797,7 @@ public class EditPictureActivityNew extends AppCompatActivity
 
 
     //update current status of tool
-    private void updateCurrentStatusForTool(){
+    private void updateCurrentStatusForTool() {
         switch (mToolTextAdapter.getCurrentNumberTool()) {
             case 1:
                 sbOpacity.setProgress(currentClipArt.getOpacityText());
