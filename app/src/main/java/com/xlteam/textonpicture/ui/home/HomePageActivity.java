@@ -214,6 +214,7 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
                 intent.putExtra(Constant.EXTRA_PICK_PHOTO_URL, tempUri);
                 intent.putExtra(Constant.EXTRA_TYPE_PICTURE, Constant.TYPE_TAKE_PHOTO);
                 startActivityForResult(intent, Constant.REQUEST_CODE_PHOTO_FROM_HOME);
+                tempUri = null;
             } else {
                 Toast.makeText(this, "Xảy ra lỗi khi chụp ảnh", Toast.LENGTH_SHORT).show();
             }
