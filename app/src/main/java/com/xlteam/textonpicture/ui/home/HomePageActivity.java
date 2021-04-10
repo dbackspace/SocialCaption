@@ -40,12 +40,16 @@ import com.xlteam.textonpicture.ui.home.created.PictureCreatedDialogFragment;
 import com.xlteam.textonpicture.ui.home.firebase.PictureFirebaseDialogFragment;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import timber.log.Timber;
 
 import static com.xlteam.textonpicture.external.utility.utils.Constant.FILE_PROVIDER_PATH;
 import static com.xlteam.textonpicture.external.utility.utils.Constant.REQUEST_CODE_TAKE_PHOTO;
+import static com.xlteam.textonpicture.external.utility.utils.Constant.SAVE_DATE_TIME_FORMAT;
 
 public class HomePageActivity extends AppCompatActivity implements DialogInterface.OnDismissListener {
     RecyclerView rvFirebase, rvCreated;
@@ -100,7 +104,8 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
             pictureCreatedDialogFragment.show(fragmentTransaction, "dialog_created");
         });
         layoutTakePhoto.setOnClickListener(v -> {
-            File file = new File(getExternalCacheDir().getPath(), "tempImage.JPEG");
+            SimpleDateFormat sdf = new SimpleDateFormat(SAVE_DATE_TIME_FORMAT, Locale.getDefault());
+            File file = new File(getExternalCacheDir().getPath(), sdf.format(new Date(Utility.now())) + "tempImage.JPEG");
             tempUri = FileProvider.getUriForFile(this, FILE_PROVIDER_PATH, file);
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, tempUri);
@@ -197,7 +202,6 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constant.REQUEST_CODE_PICK_PHOTO_GALLERY) {
             if (resultCode == RESULT_OK) {
-
                 if (data == null) {
                     Toast.makeText(this, R.string.not_selected_picture, Toast.LENGTH_SHORT).show();
                 } else {
@@ -213,7 +217,7 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
                 Intent intent = new Intent(this, EditPictureActivityNew.class);
                 intent.putExtra(Constant.EXTRA_PICK_PHOTO_URL, tempUri);
                 intent.putExtra(Constant.EXTRA_TYPE_PICTURE, Constant.TYPE_TAKE_PHOTO);
-                startActivityForResult(intent, Constant.REQUEST_CODE_PHOTO_FROM_HOME);
+                startActivity(intent);
                 tempUri = null;
             } else {
                 Toast.makeText(this, "Xảy ra lỗi khi chụp ảnh", Toast.LENGTH_SHORT).show();
