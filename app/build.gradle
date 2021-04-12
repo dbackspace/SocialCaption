@@ -40,6 +40,10 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:26.7.0')
     implementation 'com.google.firebase:firebase-analytics'
 
+    // autoTextSize for android version < 26
+    //noinspection GradleCompatible
+    implementation 'com.android.support:support-compat:28.0.0'
+
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
