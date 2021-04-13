@@ -122,12 +122,9 @@ public class EditPictureActivityNew extends AppCompatActivity
         mAdView.loadAd(adRequest);
 
         findViewById();
-        relativeBackground.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (layoutText.getVisibility() == View.VISIBLE) {
-                    showTextMode(false);
-                }
+        relativeBackground.setOnClickListener(v -> {
+            if (layoutText.getVisibility() == View.VISIBLE) {
+                showTextMode(false);
             }
         });
 
@@ -141,9 +138,7 @@ public class EditPictureActivityNew extends AppCompatActivity
         tvDone.setClickable(false);
         imgBack.setOnClickListener(v -> finish());
         imgCancelText.setOnClickListener(view -> showTextMode(false));
-        imgDoneText.setOnClickListener(view -> {
-            showTextMode(false);
-        });
+        imgDoneText.setOnClickListener(view -> showTextMode(false));
     }
 
     private void loadImageIntoImageBackground() {
@@ -156,6 +151,7 @@ public class EditPictureActivityNew extends AppCompatActivity
             }
         } else if (type == Constant.TYPE_TAKE_PHOTO) {
             Uri photo = intent.getParcelableExtra(Constant.EXTRA_TAKE_PHOTO_BITMAP);
+
             if (photo != null) {
                 loadImageFromUri(photo, mImgBackground);
             }
@@ -362,9 +358,9 @@ public class EditPictureActivityNew extends AppCompatActivity
     @SuppressLint("ResourceAsColor")
     @Override
     public void onSaveClicked(String text, boolean isEditOldText) {
-        /**
-         * Không tạo empty text.
-         * TODO: Xử lý trong textChange ở DialogAddText, có cho enable nút DONE hay không
+        /*
+          Không tạo empty text.
+          TODO: Xử lý trong textChange ở DialogAddText, có cho enable nút DONE hay không
          */
         if (TextUtils.isEmpty(text.trim())) {
             isHasText = false;
@@ -815,7 +811,7 @@ public class EditPictureActivityNew extends AppCompatActivity
                 rvFont.smoothScrollToPosition(currentClipArt.getFont());
                 mFontAdapter.setNumberFont(currentClipArt.getFont());
                 mFontAdapter.notifyDataSetChanged();
-                Timber.e(currentClipArt.getFont() + "");
+//                Timber.e(currentClipArt.getFont() + "");
                 break;
             case 5:
                 setIconGravity(currentClipArt.getGravity());
