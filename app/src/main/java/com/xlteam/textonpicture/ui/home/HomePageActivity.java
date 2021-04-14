@@ -219,10 +219,9 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
                 intent.putExtra(Constant.EXTRA_TYPE_PICTURE, Constant.TYPE_TAKE_PHOTO);
                 startActivity(intent);
                 tempUri = null;
-            } else 
+            } else {
                 Timber.e("Xảy ra lỗi khi chụp ảnh");
             }
-
         } else if (requestCode == Constant.REQUEST_CODE_PHOTO_FROM_HOME) {
             if (resultCode == Activity.RESULT_OK) {
                 if (pictureCreatedDialogFragment != null) {
