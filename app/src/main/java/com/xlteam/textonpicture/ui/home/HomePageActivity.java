@@ -213,14 +213,14 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
             }
         } else if (requestCode == Constant.REQUEST_CODE_TAKE_PHOTO) {
 //            Bitmap photo = null;
-            if (tempUri != null) {
+            if (tempUri != null && resultCode == RESULT_OK) {
                 Intent intent = new Intent(this, EditPictureActivityNew.class);
                 intent.putExtra(Constant.EXTRA_PICK_PHOTO_URL, tempUri);
                 intent.putExtra(Constant.EXTRA_TYPE_PICTURE, Constant.TYPE_TAKE_PHOTO);
                 startActivity(intent);
                 tempUri = null;
-            } else {
-                Toast.makeText(this, "Xảy ra lỗi khi chụp ảnh", Toast.LENGTH_SHORT).show();
+            } else 
+                Timber.e("Xảy ra lỗi khi chụp ảnh");
             }
 
         } else if (requestCode == Constant.REQUEST_CODE_PHOTO_FROM_HOME) {
