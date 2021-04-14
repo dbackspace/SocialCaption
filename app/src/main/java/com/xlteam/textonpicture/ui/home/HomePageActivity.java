@@ -277,6 +277,9 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
             showAndSetTextViewEmpty(false, null);
             createdAdapter.updateList(listPathsIfFolderExist);
             createdAdapter.notifyDataSetChanged();
+        } else {
+            showRvCreated(false);
+            showAndSetTextViewEmpty(true, getString(R.string.no_picture));
         }
     }
 

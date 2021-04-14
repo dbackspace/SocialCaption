@@ -44,7 +44,10 @@ import timber.log.Timber;
 
 import static com.xlteam.textonpicture.external.utility.utils.Constant.FILE_PROVIDER_PATH;
 
-public class PictureCreatedDialogFragment extends DialogFragment implements PictureCreatedAdapter.GallerySelectCallback {
+public class PictureCreatedDialogFragment extends DialogFragment
+        implements
+        PictureCreatedAdapter.GallerySelectCallback,
+        DialogInterface {
     private RecyclerView rvCreated;
     private Context mContext;
     private TextView mEmptyImage, tvTotalChecked;
@@ -158,7 +161,7 @@ public class PictureCreatedDialogFragment extends DialogFragment implements Pict
             mEmptyImage.setVisibility(View.VISIBLE);
             Utility.vibrateAnimation(mContext, mEmptyImage);
         }
-        imgBack.setOnClickListener(v -> dismiss());
+        imgBack.setOnClickListener(v -> onDismiss(this));
 //        rvGallery.setHasFixedSize(true);
 
         return root;
@@ -245,6 +248,11 @@ public class PictureCreatedDialogFragment extends DialogFragment implements Pict
         }
         intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList);
         startActivity(Intent.createChooser(intent, "Chia sẻ"));
+    }
+
+    @Override
+    public void cancel() {
+
     }
 
     // TODO: Using RxJava for check onError if delete image failed.
