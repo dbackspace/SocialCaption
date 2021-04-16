@@ -39,7 +39,6 @@
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
-        <activity android:name=".ui.edit.EditPictureActivityNew" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

@@ -33,31 +33,19 @@ public class ClipArt extends RelativeLayout {
     ImageButton imgRotate;
     ImageButton imgBalance;
     ImageButton imgZoom;
-    //    RelativeLayout clip;
     Context mContext;
     boolean freeze = false;
-    //    int h;
-//    int i;
     TextView currentTextView;
-    //    String imageUri;
     ImageView imgring;
-    //    boolean isShadow;
-//    int iv;
     RelativeLayout layBg;
     RelativeLayout layGroup;
     LayoutParams layoutParams;
     public LayoutInflater mInflater;
     int margl;
     int margt;
-    // DisplayImageOptions op;
-//    float opacity = 1.0F;
-//    Bitmap originalBitmap;
     int pivx;
     int pivy;
-    //    int pos;
-//    Bitmap shadowBitmap;
     float startDegree;
-//    String[] v;
 
     private final int heightDefault;
     private final int widthDefault;
@@ -77,14 +65,10 @@ public class ClipArt extends RelativeLayout {
         mContext = paramContext;
         mCallback = (CallbackListener) paramContext;
         layGroup = this;
-        // this.clip = paramRelativeLayout;
         basex = 0;
         basey = 0;
         pivx = 0;
         pivy = 0;
-        // .v = paramArrayOfString;
-        // this.op = paramDisplayImageOptions;
-//        mInflater = ((LayoutInflater) paramContext.getSystemService("layout_inflater"));
         mInflater = LayoutInflater.from(paramContext);
         mInflater.inflate(R.layout.clipart, this, true);
         imgRemove = findViewById(R.id.image_text_remove);
@@ -92,14 +76,11 @@ public class ClipArt extends RelativeLayout {
         imgBalance = findViewById(R.id.image_text_balance);
         imgZoom = findViewById(R.id.image_text_zoom);
         imgring = findViewById(R.id.image_border);
-        // imageUri = ("assets://Cliparts/" + paramArrayOfString[paramInt1]);
-
 
         currentTextView = findViewById(R.id.clipart);
         currentTextView.setText(text);
         Typeface type = Typeface.createFromAsset(mContext.getAssets(), "font/" + "dancingscript_bold.ttf");
         currentTextView.setTypeface(type);
-//        currentTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, 74);
 
         Utility.setColorForView(currentTextView, "#00FFFFFF");
         currentTextView.measure(0, 0);
@@ -113,8 +94,6 @@ public class ClipArt extends RelativeLayout {
         layGroup.setMinimumHeight(heightDefault);
         layGroup.setMinimumWidth(widthDefault);
 
-        // ImageLoader.getInstance().displayImage(this.imageUri, this.image,
-        // paramDisplayImageOptions);
         currentTextView.setTag(0);
 
         setOnTouchListener(new OnTouchListener() {
@@ -162,19 +141,15 @@ public class ClipArt extends RelativeLayout {
                     return true;
                 }
                 return true;
-                // freeze;
             }
         });
 
         setOnClickListener(new DoubleClickListener() {
             @Override
             public void onDoubleClick() {
-                // double-click code that is executed if the user double-taps
-                // within a span of 200ms (default).
                 mCallback.onClipArtDoubleTapped(ClipArt.this);
             }
         });
-
 
         this.imgZoom.setOnTouchListener((paramAnonymousView, event) -> {
             if (!freeze) {
@@ -182,7 +157,6 @@ public class ClipArt extends RelativeLayout {
                 int i = (int) event.getRawY();
                 layoutParams = (LayoutParams) layGroup.getLayoutParams();
                 switch (event.getAction()) {
-
                     case MotionEvent.ACTION_DOWN:
                         layGroup.invalidate();
                         basex = j;
@@ -195,7 +169,6 @@ public class ClipArt extends RelativeLayout {
                         margt = layoutParams.topMargin;
                         break;
                     case MotionEvent.ACTION_MOVE:
-
                         float f2 = (float) Math.toDegrees(Math.atan2(i - basey, j - basex));
                         float f1 = f2;
                         if (f2 < 0.0F) {
@@ -213,19 +186,15 @@ public class ClipArt extends RelativeLayout {
                             layoutParams.width = k;
                             layoutParams.leftMargin = (margl - i);
                         }
-
-                        if (m > heightDefault-25) {
+                        if (m > heightDefault - 25) {
                             layoutParams.height = m;
                             layoutParams.topMargin = (margt - j);
                         }
-
                         layGroup.setLayoutParams(layoutParams);
                         layGroup.performLongClick();
-                        
                         break;
                 }
                 return true;
-
             }
             return true;
         });
@@ -238,7 +207,6 @@ public class ClipArt extends RelativeLayout {
                 int i = (int) event.getRawX() - arrayOfInt[0];
                 int j = (int) event.getRawY() - arrayOfInt[1];
                 switch (event.getAction()) {
-
                     case MotionEvent.ACTION_DOWN:
                         layGroup.invalidate();
                         startDegree = layGroup.getRotation();
@@ -247,7 +215,6 @@ public class ClipArt extends RelativeLayout {
                         basex = (i - pivx);
                         basey = (pivy - j);
                         break;
-
                     case MotionEvent.ACTION_MOVE:
                         int k = pivx;
                         int m = pivy;
@@ -260,7 +227,6 @@ public class ClipArt extends RelativeLayout {
                         layGroup.setRotation((startDegree + i) % 360.0F);
                         break;
                 }
-
                 return true;
             }
             return true;
@@ -283,45 +249,10 @@ public class ClipArt extends RelativeLayout {
         this.imgBalance.setVisibility(INVISIBLE);
     }
 
-/*    public TextView getImageView() {
-        return this.currentTextView;
-    }
-
-    public float getOpacity() {
-        return this.currentTextView.getAlpha();
-    }
-
-    public void resetImage() {
-        this.originalBitmap = null;
-        this.layGroup.performLongClick();
-    }*/
-
     public void setColor(int paramInt) {
-//		this.image.getDrawable().setColorFilter(null);
-//        ColorMatrixColorFilter localColorMatrixColorFilter = new ColorMatrixColorFilter(new float[]{0.33F, 0.33F,
-//                0.33F, 0.0F, Color.red(paramInt), 0.33F, 0.33F, 0.33F, 0.0F, Color.green(paramInt), 0.33F, 0.33F,
-//                0.33F, 0.0F, Color.blue(paramInt), 0.0F, 0.0F, 0.0F, 1.0F, 0.0F});
-//		this.image.getDrawable().setColorFilter(localColorMatrixColorFilter);
         this.currentTextView.setTag(paramInt);
         this.layGroup.performLongClick();
     }
-
-   /* public void setFreeze(boolean paramBoolean) {
-        this.freeze = paramBoolean;
-    }
-
-    public void setImageId() {
-        this.currentTextView.setId(this.layGroup.getId() + this.i);
-        this.i += 1;
-    }
-
-    public void setLocation() {
-        this.layBg = ((RelativeLayout) getParent());
-        LayoutParams localLayoutParams = (LayoutParams) this.layGroup.getLayoutParams();
-        localLayoutParams.topMargin = ((int) (Math.random() * (this.layBg.getHeight() - 400)));
-        localLayoutParams.leftMargin = ((int) (Math.random() * (this.layBg.getWidth() - 400)));
-        this.layGroup.setLayoutParams(localLayoutParams);
-    }*/
 
     public void visibleAll() {
         this.imgRemove.setVisibility(View.VISIBLE);
@@ -330,19 +261,6 @@ public class ClipArt extends RelativeLayout {
         this.imgring.setVisibility(View.VISIBLE);
         this.imgBalance.setVisibility(VISIBLE);
     }
-
-/*    public ImageView getImgZoom() {
-        return imgZoom;
-    }
-
-    public static abstract interface DoubleTapListener {
-        public abstract void onDoubleTap();
-    }
-
-    private static int getFitTextSize(Paint paint, int width, int height, String text) {
-        int maxSizeToFitWidth = (int) ((float) width / paint.measureText(text) * paint.getTextSize());
-        return Math.min(maxSizeToFitWidth, height);
-    }*/
 
     private static final String DEFAULT_COLOR_TEXT = "000000";
     private static final String DEFAULT_COLOR_BACKGROUND = "000000";
@@ -507,11 +425,6 @@ public class ClipArt extends RelativeLayout {
             timestampLastClick = 0;
         }
 
-   /*     public DoubleClickListener(long doubleClickQualificationSpanInMillis) {
-            this.doubleClickQualificationSpanInMillis = doubleClickQualificationSpanInMillis;
-            timestampLastClick = 0;
-        }*/
-
         @Override
         public void onClick(View v) {
             if ((SystemClock.elapsedRealtime() - timestampLastClick) < doubleClickQualificationSpanInMillis) {
@@ -521,6 +434,5 @@ public class ClipArt extends RelativeLayout {
         }
 
         public abstract void onDoubleClick();
-
     }
 }

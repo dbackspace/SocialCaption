@@ -10,11 +10,6 @@ public class Constant {
 
     public static final String SAVE_DATE_TIME_FORMAT = "yyyyMMddHHmmss";
 
-    public static final int TYPE_TAM_TRANG = 1;
-    public static final int TYPE_TINH_YEU = 2;
-    public static final int TYPE_THIEN_NHIEN = 3;
-    public static final int TYPE_DEN_TRANG = 4;
-
     public static final String EXTRA_URL_PICTURE = "EXTRA_URL_PICTURE";
     public static final String EXTRA_TYPE_PICTURE = "EXTRA_TYPE_PICTURE";
     public static final String EXTRA_PICK_PHOTO_URL = "EXTRA_PICK_PHOTO_URL";
@@ -23,10 +18,6 @@ public class Constant {
     public static int ALIGN_CENTER = 0;
     public static int ALIGN_START = 1;
     public static int ALIGN_END = 2;
-
-    public static int BACKGROUND_COLOR_0 = 0;
-    public static int BACKGROUND_COLOR_50 = 1;
-    public static int BACKGROUND_COLOR_100 = 2;
 
     public static int TYPE_PICK_PHOTO = 0;
     public static int TYPE_TAKE_PHOTO = 1;

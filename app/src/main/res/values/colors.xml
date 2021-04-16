@@ -22,8 +22,4 @@
     <color name="progress_color1">#663CC2F5</color>
     <color name="progress_color2">#FF3CC2F5</color>
 
-    <color name="colorPrimaryDark">@android:color/black</color>
-    <color name="colorAccent">@android:color/white</color>
-
-    <color name="sticker_border">#ff666666</color>
 </resources>

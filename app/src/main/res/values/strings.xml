@@ -11,7 +11,6 @@
     <string name="love">Tình yêu</string>
     <string name="nature">Thiên nhiên</string>
     <string name="black_white">Đen trắng</string>
-    <string name="no_image">Không có ảnh</string>
     <string name="save_fail">Lưu ảnh thất bại</string>
     <string name="save_success">Lưu ảnh thành công</string>
     <string name="notify_not_enough_permission">Không đủ quyền để thực hiện tùy chọn</string>
@@ -50,7 +49,6 @@
     <string name="color_background">Màu nền</string>
     <string name="shadow">Vùng tối</string>
     <string name="font">Font</string>
-    <string name="bend">Uốn cong</string>
     <string name="gravity">Bố cục</string>
     <string name="saturation">Độ bão hòa</string>
     <string name="opacity">Độ trong</string>
@@ -60,5 +58,4 @@
     <string name="save">Lưu</string>
     <string name="no_picture">Không có ảnh nào</string>
     <string name="no_permission">Không có quyền. Cấp quyền</string>
-    <string name="your_text">Your text</string>
 </resources>

@@ -20,8 +20,6 @@ public class BlurImageView extends AppCompatImageView {
     private float defaultBitmapScale = 0.1f;
     private static final int MAX_RADIUS = 25;
     private static final int MIN_RADIUS = 1;
-    int width = 0;
-    int height = 0;
     Drawable imageOnView;
 
     public BlurImageView(Context context) {

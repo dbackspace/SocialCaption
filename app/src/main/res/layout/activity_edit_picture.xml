@@ -135,7 +135,6 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/container_background_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/adView"
@@ -198,7 +197,6 @@
         </RelativeLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_menu_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true">
@@ -236,7 +234,6 @@
                     android:textColor="@color/white" />
 
                 <TextView
-                    android:id="@+id/tv_opacity"
                     android:layout_width="match_parent"
                     android:layout_height="25dp"
                     android:layout_toStartOf="@id/sb_opacity"
