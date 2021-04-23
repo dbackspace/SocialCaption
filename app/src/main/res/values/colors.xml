@@ -15,7 +15,7 @@
     <color name="color_FA">#FAFAFA</color>
     <color name="color_button_dialog">#3cc2f5</color>
     <color name="color_text">#252525</color>
-    <color name="color_splash">#FFBDBD</color>
+    <color name="color_splash">#B7EFE7</color>
 
     <!-- ProgressBar circle -->
     <color name="progress_fill_color">#00000000</color>
