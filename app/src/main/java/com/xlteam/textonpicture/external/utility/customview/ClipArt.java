@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.SystemClock;
-import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -19,8 +18,6 @@ import android.widget.TextView;
 import com.xlteam.textonpicture.R;
 import com.xlteam.textonpicture.external.datasource.FontDataSource;
 import com.xlteam.textonpicture.external.utility.utils.Utility;
-
-import timber.log.Timber;
 
 @SuppressLint("ViewConstructor")
 public class ClipArt extends RelativeLayout {
@@ -81,7 +78,7 @@ public class ClipArt extends RelativeLayout {
         currentTextView.setText(text);
         Typeface type = Typeface.createFromAsset(mContext.getAssets(), "font/" + "dancingscript_bold.ttf");
         currentTextView.setTypeface(type);
-
+        Utility.setColorForTextView(currentTextView, "#FF000000");
         Utility.setColorForView(currentTextView, "#00FFFFFF");
         currentTextView.measure(0, 0);
 
