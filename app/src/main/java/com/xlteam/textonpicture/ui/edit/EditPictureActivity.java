@@ -14,7 +14,6 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -72,9 +71,6 @@ public class EditPictureActivity extends AppCompatActivity
     private AdView mAdView;
     public static final int PICK_IMAGE = 1;
 
-    // check change
-    private boolean isPickedPicture = false;
-    private boolean isCropped = false;
     private Context mContext;
 
     // relative background
@@ -100,8 +96,6 @@ public class EditPictureActivity extends AppCompatActivity
     private ImageView imgAlignCenter;
     private ImageView imgAlignLeft;
     private ImageView imgAlignRight;
-
-    private boolean isHasText = false;
 
     // text current
     private ClipArt currentClipArt;
@@ -136,7 +130,6 @@ public class EditPictureActivity extends AppCompatActivity
             if (Utility.isValidClick(v.getId()))
                 saveImageCreatedToSdcard(relativeBackground);
         });
-        tvDone.setClickable(false);
         imgBack.setOnClickListener(v -> finish());
         imgCancelText.setOnClickListener(view -> showTextMode(false));
         imgDoneText.setOnClickListener(view -> showTextMode(false));
@@ -227,24 +220,18 @@ public class EditPictureActivity extends AppCompatActivity
                 if (resultCode == RESULT_OK) {
                     Uri resultUri = result.getUri();
                     mImgBackground.setImageURI(resultUri);
-                    isCropped = true;
-                    isChangedListener();
                 }
                 break;
             case PICK_IMAGE:
                 if (resultCode == RESULT_OK) {
                     if (data == null) {
-                        Toast.makeText(this, "Bạn chưa chọn ảnh.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, R.string.not_selected_picture, Toast.LENGTH_SHORT).show();
                     } else {
                         if (data.getData() != null) {
                             final Uri imageUri = data.getData();
                             loadImageFromUri(imageUri, mImgBackground);
-
-                            // co su thay doi
-                            isPickedPicture = true;
-                            isChangedListener();
                         } else {
-                            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+                            Toast.makeText(this, R.string.something_went_wrong, Toast.LENGTH_LONG).show();
                         }
                     }
                 }
@@ -267,7 +254,7 @@ public class EditPictureActivity extends AppCompatActivity
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
 
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+        startActivityForResult(Intent.createChooser(intent, getString(R.string.select_picture)), PICK_IMAGE);
     }
 
     public void onEditPictureClicked(View view) {
@@ -363,13 +350,7 @@ public class EditPictureActivity extends AppCompatActivity
           Không tạo empty text.
           TODO: Xử lý trong textChange ở DialogAddText, có cho enable nút DONE hay không
          */
-        if (TextUtils.isEmpty(text.trim())) {
-            isHasText = false;
-            return;
-        }
-        isHasText = true;
-        // set button "Lưu" mờ hay hiện
-        isChangedListener();
+        if (TextUtils.isEmpty(text.trim())) return;
 
         if (isEditOldText) {
             currentClipArt.setText(text);
@@ -403,13 +384,6 @@ public class EditPictureActivity extends AppCompatActivity
     }
 
     private void isChangedListener() {
-        if (isCropped || isPickedPicture || isHasText) {
-            tvDone.setClickable(true);
-            tvDone.setAlpha(1);
-        } else {
-            tvDone.setClickable(false);
-            tvDone.setAlpha(0.7f);
-        }
     }
 
     private void showTextMode(boolean isShow) {
@@ -672,7 +646,7 @@ public class EditPictureActivity extends AppCompatActivity
 
     public void initFontTool() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
-        int DEFAULT_FONT_NUMBER = 3;
+        int DEFAULT_FONT_NUMBER = 8;
         linearLayoutManager.scrollToPositionWithOffset(DEFAULT_FONT_NUMBER, 20);
         rvFont.setLayoutManager(linearLayoutManager);
         mFontAdapter = new FontAdapter(this, numberFont -> currentClipArt.setFont(numberFont));

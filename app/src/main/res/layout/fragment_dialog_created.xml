@@ -130,8 +130,7 @@
                 android:layout_marginStart="10dp"
                 android:background="@drawable/bg_ripple_click_view_circle"
                 android:padding="10dp"
-                android:src="@drawable/ic_back"
-                android:tint="#000000" />
+                android:src="@drawable/ic_back" />
 
             <TextView
                 android:layout_width="wrap_content"

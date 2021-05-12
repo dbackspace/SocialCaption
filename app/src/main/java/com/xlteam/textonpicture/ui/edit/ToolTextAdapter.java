@@ -43,8 +43,8 @@ public class ToolTextAdapter extends RecyclerView.Adapter<ToolTextAdapter.ViewHo
             holder.tvTool.setTextColor(mContext.getColor(R.color.color_3cc2f5_legend));
             holder.imgTool.setColorFilter(mContext.getColor(R.color.color_3cc2f5_legend));
         } else {
-            holder.tvTool.setTextColor(mContext.getColor(R.color.white));
-            holder.imgTool.setColorFilter(mContext.getColor(R.color.white));
+            holder.tvTool.setTextColor(mContext.getColor(R.color.color_25));
+            holder.imgTool.setColorFilter(mContext.getColor(R.color.color_25));
         }
         holder.imgTool.setImageResource(mIcons[position]);
         holder.tvTool.setText(mNameTools[position]);

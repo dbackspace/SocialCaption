@@ -19,7 +19,6 @@
             android:layout_marginStart="10dp"
             android:background="@drawable/bg_ripple_click_view_circle"
             android:padding="10dp"
-            android:tint="#000000"
             android:src="@drawable/ic_back" />
 
         <TextView
