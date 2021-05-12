@@ -263,7 +263,7 @@ public class ClipArt extends RelativeLayout {
     private static final String DEFAULT_COLOR_BACKGROUND = "000000";
     private static final String DEFAULT_COLOR_SHADOW = "FF0000";
     private static final int DEFAULT_GRAVITY = Gravity.CENTER;
-    private static final int DEFAULT_FONT = 3;
+    private static final int DEFAULT_FONT = 8;
 
     private static final int DEFAULT_OPACITY_TEXT = 100;
     private static final int DEFAULT_OPACITY_BACKGROUND = 0;
