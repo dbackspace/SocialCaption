@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#FAFAFA">
+    android:background="#FAFAFA"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -51,7 +51,7 @@
 
                 <LinearLayout
                     android:id="@+id/layout_take_photo"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="15dp"
                     android:layout_weight="1"
@@ -82,7 +82,7 @@
 
                 <LinearLayout
                     android:id="@+id/layout_gallery"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bg_button_gallery"

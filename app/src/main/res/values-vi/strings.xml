@@ -14,12 +14,11 @@
     <string name="save_fail">Lưu ảnh thất bại</string>
     <string name="save_success">Lưu ảnh thành công</string>
     <string name="notify_not_enough_permission">Không đủ quyền để thực hiện tùy chọn</string>
-    <string name="canh_bao">Cảnh báo</string>
+    <string name="notice">Thông báo</string>
     <string name="ban_can_cap_du_quyen">Bạn cần cấp đủ quyền để sử dụng tính năng này</string>
     <string name="ok">Đồng ý</string>
-    <string name="huy_bo">Không</string>
-    <string name="luu">Có</string>
-    <string name="close">Thoát</string>
+    <string name="discard">Hủy bỏ</string>
+    <string name="cancel">Thoát</string>
     <string name="apply">Áp dụng</string>
     <string name="save_or_cancel">Bạn có muốn lưu các thay đổi?</string>
     <string name="confirm_delete_or_not">Bạn có thực sự muốn xóa?</string>
@@ -44,7 +43,7 @@
     <string name="view_more">Xem thêm</string>
     <string name="select_picture">Chọn ảnh</string>
     <string name="not_selected_picture">Bạn chưa chọn ảnh.</string>
-    <string name="add_text">Văn bản</string>
+    <string name="add_text">Thêm chữ</string>
     <string name="color_text">Màu chữ</string>
     <string name="color_background">Màu nền</string>
     <string name="shadow">Vùng tối</string>
@@ -54,9 +53,9 @@
     <string name="opacity">Độ trong</string>
     <string name="edit">Chỉnh sửa</string>
     <string name="photo_background">Ảnh nền</string>
-    <string name="add_text_">Thêm chữ</string>
     <string name="save">Lưu</string>
     <string name="no_picture">Không có ảnh nào</string>
     <string name="no_permission">Không có quyền. Cấp quyền</string>
     <string name="something_went_wrong">Đã xảy ra lỗi</string>
+    <string name="input_text">Nhập văn bản</string>
 </resources>

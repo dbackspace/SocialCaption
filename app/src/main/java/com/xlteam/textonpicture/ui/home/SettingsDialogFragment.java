@@ -28,6 +28,7 @@ import com.xlteam.textonpicture.R;
 import com.xlteam.textonpicture.external.utility.utils.Constant;
 import com.xlteam.textonpicture.external.utility.utils.Utility;
 
+import java.util.Locale;
 import java.util.Objects;
 
 import de.cketti.mailto.EmailIntentBuilder;
@@ -84,7 +85,9 @@ public class SettingsDialogFragment extends DialogFragment {
 
         view.findViewById(R.id.tvTermOfUse).setOnClickListener(v -> {
             if (Utility.isValidClick(v.getId())) {
-                showDialogFullScreen("term_of_use.html", R.string.term_of_use);
+                if (Locale.getDefault().getLanguage().equals("en"))
+                    showDialogFullScreen("term_of_use_en.html", R.string.term_of_use);
+                else showDialogFullScreen("term_of_use.html", R.string.term_of_use);
             }
         });
 

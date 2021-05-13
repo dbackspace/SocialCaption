@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#90000000"
@@ -10,9 +11,9 @@
         android:id="@+id/blur_background_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:scaleType="centerCrop" />
 
     <RelativeLayout
         android:id="@+id/layout_top"
@@ -32,7 +33,7 @@
             android:background="@drawable/bg_ripple_click_view_circle"
             android:padding="5dp"
             android:src="@drawable/ic_close"
-            android:tint="@color/white" />
+            app:tint="@color/white" />
 
         <ImageView
             android:id="@+id/imgDone"
@@ -44,14 +45,14 @@
             android:background="@drawable/bg_ripple_click_view_circle"
             android:padding="5dp"
             android:src="@drawable/ic_done"
-            android:tint="@color/white" />
+            app:tint="@color/white" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/rlEmptyClick"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/layout_top">
+        android:paddingTop="50dp">
 
         <com.xlteam.textonpicture.external.utility.customview.AutoFitEditText
             android:id="@+id/edtText"
@@ -64,7 +65,7 @@
             android:backgroundTint="@color/color_25"
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
-            android:hint="Nhập văn bản"
+            android:hint="@string/input_text"
             android:inputType="textNoSuggestions|textMultiLine"
             android:textColor="@color/white"
             android:textColorHint="@color/white"

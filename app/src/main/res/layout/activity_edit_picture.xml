@@ -44,7 +44,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:fontFamily="sans-serif-medium"
-                    android:text="@string/add_text_"
+                    android:text="@string/add_text"
                     android:textColor="@color/color_25"
                     android:textSize="10dp" />
             </LinearLayout>
@@ -128,7 +128,7 @@
                 android:paddingEnd="10dp"
                 android:text="@string/save"
                 android:textColor="@color/white"
-                android:textSize="20dp" />
+                android:textSize="18dp" />
         </RelativeLayout>
     </RelativeLayout>
 

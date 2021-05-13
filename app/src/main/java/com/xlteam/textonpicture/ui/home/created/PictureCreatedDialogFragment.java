@@ -96,7 +96,7 @@ public class PictureCreatedDialogFragment extends DialogFragment
                 .setTitleMessage(getString(R.string.confirm_delete_or_not))
                 .setCancelable(false)
                 .setSecondButton(v -> {
-                }, getString(R.string.close))
+                }, getString(R.string.cancel))
                 .setThirdButton(v -> new DeleteOperatorTask(mCheckedList).execute(), getString(R.string.delete))
                 .build();
     }

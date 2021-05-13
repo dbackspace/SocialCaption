@@ -171,7 +171,7 @@ public class ColorPickerDialog {
                         ColorPickerDialog.this.listener.onApply(ColorPickerDialog.this, String.format("%06X", 0xFFFFFF & getColor()));
                     }
                 })
-                .setNegativeButton(R.string.close, (dialog, which) -> {
+                .setNegativeButton(R.string.cancel, (dialog, which) -> {
                     if (ColorPickerDialog.this.listener != null) {
                         ColorPickerDialog.this.listener.onCancel(ColorPickerDialog.this);
                     }
