@@ -1,6 +1,5 @@
 package com.xlteam.textonpicture.ui.edit;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
@@ -33,12 +32,6 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionDeniedResponse;
-import com.karumi.dexter.listener.PermissionGrantedResponse;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.single.PermissionListener;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.xlteam.textonpicture.R;
@@ -296,45 +289,27 @@ public class EditPictureActivity extends AppCompatActivity
 
     // save image
     private void saveImageCreatedToSdcard(View view) {
-        Dexter.withContext(this)
-                .withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .withListener(new PermissionListener() {
-                    @Override
-                    public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
-                        Bitmap bitmap = Utility.getBitmapFromView(view);
-                        File saveFolder = FileUtils.findExistingFolderSaveImage();
-                        if (saveFolder != null) {
-                            SimpleDateFormat sdf = new SimpleDateFormat(SAVE_DATE_TIME_FORMAT, Locale.getDefault());
-                            String savePath = saveFolder.getAbsolutePath() + File.separator + sdf.format(new Date(Utility.now())) + ".png";
-                            File saveFile = Utility.bitmapToFile(bitmap, savePath);
-                            if (saveFile != null) {
-                                Toast.makeText(mContext, getString(R.string.save_success), Toast.LENGTH_LONG).show();
+        Bitmap bitmap = Utility.getBitmapFromView(view);
+        File saveFolder = FileUtils.findExistingFolderSaveImage();
+        if (saveFolder != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat(SAVE_DATE_TIME_FORMAT, Locale.getDefault());
+            String savePath = saveFolder.getAbsolutePath() + File.separator + sdf.format(new Date(Utility.now())) + ".png";
+            File saveFile = Utility.bitmapToFile(bitmap, savePath);
+            if (saveFile != null) {
+                Toast.makeText(mContext, getString(R.string.save_success), Toast.LENGTH_LONG).show();
 
-                                MediaScannerConnection.scanFile(mContext,
-                                        new String[]{savePath}, null,
-                                        (path, uri) -> Log.i("SaveImage", "Finished scanning " + path));
-
+                MediaScannerConnection.scanFile(mContext,
+                        new String[]{savePath}, null,
+                        (path, uri) -> Log.i("SaveImage", "Finished scanning " + path));
 //                                    if (mActivity != null) mActivity.checkAndShowAds(3);
 
-                                // save image path to sharePref
-                                Timber.e(savePath);
-                                responseResultToMainActivity();
-                            } else {
-                                Toast.makeText(mContext, getString(R.string.save_fail), Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
-                        Toast.makeText(mContext, getString(R.string.notify_not_enough_permission), Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
-                        permissionToken.continuePermissionRequest();
-                    }
-                }).check();
+                // save image path to sharePref
+                Timber.e(savePath);
+                responseResultToMainActivity();
+            } else {
+                Toast.makeText(mContext, getString(R.string.save_fail), Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void responseResultToMainActivity() {

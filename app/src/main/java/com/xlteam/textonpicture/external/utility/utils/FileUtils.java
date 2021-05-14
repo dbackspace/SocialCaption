@@ -2,16 +2,12 @@ package com.xlteam.textonpicture.external.utility.utils;
 
 import android.content.ContentResolver;
 import android.content.Context;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
-
-import com.xlteam.textonpicture.external.utility.logger.Log;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -37,27 +33,37 @@ public class FileUtils {
 
     public static class StoragePathUtils {
         public static final String DATA_FOLDER = "/TextOnPicture";
-        public static final String DATA_INTERNAL_PATH = getInternalStoragePath() + DATA_FOLDER;
-        public static final String CACHE_INTERNAL_PATH = "/Android/data/com.xlteam.textonpicture/cache";
-        public static final String CACHE_FOLDER = getInternalStoragePath() + CACHE_INTERNAL_PATH;
+        public static String ROOT_PATH = "";
 
-        public static String getInternalStoragePath() {
-            return Environment.getExternalStorageDirectory().getAbsolutePath();
+        public static void setRootPath(String path) {
+            ROOT_PATH = path;
         }
 
-        public static String getCacheFolderPath(Context context) {
-            // Điều kiện này dành cho trường hợp R OS sắp phát hành.
-            // Trên R OS, quyền truy cập file vào thư mục Android/data bị hạn chế.
-            // Solution: sử dụng một đường dẫn cache khác
-            if (Build.VERSION.SDK_INT > 29) {
-                return context.getCacheDir().getAbsolutePath();
+        public static String getRootPath() {
+            return ROOT_PATH;
+        }
+    }
+
+    public static File findExistingFolderSaveImage() {
+        String rootPath = StoragePathUtils.getRootPath() + StoragePathUtils.DATA_FOLDER;
+        File root = FileWrapper.createFile(rootPath);
+        return root.exists() ? root : root.mkdirs() ? root : null;
+    }
+
+    public static List<String> getListPathsIfFolderExist() {
+        File folder = findExistingFolderSaveImage();
+        Timber.e("getListPathsIfFolderExist: %s", folder.getPath());
+        if (folder != null) {
+            File[] listFilePaths = folder.listFiles();
+            if (listFilePaths != null && listFilePaths.length > 0) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    return Arrays.stream(listFilePaths)
+                            .map(File::getPath)
+                            .collect(Collectors.toList());
+                }
             }
-            return CACHE_FOLDER;
         }
-
-        public static String getDataInternalPath() {
-            return DATA_INTERNAL_PATH;
-        }
+        return new ArrayList<>();
     }
 
     public static void deleteMultiImage(List<String> listPath, Context context) {
@@ -88,103 +94,5 @@ public class FileUtils {
                 }
             }
         }
-    }
-
-    public static File findExistingFolderSaveImage() {
-        String rootPath = StoragePathUtils.getInternalStoragePath();
-        File root = FileWrapper.createFile(rootPath);
-        if (root.exists()) {
-            String internalRootPath = StoragePathUtils.getDataInternalPath();
-            File internalRoot = FileWrapper.createFile(internalRootPath);
-            if (!internalRoot.exists()) {
-                return (internalRoot.mkdirs()) ? internalRoot : null;
-            } else return internalRoot;
-        }
-        return null;
-    }
-
-    public static File findExistingFolderRoot(Context context, String folderPath) {
-        String rootPath = StoragePathUtils.getInternalStoragePath();
-        File root = FileWrapper.createFile(rootPath);
-        if (root.exists()) {
-            String internalRootPath = StoragePathUtils.getCacheFolderPath(context);
-            File internalRoot = FileWrapper.createFile(internalRootPath);
-            if (internalRoot.exists()) {
-                File file = FileWrapper.createFile(folderPath);
-                if (file.exists()) {
-                    return file;
-                }
-            }
-        }
-        return null;
-    }
-
-    public static List<String> getListPathsIfFolderExist() {
-        File folder = findExistingFolderSaveImage();
-//        Timber.e("getListPathsIfFolderExist: %s", folder.getPath());
-        if (folder != null) {
-            File[] listFilePaths = folder.listFiles();
-            if (listFilePaths != null && listFilePaths.length > 0) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    return Arrays.stream(listFilePaths)
-                            .map(File::getPath)
-                            .collect(Collectors.toList());
-                }
-            }
-        }
-        return new ArrayList<>();
-    }
-
-    public static List<File> getListFilesIfFolderExist() {
-        File folder = findExistingFolderSaveImage();
-        if (folder != null) {
-            String[] listFilePaths = folder.list();
-            if (listFilePaths != null && listFilePaths.length > 0) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    return Arrays.stream(listFilePaths)
-                            .filter(path -> !TextUtils.isEmpty(path))
-                            .map(path -> new File(path))
-                            .collect(Collectors.toList());
-                }
-            }
-        }
-        return null;
-    }
-
-    public static String getFileNameFromUri(Context context, Uri uri) {
-        String fileName = "";
-        if ("file".equals(uri.getScheme())) {
-            fileName = uri.getLastPathSegment();
-        } else {
-            try (Cursor cursor = context.getContentResolver().query(uri, new String[]{
-                    MediaStore.Images.ImageColumns.DISPLAY_NAME
-            }, null, null, null)) {
-                if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
-                    fileName = cursor.getString(cursor.getColumnIndex(MediaStore.Images.ImageColumns.DISPLAY_NAME));
-                    Log.d(TAG, "name is " + fileName);
-                }
-            }
-        }
-        return fileName;
-    }
-
-    public static String getRealPathFromURI(Context context, Uri contentUri) {
-        Cursor cursor = null;
-        String realPathUri = "";
-        try {
-            String[] proj = {MediaStore.Images.Media.DATA};
-            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
-            if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
-                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                realPathUri = cursor.getString(column_index);
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "getRealPathFromURI Exception : " + e.toString());
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
-        return realPathUri;
     }
 }
