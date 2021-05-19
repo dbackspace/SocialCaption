@@ -1,11 +1,16 @@
 package com.xlteam.textonpicture.ui.home;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Spannable;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,6 +25,11 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.xlteam.textonpicture.R;
 import com.xlteam.textonpicture.external.utility.animation.ViManager;
 import com.xlteam.textonpicture.external.utility.utils.Constant;
@@ -50,6 +60,8 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
     PictureFirebaseDialogFragment pictureFirebaseDialogFragment;
     PictureCreatedDialogFragment pictureCreatedDialogFragment;
     private PictureHomeAdapter createdAdapter;
+
+    private boolean needCheckPermission = false;
     private Uri tempUri;
 
     @Override
@@ -117,17 +129,72 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
     }
 
     private void hasPermission() {
-        Timber.e("bug");
-        List<String> listImagePaths = FileUtils.getListPathsIfFolderExist();
-        if (listImagePaths.isEmpty()) {
-            showRvCreated(false);
-            showAndSetTextViewEmpty(true, getString(R.string.no_picture));
-        } else {
-            showRvCreated(true);
-            showAndSetTextViewEmpty(false, null);
-        }
-        createdAdapter = new PictureHomeAdapter(HomePageActivity.this, Constant.TYPE_PICTURE_CREATED, FileUtils.getListPathsIfFolderExist());
-        rvCreated.setAdapter(createdAdapter);
+        Dexter.withContext(this)
+                .withPermissions(
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
+                        if (multiplePermissionsReport.areAllPermissionsGranted()) {
+                            needCheckPermission = false;
+                            Timber.e("bug");
+                            List<String> listImagePaths = FileUtils.getListPathsIfFolderExist();
+                            if (listImagePaths.isEmpty()) {
+                                showRvCreated(false);
+                                showAndSetTextViewEmpty(true, getString(R.string.no_picture));
+                            } else {
+                                showRvCreated(true);
+                                showAndSetTextViewEmpty(false, null);
+                            }
+                        } else {
+                            showRvCreated(false);
+
+                            Utility.showDialogRequestPermission(HomePageActivity.this);
+                            needCheckPermission = true;
+                            if (!isHasAllPermission()) {
+                                String noPermission = getString(R.string.no_permission);
+                                tvEmptyCreated.setVisibility(View.VISIBLE);
+                                tvEmptyCreated.setMovementMethod(LinkMovementMethod.getInstance());
+                                tvEmptyCreated.setText(noPermission, TextView.BufferType.SPANNABLE);
+                                Spannable mySpannable = (Spannable) tvEmptyCreated.getText();
+                                ClickableSpan myClickableSpan = new ClickableSpan() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        hasPermission();
+                                    }
+                                };
+                                mySpannable.setSpan(myClickableSpan, 0, noPermission.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            } else {
+                                needCheckPermission = false;
+                            }
+                        }
+                        createdAdapter = new PictureHomeAdapter(HomePageActivity.this, Constant.TYPE_PICTURE_CREATED, FileUtils.getListPathsIfFolderExist());
+                        rvCreated.setAdapter(createdAdapter);
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
+                        permissionToken.continuePermissionRequest();
+                    }
+                }).check();
+    }
+
+    private boolean isHasAllPermission() {
+        return checkReadExternalPermission()
+                && checkWriteExternalPermission();
+    }
+
+    private boolean checkReadExternalPermission() {
+        String permission = Manifest.permission.READ_EXTERNAL_STORAGE;
+        int res = this.checkCallingOrSelfPermission(permission);
+        return (res == PackageManager.PERMISSION_GRANTED);
+    }
+
+    private boolean checkWriteExternalPermission() {
+        String permission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+        int res = this.checkCallingOrSelfPermission(permission);
+        return (res == PackageManager.PERMISSION_GRANTED);
     }
 
     @Override
@@ -178,14 +245,16 @@ public class HomePageActivity extends AppCompatActivity implements DialogInterfa
         super.onResume();
 
         // update rvCreated if has change about permission
-        List<String> listImagePaths = FileUtils.getListPathsIfFolderExist();
-        if (listImagePaths.isEmpty()) {
-            showRvCreated(false);
-            showAndSetTextViewEmpty(true, getString(R.string.no_picture));
-        } else {
-            showRvCreated(true);
-            showAndSetTextViewEmpty(false, null);
-            updateDataToRecyclerCreated(listImagePaths);
+        if (needCheckPermission && isHasAllPermission()) {
+            List<String> listImagePaths = FileUtils.getListPathsIfFolderExist();
+            if (listImagePaths.isEmpty()) {
+                showRvCreated(false);
+                showAndSetTextViewEmpty(true, getString(R.string.no_picture));
+            } else {
+                showRvCreated(true);
+                showAndSetTextViewEmpty(false, null);
+                updateDataToRecyclerCreated(listImagePaths);
+            }
         }
     }
 
