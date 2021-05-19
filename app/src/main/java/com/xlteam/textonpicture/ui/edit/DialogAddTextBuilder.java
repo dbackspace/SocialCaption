@@ -8,7 +8,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import com.xlteam.textonpicture.R;
 import com.xlteam.textonpicture.external.utility.customview.AutoFitEditText;
@@ -17,9 +16,8 @@ import com.xlteam.textonpicture.external.utility.utils.Utility;
 
 public class DialogAddTextBuilder {
     private Dialog mDialog;
-    private ImageView imgBack, imgDone, imgFont;
+    private ImageView imgBack, imgDone;
     private AutoFitEditText edtText;
-    private RelativeLayout rlEmptyClick; // cho phép click vào vùng trống khi edit để lưu text
     private Context mContext;
     private BlurImageView blurBackgroundView;
 
@@ -43,17 +41,12 @@ public class DialogAddTextBuilder {
         edtText = mDialog.findViewById(R.id.edtText);
         imgDone = mDialog.findViewById(R.id.imgDone);
         blurBackgroundView = mDialog.findViewById(R.id.blur_background_view);
-        rlEmptyClick = mDialog.findViewById(R.id.rlEmptyClick);
 
         //init default
         blurBackgroundView.setImageBitmap(background);
         blurBackgroundView.setBlur(5);
         imgBack.setOnClickListener(v -> mDialog.dismiss());
         imgDone.setOnClickListener(v -> {
-            callback.onSaveClicked(edtText.getText().toString(), isEditOldText);
-            mDialog.dismiss();
-        });
-        rlEmptyClick.setOnClickListener(v -> {
             callback.onSaveClicked(edtText.getText().toString(), isEditOldText);
             mDialog.dismiss();
         });
