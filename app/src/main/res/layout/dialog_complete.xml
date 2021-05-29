@@ -27,17 +27,45 @@
         android:src="@drawable/ic_home" />
 
     <ImageView
+        android:id="@+id/image_saved_picture"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/image_back"
+        android:layout_margin="10dp" />
+
+    <ProgressBar
         android:id="@+id/image_loading_or_saved"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_below="@id/image_back"
+        android:layout_below="@id/image_saved_picture"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp" />
+        android:indeterminateTint="@color/color_3cc2f5_legend" />
 
-    <ImageView
-        android:id="@+id/image_saved_picture"
+    <LinearLayout
+        android:id="@+id/layout_success"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/image_loading_or_saved"
-        android:layout_margin="20dp" />
+        android:layout_below="@id/image_saved_picture"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/save_success"
+            android:textColor="@color/color_25"
+            android:textSize="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:text="Đường dẫn"
+            android:textColor="@color/color_3cc2f5_legend"
+            android:textSize="15dp" />
+    </LinearLayout>
 </RelativeLayout>
