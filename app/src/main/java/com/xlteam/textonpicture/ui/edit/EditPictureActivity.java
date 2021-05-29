@@ -3,7 +3,6 @@ package com.xlteam.textonpicture.ui.edit;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -12,10 +11,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -48,8 +44,6 @@ import com.xlteam.textonpicture.external.utility.utils.FileUtils;
 import com.xlteam.textonpicture.external.utility.utils.Utility;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -299,14 +293,15 @@ public class EditPictureActivity extends AppCompatActivity
         File saveFolder = FileUtils.findExistingFolderSaveImage();
         if (saveFolder != null) {
             SimpleDateFormat sdf = new SimpleDateFormat(SAVE_DATE_TIME_FORMAT, Locale.getDefault());
-            String fileName = sdf.format(new Date(Utility.now())) + ".png";
-            String savePath = saveFolder.getAbsolutePath() + File.separator + fileName;
+            String savePath = saveFolder.getAbsolutePath() + File.separator + sdf.format(new Date(Utility.now())) + ".png";
             File saveFile = Utility.bitmapToFile(bitmap, savePath);
             if (saveFile != null) {
                 Toast.makeText(mContext, getString(R.string.save_success), Toast.LENGTH_LONG).show();
 
-                // Request media scanner
-                requestMediaScanner(fileName, "image/*", savePath);
+                MediaScannerConnection.scanFile(mContext,
+                        new String[]{savePath}, null,
+                        (path, uri) -> Log.i("SaveImage", "Finished scanning " + path));
+//                                    if (mActivity != null) mActivity.checkAndShowAds(3);
 
                 // save image path to sharePref
                 Timber.e(savePath);
@@ -314,22 +309,6 @@ public class EditPictureActivity extends AppCompatActivity
             } else {
                 Toast.makeText(mContext, getString(R.string.save_fail), Toast.LENGTH_SHORT).show();
             }
-        }
-    }
-
-    private void requestMediaScanner(String fileName, String mimeType, String savePath) {
-        ContentValues values = new ContentValues();
-        values.put(MediaStore.MediaColumns.DISPLAY_NAME, fileName);
-        values.put(MediaStore.MediaColumns.MIME_TYPE, mimeType);
-        values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + "/" + fileName);
-        Uri uri = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            uri = mContext.getContentResolver().insert(MediaStore.Files.getContentUri(MediaStore.VOLUME_EXTERNAL), values);
-        }
-        try {
-            OutputStream outputStream = mContext.getContentResolver().openOutputStream(uri);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         }
     }
 

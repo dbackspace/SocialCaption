@@ -32,6 +32,7 @@ public class FileUtils {
     }
 
     public static class StoragePathUtils {
+        public static final String DATA_FOLDER = "/TextOnPicture";
         public static String ROOT_PATH = "";
 
         public static void setRootPath(String path) {
@@ -44,7 +45,7 @@ public class FileUtils {
     }
 
     public static File findExistingFolderSaveImage() {
-        String rootPath = StoragePathUtils.getRootPath();
+        String rootPath = StoragePathUtils.getRootPath() + StoragePathUtils.DATA_FOLDER;
         File root = FileWrapper.createFile(rootPath);
         return root.exists() ? root : root.mkdirs() ? root : null;
     }
