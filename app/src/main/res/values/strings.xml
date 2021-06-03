@@ -58,4 +58,5 @@
     <string name="no_permission">No right. Grant permission</string>
     <string name="something_went_wrong">Something went wrong</string>
     <string name="input_text">Input text</string>
+    <string name="file_path">Đường dẫn: %s</string>
 </resources>

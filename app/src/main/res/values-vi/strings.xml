@@ -58,4 +58,5 @@
     <string name="no_permission">Không có quyền. Cấp quyền</string>
     <string name="something_went_wrong">Đã xảy ra lỗi</string>
     <string name="input_text">Nhập văn bản</string>
+    <string name="file_path">Đường dẫn: %s</string>
 </resources>
