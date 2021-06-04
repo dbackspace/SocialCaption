@@ -6,7 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -121,17 +124,20 @@ public class CompleteDialogFragment extends DialogFragment {
                     File savedFile = Utility.bitmapToFile(mBitmap, savedPath);
                     if (savedFile != null) {
                         MediaScannerConnection.scanFile(mContext,
-                                new String[]{savedPath}, null, (path, uri) -> {
-                                    tvSavedPath.setText(mContext.getString(R.string.file_path, savedPath));
-                                    layoutSuccess.setVisibility(View.VISIBLE);
-                                    loading.setVisibility(View.GONE);
-                                }
+                                new String[]{savedPath}, null, (path, uri) ->
+                                        new Handler(Looper.getMainLooper()).post(() -> {
+                                            tvSavedPath.setText(mContext.getString(R.string.file_path, savedPath));
+                                            layoutSuccess.setVisibility(View.VISIBLE);
+                                            loading.setVisibility(View.GONE);
+                                        })
                         );
                     } else {
-                        layoutSuccess.setVisibility(View.VISIBLE);
-                        loading.setVisibility(View.GONE);
-                        tvSaveSuccess.setText(R.string.save_fail);
-                        tvSavedPath.setText(R.string.try_again);
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            layoutSuccess.setVisibility(View.VISIBLE);
+                            loading.setVisibility(View.GONE);
+                            tvSaveSuccess.setText(R.string.save_fail);
+                            tvSavedPath.setText(R.string.try_again);
+                        });
                     }
                 }
             }
