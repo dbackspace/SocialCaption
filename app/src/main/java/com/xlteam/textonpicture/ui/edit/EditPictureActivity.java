@@ -10,7 +10,6 @@ import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -47,13 +46,7 @@ import com.xlteam.textonpicture.external.utility.colorpicker.ColorPickerDialog;
 import com.xlteam.textonpicture.external.utility.customview.ClipArt;
 import com.xlteam.textonpicture.external.utility.logger.Log;
 import com.xlteam.textonpicture.external.utility.utils.Constant;
-import com.xlteam.textonpicture.external.utility.utils.FileUtils;
 import com.xlteam.textonpicture.external.utility.utils.Utility;
-
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 import timber.log.Timber;
 
@@ -299,24 +292,8 @@ public class EditPictureActivity extends AppCompatActivity
                 .withListener(new PermissionListener() {
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
-                        Bitmap bitmap = Utility.getBitmapFromView(view);
-                        File saveFolder = FileUtils.findExistingFolderSaveImage();
-                        if (saveFolder != null) {
-                            SimpleDateFormat sdf = new SimpleDateFormat(Constant.SAVE_DATE_TIME_FORMAT, Locale.getDefault());
-                            String savedPath = saveFolder.getAbsolutePath() + File.separator + sdf.format(new Date(Utility.now())) + ".png";
-                            File savedFile = Utility.bitmapToFile(bitmap, savedPath);
-                            if (savedFile != null) {
-                                Dialog dialog = new CompleteDialogBuilder(EditPictureActivity.this, bitmap, savedPath).build();
-                                dialog.show();
-                                MediaScannerConnection.scanFile(mContext,
-                                        new String[]{savedPath}, null,
-                                        (path, uri) -> Log.i("SaveImage", "Finished scanning " + path));
-                                // save image path to sharePref
-                                Timber.e(savedPath);
-                            } else {
-                                Toast.makeText(mContext, getString(R.string.save_fail), Toast.LENGTH_SHORT).show();
-                            }
-                        }
+                        Dialog dialog = new CompleteDialogBuilder(EditPictureActivity.this, Utility.getBitmapFromView(view)).build();
+                        dialog.show();
                     }
 
                     @Override

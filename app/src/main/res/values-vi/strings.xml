@@ -59,4 +59,5 @@
     <string name="something_went_wrong">Đã xảy ra lỗi</string>
     <string name="input_text">Nhập văn bản</string>
     <string name="file_path">Đường dẫn: %s</string>
+    <string name="try_again">Nhấn để thử lại</string>
 </resources>
