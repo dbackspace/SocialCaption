@@ -123,7 +123,11 @@ public class EditPictureActivity extends AppCompatActivity
             if (Utility.isValidClick(v.getId()))
                 saveImageCreatedToSdcard(relativeBackground);
         });
-        imgBack.setOnClickListener(v -> finish());
+        imgBack.setOnClickListener(v -> {
+            Intent intent = getIntent();
+            setResult(Activity.RESULT_OK, intent);
+            finish();
+        });
         imgCancelText.setOnClickListener(view -> showTextMode(false));
         imgDoneText.setOnClickListener(view -> showTextMode(false));
     }
@@ -312,12 +316,6 @@ public class EditPictureActivity extends AppCompatActivity
                 }).check();
     }
 
-    private void responseResultToMainActivity() {
-        Intent intent = getIntent();
-        setResult(Activity.RESULT_OK, intent);
-        finish();
-    }
-
     @SuppressLint("ResourceAsColor")
     @Override
     public void onSaveClicked(String text, boolean isEditOldText) {
@@ -354,6 +352,8 @@ public class EditPictureActivity extends AppCompatActivity
             //hỏi xem có lưu thay đổi
             showTextMode(false);
         } else {
+            Intent intent = getIntent();
+            setResult(Activity.RESULT_OK, intent);
             super.onBackPressed();
         }
     }
