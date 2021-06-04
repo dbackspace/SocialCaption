@@ -25,6 +25,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.ImageViewCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -292,8 +294,10 @@ public class EditPictureActivity extends AppCompatActivity
                 .withListener(new PermissionListener() {
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
-                        Dialog dialog = new CompleteDialogBuilder(EditPictureActivity.this, Utility.getBitmapFromView(view)).build();
-                        dialog.show();
+                        FragmentManager fragmentManager = getSupportFragmentManager();
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        CompleteDialogFragment completeDialogFragment = CompleteDialogFragment.newInstance(Utility.getBitmapFromView(view));
+                        completeDialogFragment.show(fragmentTransaction, "dialog_complete");
                     }
 
                     @Override

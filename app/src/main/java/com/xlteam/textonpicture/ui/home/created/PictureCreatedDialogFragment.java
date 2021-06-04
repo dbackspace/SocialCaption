@@ -247,7 +247,7 @@ public class PictureCreatedDialogFragment extends DialogFragment
             }
         }
         intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList);
-        startActivity(Intent.createChooser(intent, "Chia sẻ"));
+        startActivity(Intent.createChooser(intent, getString(R.string.share)));
     }
 
     @Override
