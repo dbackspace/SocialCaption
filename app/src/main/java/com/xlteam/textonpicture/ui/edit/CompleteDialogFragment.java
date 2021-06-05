@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -114,31 +113,28 @@ public class CompleteDialogFragment extends DialogFragment {
             //share ảnh
         });
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                File saveFolder = FileUtils.findExistingFolderSaveImage();
-                if (saveFolder != null) {
-                    SimpleDateFormat sdf = new SimpleDateFormat(Constant.SAVE_DATE_TIME_FORMAT, Locale.getDefault());
-                    String savedPath = saveFolder.getAbsolutePath() + File.separator + sdf.format(new Date(Utility.now())) + ".png";
-                    File savedFile = Utility.bitmapToFile(mBitmap, savedPath);
-                    if (savedFile != null) {
-                        MediaScannerConnection.scanFile(mContext,
-                                new String[]{savedPath}, null, (path, uri) ->
-                                        new Handler(Looper.getMainLooper()).post(() -> {
-                                            tvSavedPath.setText(mContext.getString(R.string.file_path, savedPath));
-                                            layoutSuccess.setVisibility(View.VISIBLE);
-                                            loading.setVisibility(View.GONE);
-                                        })
-                        );
-                    } else {
-                        new Handler(Looper.getMainLooper()).post(() -> {
-                            layoutSuccess.setVisibility(View.VISIBLE);
-                            loading.setVisibility(View.GONE);
-                            tvSaveSuccess.setText(R.string.save_fail);
-                            tvSavedPath.setText(R.string.try_again);
-                        });
-                    }
+        new Thread(() -> {
+            File saveFolder = FileUtils.findExistingFolderSaveImage();
+            if (saveFolder != null) {
+                SimpleDateFormat sdf = new SimpleDateFormat(Constant.SAVE_DATE_TIME_FORMAT, Locale.getDefault());
+                String savedPath = saveFolder.getAbsolutePath() + File.separator + sdf.format(new Date(Utility.now())) + ".png";
+                File savedFile = Utility.bitmapToFile(mBitmap, savedPath);
+                if (savedFile != null) {
+                    MediaScannerConnection.scanFile(mContext,
+                            new String[]{savedPath}, null, (path, uri) ->
+                                    new Handler(Looper.getMainLooper()).post(() -> {
+                                        tvSavedPath.setText(mContext.getString(R.string.file_path, savedPath));
+                                        layoutSuccess.setVisibility(View.VISIBLE);
+                                        loading.setVisibility(View.GONE);
+                                    })
+                    );
+                } else {
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        layoutSuccess.setVisibility(View.VISIBLE);
+                        loading.setVisibility(View.GONE);
+                        tvSaveSuccess.setText(R.string.save_fail);
+                        tvSavedPath.setText(R.string.try_again);
+                    });
                 }
             }
         }).start();
@@ -148,15 +144,15 @@ public class CompleteDialogFragment extends DialogFragment {
 
     private void showDialogBack(Context context) {
         if (mDialogBack == null)
-            mDialogBack = DialogSaveChangesBuilder.create(context).setTitleMessage("Bạn có muốn quay lại màn hình chỉnh sửa ảnh không?")
-                    .setFirstButton(view -> mDialogBack.dismiss(), "Đóng")
-                    .setSecondButton(view -> dismiss(), "Quay lại")
+            mDialogBack = DialogSaveChangesBuilder.create(context).setTitleMessage(getString(R.string.do_you_want_to_back))
+                    .setFirstButton(view -> mDialogBack.dismiss(), getString(R.string.cancel))
+                    .setSecondButton(view -> dismiss(), getString(R.string.back))
                     .setThirdButton(view -> {
                         Intent intent = new Intent(mContext, HomePageActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(intent);
                         ((Activity) mContext).finish();
-                    }, "Trang chủ").build();
+                    }, getString(R.string.home)).build();
         mDialogBack.show();
     }
 }

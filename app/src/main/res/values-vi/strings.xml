@@ -59,5 +59,8 @@
     <string name="something_went_wrong">Đã xảy ra lỗi</string>
     <string name="input_text">Nhập văn bản</string>
     <string name="file_path">Đường dẫn: %s</string>
-    <string name="try_again">Nhấn để thử lại</string>
+    <string name="try_again">Đã xảy ra lỗi</string>
+    <string name="do_you_want_to_back">Bạn có muốn quay lại màn hình chỉnh sửa ảnh không?</string>
+    <string name="back">Quay lại</string>
+    <string name="home">Trang chủ</string>
 </resources>

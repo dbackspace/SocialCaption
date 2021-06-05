@@ -59,5 +59,8 @@
     <string name="something_went_wrong">Something went wrong</string>
     <string name="input_text">Input text</string>
     <string name="file_path">File path: %s</string>
-    <string name="try_again">Try again</string>
+    <string name="try_again">An error occurred</string>
+    <string name="do_you_want_to_back">Do you want to go back to the photo editing screen?</string>
+    <string name="back">Back</string>
+    <string name="home">Home</string>
 </resources>
